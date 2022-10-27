@@ -14,7 +14,7 @@ test:
 
 lint:
   stage: test
-  script
+  script:
     - npm run lint
 
 pages:
