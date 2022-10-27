@@ -1,0 +1,18 @@
+.App {
+  text-align: center;
+  height: 100%;
+  background-color: #33383d;
+  .self-view {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 300px;
+    padding: 16px;
+    cursor: pointer;
+  }
+  .Toolbar {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+  }
+}

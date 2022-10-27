@@ -1,0 +1,5 @@
+{
+  "editor.tabSize": 2,
+  "xml.preferences.quoteStyle": "single",
+  "editor.rulers": [80,120]
+}

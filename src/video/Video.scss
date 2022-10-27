@@ -1,0 +1,12 @@
+.Video {
+  border-radius: 8px;
+  min-height: 0;
+  width: 100%;
+  max-width: 100%;
+  pointer-events: none;
+  aspect-ratio: 16 / 9;
+  object-fit: contain;
+  &.flip {
+    transform: rotateY(180deg);
+  }
+}
