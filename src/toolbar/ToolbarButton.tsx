@@ -6,8 +6,8 @@ import './ToolbarButton.scss'
 interface ToolbarButtonProps {
   icon: React.FunctionComponent<React.SVGProps<SVGSVGElement>>
   toolTip: string
-  enabled: boolean
   onClick: Function
+  enabled?: boolean
 }
 
 export function ToolbarButton (props: ToolbarButtonProps): JSX.Element {
