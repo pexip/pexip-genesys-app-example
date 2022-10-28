@@ -11,7 +11,7 @@ const onClick = jest.fn()
 
 test('renders the toolbar button', () => {
   render(<ToolbarButton icon={icon} toolTip={toolTip} onClick={onClick} />)
-  expect(screen.getByRole('button')).toBeInTheDocument();
+  expect(screen.getByRole('button')).toBeInTheDocument()
 })
 
 test('doesn\'t render the tooltip by default', () => {
@@ -50,15 +50,15 @@ test('call the onClick function when clicked', async () => {
 
 test('should\'t have the class "enabled" if not property "selected"', () => {
   render(<ToolbarButton icon={icon} toolTip={toolTip} onClick={onClick} />)
-  expect(screen.getByRole('button')).not.toHaveClass('selected');
+  expect(screen.getByRole('button')).not.toHaveClass('selected')
 })
 
 test('should\'t have the class "enabled" if property "selected=false"', () => {
   render(<ToolbarButton icon={icon} toolTip={toolTip} onClick={onClick} selected={false} />)
-  expect(screen.getByRole('button')).not.toHaveClass('selected');
+  expect(screen.getByRole('button')).not.toHaveClass('selected')
 })
 
 test('add the class "enabled" if property "selected=true"', () => {
   render(<ToolbarButton icon={icon} toolTip={toolTip} onClick={onClick} selected={true} />)
-  expect(screen.getByRole('button')).not.toHaveClass('selected');
+  expect(screen.getByRole('button')).not.toHaveClass('selected')
 })
