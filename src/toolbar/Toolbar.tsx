@@ -33,7 +33,7 @@ export class Toolbar extends React.Component<{}, ToolbarState> {
 
   render (): JSX.Element {
     return (
-      <div className="Toolbar">
+      <div className="Toolbar" data-testid='Toolbar'>
         <ToolbarButton icon={shareScreenIcon} toolTip='Share screen'
           selected={this.state.shareScreenEnabled}
           onClick={this.toggleShareScreen}

@@ -57,16 +57,16 @@ class App extends React.Component<{}, AppState> {
 
   render (): JSX.Element {
     return (
-      <div className="App">
+      <div className="App" data-testid='App'>
         <div className="videos-container">
           <Video mediaStream={this.state.remoteStream}/>
           <Video mediaStream={this.state.presentationStream} objectFit='contain' />
         </div>
-        <Draggable bounds='parent'>
+        {/* <Draggable bounds='parent'>
           <div className='self-view' ref={this.selfViewRef}>
             <Video mediaStream={this.state.localStream} flip={true}/>
           </div>
-        </Draggable>
+        </Draggable> */}
         <Toolbar />
       </div>
     )
