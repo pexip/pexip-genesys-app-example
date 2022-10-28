@@ -35,19 +35,19 @@ export class Toolbar extends React.Component<{}, ToolbarState> {
     return (
       <div className="Toolbar">
         <ToolbarButton icon={shareScreenIcon} toolTip='Share screen'
-          enabled={this.state.shareScreenEnabled}
+          selected={this.state.shareScreenEnabled}
           onClick={this.toggleShareScreen}
         />
         <ToolbarButton icon={lockIcon} toolTip='Lock Room'
-          enabled={this.state.shareScreenEnabled}
+          selected={this.state.shareScreenEnabled}
           onClick={this.toggleShareScreen}
         />
         <ToolbarButton icon={popUpVideoIcon} toolTip='Pop Up Video'
-          enabled={this.state.shareScreenEnabled}
+          selected={this.state.shareScreenEnabled}
           onClick={this.toggleShareScreen}
         />
         <ToolbarButton icon={settingsIcon} toolTip='Open Settings'
-          enabled={this.state.shareScreenEnabled}
+          selected={this.state.shareScreenEnabled}
           onClick={this.toggleShareScreen}
         />
       </div>

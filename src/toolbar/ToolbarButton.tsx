@@ -7,7 +7,7 @@ interface ToolbarButtonProps {
   icon: React.FunctionComponent<React.SVGProps<SVGSVGElement>>
   toolTip: string
   onClick: Function
-  enabled?: boolean
+  selected?: boolean
 }
 
 export function ToolbarButton (props: ToolbarButtonProps): JSX.Element {
