@@ -28,5 +28,7 @@ pages:
     paths:
       - public # GitLab pages serve from a 'public' directory
     expire_in: '900'
-  only:
-    - master # run on master branch
+  rules:
+    # This ensures that only pushes to the default branch will trigger
+    # a pages deploy
+    - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
