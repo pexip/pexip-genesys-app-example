@@ -14,11 +14,9 @@ jest.mock('./toolbar/Toolbar', () => {
 })
 
 jest.mock('react-draggable', () => {
-  return {
-    Draggable: (props: PropsWithChildren) => {
-      return <div data-testid='Draggable'>{props.children}</div>
-    }
-  }
+  const draggableMock = (props: PropsWithChildren): JSX.Element => <div data-testid='Draggable'>{props.children}</div>
+  draggableMock.displayName = 'Draggable'
+  return draggableMock
 })
 
 jest.mock('./video/Video', () => {
@@ -39,13 +37,13 @@ beforeAll(() => {
 beforeEach(() => {
   Object.defineProperty(global.navigator, 'mediaDevices', {
     value: {
-        getUserMedia: jest.fn(() => new Promise<void>(resolve => resolve())),
+      getUserMedia: jest.fn(async () => await new Promise<void>(resolve => resolve()))
     }
   })
 })
 
 test('renders app', async () => {
-  render(<App />)
+  await render(<App />)
   const app = await screen.findByTestId('App')
   expect(app).toBeInTheDocument()
 })

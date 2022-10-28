@@ -43,15 +43,12 @@ class App extends React.Component<{}, AppState> {
   }
 
   // TODO: Remove this. It's is only for testing.
-  componentDidMount (): void {
-    navigator.mediaDevices.getUserMedia({ video: true }).then((stream) => {
-      this.setState({
-        localStream: stream,
-        remoteStream: stream,
-        presentationStream: stream
-      })
-    }).catch((error) => {
-      console.error(error)
+  async componentDidMount (): Promise<void> {
+    const stream = await navigator.mediaDevices.getUserMedia({ video: true })
+    this.setState({
+      localStream: stream,
+      remoteStream: stream,
+      presentationStream: stream
     })
   }
 
@@ -62,11 +59,11 @@ class App extends React.Component<{}, AppState> {
           <Video mediaStream={this.state.remoteStream}/>
           <Video mediaStream={this.state.presentationStream} objectFit='contain' />
         </div>
-        {/* <Draggable bounds='parent'>
+        <Draggable bounds='parent'>
           <div className='self-view' ref={this.selfViewRef}>
             <Video mediaStream={this.state.localStream} flip={true}/>
           </div>
-        </Draggable> */}
+        </Draggable>
         <Toolbar />
       </div>
     )
