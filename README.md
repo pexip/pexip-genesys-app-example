@@ -12,10 +12,43 @@ Audio for the conference is still routed through Genesys (via SIP trunk), keepin
 
 - Use all of the inherent skills-based routing and transfer tools that are already native to Genesys as a huge benefit to video-first experiences such as Telehealth, Virtual Financial Services, Retail Support and many more.
 
+## Setup the Pexip Web App 3 dependencies
+
+In this project, instead of making use of PexRTC, we will reuse the Web App 3 packages. For using that, you should authenticate `npm` to be able to access the repository in `GitLab`.
+
+### Create Access Token
+
+The first step is to create a token that will have read access to the `npm registry`. You can do this from your GitLab preferences panel:
+
+- Open https://gitlab.com
+- Once you are logged in, click on your photo in the top-right corner.
+- Click on `Preferences`.
+- Click on `Access Tokens` on the left panel.
+- Create with a least the following permissions:
+  - `read_api`
+  - `read_registry`
+
+Copy the access token in a save location, since you wont' be able to access to it later. Remove it after completing the following step.
+
+### Configure NPM registry
+
+- Set URL for your scoped packages.
+
+      npm config set @pexip:registry https://gitlab.example.com/api/v4/projects/24337530/packages/npm/
+
+- Add the token for the scoped packages URL. Replace <your_token> with the `access token` that you have created in the previous step.
+
+      npm config set -- '//gitlab.com/api/v4/projects/24337530/packages/npm/:_authToken' "<your_token>"
+
+You should now be able to publish and install npm packages in your project.
+
+Find my information about the login process in the [GitLab documentation](https://docs.gitlab.com/ee/user/packages/npm_registry/#authenticate-to-the-package-registry).
+
+You can find a list of available packages here: https://gitlab.com/pexip/zoo/-/tree/main/src/aquila/packages/
 
 ## Available Scripts
 
-In the project directory, you can run:
+In the project directory, you can run the following commands:
 
 ### `npm start`
 
