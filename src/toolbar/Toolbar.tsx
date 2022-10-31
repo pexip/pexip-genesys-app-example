@@ -31,6 +31,22 @@ export class Toolbar extends React.Component<{}, ToolbarState> {
     this.toggleSettings = this.toggleSettings.bind(this)
   }
 
+  private toggleShareScreen (): void {
+
+  }
+
+  private toggleLockRoom (): void {
+
+  }
+
+  private togglePopOutVideo (): void {
+
+  }
+
+  private toggleSettings (): void {
+
+  }
+
   render (): JSX.Element {
     return (
       <div className="Toolbar" data-testid='Toolbar'>
@@ -52,21 +68,5 @@ export class Toolbar extends React.Component<{}, ToolbarState> {
         />
       </div>
     )
-  }
-
-  private toggleShareScreen (): void {
-
-  }
-
-  private toggleLockRoom (): void {
-
-  }
-
-  private togglePopOutVideo (): void {
-
-  }
-
-  private toggleSettings (): void {
-
   }
 }
