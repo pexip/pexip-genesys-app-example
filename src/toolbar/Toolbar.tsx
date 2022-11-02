@@ -1,5 +1,7 @@
 import React from 'react'
 
+import { InfinityClient } from '@pexip/infinity'
+
 import { ToolbarButton } from './ToolbarButton'
 
 import { ReactComponent as shareScreenIcon } from './icons/share-screen.svg'
@@ -9,6 +11,10 @@ import { ReactComponent as popUpVideoIcon } from './icons/pop-up-video.svg'
 
 import './Toolbar.scss'
 
+interface ToolbarProps {
+  infinityClient: InfinityClient
+}
+
 interface ToolbarState {
   shareScreenEnabled: boolean
   lockRoomEnabled: boolean
@@ -16,8 +22,8 @@ interface ToolbarState {
   settingsEnabled: boolean
 }
 
-export class Toolbar extends React.Component<{}, ToolbarState> {
-  constructor (props: {}) {
+export class Toolbar extends React.Component<ToolbarProps, ToolbarState> {
+  constructor (props: ToolbarProps) {
     super(props)
     this.state = {
       shareScreenEnabled: false,

@@ -44,7 +44,9 @@ You should now be able to publish and install npm packages in your project.
 
 Find my information about the login process in the [GitLab documentation](https://docs.gitlab.com/ee/user/packages/npm_registry/#authenticate-to-the-package-registry).
 
-You can find a list of available packages here: https://gitlab.com/pexip/zoo/-/tree/main/src/aquila/packages/
+You can find a list of available packages here: https://gitlab.com/pexip/zoo/-/tree/main/src/aquila
+
+The Web App 3 source code, that we can use as an example, is located here: https://gitlab.com/pexip/zoo/-/tree/main/src/aquila/apps/infinity-connect
 
 ## Available Scripts
 

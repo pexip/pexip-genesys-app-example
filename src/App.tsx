@@ -1,4 +1,14 @@
 import React from 'react'
+
+import {
+  createInfinityClient,
+  createInfinityClientSignals,
+  createCallSignals,
+  InfinityClient,
+  InfinitySignals,
+  CallSignals
+} from '@pexip/infinity'
+
 import { Video } from './video/Video'
 import { Toolbar } from './toolbar/Toolbar'
 
@@ -21,6 +31,10 @@ class App extends React.Component<{}, AppState> {
 
   private readonly selfViewRef = React.createRef<HTMLDivElement>()
 
+  private signals!: InfinitySignals
+  private callSignals!: CallSignals
+  private infinityClient!: InfinityClient
+
   constructor (props: {}) {
     super(props)
     this.state = {
@@ -42,14 +56,50 @@ class App extends React.Component<{}, AppState> {
     }, 100)
   }
 
-  // TODO: Remove this. It's is only for testing.
-  async componentDidMount (): Promise<void> {
-    const stream = await navigator.mediaDevices.getUserMedia({ video: true })
-    this.setState({
-      localStream: stream,
-      remoteStream: stream,
-      presentationStream: stream
+  private configureSignals (): void {
+    this.signals = createInfinityClientSignals([])
+    this.signals.onError.add((error) => {
+      console.error(error)
     })
+    this.callSignals = createCallSignals([])
+    this.callSignals.onRemoteStream.add((remoteStream) => {
+      this.setState({ remoteStream })
+    })
+  }
+
+  private async joinConference (node: string, conferenceAlias: string, mediaStream: MediaStream,
+    displayName: string, pin: string): Promise<void> {
+    this.configureSignals()
+    this.infinityClient = createInfinityClient(this.signals, this.callSignals)
+    await this.infinityClient.call({
+      node,
+      conferenceAlias,
+      mediaStream,
+      displayName,
+      bandwidth: 500,
+      pin
+    })
+  }
+
+  async componentDidMount (): Promise<void> {
+    // const queryParams = new URLSearchParams(window.location.search)
+    // const pcEnvironment = queryParams.get('pcEnvironment')
+    // const pcConversationId = queryParams.get('pcConverstationId')
+    // const node = queryParams.get('pexipNodeUrl')
+    // const pin = queryParams.get('pexipAgentPin')
+    // TODO: This parameters should be received by a query parameter inside the URL.
+    // This is only for testing.
+    const node = '192.168.1.101'
+    const conferenceAlias = '10'
+    const displayName = 'Marcos'
+    const pin = '1234'
+    const localStream = await navigator.mediaDevices.getUserMedia({ video: true })
+    this.setState({ localStream })
+    await this.joinConference(node, conferenceAlias, localStream, displayName, pin)
+  }
+
+  async componentWillUnmount (): Promise<void> {
+    await this.infinityClient.disconnect({})
   }
 
   render (): JSX.Element {
@@ -64,7 +114,7 @@ class App extends React.Component<{}, AppState> {
             <Video mediaStream={this.state.localStream} flip={true}/>
           </div>
         </Draggable>
-        <Toolbar />
+        <Toolbar infinityClient={this.infinityClient}/>
       </div>
     )
   }
