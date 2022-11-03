@@ -34,7 +34,7 @@ Copy the access token in a save location, since you wont' be able to access to i
 
 - Set URL for your scoped packages.
 
-      npm config set @pexip:registry https://gitlab.example.com/api/v4/projects/24337530/packages/npm/
+      npm config set @pexip:registry https://gitlab.com/api/v4/projects/24337530/packages/npm/
 
 - Add the token for the scoped packages URL. Replace <your_token> with the `access token` that you have created in the previous step.
 
