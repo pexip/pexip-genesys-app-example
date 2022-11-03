@@ -31,6 +31,7 @@ const infinityClientMock: InfinityClient = {
   lock: jest.fn(),
   disconnectAll: jest.fn(),
   setLayout: jest.fn(),
+  setTextOverlay: jest.fn(),
   raiseHand: jest.fn(),
   spotlight: jest.fn(),
   present: jest.fn(),
