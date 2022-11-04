@@ -60,5 +60,5 @@ test('should\'t have the class "enabled" if property "selected=false"', () => {
 
 test('add the class "enabled" if property "selected=true"', () => {
   render(<ToolbarButton icon={icon} toolTip={toolTip} onClick={onClick} selected={true} />)
-  expect(screen.getByRole('button')).not.toHaveClass('selected')
+  expect(screen.getByRole('button')).toHaveClass('selected')
 })

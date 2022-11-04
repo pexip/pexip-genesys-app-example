@@ -1,21 +1,25 @@
 .App {
-  text-align: center;
-  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   background-color: #33383d;
-
-  .videos-container {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-  }
+  padding: 16px;
+  height: calc(100% - 32px);
+  gap: 16px;
 
   .self-view {
     position: absolute;
     top: 16px;
     right: 16px;
-    width: 300px;
-    padding: 16px;
+    width: 25%;
+    min-width: 300px;
     cursor: pointer;
+    
+    .Video {
+      width: 100%;
+      aspect-ratio: 16/9;
+    }
   }
 
   .Toolbar {

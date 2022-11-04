@@ -1,13 +1,21 @@
 .Video {
   border-radius: 8px;
   min-height: 0;
-  width: 100%;
+  height: 100%;
   max-width: 100%;
   pointer-events: none;
-  aspect-ratio: 16 / 9;
-  object-fit: contain;
-  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
   &.flip {
     transform: rotateY(180deg);
+  }
+
+  &.secondary {
+    flex: 0 99999 auto;
+    min-height: 108px;
+    cursor: pointer;
+    order: -1;
   }
 }

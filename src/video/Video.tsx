@@ -6,12 +6,16 @@ interface VideoProps {
   mediaStream: MediaStream
   flip?: boolean
   objectFit?: 'fill' | 'contain' | 'cover' | 'none' | 'scale-down'
+  secondary?: boolean
 }
 
 export function Video (props: VideoProps): JSX.Element {
+  const className = 'Video' +
+    (props.flip ?? false ? ' flip' : '') +
+    (props.secondary ?? false ? ' secondary' : '')
   return (
-    <video className={`Video ${props.flip ?? false ? 'flip' : ''}`} autoPlay playsInline muted
-      style={ { objectFit: props.objectFit ?? 'cover' } }
+    <video className={className} autoPlay playsInline muted
+      style={ { objectFit: props.objectFit ?? 'contain' } }
       ref={ (video) => { if (video != null) video.srcObject = props.mediaStream } }
     />
   )

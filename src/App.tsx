@@ -16,10 +16,18 @@ import './App.scss'
 
 import Draggable from 'react-draggable'
 
+enum CONNECTION_STATE {
+  CONNECTING,
+  CONNECTED,
+  DISCONNECTED,
+  ERROR
+}
+
 interface AppState {
   localStream: MediaStream
   remoteStream: MediaStream
   presentationStream: MediaStream
+  connectionState: CONNECTION_STATE
 }
 
 class App extends React.Component<{}, AppState> {
@@ -40,7 +48,8 @@ class App extends React.Component<{}, AppState> {
     this.state = {
       localStream: new MediaStream(),
       remoteStream: new MediaStream(),
-      presentationStream: new MediaStream()
+      presentationStream: new MediaStream(),
+      connectionState: CONNECTION_STATE.CONNECTING
     }
     // Workaround for maintain the selfView in the viewport when resizing
     window.addEventListener('resize', () => this.simulateSelfViewClick())
@@ -56,14 +65,18 @@ class App extends React.Component<{}, AppState> {
     }, 100)
   }
 
+  private handleLocalPresentationStream (presentationStream: MediaStream): void {
+    this.setState({ presentationStream })
+  }
+
   private configureSignals (): void {
     this.signals = createInfinityClientSignals([])
-    this.signals.onError.add((error) => {
-      console.error(error)
-    })
     this.callSignals = createCallSignals([])
     this.callSignals.onRemoteStream.add((remoteStream) => {
       this.setState({ remoteStream })
+    })
+    this.callSignals.onRemotePresentationStream.add((presentationStream) => {
+      this.setState({ presentationStream })
     })
   }
 
@@ -71,14 +84,19 @@ class App extends React.Component<{}, AppState> {
     displayName: string, pin: string): Promise<void> {
     this.configureSignals()
     this.infinityClient = createInfinityClient(this.signals, this.callSignals)
-    await this.infinityClient.call({
-      node,
-      conferenceAlias,
-      mediaStream,
-      displayName,
-      bandwidth: 500,
-      pin
-    })
+    try {
+      await this.infinityClient.call({
+        node,
+        conferenceAlias,
+        mediaStream,
+        displayName,
+        bandwidth: 500,
+        pin
+      })
+      this.setState({ connectionState: CONNECTION_STATE.CONNECTED })
+    } catch (error) {
+      this.setState({ connectionState: CONNECTION_STATE.ERROR })
+    }
   }
 
   async componentDidMount (): Promise<void> {
@@ -105,16 +123,18 @@ class App extends React.Component<{}, AppState> {
   render (): JSX.Element {
     return (
       <div className="App" data-testid='App'>
-        <div className="videos-container">
-          <Video mediaStream={this.state.remoteStream}/>
-          <Video mediaStream={this.state.presentationStream} objectFit='contain' />
-        </div>
-        <Draggable bounds='parent'>
-          <div className='self-view' ref={this.selfViewRef}>
-            <Video mediaStream={this.state.localStream} flip={true}/>
-          </div>
-        </Draggable>
-        <Toolbar infinityClient={this.infinityClient}/>
+        { this.state.connectionState === CONNECTION_STATE.CONNECTED &&
+          <>
+            <Video mediaStream={this.state.remoteStream}/>
+            { this.state.presentationStream.active && <Video mediaStream={this.state.presentationStream} objectFit='contain' secondary={true} /> }
+            <Draggable bounds='parent'>
+              <div className='self-view' ref={this.selfViewRef}>
+                <Video mediaStream={this.state.localStream} flip={true} objectFit={'cover'}/>
+              </div>
+            </Draggable>
+            <Toolbar infinityClient={this.infinityClient} callSignals={this.callSignals} onLocalPresentationStream={this.handleLocalPresentationStream.bind(this)}/>
+          </>
+        }
       </div>
     )
   }
