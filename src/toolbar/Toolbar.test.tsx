@@ -3,7 +3,7 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 
 import { Toolbar } from './Toolbar'
-import { CallSignals, createCallSignals, InfinityClient } from '@pexip/infinity'
+import { CallSignals, InfinityClient } from '@pexip/infinity'
 
 // Create a mock for the ToolbarButton
 jest.mock('./ToolbarButton', () => {
