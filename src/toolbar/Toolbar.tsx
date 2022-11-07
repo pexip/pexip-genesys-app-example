@@ -5,6 +5,7 @@ import { CallSignals, InfinityClient, PresoConnectionChangeEvent } from '@pexip/
 import { ToolbarButton } from './ToolbarButton'
 
 import { ReactComponent as shareScreenIcon } from './icons/share-screen.svg'
+import { ReactComponent as unlockIcon } from './icons/unlock.svg'
 import { ReactComponent as lockIcon } from './icons/lock.svg'
 import { ReactComponent as settingsIcon } from './icons/settings.svg'
 import { ReactComponent as popUpVideoIcon } from './icons/pop-up-video.svg'
@@ -30,10 +31,11 @@ export class Toolbar extends React.Component<ToolbarProps, ToolbarState> {
     super(props)
     this.state = {
       shareScreenEnabled: false,
-      lockRoomEnabled: false,
+      lockRoomEnabled: !(this.props.infinityClient.conferenceStatus?.locked ?? false),
       popOutVideoEnabled: false,
       settingsEnabled: false
     }
+    console.log(this.props.infinityClient.conferenceStatus)
     this.toggleShareScreen = this.toggleShareScreen.bind(this)
     this.toggleLockRoom = this.toggleLockRoom.bind(this)
     this.togglePopOutVideo = this.togglePopOutVideo.bind(this)
@@ -58,8 +60,13 @@ export class Toolbar extends React.Component<ToolbarProps, ToolbarState> {
     }
   }
 
-  private toggleLockRoom (): void {
-
+  private async toggleLockRoom (): Promise<void> {
+    const response = await this.props.infinityClient.lock({ lock: this.state.lockRoomEnabled })
+    if (response?.status === 200) {
+      this.setState({
+        lockRoomEnabled: !this.state.lockRoomEnabled
+      })
+    }
   }
 
   private togglePopOutVideo (): void {
@@ -84,19 +91,19 @@ export class Toolbar extends React.Component<ToolbarProps, ToolbarState> {
   render (): JSX.Element {
     return (
       <div className="Toolbar" data-testid='Toolbar'>
-        <ToolbarButton icon={shareScreenIcon} toolTip={this.state.shareScreenEnabled ? 'Stop Sharing Screen' : 'Share Screen'}
+        <ToolbarButton icon={shareScreenIcon} toolTip={this.state.shareScreenEnabled ? 'Stop sharing screen' : 'Share screen'}
           selected={this.state.shareScreenEnabled}
           onClick={this.toggleShareScreen}
         />
-        <ToolbarButton icon={lockIcon} toolTip='Lock Room'
+        <ToolbarButton icon={this.state.lockRoomEnabled ? unlockIcon : lockIcon} toolTip={this.state.lockRoomEnabled ? 'Look room' : 'Unlock room' }
           selected={this.state.lockRoomEnabled}
           onClick={this.toggleLockRoom}
         />
-        <ToolbarButton icon={popUpVideoIcon} toolTip='Pop Up Video'
+        <ToolbarButton icon={popUpVideoIcon} toolTip='Pop up video'
           selected={this.state.popOutVideoEnabled}
           onClick={this.togglePopOutVideo}
         />
-        <ToolbarButton icon={settingsIcon} toolTip='Open Settings'
+        <ToolbarButton icon={settingsIcon} toolTip='Open settings'
           selected={this.state.settingsEnabled}
           onClick={this.toggleSettings}
         />
