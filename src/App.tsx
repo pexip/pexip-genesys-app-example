@@ -28,6 +28,7 @@ interface AppState {
   remoteStream: MediaStream
   presentationStream: MediaStream
   connectionState: CONNECTION_STATE
+  secondaryVideo: 'remote' | 'presentation'
 }
 
 class App extends React.Component<{}, AppState> {
@@ -49,7 +50,8 @@ class App extends React.Component<{}, AppState> {
       localStream: new MediaStream(),
       remoteStream: new MediaStream(),
       presentationStream: new MediaStream(),
-      connectionState: CONNECTION_STATE.CONNECTING
+      connectionState: CONNECTION_STATE.CONNECTING,
+      secondaryVideo: 'presentation'
     }
     // Workaround for maintain the selfView in the viewport when resizing
     window.addEventListener('resize', () => this.simulateSelfViewClick())
@@ -99,6 +101,14 @@ class App extends React.Component<{}, AppState> {
     }
   }
 
+  private exchangeVideos (): void {
+    if (this.state.secondaryVideo === 'presentation') {
+      this.setState({ secondaryVideo: 'remote' })
+    } else {
+      this.setState({ secondaryVideo: 'presentation' })
+    }
+  }
+
   async componentDidMount (): Promise<void> {
     // const queryParams = new URLSearchParams(window.location.search)
     // const pcEnvironment = queryParams.get('pcEnvironment')
@@ -125,8 +135,12 @@ class App extends React.Component<{}, AppState> {
       <div className="App" data-testid='App'>
         { this.state.connectionState === CONNECTION_STATE.CONNECTED &&
           <>
-            <Video mediaStream={this.state.remoteStream}/>
-            { this.state.presentationStream.active && <Video mediaStream={this.state.presentationStream} objectFit='contain' secondary={true} /> }
+            <Video mediaStream={this.state.remoteStream}
+            secondary={this.state.secondaryVideo === 'remote'}
+            onClick={this.state.secondaryVideo === 'remote' ? this.exchangeVideos.bind(this) : undefined} />
+            { this.state.presentationStream.active && <Video mediaStream={this.state.presentationStream} objectFit='contain'
+              secondary={this.state.secondaryVideo === 'presentation'}
+              onClick={this.state.secondaryVideo === 'presentation' ? this.exchangeVideos.bind(this) : undefined} /> }
             <Draggable bounds='parent'>
               <div className='self-view' ref={this.selfViewRef}>
                 <Video mediaStream={this.state.localStream} flip={true} objectFit={'cover'}/>

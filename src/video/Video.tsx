@@ -7,6 +7,7 @@ interface VideoProps {
   flip?: boolean
   objectFit?: 'fill' | 'contain' | 'cover' | 'none' | 'scale-down'
   secondary?: boolean
+  onClick?: Function
 }
 
 export function Video (props: VideoProps): JSX.Element {
@@ -16,7 +17,8 @@ export function Video (props: VideoProps): JSX.Element {
   return (
     <video className={className} autoPlay playsInline muted
       style={ { objectFit: props.objectFit ?? 'contain' } }
-      ref={ (video) => { if (video != null) video.srcObject = props.mediaStream } }
+      ref={ (video) => { if (video != null) video.srcObject = props.mediaStream }}
+      onClick={() => { if (props.onClick != null) props.onClick() }}
     />
   )
 }
