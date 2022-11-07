@@ -9,7 +9,8 @@ import {
   createCallSignals,
   InfinityClient,
   InfinitySignals,
-  CallSignals
+  CallSignals,
+  PresoConnectionChangeEvent
 } from '@pexip/infinity'
 
 import { Video } from './video/Video'
@@ -85,7 +86,20 @@ class App extends React.Component<{}, AppState> {
       this.setState({ remoteStream })
     })
     this.callSignals.onRemotePresentationStream.add((presentationStream) => {
-      this.setState({ presentationStream })
+      this.setState({
+        presentationStream,
+        secondaryVideo: 'remote'
+      })
+    })
+    this.callSignals.onPresentationConnectionChange.add((changeEvent: PresoConnectionChangeEvent) => {
+      console.log('onPresentation')
+      console.log(changeEvent)
+      if (changeEvent.recv !== 'connected' && changeEvent.send !== 'connected') {
+        this.setState({
+          presentationStream: new MediaStream(),
+          secondaryVideo: 'presentation'
+        })
+      }
     })
   }
 
@@ -160,7 +174,7 @@ class App extends React.Component<{}, AppState> {
         }
         <ToastContainer
           position="top-center"
-          autoClose={300000}
+          autoClose={3000}
           hideProgressBar={true}
           newestOnTop={false}
           closeOnClick={true}

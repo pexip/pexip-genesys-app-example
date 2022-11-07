@@ -72,6 +72,7 @@ export class Toolbar extends React.Component<ToolbarProps, ToolbarState> {
 
   componentDidMount (): void {
     this.props.callSignals.onPresentationConnectionChange.add((changeEvent: PresoConnectionChangeEvent): void => {
+      console.log('onPresentationConnectionChange')
       if (changeEvent.send === 'connected') {
         this.setState({ shareScreenEnabled: true })
       } else {
