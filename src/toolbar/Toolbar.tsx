@@ -25,6 +25,7 @@ interface ToolbarState {
 }
 
 export class Toolbar extends React.Component<ToolbarProps, ToolbarState> {
+  private presentationStream!: MediaStream
   constructor (props: ToolbarProps) {
     super(props)
     this.state = {
@@ -42,10 +43,18 @@ export class Toolbar extends React.Component<ToolbarProps, ToolbarState> {
   private async toggleShareScreen (): Promise<void> {
     if (this.state.shareScreenEnabled) {
       this.props.infinityClient.stopPresenting()
+      this.presentationStream.getTracks().forEach((track) => {
+        track.stop()
+      })
+      this.props.onLocalPresentationStream(this.presentationStream)
     } else {
-      const presentationStream = await navigator.mediaDevices.getDisplayMedia()
-      this.props.infinityClient.present(presentationStream)
-      this.props.onLocalPresentationStream(presentationStream)
+      this.presentationStream = await navigator.mediaDevices.getDisplayMedia()
+      this.presentationStream.getVideoTracks()[0].onended = () => {
+        this.props.infinityClient.stopPresenting()
+        this.props.onLocalPresentationStream(this.presentationStream)
+      }
+      this.props.infinityClient.present(this.presentationStream)
+      this.props.onLocalPresentationStream(this.presentationStream)
     }
   }
 

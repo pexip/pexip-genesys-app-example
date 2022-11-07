@@ -27,4 +27,20 @@
     bottom: 0;
     width: 100%;
   }
+
+  .Toastify {
+    text-align: center;
+    &>div {
+      width: auto;
+      &>div {
+        border-radius: 3em;
+        padding-left: 2em;
+        padding-right: 2em;
+        min-height: 2em;
+        &>button {
+          display: none;
+        }
+      }
+    }
+  }
 }

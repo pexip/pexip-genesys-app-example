@@ -1,5 +1,8 @@
 import React from 'react'
 
+import { ToastContainer, toast, Slide } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+
 import {
   createInfinityClient,
   createInfinityClientSignals,
@@ -55,6 +58,7 @@ class App extends React.Component<{}, AppState> {
     }
     // Workaround for maintain the selfView in the viewport when resizing
     window.addEventListener('resize', () => this.simulateSelfViewClick())
+    window.addEventListener('beforeunload', () => { this.infinityClient.disconnect({}).catch(null) })
   }
 
   // Workaround for maintain the selfView in the viewport when resizing
@@ -68,7 +72,10 @@ class App extends React.Component<{}, AppState> {
   }
 
   private handleLocalPresentationStream (presentationStream: MediaStream): void {
-    this.setState({ presentationStream })
+    this.setState({
+      presentationStream,
+      secondaryVideo: 'presentation'
+    })
   }
 
   private configureSignals (): void {
@@ -96,6 +103,7 @@ class App extends React.Component<{}, AppState> {
         pin
       })
       this.setState({ connectionState: CONNECTION_STATE.CONNECTED })
+      toast('Connected!')
     } catch (error) {
       this.setState({ connectionState: CONNECTION_STATE.ERROR })
     }
@@ -124,6 +132,7 @@ class App extends React.Component<{}, AppState> {
     const localStream = await navigator.mediaDevices.getUserMedia({ video: true })
     this.setState({ localStream })
     await this.joinConference(node, conferenceAlias, localStream, displayName, pin)
+    // setTimeout(() => { this.infinityClient.disconnect({}).catch((e) => console.error(e)) }, 3000)
   }
 
   async componentWillUnmount (): Promise<void> {
@@ -149,6 +158,19 @@ class App extends React.Component<{}, AppState> {
             <Toolbar infinityClient={this.infinityClient} callSignals={this.callSignals} onLocalPresentationStream={this.handleLocalPresentationStream.bind(this)}/>
           </>
         }
+        <ToastContainer
+          position="top-center"
+          autoClose={300000}
+          hideProgressBar={true}
+          newestOnTop={false}
+          closeOnClick={true}
+          rtl={false}
+          pauseOnFocusLoss={false}
+          draggable={false}
+          pauseOnHover
+          theme="light"
+          transition={Slide}
+        />
       </div>
     )
   }
