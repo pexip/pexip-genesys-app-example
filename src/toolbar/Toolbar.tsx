@@ -35,7 +35,6 @@ export class Toolbar extends React.Component<ToolbarProps, ToolbarState> {
       popOutVideoEnabled: false,
       settingsEnabled: false
     }
-    console.log(this.props.infinityClient.conferenceStatus)
     this.toggleShareScreen = this.toggleShareScreen.bind(this)
     this.toggleLockRoom = this.toggleLockRoom.bind(this)
     this.togglePopOutVideo = this.togglePopOutVideo.bind(this)
@@ -69,8 +68,19 @@ export class Toolbar extends React.Component<ToolbarProps, ToolbarState> {
     }
   }
 
-  private togglePopOutVideo (): void {
-
+  private async togglePopOutVideo (): Promise<void> {
+    if (document.pictureInPictureElement != null) {
+      await document.exitPictureInPicture()
+    } else if (document.pictureInPictureEnabled) {
+      const videoElement = (document.getElementById('remoteVideo') as HTMLVideoElement)
+      await videoElement.requestPictureInPicture()
+      const disableButton = (): void => {
+        this.setState({ popOutVideoEnabled: false })
+        videoElement.removeEventListener('leavepictureinpicture', disableButton.bind(this))
+      }
+      videoElement.addEventListener('leavepictureinpicture', disableButton)
+      this.setState({ popOutVideoEnabled: true })
+    }
   }
 
   private toggleSettings (): void {
@@ -99,7 +109,7 @@ export class Toolbar extends React.Component<ToolbarProps, ToolbarState> {
           selected={this.state.lockRoomEnabled}
           onClick={this.toggleLockRoom}
         />
-        <ToolbarButton icon={popUpVideoIcon} toolTip='Pop up video'
+        <ToolbarButton icon={popUpVideoIcon} toolTip={this.state.popOutVideoEnabled ? 'Return video' : 'Pop out video'}
           selected={this.state.popOutVideoEnabled}
           onClick={this.togglePopOutVideo}
         />

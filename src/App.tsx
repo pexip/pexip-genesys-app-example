@@ -43,6 +43,7 @@ class App extends React.Component<{}, AppState> {
   //  - PexipAgentPin
 
   private readonly selfViewRef = React.createRef<HTMLDivElement>()
+  private readonly remoteVideoRef = React.createRef<HTMLVideoElement>()
 
   private signals!: InfinitySignals
   private callSignals!: CallSignals
@@ -158,7 +159,7 @@ class App extends React.Component<{}, AppState> {
       <div className="App" data-testid='App'>
         { this.state.connectionState === CONNECTION_STATE.CONNECTED &&
           <>
-            <Video mediaStream={this.state.remoteStream}
+            <Video mediaStream={this.state.remoteStream} id='remoteVideo'
             secondary={this.state.secondaryVideo === 'remote'}
             onClick={this.state.secondaryVideo === 'remote' ? this.exchangeVideos.bind(this) : undefined} />
             { this.state.presentationStream.active && <Video mediaStream={this.state.presentationStream} objectFit='contain'
