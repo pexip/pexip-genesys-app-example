@@ -125,7 +125,7 @@ export class Toolbar extends React.Component<ToolbarProps, ToolbarState> {
             onClick={this.toggleSettings}
           />
         </div>
-        {this.state.settingsEnabled && <SettingsPanel />}
+        {this.state.settingsEnabled && <SettingsPanel onClose={() => this.setState({ settingsEnabled: false })} />}
       </>
     )
   }
