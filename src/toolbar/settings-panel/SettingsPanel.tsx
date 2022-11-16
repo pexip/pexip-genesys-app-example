@@ -18,6 +18,8 @@ export function SettingsPanel (props: SettingsPanelProps): JSX.Element {
   const [localMediaStream, setLocalMediaStream] = useState<MediaStream>()
   const [audioLevel, setAudioLevel] = useState<number>(0)
 
+  let audioLevelInterval: NodeJS.Timer
+
   const deviceList = <DevicesList devices={devices}
     audioInputError={{
       title: '',
@@ -45,27 +47,30 @@ export function SettingsPanel (props: SettingsPanelProps): JSX.Element {
 
   const configurePreview = async (): Promise<void> => {
     const audioStream = await navigator.mediaDevices.getUserMedia({
-      audio: true
+      audio: { echoCancellation: true }
     })
     const audioContext = new AudioContext()
+    const audioSource = audioContext.createMediaStreamSource(audioStream)
     const analyser = audioContext.createAnalyser()
-    const microphone = audioContext.createMediaStreamSource(audioStream)
-    const scriptProcessor = audioContext.createScriptProcessor(2048, 1, 1)
-
-    analyser.smoothingTimeConstant = 0.8
-    analyser.fftSize = 1024
-
-    microphone.connect(analyser)
-    analyser.connect(scriptProcessor)
-    scriptProcessor.connect(audioContext.destination)
-    scriptProcessor.onaudioprocess = () => {
-      const array = new Uint8Array(analyser.frequencyBinCount)
-      analyser.getByteFrequencyData(array)
-      const arraySum = array.reduce((a, value) => a + value, 0)
-      const average = arraySum / array.length
-      console.log(Math.round(average))
-      setAudioLevel(Math.round(average))
+    analyser.fftSize = 512
+    analyser.minDecibels = -127
+    analyser.maxDecibels = 0
+    analyser.smoothingTimeConstant = 0.4
+    audioSource.connect(analyser)
+    const volumes = new Uint8Array(analyser.frequencyBinCount)
+    const volumeCallback = (): void => {
+      analyser.getByteFrequencyData(volumes)
+      let volumeSum = 0
+      for (const volume of volumes) {
+        volumeSum += volume
+      }
+      const averageVolume = volumeSum / volumes.length
+      // Value range: 127 = analyser.maxDecibels - analyser.minDecibels;
+      const percentage = Math.round((averageVolume * 100 / 127))
+      console.log(percentage)
+      setAudioLevel(percentage)
     }
+    audioLevelInterval = setInterval(volumeCallback, 100)
   }
 
   useEffect(() => {
@@ -77,6 +82,9 @@ export function SettingsPanel (props: SettingsPanelProps): JSX.Element {
       await configurePreview()
     }
     asyncBootstrap().catch((error) => console.error(error))
+    return () => {
+      clearInterval(audioLevelInterval)
+    }
   }, [])
 
   const inputAudioTester = <ProgressBar progress={audioLevel} />
