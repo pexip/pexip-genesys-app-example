@@ -1,0 +1,686 @@
+{
+    "add-participant": {
+        "can-control": "Dapat mengontrol rapat (Host)",
+        "failed": "Gagal menambahkan peserta ini",
+        "submit": "Tambahkan peserta",
+        "transfer": "Transfer",
+        "type-details": "Tulis perincian peserta di sini"
+    },
+    "camera": {
+        "cant-see": "Saya tidak dapat melihat diri sendiri karena disabilitas penglihatan",
+        "do-you-see-yourself": "Anda dapat melihat diri sendiri?"
+    },
+    "common": {
+        "[microphone]": "Mikrofon",
+        "[camera]": "Kamera",
+        "[speaker]": "Speaker",
+        "a-pexip-meeting": "<1></1>rapat",
+        "and-then": "kemudian",
+        "are-you-sure": "Anda yakin?",
+        "ask-for-permission": "Minta izin",
+        "brand-name": "Pexip Video Service",
+        "cancel": "Batalkan",
+        "change": "Ubah",
+        "client-name[mobile-app]": "Aplikasi Seluler",
+        "client-name[pexip-room]": "Pexip Room",
+        "client-name[session]": "Sesi",
+        "client-name[web-app]": "Aplikasi Web",
+        "close-tooltip": "Tutup tooltip",
+        "close-window": "Tutup jendela",
+        "host": "Host",
+        "join": "Gabung sekarang",
+        "label-logo": "logo",
+        "label-pexip-logo": "Logo Pexip",
+        "live-captions-default-on": "Aktifkan live caption secara default",
+        "live-captions-hide": "Sembunyikan teks langsung",
+        "live-captions-show": "Tampilkan teks langsung",
+        "lower-hand": "Turunkan tangan",
+        "me": "saya",
+        "meeting": "Rapat",
+        "next": "Berikutnya",
+        "next-terms-and-conditions": "Dengan melanjutkan, berarti Anda mengonfirmasi bahwa Anda menyetujui <2>persyaratan dan layanan</2> kami",
+        "no": "Tidak",
+        "raise-hand": "Angkat tangan",
+        "remove": "Hapus",
+        "replay": "Putar ulang",
+        "retry": "Coba kembali",
+        "send": "Kirim",
+        "try-again": "Coba lagi",
+        "welcome": "Selamat Datang",
+        "yes": "Ya"
+    },
+    "device-status": {
+        "audio-device-in-use": {
+            "message": "Aplikasi lainnya (misalnya, Teams atau Slack) menggunakan mikrofon. Untuk menggunakannya di sini, cari aplikasi tersebut, lalu nonaktifkan",
+            "title": "Mikrofon tidak tersedia"
+        },
+        "audio-device-not-found": {
+            "message": "Mikrofon yang Anda pilih tidak tersedia",
+            "title": "Kami tidak dapat menemukan mikrofon Anda"
+        },
+        "audio-overconstrained": {
+            "message": "Coba turunkan pengaturan kualitas Anda",
+            "title": "Mikrofon tidak kompatibel"
+        },
+        "audio-video-devices-not-found": {
+            "message": "Kamera dan mikrofon yang Anda pilih tidak tersedia",
+            "title": "Kami tidak dapat menemukan kamera dan mikrofon Anda"
+        },
+        "audioinput-granted-videoinput-denied": {
+            "message": "Akses ke kamera diperlukan jika Anda ingin orang lain melihat Anda selama panggilan.",
+            "title": "Anda belum mengizinkan akses ke kamera"
+        },
+        "devices-in-use": {
+            "message": "Aplikasi lainnya (misalnya, Teams atau Slack) menggunakan kamera. Untuk menggunakannya di Pexip, cari aplikasi tersebut, lalu nonaktifkan",
+            "title": "Kamera dan mikrofon tidak tersedia"
+        },
+        "initial-permissions-audio-input-granted": {
+            "message": "Anda telah memberikan izin untuk menggunakan mikrofon.",
+            "title": "Izin diberikan"
+        },
+        "initial-permissions-granted": {
+            "message": "Anda telah memberikan izin untuk menggunakan kamera dan mikrofon.",
+            "title": "Izin diberikan"
+        },
+        "initial-permissions-not-granted": {
+            "message": "Pilih <1>\"Izinkan\"</1> di langkah berikutnya saat diminta oleh browser Anda. Kami hanya akan memiliki akses selama durasi rapat.",
+            "title": "Kami perlu izin Anda untuk menggunakan kamera dan mikrofon"
+        },
+        "initial-permissions-video-input-denied": {
+            "message": "Anda telah menolak izin untuk menggunakan kamera.",
+            "title": "Izin ditolak"
+        },
+        "initial-permissions-video-input-granted": {
+            "message": "Anda telah memberikan izin untuk menggunakan kamera.",
+            "title": "Izin diberikan"
+        },
+        "invalid-audio-constraints": {
+            "message": "Coba kosongkan cache browser Anda",
+            "title": "Mikrofon tidak dikonfigurasi dengan benar"
+        },
+        "invalid-constraints": {
+            "message": "Coba kosongkan cache browser Anda",
+            "title": "Kamera dan mikrofon tidak dikonfigurasi dengan benar"
+        },
+        "invalid-video-constraints": {
+            "message": "Coba kosongkan cache browser Anda",
+            "title": "Kamera tidak dikonfigurasi dengan benar"
+        },
+        "no-audio-devices-found": {
+            "message": "Mikrofon Anda sepertinya tidak tersedia. Pastikan perangkat telah dipasang dan dikonfigurasi dengan benar.",
+            "title": "Tidak ada mikrofon yang tersambung"
+        },
+        "no-devices-found": {
+            "message": "Kamera dan mikrofon Anda sepertinya tidak tersedia. Pastikan keduanya telah dipasang atau dikonfigurasi dengan benar.",
+            "title": "Tidak ada kamera dan mikrofon yang tersambung"
+        },
+        "no-video-devices-found": {
+            "message": "Kamera Anda sepertinya tidak tersedia. Pastikan perangkat telah dipasang dan dikonfigurasi dengan benar.",
+            "title": "Tidak ada kamera yang tersambung"
+        },
+        "not-supported-error": {
+            "message": "Kami tidak dapat mengambil media dari browser Anda. Coba gunakan browser modern lainnya.",
+            "title": "Browser tidak didukung"
+        },
+        "not-supported-error-only-audio": {
+            "message": "Kami tidak dapat mengambil media dari browser Anda. Coba gunakan browser modern lainnya.",
+            "title": "Browser tidak didukung"
+        },
+        "not-supported-error-only-video": {
+            "message": "Kami tidak dapat mengambil media dari browser Anda. Coba gunakan browser modern lainnya.",
+            "title": "Browser tidak didukung"
+        },
+        "overconstrained": {
+            "message": "Coba turunkan pengaturan kualitas Anda",
+            "title": "Kamera dan mikrofon tidak kompatibel"
+        },
+        "permissions-granted-fallback-audioinput": {
+            "message": "Kami tidak dapat menggunakan mikrofon yang Anda pilih",
+            "title": "Tidak dapat menggunakan mikrofon yang Anda pilih"
+        },
+        "permissions-granted-fallback-devices": {
+            "message": "Kami tidak dapat menggunakan kamera dan mikrofon yang Anda pilih",
+            "title": "Tidak dapat menggunakan kamera dan mikrofon yang Anda pilih"
+        },
+        "permissions-granted-fallback-videoinput": {
+            "message": "Kami tidak dapat menggunakan kamera yang Anda pilih",
+            "title": "Tidak dapat menggunakan kamera yang Anda pilih"
+        },
+        "permissions-only-audioinput": {
+            "message": "Anda telah menolak izin untuk menggunakan kamera sebelumnya. Silakan minta izin, lalu berikan akses",
+            "title": "Kamera tidak aktif"
+        },
+        "permissions-only-audioinput-no-video-devices": {
+            "message": "Pastikan perangkat telah dipasang dan dikonfigurasi dengan benar",
+            "title": "Kamera Anda sepertinya tidak tersedia"
+        },
+        "permissions-only-fallback-audioinput": {
+            "message": "Kami tidak dapat menggunakan kamera mana pun, dan mikrofon yang Anda pilih tidak tersedia",
+            "title": "Kamera dan mikrofon yang Anda pilih tidak tersedia"
+        },
+        "permissions-only-fallback-audioinput-no-video-devices": {
+            "message": "Kami tidak dapat menemukan kamera mana pun, dan mikrofon yang Anda pilih tidak tersedia",
+            "title": "Kamera tidak ada dan mikrofon yang Anda pilih tidak tersedia"
+        },
+        "permissions-only-fallback-videoinput": {
+            "message": "Kami tidak dapat menggunakan mikrofon mana pun, dan kamera yang Anda pilih tidak tersedia",
+            "title": "Mikrofon dan kamera yang Anda pilih tidak tersedia"
+        },
+        "permissions-only-fallback-videoinput-no-audio-devices": {
+            "message": "Kami tidak dapat menemukan mikrofon mana pun, dan kamera yang Anda pilih tidak tersedia",
+            "title": "Mikrofon tidak ada dan kamera yang Anda pilih tidak tersedia"
+        },
+        "permissions-only-videoinput": {
+            "message": "Anda telah menolak izin untuk menggunakan mikrofon sebelumnya. Silakan minta izin, lalu berikan akses",
+            "title": "Mikrofon tidak aktif"
+        },
+        "permissions-only-videoinput-no-audio-devices": {
+            "message": "Pastikan perangkat telah dipasang dan dikonfigurasi dengan benar",
+            "title": "Mikrofon Anda sepertinya tidak tersedia"
+        },
+        "permissions-rejected": {
+            "message": "Anda memblokir akses ke kamera atau mikrofon. Untuk memberikan akses, ikuti langkah-langkah dalam video pendek ini:",
+            "title": "Anda bermaksud memblokir akses ke kamera atau mikrofon?"
+        },
+        "permissions-rejected-audioinput": {
+            "message": "Anda telah menolak izin untuk menggunakan mikrofon sebelumnya. Silakan minta izin, lalu berikan akses",
+            "title": "Izin mikrofon tidak diberikan"
+        },
+        "permissions-rejected-videoinput": {
+            "message": "Anda telah menolak izin untuk menggunakan kamera sebelumnya. Silakan minta izin, lalu berikan akses",
+            "title": "Izin kamera tidak diberikan"
+        },
+        "unknown-error": {
+            "message": "Kami tidak dapat mengambil media dari perangkat Anda. Coba sambungkan ulang perangkat atau gunakan yang lain",
+            "title": "Kamera dan mikrofon tidak tersedia"
+        },
+        "unknown-error-only-audioinput": {
+            "message": "Kami tidak dapat menggunakan kamera Anda. Coba sambungkan ulang perangkat atau gunakan yang lain",
+            "title": "Kamera tidak tersedia"
+        },
+        "unknown-error-only-videoinput": {
+            "message": "Kami tidak dapat menggunakan mikrofon Anda. Coba sambungkan ulang perangkat atau gunakan yang lain",
+            "title": "Mikrofon tidak tersedia"
+        },
+        "video-device-in-use": {
+            "message": "Aplikasi lainnya (misalnya, Teams atau Slack) menggunakan kamera. Untuk menggunakannya di Pexip, cari aplikasi tersebut, lalu nonaktifkan",
+            "title": "Kamera tidak tersedia"
+        },
+        "video-device-not-found": {
+            "message": "Kamera yang Anda pilih tidak tersedia",
+            "title": "Kami tidak dapat menemukan kamera Anda"
+        },
+        "video-overconstrained": {
+            "message": "Coba turunkan pengaturan kualitas Anda",
+            "title": "Kamera tidak kompatibel"
+        },
+        "videoinput-granted-audioinput-denied": {
+            "message": "Akses ke mikrofon diperlukan jika Anda ingin orang lain mendengar Anda selama panggilan.",
+            "title": "Anda belum mengizinkan akses ke mikrofon"
+        }
+    },
+    "error": {
+        "choose-another": "Pilih rapat lainnya",
+        "code[#pex100]": "PIN yang Anda masukkan tidak valid, coba lagi.",
+        "code[#pex101]": "PIN yang Anda masukkan tidak valid, coba lagi.",
+        "code[#pex109]": "Pengguna PEX109 menerima pesan kesalahan",
+        "code[#pex110]": "Sistem yang sedang Anda coba jangkau untuk sementara tidak tersedia. Coba lagi dalam beberapa saat.",
+        "code[#pex111]": "Sambungan tidak ada. Coba lagi.",
+        "code[#pex112]": "Sambungan tidak tersedia.",
+        "code[#pex113]": "Sambungan terputus. Coba lagi.",
+        "code[#pex114]": "Sistem yang sedang Anda coba jangkau kelebihan kapasitas.",
+        "code[#pex115]": "Transfer gagal.",
+        "code[#pex116]": "Panggilan gagal. Hubungi administrator Anda.",
+        "code[#pex117]": "Panggilan gagal. Coba lagi.",
+        "code[#pex118]": "Server tidak dapat dijangkau.",
+        "code[#pex119]": "Panggilan gagal: tidak dapat meneruskan permintaan.",
+        "code[#pex120]": "Host mengakhiri rapat.",
+        "code[#pex121]": "Host mengakhiri rapat.",
+        "code[#pex122]": "Administrator mengakhiri rapat.",
+        "code[#pex123]": "Administrator memutuskan sambungan Anda dari rapat.",
+        "code[#pex124]": "Peserta lain dalam rapat memutuskan sambungan Anda.",
+        "code[#pex125]": "Host mengakhiri rapat.",
+        "code[#pex126]": "Host rapat belum bergabung atau membuka rapat.",
+        "code[#pex127]": "Pesan yang ditampilkan kepada pengguna saat kesalahan `Panggilan Gagal: Dinonaktifkan` terjadi",
+        "code[#pex128]": "Panggilan gagal: firewall mungkin memblokir akses.",
+        "code[#pex129]": "Terjadi kesalahan pada rapat ini. Coba sambungkan lagi.",
+        "code[#pex130]": "Terjadi kesalahan pada rapat ini. Coba sambungkan lagi.",
+        "code[#pex131]": "Terjadi kesalahan pada rapat ini. Coba sambungkan lagi.",
+        "code[#pex132]": "Terjadi kesalahan pada rapat ini. Coba sambungkan lagi.",
+        "code[#pex140]": "Rapat telah dihentikan.",
+        "code[#pex141]": "Rapat telah dihentikan karena Host keluar.",
+        "code[#pex142]": "Anda adalah satu-satunya peserta yang masih berada dalam rapat.",
+        "code[#pex143]": "Panggilan uji coba telah selesai.",
+        "code[#pex150]": "Orang yang Anda coba hubungi tidak menjawab atau tidak dapat dijangkau.",
+        "code[#pex151]": "Peserta lainnya telah memutuskan sambungan.",
+        "code[#pex152]": "Panggilan tidak dapat dilakukan.",
+        "code[#pex153]": "Panggilan tidak dapat dilakukan. Hubungi administrator Anda.",
+        "code[#pex154]": "Tidak dapat tersambung ke \"{{alias}}\". Periksa alamat ini, lalu coba lagi.",
+        "code[#pex155]": "Tidak dapat bergabung dengan {{host}}.",
+        "code[#pex156]": "Panggilan tidak dapat dilakukan.",
+        "code[#pex157]": "Tidak dapat bergabung dengan {{host}}.",
+        "code[#pex170]": "Panggilan gagal: Nonaktifkan ekstensi privasi di browser Anda.",
+        "code[#pex171]": "Kamera dan/atau mikrofon Anda tidak tersedia. Pastikan keduanya tidak aktif digunakan oleh aplikasi lain.",
+        "code[#pex180]": "Presentasi dihentikan.",
+        "code[#pex181]": "Streaming presentasi terputus sambungannya.",
+        "code[#pex182]": "Streaming presentasi tidak tersedia.",
+        "code[#pex183]": "Berbagi layar dibatalkan.",
+        "code[#pex184]": "Terjadi kesalahan saat berbagi layar. Coba lagi.",
+        "code[#pex185]": "Berbagi layar telah terputus.",
+        "code[#pex190]": "Terjadi kesalahan saat menyambungkan ke rapat.",
+        "code[#pex191]": "Terjadi kesalahan saat menyambungkan ke rapat.",
+        "code[#pex192]": "Terlalu banyak upaya memasukkan PIN.",
+        "code[#pex193]": "Terjadi kesalahan saat menyambungkan ke rapat. Hubungi administrator Anda.",
+        "code[#pex194]": "Rapat ini telah mencapai jumlah maksimum peserta.",
+        "code[#pex195]": "Terjadi kesalahan saat menyambungkan ke rapat. Hubungi administrator Anda.",
+        "code[#pex196]": "Firewall mencegah Anda bergabung",
+        "code[#pex197]": "Maaf, kami tidak dapat menyambungkan panggilan Anda. Tutup jendela ini, lalu coba lagi.",
+        "code[#pex200]": "Autentikasi SSO gagal.",
+        "code[#pex201]": "SSO diaktifkan, tetapi Penyedia Identitas tidak dikonfigurasi.",
+        "code[#pex202]": "Tidak dapat membuka jendela untuk autentikasi SSO. Ini mungkin disebabkan oleh pemblokir pop-up.",
+        "code[#pex203]": "Autentikasi SSO gagal. Sistem sedang dalam mode pemeliharaan.",
+        "code[#pex204]": "Autentikasi SSO gagal. SSO tidak tersedia dari domain ini.",
+        "not-found": {
+            "subtitle": "Halaman yang Anda cari sepertinya tidak dapat ditemukan.",
+            "title": "Ups! 404 - Tidak Ditemukan"
+        },
+        "rejoin": "Gabung lagi",
+        "reload-page": "Muat ulang halaman",
+        "smth-on-our-end": "Ups - sepertinya terjadi kesalahan di pihak kami.",
+        "smth-went-wrong": "Terjadi kesalahan"
+    },
+    "free-dial": {
+        "how-to-find": "Anda dapat menemukan ID Rapat dalam undangan rapat di kalender atau email",
+        "join": "Gabung Rapat",
+        "meeting-id": "ID Rapat",
+        "placeholder": "mis. 'meet.bob'"
+    },
+    "idp": {
+        "select-provider": "Pilih Penyedia Identitas Anda. Proses ini akan membuka jendela baru.",
+        "sign-in": "Masuk",
+        "sign-in-with": "Masuk dengan {{name}}"
+    },
+    "infocard": {
+        "lobby": {
+            "header": "Silakan tunggu, menunggu peserta lain bergabung"
+        },
+        "meeting": {
+            "body": "Kami ingin berbicara dengan Anda hari ini",
+            "header": "Selamat datang di {{brandName}}"
+        }
+    },
+    "invite": {
+        "cant-find-anyone": "Tidak dapat menemukan pengguna dengan nama tersebut",
+        "click-search": "Klik bidang pencarian di atas untuk mencari",
+        "copied": "Disalin",
+        "copy": "Salin",
+        "copy-to-clipboard": "Salin tautan ke papan klip",
+        "expiry": "Tautan undangan Anda akan berakhir dalam {{expiryHours}} jam",
+        "instructions": "Kirim tautan rapat di bawah kepada orang lain yang ingin Anda tambahkan",
+        "invite": "Undang",
+        "invite-person": "Undang orang",
+        "invite-someone": "Undang seseorang ke rapat",
+        "invited": "Diundang",
+        "meeting-invitation-modal": "Modal Undangan Rapat",
+        "search-for-someone": "Cari seseorang untuk diundang",
+        "send-invite-link": "atau kirim tautan undangan"
+    },
+    "media": {
+        "all-guests-muted-by-host": "Semua Tamu dibisukan oleh Host",
+        "all-guests-unmuted-by-host": "Semua Tamu dibunyikan oleh Host",
+        "audio": {
+            "you-are-temporarily-unmuted": "Anda dibunyikan untuk sementara"
+        },
+        "background-effects-action": "Ubah efek latar belakang",
+        "browser-privacy-settings-link": "pengaturan privasi",
+        "camera-action": "Putar kamera {{videoInputAction}}",
+        "camera-help-tip-desktop-1": "Sudahkah Anda memilih kamera yang benar di menu dropdown?",
+        "camera-help-tip-desktop-2": "Apakah ada benda yang menghalangi lensa kamera?",
+        "camera-help-tip-desktop-3": "Coba tutup program lain yang mungkin menggunakan kamera (mis., Teams atau Slack).",
+        "camera-help-tip-desktop-4": "Jika semua masalah di atas tidak relevan, coba muat ulang browser atau komputer Anda.",
+        "camera-help-tip-mobile-1": "Apakah kamera Anda menghadap ke arah yang salah? Coba balik kamera. Cari ikon ini",
+        "camera-help-tip-mobile-2": "Apakah ada benda yang menghalangi lensa kamera?",
+        "camera-help-tip-mobile-3": "Coba tutup aplikasi lain yang mungkin menggunakan kamera (mis., Teams atau WhatsApp, dsb.).",
+        "camera-help-tip-mobile-4": "Coba mulai ulang perangkat Anda.",
+        "check-everything-works": "Pastikan semuanya berfungsi dengan benar",
+        "check-everything-works-description": "Pastikan peralatan Anda berfungsi agar dapat didengar dan dilihat saat Anda bergabung.",
+        "do you have headphones connected to-your-device": "Anda memiliki headphone yang tersambung ke perangkat? Pastikan mikrofon di headphone berada di dekat mulut Anda.",
+        "effect": {
+            "blur": "Buram",
+            "none": "Tidak Ada",
+            "replace": "Ganti"
+        },
+        "first-check-that-you-have-selected-microphone": "Pertama-tama, periksa apakah mikrofon yang dipilih sudah benar dan volumenya sudah diperbesar.",
+        "flip-camera": "Balik kamera",
+        "help-check-[camera]-again": "Periksa kamera lagi",
+        "help-check-[microphone]-again": "Periksa mikrofon lagi",
+        "help-check-[speaker]-again": "Periksa speaker lagi",
+        "help-proceed-without-camera": "Lanjutkan tanpa kamera",
+        "help-proceed-without-microphone": "Lanjutkan tanpa mikrofon",
+        "help-step-[1]": "Langkah 1",
+        "help-step-[2]": "Langkah 2",
+        "help-step-[3]": "Langkah 3",
+        "help-step-[4]": "Langkah 4",
+        "help-step-[5]": "Langkah 5",
+        "help-tip-1-header": "Tips 1",
+        "help-tip-2-header": "Tips 2",
+        "help-tip-3-header": "Tips 3",
+        "help-tip-4-header": "Tips 4",
+        "how-to-unblock-access": "Animasi berisi petunjuk untuk memberikan izin mengakses perangkat media.",
+        "if-you-dont-hear-yourself-try-this": "Jika Anda tidak mendengar diri sendiri, coba langkah ini",
+        "learn-how-to-grant-permissions": "Pelajari cara memberikan akses",
+        "learn-how-to-manage-browser-privacy-settings": "Pengaturan privasi browser",
+        "learn-how-to-manage-browser-privacy-settings-label": "Cara mengelola pengaturan privasi browser (buka di tab baru)",
+        "lets-check": "Mari kita periksa apakah video dan suara Anda berfungsi dengan benar",
+        "lets-go": "Ayo mulai",
+        "make-sure-the-volume-is-turned-up-on-your-device": "Pastikan volume diperbesar di perangkat Anda.",
+        "make-sure-you-have-the-correct-microphone": "Pastikan Anda memiliki mikrofon yang benar",
+        "make-sure-you-have-the-correct-speaker": "Pastikan Anda memiliki speaker yang benar",
+        "microphone-action": "Mikrofon {{audioInputAction}}",
+        "microphone-help-tip-desktop-1": "Pastikan volume diperbesar di perangkat Anda.",
+        "microphone-help-tip-desktop-2": "Anda memiliki headphone yang tersambung ke perangkat? Pastikan mikrofon pada headphone berada di dekat mulut Anda.",
+        "microphone-help-tip-desktop-3": "Jika menggunakan komputer desktop, Anda mungkin perlu menyambungkan speaker atau headphone.",
+        "microphone-help-tip-mobile-1": "Pastikan volume diperbesar di perangkat Anda.",
+        "microphone-help-tip-mobile-2": "Anda memiliki headphone yang tersambung ke perangkat? Pastikan mikrofon di headphone berada di dekat mulut Anda.",
+        "microphone-help-tip-mobile-3": "Coba mulai ulang perangkat Anda.",
+        "mute": "Bisu",
+        "mute-all-guests": "Bisukan semua Tamu",
+        "mute-microphone": "Bisukan mikrofon",
+        "mute-participant": "Bisukan peserta",
+        "muted": "Dibisukan",
+        "of-your-browser": "dari browser Anda",
+        "off": "nonaktif",
+        "on": "aktif",
+        "or-go-to-the": "atau buka ",
+        "permission-info": {
+            "[camera]": {
+                "title": "kamera"
+            },
+            "[microphone-and-camera]": {
+                "title": "kamera dan mikrofon"
+            },
+            "[microphone]": {
+                "title": "mikrofon"
+            }
+        },
+        "permissions-denied": "Izin browser ditolak",
+        "permissions-try-this-label": "Jika tidak berfungsi, coba langkah ini:",
+        "permissions-unblock-help-step-[1]-[android]": "Di browser Anda, di sebelah kanan bar alamat, ketuk Lainnya > Pengaturan",
+        "permissions-unblock-help-step-[1]-[chrome]": "Pilih ikon kamera di bagian atas browser",
+        "permissions-unblock-help-step-[1]-[edge]": "Di Microsoft Edge, pilih Pengaturan dan lainnya... lalu pilih pengaturan",
+        "permissions-unblock-help-step-[1]-[firefox]": "Klik ikon izin yang ditampilkan di bar alamat di sebelah kiri.",
+        "permissions-unblock-help-step-[1]-[safari-ios]": "Buka Pengaturan di iPhone",
+        "permissions-unblock-help-step-[1]-[safari-ipados]": "Buka Pengaturan di iPad",
+        "permissions-unblock-help-step-[1]-[safari-macosx]": "Pada aplikasi Safari di Mac, pilih Safari > Preferensi, lalu klik Situs Web",
+        "permissions-unblock-help-step-[2]-[android]": "Ketuk Pengaturan Situs",
+        "permissions-unblock-help-step-[2]-[chrome]": "Pilih \"izinkan\"",
+        "permissions-unblock-help-step-[2]-[edge]": "Pilih Cookie & Izin Situs (di sebelah kiri)",
+        "permissions-unblock-help-step-[2]-[firefox]": "Klik X di sebelah Diizinkan, Diizinkan Sementara, Diblokir, atau Diblokir Sementara untuk membersihkan status, sehingga Firefox akan menanyakan izin kembali saat kunjungan situs Anda berikutnya.",
+        "permissions-unblock-help-step-[2]-[safari-ios]": "Gulir ke bawah, lalu ketuk Safari (atau browser mana pun yang Anda gunakan)",
+        "permissions-unblock-help-step-[2]-[safari-ipados]": "Gulir ke bawah, lalu ketuk Safari (atau browser mana pun yang Anda gunakan)",
+        "permissions-unblock-help-step-[2]-[safari-macosx]": "Pengaturan Kamera dan Mikrofon tercantum di sebelah kiri",
+        "permissions-unblock-help-step-[3]-[android]": "Ketuk mikrofon atau kamera",
+        "permissions-unblock-help-step-[3]-[chrome]": "Segarkan browser Anda",
+        "permissions-unblock-help-step-[3]-[edge]": "Di bawah Izin Situs, pilih Kamera atau Mikrofon",
+        "permissions-unblock-help-step-[3]-[safari-ios]": "Cari kamera dan mikrofon",
+        "permissions-unblock-help-step-[3]-[safari-ipados]": "Cari kamera dan mikrofon",
+        "permissions-unblock-help-step-[3]-[safari-macosx]": "Dari sini, Anda dapat memilih untuk memberikan izin",
+        "permissions-unblock-help-step-[4]-[android]": "Ketuk untuk menghidupkan atau mematikan mikrofon atau kamera",
+        "permissions-unblock-help-step-[4]-[safari-ios]": "Pastikan keduanya diaktifkan",
+        "permissions-unblock-help-step-[4]-[safari-ipados]": "Pastikan keduanya diaktifkan",
+        "permissions-unblock-help-step-[5]-[safari-ios]": "Kembali ke browser, lalu segarkan halaman",
+        "permissions-unblock-help-step-[5]-[safari-ipados]": "Kembali ke browser, lalu segarkan halaman",
+        "permissions-unblock-video-overlay-step-[1]-[android]": "Cari ikon ini di browser Anda",
+        "permissions-unblock-video-overlay-step-[1]-[chrome]": "Cari ikon ini di browser Anda",
+        "permissions-unblock-video-overlay-step-[1]-[edge]": "Cari ikon ini di browser Anda",
+        "permissions-unblock-video-overlay-step-[1]-[firefox]": "Cari ikon-ikon ini",
+        "permissions-unblock-video-overlay-step-[1]-[safari-ios]": "Buka pengaturan di perangkat",
+        "permissions-unblock-video-overlay-step-[1]-[safari-ipados]": "Buka pengaturan di perangkat",
+        "permissions-unblock-video-overlay-step-[1]-[safari-macosx]": "Buka pengaturan di Safari",
+        "permissions-unblock-video-overlay-step-[2]-[android]": "Ketuk",
+        "permissions-unblock-video-overlay-step-[2]-[chrome]": "Klik",
+        "permissions-unblock-video-overlay-step-[2]-[edge]": "Klik",
+        "permissions-unblock-video-overlay-step-[2]-[firefox]": "Klik semuanya",
+        "permissions-unblock-video-overlay-step-[2]-[safari-ios]": "Gulir ke bawah untuk mencari Safari (atau browser mana pun yang Anda gunakan)",
+        "permissions-unblock-video-overlay-step-[2]-[safari-ipados]": "Gulir ke bawah untuk mencari Safari (atau browser mana pun yang Anda gunakan)",
+        "permissions-unblock-video-overlay-step-[2]-[safari-macosx]": "Klik",
+        "permissions-unblock-video-overlay-step-[3]-[android]": "Gulir ke bawah ke pengaturan",
+        "permissions-unblock-video-overlay-step-[3]-[chrome]": "Ubah pengaturan menjadi \"selalu izinkan\"",
+        "permissions-unblock-video-overlay-step-[3]-[edge]": "Ubah pengaturan menjadi \"selalu izinkan\"",
+        "permissions-unblock-video-overlay-step-[3]-[firefox]": "Klik \"X\" untuk menghapus blokir",
+        "permissions-unblock-video-overlay-step-[3]-[safari-ios]": "Ketuk",
+        "permissions-unblock-video-overlay-step-[3]-[safari-ipados]": "Ketuk",
+        "permissions-unblock-video-overlay-step-[3]-[safari-macosx]": "Klik \"pengaturan untuk {{hostName}}\"",
+        "permissions-unblock-video-overlay-step-[4]-[android]": "Ketuk",
+        "permissions-unblock-video-overlay-step-[4]-[chrome]": "...lalu segarkan halaman",
+        "permissions-unblock-video-overlay-step-[4]-[edge]": "...lalu segarkan halaman",
+        "permissions-unblock-video-overlay-step-[4]-[firefox]": "...lalu segarkan halaman",
+        "permissions-unblock-video-overlay-step-[4]-[safari-ios]": "Selanjutnya cari \"Kamera\" dan \"Mikrofon\"",
+        "permissions-unblock-video-overlay-step-[4]-[safari-ipados]": "Selanjutnya cari \"Kamera\" dan \"Mikrofon\"",
+        "permissions-unblock-video-overlay-step-[4]-[safari-macosx]": "Geser mouse Anda pada pilihan kamera dan mikrofon",
+        "permissions-unblock-video-overlay-step-[5]-[android]": "Ketuk untuk menghidupkan mikrofon dan kamera",
+        "permissions-unblock-video-overlay-step-[5]-[safari-ios]": "Pastikan keduanya diaktifkan atau diatur ke \"izinkan\"",
+        "permissions-unblock-video-overlay-step-[5]-[safari-ipados]": "Pastikan keduanya diaktifkan atau diatur ke \"izinkan\"",
+        "permissions-unblock-video-overlay-step-[5]-[safari-macosx]": "Ubah pengaturan menjadi \"Izinkan\"",
+        "permissions-unblock-video-overlay-step-[6]-[android]": "Tarik ke bawah untuk menyegarkan halaman",
+        "permissions-unblock-video-overlay-step-[6]-[safari-ios]": "Kembali ke browser ini ...lalu segarkan halaman",
+        "permissions-unblock-video-overlay-step-[6]-[safari-ipados]": "Kembali ke browser ini ...lalu segarkan halaman",
+        "permissions-unblock-video-overlay-step-[6]-[safari-macosx]": "...lalu segarkan halaman",
+        "play": "Putar",
+        "presentation": {
+            "dual-screen-mode": "Mode layar ganda",
+            "nobody-sharing-screen": "Tidak ada peserta yang sedang berbagi layar",
+            "pexip-presentation": "Jendela Presentasi",
+            "presenting": "Mempresentasikan",
+            "share-screen": "Bagikan layar",
+            "share-screen-placeholder": "Bila seseorang berbagi layar, informasinya akan muncul di sini",
+            "stop-share-screen": "Berhenti berbagi",
+            "take-over": "Ambil alih",
+            "the-current": "saat ini",
+            "this-will-end": "Tindakan ini akan menghentikan presentasi {{normalizedPresenterName}} dan memulai presentasi Anda."
+        },
+        "previously-permissions-denied": "Anda telah menolak izin untuk menggunakan {{deniedDevice}} sebelumnya.",
+        "proceed-anyway": "Tetap lanjutkan",
+        "proceed-without-[camera]": "Lanjutkan tanpa kamera",
+        "proceed-without-[microphone]": "Lanjutkan tanpa mikrofon",
+        "proceed-without-[speaker]": "Lanjutkan tanpa speaker",
+        "push-to-talk": "Tekan dan tahan bar spasi untuk membunyikan diri sementara",
+        "read-steps-label": "Anda juga dapat membaca langkah-langkah di sini",
+        "remove-spotlight": "Hentikan sorotan",
+        "show-me-how": "Tunjukkan caranya",
+        "speakers-help-tip-desktop-1": "Pastikan volume diperbesar di perangkat Anda.",
+        "speakers-help-tip-desktop-2": "Anda memiliki headphone yang tersambung ke perangkat?",
+        "speakers-help-tip-desktop-3": "Jika menggunakan komputer desktop, Anda mungkin perlu menyambungkan speaker atau headphone.",
+        "speakers-help-tip-mobile-1": "Pastikan volume diperbesar di perangkat Anda.",
+        "speakers-help-tip-mobile-2": "Anda memiliki headphone yang tersambung ke perangkat? Pastikan suara keluar dari speaker yang dimaksud",
+        "speakers-help-tip-mobile-3": "Coba muat perangkat Anda.",
+        "spotlight": "Sorotan",
+        "start-test": "Mulai pengujian",
+        "still-having-issues": "Masalah masih berlanjut? <2>Panduan penyelesaian masalah</2>",
+        "stop-playing": "Berhenti memutar",
+        "test-your-microphone": "Uji mikrofon Anda",
+        "test-your-microphone-title-[before-testing]": "Uji mikrofon Anda",
+        "test-your-microphone-title-[get-ready]": "Siap untuk berbicara",
+        "test-your-microphone-title-[playback-finished]": "Pemutaran",
+        "test-your-microphone-title-[playing-back]": "Pemutaran",
+        "test-your-microphone-title-[recording-success]": "Selesai!",
+        "test-your-microphone-title-[recording]": "Merekam suara Anda...",
+        "testing-my-microphone": "\"Menguji 1, 2, 3\"",
+        "this-is-how-you-will-sound-to-others": "Ini adalah cara Anda berbicara kepada peserta lain",
+        "through-browser-settings": "melalui pengaturan browser Anda",
+        "tip-1-header": "Tips 1",
+        "to-grant-access-follow-steps": "Untuk memberikan akses, ikuti langkah-langkah dalam ",
+        "transfer": "Transfer",
+        "trying-to-speak": "Mencoba berbicara? Mikrofon Anda dibisukan",
+        "turn-on-camera": "Aktifkan kamera",
+        "unblock-permissions-video-link": "video pendek ini",
+        "unmute": "Bunyikan",
+        "unmute-all-guests": "Bunyikan semua Tamu",
+        "unmute-camera": "Bunyikan Kamera",
+        "unmute-microphone": "Bunyikan mikrofon",
+        "unmute-participant": "Bunyikan peserta",
+        "waiting-for-permissions": "Menunggu izin...",
+        "we-will-help-you-header": "Jangan khawatir. Kami akan membantu Anda!",
+        "you-blocked-access": "Anda memblokir akses ke {{seeOrHearYou}}",
+        "you-can-say-something-like": "Anda dapat mengucapkan sesuatu seperti ",
+        "you-may-need-to-connect-speakers-or-headphones": "Jika menggunakan komputer desktop, Anda mungkin perlu menyambungkan speaker atau headphone."
+    },
+    "media-presentation": {
+        "do-you-want-to-take-over": "Anda ingin mengambil alih presentasi?"
+    },
+    "meeting": {
+        "admit": "Terima",
+        "admit-participant": "Terima peserta",
+        "chat": "Obrolan",
+        "chat-history": "Riwayat obrolan",
+        "chat-input": "Input teks obrolan",
+        "chat-new-message": "pesan baru",
+        "chat-new-messages": "{{newMessagesCount}} pesan baru",
+        "chat-scroll-last-message": "Gulir ke pesan obrolan terakhir",
+        "close-new-chat-alert": "Tutup peringatan pesan obrolan baru",
+        "connection-quality": "Kualitas sambungan",
+        "external-participants": "Peserta eksternal",
+        "folded-selfview": {
+            "drag": "Geser tampilan diri"
+        },
+        "hide-self-view": "Sembunyikan tampilan diri",
+        "in-this-meeting": "Di rapat ini",
+        "leave": "Keluar",
+        "more-participants": "{{inMeetingCount}} Peserta",
+        "network-fixed": "Diperbaiki!",
+        "network-reconnecting": "Sambungan jaringan hilang. Menyambungkan kembali...",
+        "one-participant": "1 Peserta",
+        "participants": "Peserta",
+        "presentation": {
+            "collapse": "Ciutkan",
+            "expand": "Perluas"
+        },
+        "raised-hand": "Angkat tangan",
+        "remove-participant": "Hapus peserta",
+        "remove-user-confirmation": "Anda yakin ingin menghapus {{userName}} dari rapat ini?",
+        "show-self-view": "Tunjukkan tampilan diri",
+        "toggle-chat": "Alihkan panel obrolan",
+        "toggle-invite-modal": "Alihkan modal undang anggota",
+        "toggle-participants-panel": "Alihkan panel peserta",
+        "video-label": "Video live dalam rapat",
+        "video-label-presentation": "Video live presentasi peserta lain",
+        "waiting-in-lobby": "Menunggu di lobi",
+        "write-message": "Tulis pesan",
+        "you-left": "Anda keluar dari rapat"
+    },
+    "microphone": {
+        "cant-hear": "Saya tidak dapat mendengar karena disabilitas",
+        "do-you-hear-yourself": "Anda dapat mendengar diri sendiri?"
+    },
+    "pin": {
+        "are-you-host": "Apakah Anda Host?",
+        "how-to-find": "Anda dapat menemukan PIN dalam undangan rapat di kalender atau email",
+        "label": "PIN {{type}}",
+        "placeholder": "mis. '1234'",
+        "what-is-the-pin": "Apa PIN untuk rapat ini?"
+    },
+    "preflight": {
+        "accessibility": {
+            "camera-detected-1": "Kami dapat mendeteksi bahwa kamera Anda sedang mengambil gambar. Namun, kami tidak dapat mengonfirmasi bahwa Anda berada dalam bingkai.",
+            "microphone-detected-1": "Kami dapat mendeteksi suara dari mikrofon Anda.",
+            "microphone-detected-2": "Live caption dapat diaktifkan secara default jika rapat Anda mendukung fitur ini. Anda dapat mengaktifkan atau menonaktifkan live caption setiap saat selama rapat.",
+            "speakers-detected-1": "Perangkat Anda tersambung ke speaker.",
+            "speakers-detected-1-chrome": "Perangkat Anda tersambung ke speaker. Anda dapat memeriksa apakah speaker yang dipilih di menu dropdown di atas sudah benar.",
+            "speakers-detected-2": "Live caption dapat diaktifkan secara default jika rapat Anda mendukung fitur ini. Anda dapat mengaktifkan atau menonaktifkan live caption setiap saat selama rapat."
+        },
+        "camera-missing": "Pengguna lain tidak akan dapat melihat Anda",
+        "get-ready": "Bersiaplah untuk memulai rapat Anda",
+        "in-this-meeting": {
+            "plural": "<0>{inMeetingCount} orang lainnya</0> sudah berada di dalam.",
+            "singular": "<0>1 orang lainnya</0> sudah berada di dalam."
+        },
+        "join-browser": "Bergabung ke rapat di browser",
+        "microphone-missing": "Pengguna lain tidak akan dapat mendengar Anda",
+        "speaker-missing": "Anda tidak akan dapat mendengar pengguna lain"
+    },
+    "quality": {
+        "auto": "Otomatis",
+        "change-quality": "Ubah kualitas",
+        "high": "Tinggi",
+        "info": "Pengaturan ini memengaruhi jumlah bandwidth yang akan Anda gunakan untuk rapat ini. Sesuaikan ke nilai yang lebih rendah jika sambungan Internet Anda lambat atau jika performa komputer Anda sangat terpengaruh.",
+        "low": "Rendah",
+        "medium": "Sedang",
+        "poor-connection-detected": "Sambungan yang lemah terdeteksi",
+        "quality": "Kualitas sambungan",
+        "select-quality": "Pilih kualitas rapat",
+        "very-high": "Sangat Tinggi"
+    },
+    "settings": {
+        "cancel-changes": "Batalkan perubahan",
+        "collapsed-selfview-tooltip-description": "Anda masih mengirim video ke orang lain dalam rapat",
+        "device-select": {
+            "select-camera": "Pilih kamera",
+            "select-microphone": "Pilih mikrofon",
+            "select-speaker": "Pilih speaker"
+        },
+        "device-settings": "Pengaturan Perangkat",
+        "devices": "Perangkat",
+        "disconnect-all": "Putuskan semua sambungan",
+        "disconnect-all-confirmation": "Anda yakin ingin memutuskan semua sambungan?",
+        "disconnect-all-desc": "Putuskan sambungan semua peserta rapat, termasuk Anda",
+        "effects": "Efek",
+        "layout": "Tata Letak",
+        "layout-changes-info": "Perubahan yang Anda buat pada tata letak video ini akan sama untuk semua peserta.",
+        "layout-confirmation-desc": "Anda akan mengubah tata letak untuk semua orang dalam rapat, bukan hanya diri Anda.",
+        "layout-confirmation-title": "Mengubah tata letak akan memengaruhi semua orang",
+        "layout[adaptive-composition]": "Adaptive Composition",
+        "layout[double-theatre]": "Theatre",
+        "layout[highlight]": "Highlight",
+        "layout[single-theatre]": "Theatre",
+        "layout[speaker-focus]": "Speaker Focus",
+        "layout[tiled]": "Tiled",
+        "lock": "Buka rapat",
+        "lock-desc": "Cegah orang lain bergabung secara otomatis ke rapat",
+        "meeting-layout": "Tata letak rapat",
+        "meeting-settings": "Pengaturan rapat",
+        "noise-suppression": "Pengurangan kebisingan",
+        "personal": "Pengaturan pribadi",
+        "playing-sound": "Memutar suara...",
+        "save-changes": "Simpan perubahan",
+        "selfview-hidden": "Tampilan diri disembunyikan",
+        "settings": "Pengaturan",
+        "test-your-sound": "Uji suara Anda",
+        "unlock": "Buka rapat"
+    },
+    "speaker": {
+        "cant-hear": "Saya tidak dapat mendengar karena disabilitas",
+        "do-you-hear-sound": "Apakah Anda mendengar suara?"
+    },
+    "stats": {
+        "[bitrate]": "Bitrate",
+        "[codec]": "Kodek",
+        "[jitter]": "Jitter",
+        "[packets-lost]": "Paket yang hilang",
+        "[packets-transmitted]": "Paket yang dikirimkan",
+        "[recent-packet-loss]": "Paket yang hilang terbaru",
+        "[resolution]": "Resolusi",
+        "[roundtrip-time]": "Waktu roundtrip",
+        "[total-packet-loss]": "Total paket yang hilang",
+        "audio": "Audio",
+        "in": "Masuk",
+        "nerd-stats": "Pernyataan pakar",
+        "out": "Keluar",
+        "video": "Video"
+    },
+    "transfer": {
+        "error": "Terjadi kesalahan saat mentransfer peserta",
+        "fail": "Tidak dapat mentransfer peserta",
+        "meeting-id": "ID Rapat",
+        "pin": "PIN",
+        "pin-placeholder": "mis. '1234'",
+        "placeholder": "mis. 'meet.bob'",
+        "success": "Peserta yang berhasil ditransfer",
+        "transfer-participant": "Transfer peserta"
+    },
+    "username": {
+        "hey-whats-your-name": "Halo. <1></1> Siapa nama Anda?",
+        "name-input-placeholder": "mis. 'David'",
+        "usage-purpose": "Masukkan nama tampilan agar peserta lain tahu siapa saja yang berada dalam rapat",
+        "your-name": "Nama Anda"
+    }
+}

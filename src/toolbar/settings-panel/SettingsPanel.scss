@@ -1,0 +1,6 @@
+.SettingsPanel {
+  [role=dialog]>div {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+}

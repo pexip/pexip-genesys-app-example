@@ -4,11 +4,17 @@ import './index.scss'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
 
+// Import styles for the pexip components
+import '@pexip/components/src/fonts.css'
+import '@pexip/components/dist/style.css'
+
+import './i18n'
+
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 )
 root.render(
-  <App />
+    <App />
 )
 
 // If you want to start measuring performance in your app, pass a function

@@ -1,0 +1,686 @@
+{
+    "add-participant": {
+        "can-control": "Có thể điều khiển cuộc họp (Người chủ trì)",
+        "failed": "Không thể thêm người tham gia này",
+        "submit": "Thêm người tham gia",
+        "transfer": "Chuyển",
+        "type-details": "Nhập chi tiết về người tham gia tại đây"
+    },
+    "camera": {
+        "cant-see": "Tôi không nhìn thấy chính mình do bị khiếm thị",
+        "do-you-see-yourself": "Bạn có nhìn thấy chính mình không?"
+    },
+    "common": {
+        "[microphone]": "Micrô",
+        "[camera]": "Máy ảnh",
+        "[speaker]": "Loa",
+        "a-pexip-meeting": "một<1></1>cuộc họp",
+        "and-then": "sau đó",
+        "are-you-sure": "Bạn có chắc chắn không?",
+        "ask-for-permission": "Yêu cầu cấp quyền",
+        "brand-name": "Dịch vụ video Pexip",
+        "cancel": "Hủy",
+        "change": "Thay đổi",
+        "client-name[mobile-app]": "Ứng dụng dành cho thiết bị di động",
+        "client-name[pexip-room]": "Phòng Pexip",
+        "client-name[session]": "Phiên",
+        "client-name[web-app]": "Ứng dụng web",
+        "close-tooltip": "Đóng phần chú giải công cụ",
+        "close-window": "Đóng cửa sổ",
+        "host": "Người chủ trì",
+        "join": "Tham gia ngay",
+        "label-logo": "logo",
+        "label-pexip-logo": "Logo Pexip",
+        "live-captions-default-on": "Bật phụ đề trực tiếp theo mặc định",
+        "live-captions-hide": "Ẩn phụ đề trực tiếp",
+        "live-captions-show": "Hiện phụ đề trực tiếp",
+        "lower-hand": "Hủy yêu cầu phát biểu",
+        "me": "tôi",
+        "meeting": "Cuộc họp",
+        "next": "Tiếp theo",
+        "next-terms-and-conditions": "Tiếp tục nghĩa là bạn xác nhận rằng bạn đồng ý với <2>điều khoản và dịch vụ</2> của chúng tôi",
+        "no": "Không",
+        "raise-hand": "Giơ tay phát biểu",
+        "remove": "Loại bỏ",
+        "replay": "Phát lại",
+        "retry": "Thử lại",
+        "send": "Gửi",
+        "try-again": "Thử lại",
+        "welcome": "Chào mừng",
+        "yes": "Có"
+    },
+    "device-status": {
+        "audio-device-in-use": {
+            "message": "Một ứng dụng khác (ví dụ: Teams hoặc Slack) đang sử dụng micrô. Để sử dụng micrô tại đây, vui lòng tìm ứng dụng đó và tắt micrô",
+            "title": "Không dùng được micrô"
+        },
+        "audio-device-not-found": {
+            "message": "Micrô bạn ưu tiên lựa chọn hiện không dùng được",
+            "title": "Chúng tôi không tìm thấy micrô của bạn"
+        },
+        "audio-overconstrained": {
+            "message": "Hãy thử giảm chế độ cài đặt chất lượng",
+            "title": "Micrô bị hạn chế quá mức"
+        },
+        "audio-video-devices-not-found": {
+            "message": "Máy ảnh và micrô bạn ưu tiên lựa chọn hiện không dùng được",
+            "title": "Chúng tôi không tìm thấy máy ảnh và micrô của bạn"
+        },
+        "audioinput-granted-videoinput-denied": {
+            "message": "Bạn cần cấp quyền truy cập vào máy ảnh nếu muốn người khác nhìn thấy bạn trong cuộc gọi.",
+            "title": "Bạn chưa cho phép truy cập vào máy ảnh"
+        },
+        "devices-in-use": {
+            "message": "Một ứng dụng khác (ví dụ: Teams hoặc Slack) đang sử dụng máy ảnh. Để sử dụng máy ảnh trên Pexip, vui lòng tìm ứng dụng đó và tắt máy ảnh",
+            "title": "Không dùng được máy ảnh và micrô"
+        },
+        "initial-permissions-audio-input-granted": {
+            "message": "Bạn đã cấp quyền sử dụng micrô.",
+            "title": "Đã cấp quyền"
+        },
+        "initial-permissions-granted": {
+            "message": "Bạn đã cấp quyền sử dụng máy ảnh và micrô.",
+            "title": "Đã cấp quyền"
+        },
+        "initial-permissions-not-granted": {
+            "message": "Vui lòng chọn <1>\"Allow\"</1> (Cho phép) ở bước tiếp theo khi có lời nhắc của trình duyệt. Chúng tôi chỉ có quyền truy cập trong thời gian diễn ra cuộc họp.",
+            "title": "Chúng tôi cần bạn cho phép sử dụng máy ảnh và micrô"
+        },
+        "initial-permissions-video-input-denied": {
+            "message": "Bạn đã từ chối cấp quyền sử dụng máy ảnh.",
+            "title": "Đã từ chối cấp quyền"
+        },
+        "initial-permissions-video-input-granted": {
+            "message": "Bạn đã cấp quyền sử dụng máy ảnh.",
+            "title": "Đã cấp quyền"
+        },
+        "invalid-audio-constraints": {
+            "message": "Hãy thử xóa bộ nhớ đệm của trình duyệt",
+            "title": "Bạn chưa thiết lập micrô đúng cách"
+        },
+        "invalid-constraints": {
+            "message": "Hãy thử xóa bộ nhớ đệm của trình duyệt",
+            "title": "Bạn chưa thiết lập máy ảnh và micrô đúng cách"
+        },
+        "invalid-video-constraints": {
+            "message": "Hãy thử xóa bộ nhớ đệm của trình duyệt",
+            "title": "Bạn chưa thiết lập máy ảnh đúng cách"
+        },
+        "no-audio-devices-found": {
+            "message": "Micrô có vẻ không dùng được. Vui lòng kiểm tra xem bạn đã cắm và thiết lập micrô đúng cách chưa.",
+            "title": "Chưa kết nối micrô nào"
+        },
+        "no-devices-found": {
+            "message": "Máy ảnh và micrô có vẻ không dùng được. Vui lòng kiểm tra xem bạn đã cắm và thiết lập máy ảnh cùng micrô đúng cách chưa.",
+            "title": "Chưa kết nối máy ảnh và micrô nào"
+        },
+        "no-video-devices-found": {
+            "message": "Máy ảnh có vẻ không dùng được. Vui lòng kiểm tra xem bạn đã cắm và thiết lập máy ảnh đúng cách chưa.",
+            "title": "Chưa kết nối máy ảnh nào"
+        },
+        "not-supported-error": {
+            "message": "Chúng tôi không tải được nội dung đa phương tiện từ trình duyệt của bạn. Hãy thử dùng một trình duyệt hiện đại khác.",
+            "title": "Trình duyệt không hỗ trợ"
+        },
+        "not-supported-error-only-audio": {
+            "message": "Chúng tôi không tải được nội dung đa phương tiện từ trình duyệt của bạn. Hãy thử dùng một trình duyệt hiện đại khác.",
+            "title": "Trình duyệt không hỗ trợ"
+        },
+        "not-supported-error-only-video": {
+            "message": "Chúng tôi không tải được nội dung đa phương tiện từ trình duyệt của bạn. Hãy thử dùng một trình duyệt hiện đại khác.",
+            "title": "Trình duyệt không hỗ trợ"
+        },
+        "overconstrained": {
+            "message": "Hãy thử giảm chế độ cài đặt chất lượng",
+            "title": "Máy ảnh và micrô bị hạn chế quá mức"
+        },
+        "permissions-granted-fallback-audioinput": {
+            "message": "Chúng tôi không thể sử dụng micrô bạn ưu tiên lựa chọn",
+            "title": "Không thể sử dụng micrô bạn ưu tiên lựa chọn"
+        },
+        "permissions-granted-fallback-devices": {
+            "message": "Chúng tôi không thể sử dụng máy ảnh và micrô bạn ưu tiên lựa chọn",
+            "title": "Không thể sử dụng máy ảnh và micrô bạn ưu tiên lựa chọn"
+        },
+        "permissions-granted-fallback-videoinput": {
+            "message": "Chúng tôi không thể sử dụng máy ảnh bạn ưu tiên lựa chọn",
+            "title": "Không thể sử dụng máy ảnh bạn ưu tiên lựa chọn"
+        },
+        "permissions-only-audioinput": {
+            "message": "Bạn đã từ chối cấp quyền sử dụng máy ảnh trước đó. Vui lòng yêu cầu quyền và cấp quyền truy cập",
+            "title": "Máy ảnh không hoạt động"
+        },
+        "permissions-only-audioinput-no-video-devices": {
+            "message": "Vui lòng kiểm tra xem bạn đã cắm và thiết lập máy ảnh đúng cách chưa",
+            "title": "Máy ảnh có vẻ không dùng được"
+        },
+        "permissions-only-fallback-audioinput": {
+            "message": "Chúng tôi không dùng được máy ảnh nào, micrô bạn ưu tiên lựa chọn cũng không dùng được",
+            "title": "Máy ảnh và micrô bạn ưu tiên lựa chọn không dùng được"
+        },
+        "permissions-only-fallback-audioinput-no-video-devices": {
+            "message": "Chúng tôi không tìm thấy máy ảnh nào, micrô bạn ưu tiên lựa chọn cũng không dùng được",
+            "title": "Không có máy ảnh nào và micrô bạn ưu tiên lựa chọn không dùng được"
+        },
+        "permissions-only-fallback-videoinput": {
+            "message": "Chúng tôi không dùng được micrô nào, máy ảnh bạn ưu tiên lựa chọn cũng không dùng được",
+            "title": "Micrô và máy ảnh bạn ưu tiên sử dụng hiện không dùng được"
+        },
+        "permissions-only-fallback-videoinput-no-audio-devices": {
+            "message": "Chúng tôi không tìm thấy micrô nào, máy ảnh bạn ưu tiên lựa chọn cũng không dùng được",
+            "title": "Không dùng được micrô và máy ảnh bạn ưu tiên lựa chọn nào"
+        },
+        "permissions-only-videoinput": {
+            "message": "Bạn đã từ chối cấp quyền sử dụng micrô trước đó. Vui lòng yêu cầu quyền và cấp quyền truy cập",
+            "title": "Micrô không hoạt động"
+        },
+        "permissions-only-videoinput-no-audio-devices": {
+            "message": "Vui lòng kiểm tra xem bạn đã cắm và thiết lập micrô đúng cách chưa",
+            "title": "Micrô có vẻ không dùng được"
+        },
+        "permissions-rejected": {
+            "message": "Bạn đã chặn quyền truy cập vào máy ảnh hoặc micrô. Để cấp quyền truy cập, vui lòng làm theo các bước trong video ngắn sau:",
+            "title": "Bạn muốn chặn quyền truy cập vào máy ảnh hoặc micrô?"
+        },
+        "permissions-rejected-audioinput": {
+            "message": "Bạn đã từ chối cấp quyền sử dụng micrô trước đó. Vui lòng yêu cầu quyền và cấp quyền truy cập",
+            "title": "Chưa cấp quyền sử dụng micrô"
+        },
+        "permissions-rejected-videoinput": {
+            "message": "Bạn đã từ chối cấp quyền sử dụng máy ảnh trước đó. Vui lòng yêu cầu quyền và cấp quyền truy cập",
+            "title": "Chưa cấp quyền sử dụng máy ảnh"
+        },
+        "unknown-error": {
+            "message": "Chúng tôi không tải được nội dung đa phương tiện từ thiết bị của bạn. Hãy thử kết nối lại thiết bị hoặc sử dụng thiết bị khác",
+            "title": "Không dùng được máy ảnh và micrô"
+        },
+        "unknown-error-only-audioinput": {
+            "message": "Chúng tôi không thể sử dụng máy ảnh. Hãy thử kết nối lại thiết bị hoặc sử dụng một thiết bị khác",
+            "title": "Không dùng được máy ảnh"
+        },
+        "unknown-error-only-videoinput": {
+            "message": "Chúng tôi không thể sử dụng micrô. Hãy thử kết nối lại thiết bị hoặc sử dụng một thiết bị khác",
+            "title": "Không dùng được micrô"
+        },
+        "video-device-in-use": {
+            "message": "Một ứng dụng khác (ví dụ: Teams hoặc Slack) đang sử dụng máy ảnh. Để sử dụng máy ảnh trên Pexip, vui lòng tìm ứng dụng đó và tắt máy ảnh",
+            "title": "Không dùng được máy ảnh"
+        },
+        "video-device-not-found": {
+            "message": "Không dùng được máy ảnh bạn ưu tiên lựa chọn",
+            "title": "Chúng tôi không tìm thấy máy ảnh"
+        },
+        "video-overconstrained": {
+            "message": "Hãy thử giảm chế độ cài đặt chất lượng",
+            "title": "Máy ảnh bị hạn chế quá mức"
+        },
+        "videoinput-granted-audioinput-denied": {
+            "message": "Bạn cần cấp quyền truy cập vào micrô nếu muốn người khác nghe thấy tiếng bạn trong cuộc gọi.",
+            "title": "Bạn chưa cho phép truy cập vào micrô"
+        }
+    },
+    "error": {
+        "choose-another": "Chọn một cuộc họp khác",
+        "code[#pex100]": "Mã PIN bạn đã nhập không hợp lệ – vui lòng thử lại.",
+        "code[#pex101]": "Mã PIN bạn đã nhập không hợp lệ – vui lòng thử lại.",
+        "code[#pex109]": "Người dùng gặp thông báo lỗi PEX109",
+        "code[#pex110]": "Hệ thống mà bạn muốn truy cập tạm thời không hoạt động. Vui lòng thử lại sau ít phút.",
+        "code[#pex111]": "Không có kết nối. Vui lòng thử lại.",
+        "code[#pex112]": "Không có kết nối.",
+        "code[#pex113]": "Đã mất kết nối. Vui lòng thử lại.",
+        "code[#pex114]": "Hệ thống mà bạn muốn truy cập bị quá tải.",
+        "code[#pex115]": "Không chuyển được.",
+        "code[#pex116]": "Cuộc gọi không thành công – vui lòng liên hệ với quản trị viên.",
+        "code[#pex117]": "Cuộc gọi không thành công. Vui lòng thử lại.",
+        "code[#pex118]": "Không thể truy cập máy chủ.",
+        "code[#pex119]": "Cuộc gọi không thành công: không thể chuyển tiếp yêu cầu.",
+        "code[#pex120]": "Người chủ trì đã kết thúc cuộc họp.",
+        "code[#pex121]": "Người chủ trì đã kết thúc cuộc họp.",
+        "code[#pex122]": "Quản trị viên đã kết thúc cuộc họp.",
+        "code[#pex123]": "Quản trị viên đã ngắt kết nối bạn khỏi cuộc họp.",
+        "code[#pex124]": "Một người tham gia khác trong cuộc họp đã ngắt kết nối bạn.",
+        "code[#pex125]": "Người chủ trì đã kết thúc cuộc họp.",
+        "code[#pex126]": "Người chủ trì cuộc họp vẫn chưa tham gia hoặc chưa mở khóa cuộc họp.",
+        "code[#pex127]": "Thông báo hiển thị với người dùng khi gặp lỗi \"Call Failed: Disabled\" (Cuộc gọi không thành công: Đã tắt)",
+        "code[#pex128]": "Cuộc gọi không thành công: có thể tường lửa đã chặn quyền truy cập.",
+        "code[#pex129]": "Đã xảy ra sự cố với cuộc họp. Vui lòng thử kết nối lại.",
+        "code[#pex130]": "Đã xảy ra sự cố với cuộc họp. Vui lòng thử kết nối lại.",
+        "code[#pex131]": "Đã xảy ra sự cố với cuộc họp. Vui lòng thử kết nối lại.",
+        "code[#pex132]": "Đã xảy ra sự cố với cuộc họp. Vui lòng thử kết nối lại.",
+        "code[#pex140]": "Cuộc họp đã kết thúc.",
+        "code[#pex141]": "Cuộc họp đã kết thúc vì (những) người chủ trì đã rời đi.",
+        "code[#pex142]": "Bạn là người duy nhất còn tham gia cuộc họp.",
+        "code[#pex143]": "Cuộc gọi thử nghiệm đã kết thúc.",
+        "code[#pex150]": "Người bạn muốn gọi không trả lời hoặc không liên lạc được.",
+        "code[#pex151]": "Người tham gia còn lại đã ngắt kết nối.",
+        "code[#pex152]": "Không thể thực hiện cuộc gọi.",
+        "code[#pex153]": "Không thể thực hiện cuộc gọi. Vui lòng liên hệ với quản trị viên.",
+        "code[#pex154]": "Không thể kết nối với \"{{alias}}\". Hãy kiểm tra địa chỉ này và thử lại.",
+        "code[#pex155]": "Không thể tham gia cùng {{host}}.",
+        "code[#pex156]": "Không thể thực hiện cuộc gọi.",
+        "code[#pex157]": "Không thể tham gia cùng {{host}}.",
+        "code[#pex170]": "Cuộc gọi không thành công: Vui lòng tắt mọi tiện ích bảo vệ quyền riêng tư trên trình duyệt.",
+        "code[#pex171]": "Máy ảnh và/hoặc micrô không dùng được. Vui lòng đảm bảo rằng ứng dụng khác hiện không sử dụng máy ảnh và/hoặc micrô.",
+        "code[#pex180]": "Bài thuyết trình đã kết thúc.",
+        "code[#pex181]": "Đường truyền trực tuyến bài thuyết trình đã bị ngắt kết nối.",
+        "code[#pex182]": "Đường truyền trực tuyến bài thuyết trình không hoạt động.",
+        "code[#pex183]": "Đã hủy chia sẻ màn hình.",
+        "code[#pex184]": "Đã xảy ra sự cố khi chia sẻ màn hình. Vui lòng thử lại.",
+        "code[#pex185]": "Đã ngắt kết nối chia sẻ màn hình.",
+        "code[#pex190]": "Đã xảy ra lỗi khi kết nối với cuộc họp.",
+        "code[#pex191]": "Đã xảy ra lỗi khi kết nối với cuộc họp.",
+        "code[#pex192]": "Đã nhập mã PIN quá nhiều lần.",
+        "code[#pex193]": "Đã xảy ra lỗi khi kết nối với cuộc họp. Vui lòng liên hệ với quản trị viên.",
+        "code[#pex194]": "Cuộc họp này đã đạt đến số lượng người tham gia tối đa.",
+        "code[#pex195]": "Đã xảy ra lỗi khi kết nối với cuộc họp. Vui lòng liên hệ với quản trị viên.",
+        "code[#pex196]": "Bạn không thể tham gia vì có tường lửa",
+        "code[#pex197]": "Rất tiếc, chúng tôi không thể kết nối cuộc gọi của bạn. Hãy đóng cửa sổ này và thử lại.",
+        "code[#pex200]": "Xác thực SSO không thành công.",
+        "code[#pex201]": "Đã bật SSO nhưng chưa thiết lập Nhà cung cấp dịch vụ danh tính nào.",
+        "code[#pex202]": "Không thể mở cửa sổ để xác thực SSO. Có thể trình chặn cửa sổ bật lên đã chặn cửa sổ này.",
+        "code[#pex203]": "Xác thực SSO không thành công. Hệ thống đang ở chế độ bảo trì.",
+        "code[#pex204]": "Xác thực SSO không thành công. Không thể sử dụng SSO từ miền này.",
+        "not-found": {
+            "subtitle": "Có vẻ chúng tôi không tìm thấy trang mà bạn đang tìm kiếm.",
+            "title": "Rất tiếc! 404 – Không tìm thấy"
+        },
+        "rejoin": "Tham gia lại",
+        "reload-page": "Tải lại trang",
+        "smth-on-our-end": "Rất tiếc! Có vẻ như đã xảy ra lỗi từ phía chúng tôi.",
+        "smth-went-wrong": "Đã xảy ra lỗi"
+    },
+    "free-dial": {
+        "how-to-find": "Mã cuộc họp có trong lời mời họp trong lịch hoặc email",
+        "join": "Tham gia cuộc họp",
+        "meeting-id": "Mã cuộc họp",
+        "placeholder": "Ví dụ: \"meet.bob\""
+    },
+    "idp": {
+        "select-provider": "Vui lòng chọn Nhà cung cấp dịch vụ danh tính. Thao tác này sẽ mở ra một cửa sổ khác.",
+        "sign-in": "Đăng nhập",
+        "sign-in-with": "Đăng nhập bằng {{name}}"
+    },
+    "infocard": {
+        "lobby": {
+            "header": "Vui lòng đợi những người khác tham gia"
+        },
+        "meeting": {
+            "body": "Chúng tôi rất mong được trò chuyện với bạn hôm nay",
+            "header": "Chào mừng bạn đến với {{brandName}}"
+        }
+    },
+    "invite": {
+        "cant-find-anyone": "Không tìm thấy người nào có tên đó",
+        "click-search": "Nhấp vào trường tìm kiếm bên trên để tìm kiếm",
+        "copied": "Đã sao chép",
+        "copy": "Sao chép",
+        "copy-to-clipboard": "Sao chép liên kết vào bảng nhớ tạm",
+        "expiry": "Liên kết mời của bạn sẽ hết hạn sau {{expiryHours}} giờ",
+        "instructions": "Hãy gửi liên kết đến cuộc họp ở bên dưới cho người mà bạn muốn thêm",
+        "invite": "Mời",
+        "invite-person": "Mời ai đó",
+        "invite-someone": "Mời ai đó tham gia cuộc họp",
+        "invited": "Đã mời",
+        "meeting-invitation-modal": "Phương thức mời họp",
+        "search-for-someone": "Tìm người bạn muốn mời",
+        "send-invite-link": "hoặc gửi liên kết mời"
+    },
+    "media": {
+        "all-guests-muted-by-host": "Người chủ trì đã tắt tiếng của tất cả khách",
+        "all-guests-unmuted-by-host": "Người chủ trì đã bật tiếng của tất cả khách",
+        "audio": {
+            "you-are-temporarily-unmuted": "Bạn tạm thời được bật tiếng"
+        },
+        "background-effects-action": "Thay đổi hiệu ứng nền",
+        "browser-privacy-settings-link": "cài đặt quyền riêng tư",
+        "camera-action": "Chuyển máy ảnh sang chế độ {{videoInputAction}}",
+        "camera-help-tip-desktop-1": "Bạn đã chọn đúng máy ảnh trong trình đơn thả xuống chưa?",
+        "camera-help-tip-desktop-2": "Có thứ gì chặn ống kính máy ảnh không?",
+        "camera-help-tip-desktop-3": "Thử đóng các chương trình khác có thể đang sử dụng máy ảnh (ví dụ: Teams hoặc Slack).",
+        "camera-help-tip-desktop-4": "Nếu các cách trên đều không hiệu quả, hãy thử khởi động lại trình duyệt hoặc máy tính.",
+        "camera-help-tip-mobile-1": "Máy ảnh có bị quay sai hướng không? Hãy thử lật máy ảnh lại. Tìm biểu tượng này",
+        "camera-help-tip-mobile-2": "Có thứ gì chặn ống kính máy ảnh không?",
+        "camera-help-tip-mobile-3": "Thử đóng các ứng dụng khác có thể đang sử dụng máy ảnh (ví dụ: Teams hoặc WhatsApp, v.v.)",
+        "camera-help-tip-mobile-4": "Thử khởi động lại thiết bị.",
+        "check-everything-works": "Kiểm tra để chắc chắn rằng mọi thứ hoạt động bình thường",
+        "check-everything-works-description": "Đảm bảo thiết bị hoạt động bình thường để mọi người có thể nghe và nhìn thấy bạn khi bạn tham gia.",
+        "do you have headphones connected to-your-device": "Bạn có kết nối tai nghe với thiết bị không? Đảm bảo bạn đặt micrô của tai nghe ở gần miệng.",
+        "effect": {
+            "blur": "Làm mờ",
+            "none": "Không có",
+            "replace": "Thay thế"
+        },
+        "first-check-that-you-have-selected-microphone": "Trước tiên, hãy kiểm tra xem bạn đã chọn đúng micrô và đã tăng âm lượng lên chưa.",
+        "flip-camera": "Lật máy ảnh",
+        "help-check-[camera]-again": "Kiểm tra lại máy ảnh",
+        "help-check-[microphone]-again": "Kiểm tra lại micrô",
+        "help-check-[speaker]-again": "Kiểm tra lại loa",
+        "help-proceed-without-camera": "Tiếp tục mà không dùng máy ảnh",
+        "help-proceed-without-microphone": "Tiếp tục mà không dùng micrô",
+        "help-step-[1]": "Bước 1",
+        "help-step-[2]": "Bước 2",
+        "help-step-[3]": "Bước 3",
+        "help-step-[4]": "Bước 4",
+        "help-step-[5]": "Bước 5",
+        "help-tip-1-header": "Mẹo 1",
+        "help-tip-2-header": "Mẹo 2",
+        "help-tip-3-header": "Mẹo 3",
+        "help-tip-4-header": "Mẹo 4",
+        "how-to-unblock-access": "Ảnh động có hướng dẫn cấp quyền truy cập vào các thiết bị đa phương tiện.",
+        "if-you-dont-hear-yourself-try-this": "Nếu bạn không nghe thấy tiếng mình, hãy thử cách sau",
+        "learn-how-to-grant-permissions": "Tìm hiểu cách cấp quyền truy cập",
+        "learn-how-to-manage-browser-privacy-settings": "Cài đặt quyền riêng tư của trình duyệt",
+        "learn-how-to-manage-browser-privacy-settings-label": "Cách quản lý chế độ cài đặt quyền riêng tư của trình duyệt (mở trong thẻ mới)",
+        "lets-check": "Hãy kiểm tra xem video và âm thanh có hoạt động bình thường không",
+        "lets-go": "Hãy bắt đầu nào!",
+        "make-sure-the-volume-is-turned-up-on-your-device": "Đảm bảo bạn đã tăng âm lượng thiết bị lên.",
+        "make-sure-you-have-the-correct-microphone": "Đảm bảo bạn chọn đúng micrô",
+        "make-sure-you-have-the-correct-speaker": "Đảm bảo bạn chọn đúng loa",
+        "microphone-action": "{{audioInputAction}} micrô",
+        "microphone-help-tip-desktop-1": "Đảm bảo bạn đã tăng âm lượng thiết bị lên.",
+        "microphone-help-tip-desktop-2": "Bạn có kết nối tai nghe với thiết bị không? Đảm bảo bạn đặt micrô của tai nghe ở gần miệng.",
+        "microphone-help-tip-desktop-3": "Nếu sử dụng máy tính để bàn, bạn có thể cần kết nối loa hoặc tai nghe.",
+        "microphone-help-tip-mobile-1": "Đảm bảo bạn đã tăng âm lượng thiết bị lên.",
+        "microphone-help-tip-mobile-2": "Bạn có kết nối tai nghe với thiết bị không? Đảm bảo bạn đặt micrô của tai nghe ở gần miệng.",
+        "microphone-help-tip-mobile-3": "Thử khởi động lại thiết bị.",
+        "mute": "Tắt tiếng",
+        "mute-all-guests": "Tắt tiếng của toàn bộ khách",
+        "mute-microphone": "Tắt tiếng micrô",
+        "mute-participant": "Tắt tiếng của người tham gia",
+        "muted": "Đã tắt tiếng",
+        "of-your-browser": "của trình duyệt",
+        "off": "tắt",
+        "on": "bật",
+        "or-go-to-the": "hoặc truy cập ",
+        "permission-info": {
+            "[camera]": {
+                "title": "máy ảnh"
+            },
+            "[microphone-and-camera]": {
+                "title": "máy ảnh và micrô"
+            },
+            "[microphone]": {
+                "title": "micrô"
+            }
+        },
+        "permissions-denied": "Đã từ chối cấp quyền trên trình duyệt",
+        "permissions-try-this-label": "Nếu cách đó không hiệu quả, hãy thử cách này:",
+        "permissions-unblock-help-step-[1]-[android]": "Trong trình duyệt, ở bên phải của thanh địa chỉ, nhấn vào More > Settings (Xem thêm > Cài đặt)",
+        "permissions-unblock-help-step-[1]-[chrome]": "Chọn biểu tượng máy ảnh ở thanh trên cùng của trình duyệt",
+        "permissions-unblock-help-step-[1]-[edge]": "Trong Microsoft Edge, chọn Settings and more (Cài đặt và các mục khác)... sau đó chọn Settings (Cài đặt)",
+        "permissions-unblock-help-step-[1]-[firefox]": "Nhấp vào biểu tượng quyền hiển thị trong thanh địa chỉ ở bên trái.",
+        "permissions-unblock-help-step-[1]-[safari-ios]": "Vào phần Settings (Cài đặt) trên iPhone",
+        "permissions-unblock-help-step-[1]-[safari-ipados]": "Vào phần Settings (Cài đặt) trên iPad",
+        "permissions-unblock-help-step-[1]-[safari-macosx]": "Trong ứng dụng Safari trên máy Mac, chọn Safari > Preferences (Tùy chọn), rồi nhấp vào Websites (Trang web)",
+        "permissions-unblock-help-step-[2]-[android]": "Nhấn vào Site Settings (Cài đặt trang web)",
+        "permissions-unblock-help-step-[2]-[chrome]": "Chọn \"allow\" (cho phép)",
+        "permissions-unblock-help-step-[2]-[edge]": "Chọn Cookies & Site Permissions (Cookie và quyền của trang web) (ở bên trái)",
+        "permissions-unblock-help-step-[2]-[firefox]": "Nhấp vào dấu X bên cạnh mục Allowed (Đã cho phép), Allowed Temporarily (Đã cho phép tạm thời), Blocked (Đã chặn) hoặc Blocked Temporarily (Đã chặn tạm thời) để xóa trạng thái. Firefox sẽ lại yêu cầu cấp quyền vào lần tới bạn truy cập trang web.",
+        "permissions-unblock-help-step-[2]-[safari-ios]": "Cuộn xuống và nhấn vào Safari (hoặc trình duyệt bất kỳ mà bạn đang sử dụng)",
+        "permissions-unblock-help-step-[2]-[safari-ipados]": "Cuộn xuống và nhấn vào Safari (hoặc trình duyệt bất kỳ mà bạn đang sử dụng)",
+        "permissions-unblock-help-step-[2]-[safari-macosx]": "Chế độ cài đặt máy ảnh và micrô được liệt kê ở bên trái",
+        "permissions-unblock-help-step-[3]-[android]": "Nhấn vào micrô hoặc máy ảnh",
+        "permissions-unblock-help-step-[3]-[chrome]": "Làm mới trình duyệt",
+        "permissions-unblock-help-step-[3]-[edge]": "Trong mục Site Permissions (Quyền của trang web), chọn Camera (Máy ảnh) hoặc Microphone (Micrô)",
+        "permissions-unblock-help-step-[3]-[safari-ios]": "Tìm máy ảnh và micrô",
+        "permissions-unblock-help-step-[3]-[safari-ipados]": "Tìm máy ảnh và micrô",
+        "permissions-unblock-help-step-[3]-[safari-macosx]": "Từ đây, bạn có thể chọn cấp quyền",
+        "permissions-unblock-help-step-[4]-[android]": "Nhấn để bật/tắt micrô hoặc máy ảnh.",
+        "permissions-unblock-help-step-[4]-[safari-ios]": "Đảm bảo bạn đã bật micrô và máy ảnh",
+        "permissions-unblock-help-step-[4]-[safari-ipados]": "Đảm bảo bạn đã bật micrô và máy ảnh",
+        "permissions-unblock-help-step-[5]-[safari-ios]": "Quay lại trình duyệt và làm mới trang",
+        "permissions-unblock-help-step-[5]-[safari-ipados]": "Quay lại trình duyệt và làm mới trang",
+        "permissions-unblock-video-overlay-step-[1]-[android]": "Tìm biểu tượng này trong trình duyệt",
+        "permissions-unblock-video-overlay-step-[1]-[chrome]": "Tìm biểu tượng này trong trình duyệt",
+        "permissions-unblock-video-overlay-step-[1]-[edge]": "Tìm biểu tượng này trong trình duyệt",
+        "permissions-unblock-video-overlay-step-[1]-[firefox]": "Tìm các biểu tượng này",
+        "permissions-unblock-video-overlay-step-[1]-[safari-ios]": "Vào phần cài đặt trên thiết bị",
+        "permissions-unblock-video-overlay-step-[1]-[safari-ipados]": "Vào phần cài đặt trên thiết bị",
+        "permissions-unblock-video-overlay-step-[1]-[safari-macosx]": "Vào phần cài đặt trong Safari",
+        "permissions-unblock-video-overlay-step-[2]-[android]": "Nhấn vào đó",
+        "permissions-unblock-video-overlay-step-[2]-[chrome]": "Nhấp vào đó",
+        "permissions-unblock-video-overlay-step-[2]-[edge]": "Nhấp vào đó",
+        "permissions-unblock-video-overlay-step-[2]-[firefox]": "Nhấp vào đó",
+        "permissions-unblock-video-overlay-step-[2]-[safari-ios]": "Cuộn xuống để tìm Safari (hoặc trình duyệt bất kỳ mà bạn đang sử dụng)",
+        "permissions-unblock-video-overlay-step-[2]-[safari-ipados]": "Cuộn xuống để tìm Safari (hoặc trình duyệt bất kỳ mà bạn đang sử dụng)",
+        "permissions-unblock-video-overlay-step-[2]-[safari-macosx]": "Nhấp vào đó",
+        "permissions-unblock-video-overlay-step-[3]-[android]": "Cuộn xuống phần cài đặt",
+        "permissions-unblock-video-overlay-step-[3]-[chrome]": "Thay đổi chế độ cài đặt thành \"always allow\" (luôn cho phép)",
+        "permissions-unblock-video-overlay-step-[3]-[edge]": "Thay đổi chế độ cài đặt thành \"always allow\" (luôn cho phép)",
+        "permissions-unblock-video-overlay-step-[3]-[firefox]": "Nhấp vào dấu \"X\" để loại bỏ phần đang chặn",
+        "permissions-unblock-video-overlay-step-[3]-[safari-ios]": "Nhấn vào đó",
+        "permissions-unblock-video-overlay-step-[3]-[safari-ipados]": "Nhấn vào đó",
+        "permissions-unblock-video-overlay-step-[3]-[safari-macosx]": "Nhấp vào \"settings for {{hostName}}\" (cài đặt cho {{hostName}})",
+        "permissions-unblock-video-overlay-step-[4]-[android]": "Nhấn vào đó",
+        "permissions-unblock-video-overlay-step-[4]-[chrome]": "... rồi làm mới trang",
+        "permissions-unblock-video-overlay-step-[4]-[edge]": "... rồi làm mới trang",
+        "permissions-unblock-video-overlay-step-[4]-[firefox]": "... rồi làm mới trang",
+        "permissions-unblock-video-overlay-step-[4]-[safari-ios]": "Sau đó tìm \"Camera\" (Máy ảnh) và \"Microphone\" (Micrô)",
+        "permissions-unblock-video-overlay-step-[4]-[safari-ipados]": "Sau đó tìm \"Camera\" (Máy ảnh) và \"Microphone\" (Micrô)",
+        "permissions-unblock-video-overlay-step-[4]-[safari-macosx]": "Di chuột lên các tùy chọn máy ảnh và micrô",
+        "permissions-unblock-video-overlay-step-[5]-[android]": "Nhấn để bật micrô và máy ảnh",
+        "permissions-unblock-video-overlay-step-[5]-[safari-ios]": "Đảm bảo micrô và máy ảnh được bật hoặc đặt thành \"allow\" (cho phép)",
+        "permissions-unblock-video-overlay-step-[5]-[safari-ipados]": "Đảm bảo micrô và máy ảnh được bật hoặc đặt thành \"allow\" (cho phép)",
+        "permissions-unblock-video-overlay-step-[5]-[safari-macosx]": "Thay đổi chế độ cài đặt thành \"Allow\" (Cho phép)",
+        "permissions-unblock-video-overlay-step-[6]-[android]": "Kéo xuống để làm mới trang",
+        "permissions-unblock-video-overlay-step-[6]-[safari-ios]": "Quay lại trình duyệt này... rồi làm mới trang",
+        "permissions-unblock-video-overlay-step-[6]-[safari-ipados]": "Quay lại trình duyệt này... rồi làm mới trang",
+        "permissions-unblock-video-overlay-step-[6]-[safari-macosx]": "... rồi làm mới trang",
+        "play": "Phát",
+        "presentation": {
+            "dual-screen-mode": "Chế độ màn hình kép",
+            "nobody-sharing-screen": "Hiện không có ai chia sẻ màn hình",
+            "pexip-presentation": "Cửa sổ thuyết trình",
+            "presenting": "Đang thuyết trình",
+            "share-screen": "Chia sẻ màn hình",
+            "share-screen-placeholder": "Khi ai đó chia sẻ màn hình, màn hình đó sẽ xuất hiện ở đây",
+            "stop-share-screen": "Dừng chia sẻ",
+            "take-over": "Nắm quyền điều khiển",
+            "the-current": "hiện tại",
+            "this-will-end": "Thao tác này sẽ kết thúc bài thuyết trình của {{normalizedPresenterName}} và bắt đầu bài thuyết trình của bạn."
+        },
+        "previously-permissions-denied": "Bạn đã từ chối cấp quyền sử dụng {{deniedDevice}} trước đó.",
+        "proceed-anyway": "Vẫn tiếp tục",
+        "proceed-without-[camera]": "Tiếp tục mà không dùng máy ảnh",
+        "proceed-without-[microphone]": "Tiếp tục mà không dùng micrô",
+        "proceed-without-[speaker]": "Tiếp tục mà không dùng loa",
+        "push-to-talk": "Nhấn và giữ phím cách để tạm thời bật tiếng của bạn",
+        "read-steps-label": "Bạn cũng có thể đọc các bước tại đây",
+        "remove-spotlight": "Xóa tiêu điểm",
+        "show-me-how": "Hướng dẫn tôi",
+        "speakers-help-tip-desktop-1": "Đảm bảo bạn đã tăng âm lượng thiết bị lên.",
+        "speakers-help-tip-desktop-2": "Bạn có kết nối tai nghe với thiết bị không?",
+        "speakers-help-tip-desktop-3": "Nếu sử dụng máy tính để bàn, bạn có thể cần kết nối loa hoặc tai nghe.",
+        "speakers-help-tip-mobile-1": "Đảm bảo bạn đã tăng âm lượng thiết bị lên.",
+        "speakers-help-tip-mobile-2": "Bạn có kết nối tai nghe với thiết bị không? Đảm bảo loa chủ định phát ra âm thanh",
+        "speakers-help-tip-mobile-3": "Thử khởi động lại thiết bị.",
+        "spotlight": "Tiêu điểm",
+        "start-test": "Bắt đầu kiểm tra",
+        "still-having-issues": "Sự cố vẫn tiếp diễn? <2>Hướng dẫn khắc phục sự cố</2>",
+        "stop-playing": "Dừng phát",
+        "test-your-microphone": "Kiểm tra micrô",
+        "test-your-microphone-title-[before-testing]": "Kiểm tra micrô",
+        "test-your-microphone-title-[get-ready]": "Hãy chuẩn bị nói một câu bất kỳ",
+        "test-your-microphone-title-[playback-finished]": "Phát lại",
+        "test-your-microphone-title-[playing-back]": "Phát lại",
+        "test-your-microphone-title-[recording-success]": "Đã xong!",
+        "test-your-microphone-title-[recording]": "Đang ghi giọng nói của bạn...",
+        "testing-my-microphone": "\"1, 2, 3 kiểm tra\"",
+        "this-is-how-you-will-sound-to-others": "Giọng bạn nghe sẽ như thế này",
+        "through-browser-settings": "thông qua chế độ cài đặt trình duyệt",
+        "tip-1-header": "Mẹo 1",
+        "to-grant-access-follow-steps": "Để cấp quyền truy cập, vui lòng làm theo các bước trong ",
+        "transfer": "Chuyển",
+        "trying-to-speak": "Bạn muốn nói gì đó? Micrô đang bị tắt tiếng",
+        "turn-on-camera": "Bật máy ảnh",
+        "unblock-permissions-video-link": "video ngắn này",
+        "unmute": "Bật tiếng",
+        "unmute-all-guests": "Bật tiếng của toàn bộ khách",
+        "unmute-camera": "Bật tiếng của máy ảnh",
+        "unmute-microphone": "Bật tiếng micrô",
+        "unmute-participant": "Bật tiếng của người tham gia",
+        "waiting-for-permissions": "Đang chờ cấp quyền...",
+        "we-will-help-you-header": "Đừng lo. Chúng tôi sẽ giúp bạn!",
+        "you-blocked-access": "Bạn đã chặn quyền truy cập vào {{seeOrHearYou}} của mình",
+        "you-can-say-something-like": "Bạn có thể nói gì đó như ",
+        "you-may-need-to-connect-speakers-or-headphones": "Nếu sử dụng máy tính để bàn, bạn có thể cần kết nối loa hoặc tai nghe."
+    },
+    "media-presentation": {
+        "do-you-want-to-take-over": "Bạn có muốn nắm quyền điều khiển bài thuyết trình không?"
+    },
+    "meeting": {
+        "admit": "Chấp nhận",
+        "admit-participant": "Chấp nhận người tham gia",
+        "chat": "Trò chuyện",
+        "chat-history": "Nhật ký trò chuyện",
+        "chat-input": "Nơi nhập văn bản trò chuyện",
+        "chat-new-message": "tin nhắn mới",
+        "chat-new-messages": "{{newMessagesCount}} tin nhắn mới",
+        "chat-scroll-last-message": "Cuộn đến tin nhắn trò chuyện cuối cùng",
+        "close-new-chat-alert": "Đóng thông báo về tin nhắn trò chuyện mới",
+        "connection-quality": "Chất lượng kết nối",
+        "external-participants": "Người tham gia bên ngoài",
+        "folded-selfview": {
+            "drag": "Di chuyển chế độ xem chính mình"
+        },
+        "hide-self-view": "Ẩn chế độ xem chính mình",
+        "in-this-meeting": "Trong cuộc họp này",
+        "leave": "Rời khỏi",
+        "more-participants": "{{inMeetingCount}} người tham gia",
+        "network-fixed": "Đã khắc phục!",
+        "network-reconnecting": "Đã mất kết nối mạng. Đang kết nối lại...",
+        "one-participant": "1 người tham gia",
+        "participants": "Người tham gia",
+        "presentation": {
+            "collapse": "Thu gọn",
+            "expand": "Mở rộng"
+        },
+        "raised-hand": "Đã giơ tay phát biểu",
+        "remove-participant": "Xóa người tham gia",
+        "remove-user-confirmation": "Bạn có chắc chắn muốn xóa {{userName}} khỏi cuộc họp này không?",
+        "show-self-view": "Hiển thị chế độ xem chính mình",
+        "toggle-chat": "Chuyển đổi bảng trò chuyện",
+        "toggle-invite-modal": "Chuyển đổi phương thức mời thành viên",
+        "toggle-participants-panel": "Chuyển đổi bảng người tham gia",
+        "video-label": "Video trực tiếp về cuộc họp",
+        "video-label-presentation": "Video trực tiếp về bài thuyết trình của một người tham gia khác",
+        "waiting-in-lobby": "Đang chờ ở phòng chờ",
+        "write-message": "Soạn tin nhắn",
+        "you-left": "Bạn đã rời khỏi cuộc họp"
+    },
+    "microphone": {
+        "cant-hear": "Tôi không nghe được do tình trạng khuyết tật",
+        "do-you-hear-yourself": "Bạn có nghe thấy tiếng mình không?"
+    },
+    "pin": {
+        "are-you-host": "Bạn có phải là người chủ trì không?",
+        "how-to-find": "Mã PIN có trong lời mời họp trong lịch hoặc email",
+        "label": "Mã PIN {{type}}",
+        "placeholder": "Ví dụ: \"1234\"",
+        "what-is-the-pin": "Mã PIN cho cuộc họp này là gì?"
+    },
+    "preflight": {
+        "accessibility": {
+            "camera-detected-1": "Chúng tôi có thể phát hiện máy ảnh đang chụp ảnh. Tuy nhiên, chúng tôi không thể xác nhận bạn đang ở trong khung hình.",
+            "microphone-detected-1": "Chúng tôi có thể phát hiện âm thanh từ micrô của bạn.",
+            "microphone-detected-2": "Bạn có thể bật phụ đề trực tiếp theo mặc định nếu cuộc họp hỗ trợ tính năng này. Bạn có thể bật hoặc tắt phụ đề trực tiếp bất cứ lúc nào trong cuộc họp.",
+            "speakers-detected-1": "Thiết bị của bạn đã kết nối với loa.",
+            "speakers-detected-1-chrome": "Thiết bị của bạn đã kết nối với loa. Bạn có thể kiểm tra xem đã chọn đúng loa trong menu thả xuống bên trên chưa.",
+            "speakers-detected-2": "Bạn có thể bật phụ đề trực tiếp theo mặc định nếu cuộc họp hỗ trợ tính năng này. Bạn có thể bật hoặc tắt phụ đề trực tiếp bất cứ lúc nào trong cuộc họp."
+        },
+        "camera-missing": "Những người khác sẽ không nhìn thấy bạn",
+        "get-ready": "Chuẩn bị sẵn sàng cho cuộc họp",
+        "in-this-meeting": {
+            "plural": "<0>{inMeetingCount} người khác</0> đã tham gia cuộc họp.",
+            "singular": "<0>1 người khác</0> đã tham gia cuộc họp."
+        },
+        "join-browser": "Tham gia cuộc họp trong trình duyệt",
+        "microphone-missing": "Những người khác sẽ không nghe thấy tiếng bạn",
+        "speaker-missing": "Bạn sẽ không nghe thấy tiếng những người khác"
+    },
+    "quality": {
+        "auto": "Tự động",
+        "change-quality": "Thay đổi chất lượng",
+        "high": "Cao",
+        "info": "Chế độ cài đặt này ảnh hưởng đến lượng băng thông bạn sẽ sử dụng cho cuộc họp này. Điều chỉnh thành giá trị thấp hơn nếu kết nối Internet bị chậm hoặc nếu ảnh hưởng nhiều đến hiệu suất máy tính.",
+        "low": "Thấp",
+        "medium": "Trung bình",
+        "poor-connection-detected": "Phát hiện thấy kết nối kém chất lượng",
+        "quality": "Chất lượng kết nối",
+        "select-quality": "Chọn chất lượng cuộc họp",
+        "very-high": "Rất cao"
+    },
+    "settings": {
+        "cancel-changes": "Hủy bỏ thay đổi",
+        "collapsed-selfview-tooltip-description": "Bạn vẫn đang gửi video cho những người khác trong cuộc họp",
+        "device-select": {
+            "select-camera": "Chọn máy ảnh",
+            "select-microphone": "Chọn micrô",
+            "select-speaker": "Chọn loa"
+        },
+        "device-settings": "Cài đặt thiết bị",
+        "devices": "Thiết bị",
+        "disconnect-all": "Ngắt kết nối tất cả",
+        "disconnect-all-confirmation": "Bạn có chắc chắn muốn ngắt kết nối tất cả không?",
+        "disconnect-all-desc": "Ngắt kết nối tất cả người tham gia cuộc họp, kể cả bạn",
+        "effects": "Hiệu ứng",
+        "layout": "Bố cục",
+        "layout-changes-info": "Thay đổi bạn thực hiện đối với bố cục video sẽ áp dụng chung cho tất cả người tham gia.",
+        "layout-confirmation-desc": "Bạn sắp thay đổi bố cục cho tất cả mọi người trong cuộc họp chứ không chỉ riêng bạn.",
+        "layout-confirmation-title": "Việc thay đổi bố cục sẽ ảnh hưởng đến tất cả mọi người",
+        "layout[adaptive-composition]": "Thành phần thích ứng",
+        "layout[double-theatre]": "Rạp hát",
+        "layout[highlight]": "Làm nổi bật",
+        "layout[single-theatre]": "Rạp hát",
+        "layout[speaker-focus]": "Tiêu điểm loa",
+        "layout[tiled]": "Chia ô",
+        "lock": "Khóa cuộc họp",
+        "lock-desc": "Không cho phép mọi người tự động tham gia cuộc họp",
+        "meeting-layout": "Bố cục cuộc họp",
+        "meeting-settings": "Cài đặt cuộc họp",
+        "noise-suppression": "Khử tiếng ồn",
+        "personal": "Cài đặt cá nhân",
+        "playing-sound": "Đang phát âm thanh...",
+        "save-changes": "Lưu thay đổi",
+        "selfview-hidden": "Đã ẩn chế độ xem chính mình",
+        "settings": "Cài đặt",
+        "test-your-sound": "Kiểm tra âm thanh",
+        "unlock": "Mở khóa cuộc họp"
+    },
+    "speaker": {
+        "cant-hear": "Tôi không nghe được do tình trạng khuyết tật",
+        "do-you-hear-sound": "Bạn có nghe thấy âm thanh không?"
+    },
+    "stats": {
+        "[bitrate]": "Tốc độ bit",
+        "[codec]": "Bộ mã hóa và giải mã",
+        "[jitter]": "Dao động",
+        "[packets-lost]": "Lượng gói tin bị rớt",
+        "[packets-transmitted]": "Lượng gói tin được truyền đi",
+        "[recent-packet-loss]": "Lượng gói tin bị rớt gần đây",
+        "[resolution]": "Độ phân giải",
+        "[roundtrip-time]": "Thời gian trễ trọn vòng",
+        "[total-packet-loss]": "Tổng lượng gói tin bị rớt",
+        "audio": "Âm thanh",
+        "in": "Vào",
+        "nerd-stats": "Số liệu thống kê sơ bộ",
+        "out": "Ra",
+        "video": "Video"
+    },
+    "transfer": {
+        "error": "Đã xảy ra lỗi khi chuyển người tham gia",
+        "fail": "Không thể chuyển người tham gia",
+        "meeting-id": "Mã cuộc họp",
+        "pin": "Mã PIN",
+        "pin-placeholder": "Ví dụ: \"1234\"",
+        "placeholder": "Ví dụ: \"meet.bob\"",
+        "success": "Đã chuyển người tham gia thành công",
+        "transfer-participant": "Chuyển người tham gia"
+    },
+    "username": {
+        "hey-whats-your-name": "Xin chào. <1></1> Tên bạn là gì?",
+        "name-input-placeholder": "Ví dụ: \"David\"",
+        "usage-purpose": "Vui lòng nhập tên hiển thị để những người khác biết ai đang tham gia cuộc họp",
+        "your-name": "Tên bạn"
+    }
+}

@@ -1,0 +1,686 @@
+{
+    "add-participant": {
+        "can-control": "Kan styra ett möte (Värd)",
+        "failed": "Det gick inte att lägga till den här deltagaren",
+        "submit": "Lägg till deltagare",
+        "transfer": "Överför",
+        "type-details": "Ange uppgifter om deltagaren här "
+    },
+    "camera": {
+        "cant-see": "Jag kan inte se mig själv på grund av en synnedsättning",
+        "do-you-see-yourself": "Kan du se dig själv? "
+    },
+    "common": {
+        "[microphone]": "Mikrofon",
+        "[camera]": "Kamera",
+        "[speaker]": "Högtalare",
+        "a-pexip-meeting": "ett<1></1>möte",
+        "and-then": "och sen",
+        "are-you-sure": "Är du säker?",
+        "ask-for-permission": "Begär tillstånd",
+        "brand-name": "Pexip Video Service",
+        "cancel": "Avbryt",
+        "change": "Ändra",
+        "client-name[mobile-app]": "Mobilapp",
+        "client-name[pexip-room]": "Pexip Room",
+        "client-name[session]": "Session",
+        "client-name[web-app]": "Webbapp",
+        "close-tooltip": "Stäng verktygstips",
+        "close-window": "Stäng fönstret",
+        "host": "Värd",
+        "join": "Anslut nu",
+        "label-logo": "logotyp",
+        "label-pexip-logo": "Pexip-logotyp",
+        "live-captions-default-on": "Aktivera textning i direktsändning som standard",
+        "live-captions-hide": "Dölj textning i direktsändning",
+        "live-captions-show": "Visa textning i direktsändning",
+        "lower-hand": "Ta ner handen",
+        "me": "jag",
+        "meeting": "Möte",
+        "next": "Nästa",
+        "next-terms-and-conditions": "Genom att fortsätta bekräftar du att du godkänner våra <2>villkor och tjänster</2>.",
+        "no": "Nej",
+        "raise-hand": "Räck upp handen",
+        "remove": "Ta bort",
+        "replay": "Spela om",
+        "retry": "Försök igen",
+        "send": "Skicka",
+        "try-again": "Försök igen",
+        "welcome": "Välkommen",
+        "yes": "Ja "
+    },
+    "device-status": {
+        "audio-device-in-use": {
+            "message": "Ett annat program (t.ex. Teams eller Slack) använder din mikrofon. Om du vill använda den här, leta upp det programmet och stäng av det.",
+            "title": "Mikrofonen ej tillgänglig "
+        },
+        "audio-device-not-found": {
+            "message": "Din önskade mikrofon är inte tillgänglig ",
+            "title": "Vi kan inte hitta din mikrofon "
+        },
+        "audio-overconstrained": {
+            "message": "Försök att sänka kvalitetsinställningarna",
+            "title": "Mikrofonen är alltför begränsad "
+        },
+        "audio-video-devices-not-found": {
+            "message": "Den kamera och mikrofon som du föredrar är inte tillgängliga.",
+            "title": "Vi kan inte hitta din kamera och mikrofon "
+        },
+        "audioinput-granted-videoinput-denied": {
+            "message": "Du måste ge tillgång till kameran om du vill att andra ska kunna se dig i samtalet.",
+            "title": "Du har inte gett tillgång till din kamera "
+        },
+        "devices-in-use": {
+            "message": "Ett annat program (t.ex. Teams eller Slack) använder din kamera. Om du vill använda den här, leta upp det programmet och stäng av det.",
+            "title": "Kamera och mikrofon ej tillgängliga "
+        },
+        "initial-permissions-audio-input-granted": {
+            "message": "Du har gett tillstånd att använda din mikrofon.",
+            "title": "Beviljade behörigheter "
+        },
+        "initial-permissions-granted": {
+            "message": "Du har gett tillstånd att använda din kamera och mikrofon.",
+            "title": "Beviljade behörigheter "
+        },
+        "initial-permissions-not-granted": {
+            "message": "Välj <1>\"Tillåt\"</1> i nästa steg när din webbläsare ber dig om det. Vi kommer bara att ha tillgång under tiden som mötet pågår.",
+            "title": "Vi behöver ditt tillstånd för att använda din kamera och mikrofon "
+        },
+        "initial-permissions-video-input-denied": {
+            "message": "Du har nekat tillstånd att använda din kamera.",
+            "title": "Behörigheter nekas "
+        },
+        "initial-permissions-video-input-granted": {
+            "message": "Du har gett tillstånd att använda din kamera.",
+            "title": "Behörigheter beviljade "
+        },
+        "invalid-audio-constraints": {
+            "message": "Försök att rensa webbläsarens cache",
+            "title": "Mikrofonen är inte konfigurerad på rätt sätt "
+        },
+        "invalid-constraints": {
+            "message": "Försök att rensa webbläsarens cache",
+            "title": "Kameran och mikrofonen är inte konfigurerad på rätt sätt "
+        },
+        "invalid-video-constraints": {
+            "message": "Försök att rensa webbläsarens cache",
+            "title": "Kameran är inte konfigurerad på rätt sätt "
+        },
+        "no-audio-devices-found": {
+            "message": "Mikrofonen är inte tillgänglig. Kontrollera att den är inkopplad och korrekt inställd.",
+            "title": "Det finns ingen ansluten mikrofon "
+        },
+        "no-devices-found": {
+            "message": "Kameran och mikrofonen är inte tillgängliga. Kontrollera att de är inkopplade och korrekt inställda.",
+            "title": "Det finns ingen ansluten mikrofon eller kamera "
+        },
+        "no-video-devices-found": {
+            "message": "Kameran är inte tillgänglig. Kontrollera att den är inkopplad och korrekt inställd.",
+            "title": "Det finns ingen ansluten kamera "
+        },
+        "not-supported-error": {
+            "message": "Vi kan inte hämta media från din webbläsare. Försök att använda en annan modern webbläsare.",
+            "title": "Webbläsaren stöds inte "
+        },
+        "not-supported-error-only-audio": {
+            "message": "Vi kan inte hämta media från din webbläsare. Försök att använda en annan modern webbläsare.",
+            "title": "Webbläsaren stöds inte "
+        },
+        "not-supported-error-only-video": {
+            "message": "Vi kan inte hämta media från din webbläsare. Försök att använda en annan modern webbläsare.",
+            "title": "Webbläsaren stöds inte "
+        },
+        "overconstrained": {
+            "message": "Försök att sänka kvalitetsinställningarna",
+            "title": "Kameran och mikrofonen är överdrivet begränsade "
+        },
+        "permissions-granted-fallback-audioinput": {
+            "message": "Vi kan inte använda din önskade mikrofon",
+            "title": "Det går inte att använda din önskade mikrofon "
+        },
+        "permissions-granted-fallback-devices": {
+            "message": "Den kamera och mikrofon som du föredrar är inte tillgängliga.",
+            "title": "Det går inte att använda din önskade mikrofon och kamera "
+        },
+        "permissions-granted-fallback-videoinput": {
+            "message": "Vi kan inte använda din önskade kamera",
+            "title": "Det går inte att använda din föredragna kamera "
+        },
+        "permissions-only-audioinput": {
+            "message": "Du har tidigare nekat tillstånd att använda din kamera. Begär behörigheter och ge tillgång till den",
+            "title": "Kamera inaktiv "
+        },
+        "permissions-only-audioinput-no-video-devices": {
+            "message": "Kontrollera att den är inkopplad och korrekt inställd.",
+            "title": "Kameran är inte tillgänglig. "
+        },
+        "permissions-only-fallback-audioinput": {
+            "message": "Vi kan inte använda någon kamera och mikrofonen som du föredrar är inte tillgänglig.",
+            "title": "Den kamera och mikrofon som du föredrar är inte tillgängliga. "
+        },
+        "permissions-only-fallback-audioinput-no-video-devices": {
+            "message": "Din önskade mikrofon är inte tillgänglig och det finns ingen kamera",
+            "title": "Din önskade mikrofon är inte tillgänglig och det finns ingen kamera "
+        },
+        "permissions-only-fallback-videoinput": {
+            "message": "Den kamera och mikrofon som du föredrar är inte tillgängliga.",
+            "title": "Den kamera och mikrofon som du föredrar är inte tillgängliga. "
+        },
+        "permissions-only-fallback-videoinput-no-audio-devices": {
+            "message": "Din önskade kamera är inte tillgänglig och det finns ingen mikrofon",
+            "title": "Din önskade kamera är inte tillgänglig och det finns ingen mikrofon"
+        },
+        "permissions-only-videoinput": {
+            "message": "Du har tidigare nekat tillstånd att använda din mikrofon. Begär behörigheter och ge tillgång till den",
+            "title": "Mikrofon inaktiv "
+        },
+        "permissions-only-videoinput-no-audio-devices": {
+            "message": "Kontrollera att den är inkopplad och korrekt inställd.",
+            "title": "Mikrofonen är inte tillgänglig. "
+        },
+        "permissions-rejected": {
+            "message": "Du har nekat tillgång till kameran eller mikrofonen. Följ stegen i den här korta videon för att bevilja tillgång:",
+            "title": "Menade du att neka tillgång till kameran eller mikrofonen? "
+        },
+        "permissions-rejected-audioinput": {
+            "message": "Du har tidigare nekat tillstånd att använda din mikrofon. Begär behörigheter och ge tillgång till den",
+            "title": "Mikrofontillstånd inte beviljat "
+        },
+        "permissions-rejected-videoinput": {
+            "message": "Du har tidigare nekat tillstånd att använda din kamera. Begär behörigheter och ge tillgång till den",
+            "title": "Tillstånd att använda kamera inte beviljat"
+        },
+        "unknown-error": {
+            "message": "Vi kan inte hämta media från dina enheter. Försök att återansluta dina enheter eller använda andra enheter.",
+            "title": "Mikrofonen och kameran ej tillgängliga "
+        },
+        "unknown-error-only-audioinput": {
+            "message": "VI kan inte använda din kamera. Försök att återansluta dina enheter eller använda andra enheter.",
+            "title": "Kameran ej tillgänglig "
+        },
+        "unknown-error-only-videoinput": {
+            "message": "Din mikrofon är inte tillgänglig, försök att återansluta eller använd annan enhet",
+            "title": "Mikrofonen ej tillgänglig "
+        },
+        "video-device-in-use": {
+            "message": "Ett annat program (t.ex. Teams eller Slack) använder din kamera. Om du vill använda den på Pexip, leta upp det programmet och stäng av det.",
+            "title": "Kameran ej tillgänglig "
+        },
+        "video-device-not-found": {
+            "message": "Kameran du föredrar är inte tillgänglig",
+            "title": "Vi kan inte hitta din kamera  "
+        },
+        "video-overconstrained": {
+            "message": "Försök att sänka kvalitetsinställningarna",
+            "title": "Kameran är alltför begränsad "
+        },
+        "videoinput-granted-audioinput-denied": {
+            "message": "Du måste ge tillgång till mikrofonen om du vill att andra ska kunna höra dig i samtalet.",
+            "title": "Du har inte gett tillgång till din mikrofon "
+        }
+    },
+    "error": {
+        "choose-another": "Välj ett annat möte",
+        "code[#pex100]": "PIN-koden du angav är ogiltig - försök igen.",
+        "code[#pex101]": "PIN-koden du angav är ogiltig - försök igen.",
+        "code[#pex109]": "PEX109 felmeddelande",
+        "code[#pex110]": "Systemet du försöker nå är tillfälligt otillgängligt. Försök igen inom kort.",
+        "code[#pex111]": "Det finns ingen anslutning. Försök igen.",
+        "code[#pex112]": "Det finns ingen anslutning.",
+        "code[#pex113]": "Anslutningen bröts. Försök igen.",
+        "code[#pex114]": "Det system som du försöker nå är överbelastat.",
+        "code[#pex115]": "Överföringen misslyckades.",
+        "code[#pex116]": "Samtalet misslyckades - kontakta din administratör.",
+        "code[#pex117]": "Samtalet misslyckades. Försök igen.",
+        "code[#pex118]": "Servern kan inte nås.",
+        "code[#pex119]": "Samtalet misslyckades: begäran kunde inte vidarebefordras.",
+        "code[#pex120]": "En värd avslutade mötet.",
+        "code[#pex121]": "En värd avslutade mötet.",
+        "code[#pex122]": "En administratör avslutade mötet.",
+        "code[#pex123]": "En administratör kopplade bort dig från mötet.",
+        "code[#pex124]": "En deltagare i mötet kopplade bort dig.",
+        "code[#pex125]": "En värd avslutade mötet.",
+        "code[#pex126]": "Mötesvärden har inte anslutit sig till eller låst upp mötet.",
+        "code[#pex127]": "Meddelande som visas för användare när felet `Samtalet misslyckades: Avbrutet` påträffas.",
+        "code[#pex128]": "Samtalet misslyckades: en brandvägg kanske blockerar åtkomsten.",
+        "code[#pex129]": "Något gick fel under mötet. Försök att ansluta igen.",
+        "code[#pex130]": "Något gick fel under mötet. Försök att ansluta igen.",
+        "code[#pex131]": "Något gick fel under mötet. Försök att ansluta igen.",
+        "code[#pex132]": "Något gick fel under mötet. Försök att ansluta igen.",
+        "code[#pex140]": "Mötet har avslutats.",
+        "code[#pex141]": "Mötet avslutades eftersom värd(arna) lämnade mötet.",
+        "code[#pex142]": "Du var den enda deltagaren som var kvar i mötet.",
+        "code[#pex143]": "Testsamtalet har avslutats.",
+        "code[#pex150]": "Personen du försöker ringa svarade inte eller kunde inte nås.",
+        "code[#pex151]": "Den andra deltagaren har kopplat bort.",
+        "code[#pex152]": "Samtalet kunde inte kopplas.",
+        "code[#pex153]": "Samtalet kunde inte kopplas. Kontakta din administratör.",
+        "code[#pex154]": "Kan inte ansluta till \\\"{{alias}}\\\". Kontrollera adressen och försök igen.",
+        "code[#pex155]": "Kunde inte ansluta sig till {{host}}.",
+        "code[#pex156]": "Samtalet kunde inte kopplas.",
+        "code[#pex157]": "Kunde inte ansluta sig till {{host}}.",
+        "code[#pex170]": "Samtalet misslyckades: Inaktivera eventuella tillägg för sekretess i din webbläsare.",
+        "code[#pex171]": "Din kamera och/eller mikrofon är inte tillgängliga. Kontrollera att de inte används aktivt av en annan app.",
+        "code[#pex180]": "Presentationen avslutades.",
+        "code[#pex181]": "Presentationsströmmen kopplades bort.",
+        "code[#pex182]": "Presentationsströmmen är inte tillgänglig.",
+        "code[#pex183]": "Skärmdelningen avbröts.",
+        "code[#pex184]": "Någonting gick fel med skärmdelningen. Försök igen.",
+        "code[#pex185]": "Skärmdelningen kopplades bort.",
+        "code[#pex190]": "Fel vid anslutning till mötet.",
+        "code[#pex191]": "Fel vid anslutning till mötet.",
+        "code[#pex192]": "För många försök att ange PIN-koden.",
+        "code[#pex193]": "Fel vid anslutning till mötet. Kontakta din administratör.",
+        "code[#pex194]": "Detta möte har nått maximalt antal deltagare.",
+        "code[#pex195]": "Fel vid anslutning till mötet. Kontakta din administratör.",
+        "code[#pex196]": "En brandvägg hindrar dig från att ansluta dig",
+        "code[#pex197]": "Tyvärr kunde vi inte koppla ditt samtal. Stäng det här fönstret och försök igen.",
+        "code[#pex200]": "SSO-autentisering misslyckades.",
+        "code[#pex201]": "SSO är aktiverat men inga identitetsleverantörer har konfigurerats.",
+        "code[#pex202]": "Det går inte att öppna fönstret för SSO-autentisering. Detta kan ha förhindrats av en popup-blockerare.",
+        "code[#pex203]": "SSO-autentisering misslyckades. Systemet är i underhållsläge.",
+        "code[#pex204]": "SSO-autentisering misslyckades. SSO är inte tillgängligt från den här domänen.",
+        "not-found": {
+            "subtitle": "Vi kan inte hitta den sida du letar efter.",
+            "title": "Oj då! 404 - Hittades inte "
+        },
+        "rejoin": "Anslut igen",
+        "reload-page": "Ladda om sidan",
+        "smth-on-our-end": "Oj då! Det ser ut som ett fel hos oss.",
+        "smth-went-wrong": "Något gick fel "
+    },
+    "free-dial": {
+        "how-to-find": "Du hittar mötes-ID:t i mötesinbjudan i din kalender eller i ett e-postmeddelande.",
+        "join": "Anslut dig till mötet",
+        "meeting-id": "Mötes-ID",
+        "placeholder": "t.ex. 'meet.bob' "
+    },
+    "idp": {
+        "select-provider": "Välj hur du vill identiera dig. Detta öppnar ett nytt fönster.",
+        "sign-in": "Logga in",
+        "sign-in-with": "Logga in med {{name}} "
+    },
+    "infocard": {
+        "lobby": {
+            "header": "Var god vänta medans andra ansluter sig. "
+        },
+        "meeting": {
+            "body": "Vi ser fram emot att tala med dig i dag.",
+            "header": "Välkommen till {{brandName}} "
+        }
+    },
+    "invite": {
+        "cant-find-anyone": "Kan inte hitta någon med det namnet",
+        "click-search": "Klicka på sökfältet ovan för att söka",
+        "copied": "Kopierat",
+        "copy": "Kopiera",
+        "copy-to-clipboard": "Kopiera en länk till klippbordet",
+        "expiry": "Din inbjudningslänk upphör att gälla om {{expiryHours}} timmar",
+        "instructions": "Skicka möteslänken nedan till den person som du vill lägga till.",
+        "invite": "Bjud in",
+        "invite-person": "Bjud in en person",
+        "invite-someone": "Bjud in någon till mötet",
+        "invited": "Inbjuden",
+        "meeting-invitation-modal": "Mötesinbjudan Modal",
+        "search-for-someone": "Sök efter någon att bjuda in",
+        "send-invite-link": "eller skicka en inbjudningslänk "
+    },
+    "media": {
+        "all-guests-muted-by-host": "Alla gäster är tystade av värden",
+        "all-guests-unmuted-by-host": "Alla gästernas ljud har slagits på av värden",
+        "audio": {
+            "you-are-temporarily-unmuted": "Ditt ljud har tillfälligt slagits på "
+        },
+        "background-effects-action": "Ändra bakgrundseffekt",
+        "browser-privacy-settings-link": "sekretessinställningar",
+        "camera-action": "Slå {{videoInputAction}} kamera",
+        "camera-help-tip-desktop-1": "Har du valt rätt kamera i menyn?",
+        "camera-help-tip-desktop-2": "Är det något som blockerar kameralinsen?",
+        "camera-help-tip-desktop-3": "Försök att stänga andra program som kanske använder kameran (t.ex. Teams eller Slack).",
+        "camera-help-tip-desktop-4": "Om inget av ovanstående är relevant  försök att starta om webbläsaren eller datorn.",
+        "camera-help-tip-mobile-1": "Är kameran riktad åt fel håll? Försök att vända på kameran. Titta efter den här ikonen",
+        "camera-help-tip-mobile-2": "Finns det något som blockerar kameralinsen?",
+        "camera-help-tip-mobile-3": "Försök att stänga andra appar som kanske använder kameran (t.ex. Teams eller WhatsApp osv.).",
+        "camera-help-tip-mobile-4": "Försök att starta om enheten.",
+        "check-everything-works": "Se till att allt funkar",
+        "check-everything-works-description": "Se till att din utrustning fungerar så att du kan höras och ses när du deltar.",
+        "do you have headphones connected to-your-device": "Har du hörlurar anslutna till enheten? Se till att hörlurarnas mikrofon är nära din mun.",
+        "effect": {
+            "blur": "Oskärpa",
+            "none": "Ingen",
+            "replace": "Byt ut "
+        },
+        "first-check-that-you-have-selected-microphone": "Kontrollera först att du har valt rätt mikrofon och att volymen är hög.",
+        "flip-camera": "Vänd kameran",
+        "help-check-[camera]-again": "Kontrollera kameran igen",
+        "help-check-[microphone]-again": "Kontrollera mikrofonen igen",
+        "help-check-[speaker]-again": "Kontrollera högtalaren igen",
+        "help-proceed-without-camera": "Fortsätt utan kamera",
+        "help-proceed-without-microphone": "Fortsätt utan mikrofon",
+        "help-step-[1]": "Steg 1",
+        "help-step-[2]": "Steg 2",
+        "help-step-[3]": "Steg 3",
+        "help-step-[4]": "Steg 4",
+        "help-step-[5]": "Steg 5",
+        "help-tip-1-header": "Tips 1",
+        "help-tip-2-header": "Tips 2",
+        "help-tip-3-header": "Tips 3",
+        "help-tip-4-header": "Tips 4",
+        "how-to-unblock-access": "En animation med instruktioner för att bevilja åtkomst till medieenheter.",
+        "if-you-dont-hear-yourself-try-this": "Om du inte hör dig själv prova följande",
+        "learn-how-to-grant-permissions": "Lär dig hur du beviljar åtkomst",
+        "learn-how-to-manage-browser-privacy-settings": "Inställningar för webbläsarsekretess",
+        "learn-how-to-manage-browser-privacy-settings-label": "Så här hanterar du webbläsarens sekretessinställningar (öppnas i en ny flik)",
+        "lets-check": "Låt oss kontrollera att video och ljud fungerar som de ska ",
+        "lets-go": "Låt oss börja",
+        "make-sure-the-volume-is-turned-up-on-your-device": "Se till att volymen är höjd på enheten.",
+        "make-sure-you-have-the-correct-microphone": "Se till att du har rätt mikrofon",
+        "make-sure-you-have-the-correct-speaker": "Se till att du har rätt högtalare",
+        "microphone-action": "{{audioInputAction}} mikrofon",
+        "microphone-help-tip-desktop-1": "Se till att volymen är höjd på enheten.",
+        "microphone-help-tip-desktop-2": "Har du hörlurar anslutna till enheten? Se till att hörlurarnas mikrofon är nära din mun.",
+        "microphone-help-tip-desktop-3": "Om du använder en stationär dator kan du behöva ansluta högtalare eller hörlurar.",
+        "microphone-help-tip-mobile-1": "Se till att volymen är höjd på enheten.",
+        "microphone-help-tip-mobile-2": "Har du hörlurar anslutna till enheten? Se till att hörlurarnas mikrofon är nära din mun.",
+        "microphone-help-tip-mobile-3": "Försök att starta om enheten.",
+        "mute": "Tysta",
+        "mute-all-guests": "Tysta alla gäster",
+        "mute-microphone": "Stäng av mikrofonen",
+        "mute-participant": "Tysta deltagaren",
+        "muted": "Tystad",
+        "of-your-browser": "av din webbläsare",
+        "off": "av",
+        "on": "på",
+        "or-go-to-the": "eller gå till ",
+        "permission-info": {
+            "[camera]": {
+                "title": "kamera "
+            },
+            "[microphone-and-camera]": {
+                "title": "kamera och mikrofon "
+            },
+            "[microphone]": {
+                "title": "mikrofon "
+            }
+        },
+        "permissions-denied": "Behörigheter nekas",
+        "permissions-try-this-label": "Om det inte fungerar försöker du med det här:",
+        "permissions-unblock-help-step-[1]-[android]": "I webbläsaren till höger om adressfältet trycker du på Mer > Inställningar.",
+        "permissions-unblock-help-step-[1]-[chrome]": "Välj kamerasymbolen i webbläsarens översta fält.",
+        "permissions-unblock-help-step-[1]-[edge]": "I Microsoft Edge väljer du Inställningar och mer... och sedan inställningar.",
+        "permissions-unblock-help-step-[1]-[firefox]": "Klicka på ikonen för behörigheter som visas i adressfältet till vänster.",
+        "permissions-unblock-help-step-[1]-[safari-ios]": "Gå till Inställningar på din iPhone",
+        "permissions-unblock-help-step-[1]-[safari-ipados]": "Gå till Inställningar på din iPad",
+        "permissions-unblock-help-step-[1]-[safari-macosx]": "I Safari-appen på din Mac väljer du Safari > Inställningar och klickar sedan på Webbplatser.",
+        "permissions-unblock-help-step-[2]-[android]": "Tryck på Webbplatsinställningar",
+        "permissions-unblock-help-step-[2]-[chrome]": "Välj \\\"tillåt\\\"",
+        "permissions-unblock-help-step-[2]-[edge]": "Välj Kakor och webbplatsbehörigheter (på vänster sida)",
+        "permissions-unblock-help-step-[2]-[firefox]": "Klicka på X:et bredvid Tillåtet, Tillåtet tillfälligt, Blockerat eller Blockerat tillfälligt för att rensa statusen så att Firefox frågar efter tillstånd igen när du besöker webbplatsen nästa gång.",
+        "permissions-unblock-help-step-[2]-[safari-ios]": "Bläddra nedåt och tryck på Safari (eller vilken webbläsare du än använder).",
+        "permissions-unblock-help-step-[2]-[safari-ipados]": "Bläddra nedåt och tryck på Safari (eller vilken webbläsare du än använder).",
+        "permissions-unblock-help-step-[2]-[safari-macosx]": "Inställningarna för kamera och mikrofon visas till vänster.",
+        "permissions-unblock-help-step-[3]-[android]": "Tryck på mikrofon eller kamera",
+        "permissions-unblock-help-step-[3]-[chrome]": "Ladda om webbläsaren",
+        "permissions-unblock-help-step-[3]-[edge]": "Under Webbplatsbehörigheter väljer du kamera eller mikrofon.",
+        "permissions-unblock-help-step-[3]-[safari-ios]": "Hitta kameran och mikrofonen",
+        "permissions-unblock-help-step-[3]-[safari-ipados]": "Hitta kameran och mikrofonen",
+        "permissions-unblock-help-step-[3]-[safari-macosx]": "Här kan du välja att tillåta behörighet",
+        "permissions-unblock-help-step-[4]-[android]": "Tryck för att slå på eller stänga av mikrofonen eller kameran.",
+        "permissions-unblock-help-step-[4]-[safari-ios]": "Se till att de är aktiverade",
+        "permissions-unblock-help-step-[4]-[safari-ipados]": "Se till att de är aktiverade",
+        "permissions-unblock-help-step-[5]-[safari-ios]": "Återgå till webbläsaren och uppdatera sidan",
+        "permissions-unblock-help-step-[5]-[safari-ipados]": "Återgå till webbläsaren och uppdatera sidan",
+        "permissions-unblock-video-overlay-step-[1]-[android]": "Titta efter den här ikonen i din webbläsare",
+        "permissions-unblock-video-overlay-step-[1]-[chrome]": "Titta efter den här ikonen i din webbläsare",
+        "permissions-unblock-video-overlay-step-[1]-[edge]": "Titta efter den här ikonen i din webbläsare",
+        "permissions-unblock-video-overlay-step-[1]-[firefox]": "Titta efter dessa ikoner",
+        "permissions-unblock-video-overlay-step-[1]-[safari-ios]": "Gå in i inställningar på din enhet",
+        "permissions-unblock-video-overlay-step-[1]-[safari-ipados]": "Gå in i inställningar på din enhet",
+        "permissions-unblock-video-overlay-step-[1]-[safari-macosx]": "Gå in i inställningar under Safari",
+        "permissions-unblock-video-overlay-step-[2]-[android]": "Tryck på den",
+        "permissions-unblock-video-overlay-step-[2]-[chrome]": "Klicka på det",
+        "permissions-unblock-video-overlay-step-[2]-[edge]": "Klicka på det",
+        "permissions-unblock-video-overlay-step-[2]-[firefox]": "Klicka på dem",
+        "permissions-unblock-video-overlay-step-[2]-[safari-ios]": "Bläddra nedåt och tryck på Safari (eller vilken webbläsare du än använder).",
+        "permissions-unblock-video-overlay-step-[2]-[safari-ipados]": "Bläddra nedåt och tryck på Safari (eller vilken webbläsare du än använder).",
+        "permissions-unblock-video-overlay-step-[2]-[safari-macosx]": "Klicka på det",
+        "permissions-unblock-video-overlay-step-[3]-[android]": "Skrolla ner till inställningarna",
+        "permissions-unblock-video-overlay-step-[3]-[chrome]": "Ändra inställningarna till \\\"tillåter alltid\\\"",
+        "permissions-unblock-video-overlay-step-[3]-[edge]": "Ändra inställningarna till \\\"tillåter alltid\\\"",
+        "permissions-unblock-video-overlay-step-[3]-[firefox]": "Klicka på \\\"X\\\" för att ta bort blockeringen",
+        "permissions-unblock-video-overlay-step-[3]-[safari-ios]": "Tryck på den",
+        "permissions-unblock-video-overlay-step-[3]-[safari-ipados]": "Tryck på den",
+        "permissions-unblock-video-overlay-step-[3]-[safari-macosx]": "Klicka på \\\"inställningar för {{hostName}}\\\"",
+        "permissions-unblock-video-overlay-step-[4]-[android]": "Tryck på den",
+        "permissions-unblock-video-overlay-step-[4]-[chrome]": "... uppdatera sedan sidan",
+        "permissions-unblock-video-overlay-step-[4]-[edge]": "... uppdatera sedan sidan",
+        "permissions-unblock-video-overlay-step-[4]-[firefox]": "... uppdatera sedan sidan",
+        "permissions-unblock-video-overlay-step-[4]-[safari-ios]": "Hitta kameran och mikrofonen",
+        "permissions-unblock-video-overlay-step-[4]-[safari-ipados]": "Hitta kameran och mikrofonen",
+        "permissions-unblock-video-overlay-step-[4]-[safari-macosx]": "Håll musen över alternativen för kamera och mikrofon.",
+        "permissions-unblock-video-overlay-step-[5]-[android]": "Tryck för att slå på mikrofonen och kameran.",
+        "permissions-unblock-video-overlay-step-[5]-[safari-ios]": "Se till att de är aktiverade eller inställda till \\\"tillåt\\\"",
+        "permissions-unblock-video-overlay-step-[5]-[safari-ipados]": "Se till att de är aktiverade eller inställda till \\\"tillåt\\\"",
+        "permissions-unblock-video-overlay-step-[5]-[safari-macosx]": "Ändra inställningarna till \\\"Tillåt\\\"",
+        "permissions-unblock-video-overlay-step-[6]-[android]": "Dra ner för att uppdatera sidan",
+        "permissions-unblock-video-overlay-step-[6]-[safari-ios]": "Återgå till webbläsaren och uppdatera sidan",
+        "permissions-unblock-video-overlay-step-[6]-[safari-ipados]": "Återgå till webbläsaren och uppdatera sidan",
+        "permissions-unblock-video-overlay-step-[6]-[safari-macosx]": "... uppdatera sedan sidan",
+        "play": "Spela",
+        "presentation": {
+            "dual-screen-mode": "Läge med dubbla skärmar",
+            "nobody-sharing-screen": "Ingen delar för närvarande sin skärm",
+            "pexip-presentation": "Presentationsfönster",
+            "presenting": "Presenterar",
+            "share-screen": "Dela skärm",
+            "share-screen-placeholder": "När någon delar sin skärm visas den här ",
+            "stop-share-screen": "Sluta dela",
+            "take-over": "Ta över",
+            "the-current": "den nuvarande",
+            "this-will-end": "Detta avslutar {{normalizedPresenterName}} presentationen och startar din egen. "
+        },
+        "previously-permissions-denied": "Du har tidigare nekat tillstånd att använda din {{deniedDevice}}.",
+        "proceed-anyway": "Fortsätt ändå",
+        "proceed-without-[camera]": "Fortsätt utan kamera",
+        "proceed-without-[microphone]": "Fortsätt utan mikrofon",
+        "proceed-without-[speaker]": "Fortsätt utan högtalare",
+        "push-to-talk": "Tryck och håll in mellanslagstangenten för att tillfälligt slå på ljudet.",
+        "read-steps-label": "Du kan också läsa stegen här",
+        "remove-spotlight": "Ta bort spotlight",
+        "show-me-how": "Visa mig hur",
+        "speakers-help-tip-desktop-1": "Se till att volymen är höjd på din enhet.",
+        "speakers-help-tip-desktop-2": "Har du hörlurar anslutna till enheten?",
+        "speakers-help-tip-desktop-3": "Om du använder en stationär dator kan du behöva ansluta högtalare eller hörlurar.",
+        "speakers-help-tip-mobile-1": "Se till att volymen är höjd på enheten.",
+        "speakers-help-tip-mobile-2": "Har du hörlurar anslutna till enheten? Kontrollera att ljudet kommer ut ur den avsedda högtalaren.",
+        "speakers-help-tip-mobile-3": "Försök att starta om enheten.",
+        "spotlight": "Spotlight",
+        "start-test": "Starta testet",
+        "still-having-issues": "Har du fortfarande problem? <2>Felsökningsguide</2>",
+        "stop-playing": "Sluta spela",
+        "test-your-microphone": "Testa din mikrofon",
+        "test-your-microphone-title-[before-testing]": "Testa din mikrofon",
+        "test-your-microphone-title-[get-ready]": "Gör dig redo att säga något",
+        "test-your-microphone-title-[playback-finished]": "Uppspelning",
+        "test-your-microphone-title-[playing-back]": "Uppspelning",
+        "test-your-microphone-title-[recording-success]": "Klart!",
+        "test-your-microphone-title-[recording]": "Spelar in din röst...",
+        "testing-my-microphone": "Testar 1, 2, 3",
+        "this-is-how-you-will-sound-to-others": "Så här kommer du att låta för andra",
+        "through-browser-settings": "genom dina webbläsarinställningar",
+        "tip-1-header": "Tips 1",
+        "to-grant-access-follow-steps": "För att bevilja tillgång så följ stegen i ",
+        "transfer": "Överför",
+        "trying-to-speak": "Försöker du tala? Din mikrofon är avstängd",
+        "turn-on-camera": "Slå på kameran",
+        "unblock-permissions-video-link": "denna korta video",
+        "unmute": "Slå på ljudet",
+        "unmute-all-guests": "Slå på ljudet för alla gäster",
+        "unmute-camera": "Slå på kamera",
+        "unmute-microphone": "Slå på mikrofon",
+        "unmute-participant": "Slå på ljudet för deltagaren",
+        "waiting-for-permissions": "Väntar på tillstånd...",
+        "we-will-help-you-header": "Oroa dig inte. Vi hjälper dig!",
+        "you-blocked-access": "Du blockerade tillgången till din {{seeOrHearYou}}",
+        "you-can-say-something-like": "Du kan säga något i stil med ",
+        "you-may-need-to-connect-speakers-or-headphones": "Om du använder en stationär dator kan du behöva ansluta högtalare eller hörlurar. "
+    },
+    "media-presentation": {
+        "do-you-want-to-take-over": "Vill du ta över presentationen? "
+    },
+    "meeting": {
+        "admit": "Tillåt",
+        "admit-participant": "Lägg till deltagaren",
+        "chat": "Chatt",
+        "chat-history": "Chatthistorik",
+        "chat-input": "Inmatning av chattext",
+        "chat-new-message": "nytt meddelande",
+        "chat-new-messages": "{{newMessagesCount}} nya meddelanden",
+        "chat-scroll-last-message": "Bläddra till det senaste chattmeddelandet",
+        "close-new-chat-alert": "Stäng notis om nytt chattmeddelande",
+        "connection-quality": "Anslutningskvalitet",
+        "external-participants": "Externa deltagare",
+        "folded-selfview": {
+            "drag": "Flytta på självbilden "
+        },
+        "hide-self-view": "Dölj självbilden",
+        "in-this-meeting": "I detta mötet",
+        "leave": "Lämna",
+        "more-participants": "{{inMeetingCount}} Deltagare",
+        "network-fixed": "Fixat!",
+        "network-reconnecting": "Förlorad nätverksanslutning. Återansluter...",
+        "one-participant": "1 deltagare",
+        "participants": "Deltagare",
+        "presentation": {
+            "collapse": "Minska",
+            "expand": "Utvidga "
+        },
+        "raised-hand": "Räckte upp handen",
+        "remove-participant": "Ta bort deltagaren",
+        "remove-user-confirmation": "Är du säker på att du vill ta bort {{userName}} från det här mötet?",
+        "show-self-view": "Visa självbild",
+        "toggle-chat": "Växla chattpanel",
+        "toggle-invite-modal": "Växla inbjuda medlemmar modal",
+        "toggle-participants-panel": "Växla deltagarpanel",
+        "video-label": "Direktsändning av mötet",
+        "video-label-presentation": "Direktsändning av en annan deltagares presentation",
+        "waiting-in-lobby": "Väntar i lobbyn",
+        "write-message": "Skriv ett meddelande",
+        "you-left": "Du har lämnat mötet "
+    },
+    "microphone": {
+        "cant-hear": "Jag kan inte höra på grund av en hörselnedsättning",
+        "do-you-hear-yourself": "Kan du höra dig själv? "
+    },
+    "pin": {
+        "are-you-host": "Är du en värd?",
+        "how-to-find": "Du hittar PIN-koden i mötesinbjudan i din kalender eller i ett e-postmeddelande.",
+        "label": "{{type}} PIN-kod",
+        "placeholder": "t.ex. '1234'",
+        "what-is-the-pin": "Vad är PIN-koden för detta möte? "
+    },
+    "preflight": {
+        "accessibility": {
+            "camera-detected-1": "Vi kan upptäcka att kameran är igång. Vi kan dock inte bekräfta att du är med i bilden.",
+            "microphone-detected-1": "Vi kan upptäcka ljud från din mikrofon.",
+            "microphone-detected-2": "Direkttextning kan aktiveras som standard om mötet har stöd för denna funktion. Du kan aktivera eller inaktivera direkttextning när som helst under mötet.",
+            "speakers-detected-1": "Din enhet är ansluten till högtalare.",
+            "speakers-detected-1-chrome": "Din enhet är ansluten till högtalare. Du kan kontrollera att rätt högtalare har valts i rullgardinsmenyn ovan.",
+            "speakers-detected-2": "Direkttextning kan aktiveras som standard om mötet har stöd för denna funktion. Du kan aktivera eller inaktivera direkttextning när som helst under mötet. "
+        },
+        "camera-missing": "Andra kommer inte kunna se dig",
+        "get-ready": "Gör dig redo för ditt möte",
+        "in-this-meeting": {
+            "plural": "<0>{inMeetingCount} andra personer</0> är redan inne.",
+            "singular": "<0>1 annan person</0> är redan inne. "
+        },
+        "join-browser": "Delta i mötet i webbläsaren",
+        "microphone-missing": "Andra kommer inte kunna höra dig",
+        "speaker-missing": "Du kommer inte att kunna höra andra "
+    },
+    "quality": {
+        "auto": "Auto",
+        "change-quality": "Ändra kvalitet",
+        "high": "Hög",
+        "info": "Den här inställningen påverkar hur mycket bandbredd du använder för det här mötet. Justera till ett lägre värde om din internetanslutning är långsam eller om datorns prestanda påverkas negativt.",
+        "low": "Låg",
+        "medium": "Medium",
+        "poor-connection-detected": "Dålig anslutning upptäcks",
+        "quality": "Anslutningskvalitet",
+        "select-quality": "Välj möteskvalitet",
+        "very-high": "Väldigt hög "
+    },
+    "settings": {
+        "cancel-changes": "Avbryt ändringar",
+        "collapsed-selfview-tooltip-description": "Du skickar fortfarande video till andra personer i mötet.",
+        "device-select": {
+            "select-camera": "Välj kamera",
+            "select-microphone": "Välj mikrofon",
+            "select-speaker": "Välj högtalare "
+        },
+        "device-settings": "Enhetsinställningar",
+        "devices": "Enheter",
+        "disconnect-all": "Koppla bort alla",
+        "disconnect-all-confirmation": "Är du säker på att du vill koppla bort alla?",
+        "disconnect-all-desc": "Kopplar bort alla mötesdeltagare  inklusive dig",
+        "effects": "Effekter",
+        "layout": "Layout",
+        "layout-changes-info": "De ändringar som du gör i videolayouten kommer att vara desamma för alla deltagare.",
+        "layout-confirmation-desc": "Du är på väg att ändra layouten för alla i mötet inte bara för dig själv.",
+        "layout-confirmation-title": "Ändringar i layouten kommer att påverka alla",
+        "layout[adaptive-composition]": "Adaptiv Sammansättning",
+        "layout[double-theatre]": "Teater",
+        "layout[highlight]": "Framhäva",
+        "layout[single-theatre]": "Teater",
+        "layout[speaker-focus]": "Talarfokus",
+        "layout[tiled]": "Uppradat",
+        "lock": "Lås mötet",
+        "lock-desc": "Förhindrar att någon automatiskt ansluter sig till mötet.",
+        "meeting-layout": "Möteslayout",
+        "meeting-settings": "Mötesinställningar",
+        "noise-suppression": "Brusreducering",
+        "personal": "Personliga inställningar",
+        "playing-sound": "Spelar ljud...",
+        "save-changes": "Spara ändringar",
+        "selfview-hidden": "Självbild dold",
+        "settings": "Inställningar",
+        "test-your-sound": "Testa ditt ljud",
+        "unlock": "Lås upp mötet "
+    },
+    "speaker": {
+        "cant-hear": "Jag kan inte höra på grund av en hörselnedsättning",
+        "do-you-hear-sound": "Hör du ljudet? "
+    },
+    "stats": {
+        "[bitrate]": "Bitrate",
+        "[codec]": "Codec",
+        "[jitter]": "Jitter",
+        "[packets-lost]": "Tappade paket",
+        "[packets-transmitted]": "Överförda paket",
+        "[recent-packet-loss]": "Nyliga paketförluster",
+        "[resolution]": "Upplösning",
+        "[roundtrip-time]": "Tur och Returtid",
+        "[total-packet-loss]": "Total paketförlust",
+        "audio": "Ljud",
+        "in": "In",
+        "nerd-stats": "Nördstatistik",
+        "out": "Ut",
+        "video": "Video "
+    },
+    "transfer": {
+        "error": "Fel inträffade under överföringen av deltagaren",
+        "fail": "Kan inte överföra deltagare",
+        "meeting-id": "Mötes-ID",
+        "pin": "Pin",
+        "pin-placeholder": "t.ex. '1234'",
+        "placeholder": "t.ex. 'meet.bob'",
+        "success": "Deltagaren har överförts med framgång",
+        "transfer-participant": "Överför deltagare "
+    },
+    "username": {
+        "hey-whats-your-name": "Hej. <1></1> Vad heter du?",
+        "name-input-placeholder": "t.ex. 'David'",
+        "usage-purpose": "Ange ett visningsnamn så att andra personer vet vem som deltar i mötet.",
+        "your-name": "Ditt namn"
+    }
+}
