@@ -1,24 +1,20 @@
 import React, { useEffect, useState } from 'react'
 
-import { AudioOutputTestButton, DevicesList, MediaControlSettings, StreamQuality } from '@pexip/media-components'
+import { DevicesList, MediaControlSettings, StreamQuality } from '@pexip/media-components'
 import { MediaDeviceInfoLike } from '@pexip/media-control'
-import { Modal, ProgressBar } from '@pexip/components'
+import { Modal } from '@pexip/components'
 
 import './SettingsPanel.scss'
 
 interface SettingsPanelProps {
   onClose: () => void
+  onSave: (localMediaStream: MediaStream) => void
 }
 
 export function SettingsPanel (props: SettingsPanelProps): JSX.Element {
   const [devices, setDevices] = useState<MediaDeviceInfoLike[]>([])
-  const [audioInput, setAudioInput] = useState<MediaDeviceInfoLike>()
-  const [audioOutput, setAudioOutput] = useState<MediaDeviceInfoLike>()
   const [videoInput, setVideoInput] = useState<MediaDeviceInfoLike>()
   const [localMediaStream, setLocalMediaStream] = useState<MediaStream>()
-  const [audioLevel, setAudioLevel] = useState<number>(0)
-
-  let audioLevelInterval: NodeJS.Timer
 
   const deviceList = <DevicesList devices={devices}
     audioInputError={{
@@ -32,65 +28,51 @@ export function SettingsPanel (props: SettingsPanelProps): JSX.Element {
       deniedDevice: undefined
     }}
     onAudioInputChange={(device: MediaDeviceInfoLike): void => {
-      setAudioInput(device)
-    } }
+      throw new Error('Function not implemented.')
+    }}
     onAudioOutputChange={(device: MediaDeviceInfoLike): void => {
-      setAudioOutput(device)
-    } }
+      throw new Error('Function not implemented.')
+    }}
     onVideoInputChange={(device: MediaDeviceInfoLike): void => {
       setVideoInput(device)
-    }}
-    audioInput={audioInput}
-    audioOutput={audioOutput}
+    } }
     videoInput={videoInput}
   />
 
-  const configurePreview = async (): Promise<void> => {
-    const audioStream = await navigator.mediaDevices.getUserMedia({
-      audio: { echoCancellation: true }
-    })
-    const audioContext = new AudioContext()
-    const audioSource = audioContext.createMediaStreamSource(audioStream)
-    const analyser = audioContext.createAnalyser()
-    analyser.fftSize = 512
-    analyser.minDecibels = -127
-    analyser.maxDecibels = 0
-    analyser.smoothingTimeConstant = 0.4
-    audioSource.connect(analyser)
-    const volumes = new Uint8Array(analyser.frequencyBinCount)
-    const volumeCallback = (): void => {
-      analyser.getByteFrequencyData(volumes)
-      let volumeSum = 0
-      for (const volume of volumes) {
-        volumeSum += volume
-      }
-      const averageVolume = volumeSum / volumes.length
-      // Value range: 127 = analyser.maxDecibels - analyser.minDecibels;
-      const percentage = Math.round((averageVolume * 100 / 127))
-      console.log(percentage)
-      setAudioLevel(percentage)
-    }
-    audioLevelInterval = setInterval(volumeCallback, 100)
-  }
-
   useEffect(() => {
+    let mediaStream: MediaStream
     const asyncBootstrap = async (): Promise<void> => {
       const devices = await navigator.mediaDevices.enumerateDevices()
-      setDevices(devices)
-      const mediaStream = await navigator.mediaDevices.getUserMedia({ video: true })
+      setDevices(devices.filter((device) => device.kind === 'videoinput'))
+      if (videoInput == null) {
+        const videoInputId = localStorage.getItem('pexipVideoInputId')
+        let device = devices.find((device) => device.deviceId === videoInputId)
+        if (device == null) {
+          device = devices[0]
+        }
+        setVideoInput(device)
+      }
+      mediaStream = await navigator.mediaDevices.getUserMedia({ video: { deviceId: videoInput?.deviceId } })
       setLocalMediaStream(mediaStream)
-      await configurePreview()
     }
     asyncBootstrap().catch((error) => console.error(error))
     return () => {
-      clearInterval(audioLevelInterval)
+      mediaStream?.getTracks().forEach((track) => track.stop())
     }
-  }, [])
+  }, [videoInput])
 
-  const inputAudioTester = <ProgressBar progress={audioLevel} />
-  const outputAudioTester = <AudioOutputTestButton onClick={function (): void {
-    throw new Error('Function not implemented.')
-  } } shouldPlay={false} />
+  const inputAudioTester = <span />
+  const outputAudioTester = <span />
+
+  const handleSave = (): void => {
+    if (videoInput != null) {
+      localStorage.setItem('pexipVideoInputId', videoInput?.deviceId)
+      navigator.mediaDevices.getUserMedia({ video: { deviceId: videoInput?.deviceId } }).then((mediaStream) => {
+        props.onSave(mediaStream)
+      }).catch((error) => console.error(error))
+    }
+    props.onClose()
+  }
 
   return (
     <Modal isOpen={true} className='SettingsPanel'>
@@ -99,7 +81,7 @@ export function SettingsPanel (props: SettingsPanelProps): JSX.Element {
         outputAudioTester={outputAudioTester}
         handleCancel={props.onClose}
         handleNoiseSuppression={() => {}}
-        handleSave={() => {}}
+        handleSave={handleSave}
         allowToSave={true}
         isSaving={false}
         noiseSuppression={false}

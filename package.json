@@ -7,6 +7,7 @@
     "@pexip/components": "^14.1.0",
     "@pexip/infinity": "^14.1.0",
     "@pexip/media-components": "^14.1.0",
+    "@pexip/media-control": "^14.1.0",
     "@tensorflow/tfjs-core": "^4.0.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",

@@ -3,6 +3,7 @@ import React from 'react'
 import { CallSignals, InfinityClient, PresoConnectionChangeEvent } from '@pexip/infinity'
 
 import { ToolbarButton } from './toolbar-button/ToolbarButton'
+import { SettingsPanel } from './settings-panel/SettingsPanel'
 
 import { ReactComponent as shareScreenIcon } from './icons/share-screen.svg'
 import { ReactComponent as unlockIcon } from './icons/unlock.svg'
@@ -11,12 +12,12 @@ import { ReactComponent as settingsIcon } from './icons/settings.svg'
 import { ReactComponent as popUpVideoIcon } from './icons/pop-up-video.svg'
 
 import './Toolbar.scss'
-import { SettingsPanel } from './settings-panel/SettingsPanel'
 
 interface ToolbarProps {
   infinityClient: InfinityClient
   callSignals: CallSignals
   onLocalPresentationStream: Function
+  onLocalStream: Function
 }
 
 interface ToolbarState {
@@ -125,7 +126,11 @@ export class Toolbar extends React.Component<ToolbarProps, ToolbarState> {
             onClick={this.toggleSettings}
           />
         </div>
-        {this.state.settingsEnabled && <SettingsPanel onClose={() => this.setState({ settingsEnabled: false })} />}
+        {this.state.settingsEnabled &&
+          <SettingsPanel
+            onClose={() => this.setState({ settingsEnabled: false })}
+            onSave={(localStream: MediaStream) => this.props.onLocalStream(localStream)}
+          />}
       </>
     )
   }

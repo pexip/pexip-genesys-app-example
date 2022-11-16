@@ -3,7 +3,7 @@ import React from 'react'
 import { fireEvent, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import { ReactComponent as icon } from './icons/share-screen.svg'
+import { ReactComponent as icon } from '../icons/share-screen.svg'
 import { ToolbarButton } from './ToolbarButton'
 
 const toolTip = 'test-tooltip'
