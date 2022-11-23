@@ -19,6 +19,7 @@ import { Toolbar } from './toolbar/Toolbar'
 import './App.scss'
 
 import Draggable from 'react-draggable'
+import { loginPureCloud, setAccessTokenPureCloud } from './genesys'
 
 enum CONNECTION_STATE {
   CONNECTING,
@@ -36,12 +37,6 @@ interface AppState {
 }
 
 class App extends React.Component<{}, AppState> {
-  // TODO: We should receive the following information in the query parameters:
-  //  - pcEnvironment (Genesys Cloud Region)
-  //  - pcConversationId
-  //  - PexipNodeUrl
-  //  - PexipAgentPin
-
   private readonly selfViewRef = React.createRef<HTMLDivElement>()
   private readonly remoteVideoRef = React.createRef<HTMLVideoElement>()
 
@@ -93,8 +88,6 @@ class App extends React.Component<{}, AppState> {
       })
     })
     this.callSignals.onPresentationConnectionChange.add((changeEvent: PresoConnectionChangeEvent) => {
-      console.log('onPresentation')
-      console.log(changeEvent)
       if (changeEvent.recv !== 'connected' && changeEvent.send !== 'connected') {
         this.setState({
           presentationStream: new MediaStream(),
@@ -133,21 +126,30 @@ class App extends React.Component<{}, AppState> {
   }
 
   async componentDidMount (): Promise<void> {
-    // const queryParams = new URLSearchParams(window.location.search)
-    // const pcEnvironment = queryParams.get('pcEnvironment')
-    // const pcConversationId = queryParams.get('pcConverstationId')
-    // const node = queryParams.get('pexipNodeUrl')
-    // const pin = queryParams.get('pexipAgentPin')
-    // TODO: This parameters should be received by a query parameter inside the URL.
-    // This is only for testing.
-    const node = '192.168.1.101'
-    const conferenceAlias = '10'
-    const displayName = 'Marcos'
-    const pin = '1234'
-    const localStream = await navigator.mediaDevices.getUserMedia({ video: true })
-    this.setState({ localStream })
-    await this.joinConference(node, conferenceAlias, localStream, displayName, pin)
-    // setTimeout(() => { this.infinityClient.disconnect({}).catch((e) => console.error(e)) }, 3000)
+    const queryParams = new URLSearchParams(window.location.search)
+    const pcEnvironment = queryParams.get('pcEnvironment')
+    const pcConversationId = queryParams.get('pcConversationId')
+    const pexipNode = queryParams.get('pexipNode')
+    const pexipAgentPin = queryParams.get('pexipAgentPin')
+    const displayName = 'Agent'
+    console.log(window.location.href)
+    if (pcEnvironment != null && pcConversationId != null && pexipNode != null && pexipAgentPin != null) {
+      // throw Error('Some of the parameters are not defined in the URL in the query string.\n' +
+      //   'You have to define "pcEnvironment", "pcConversationId", "pexipNode" and "pexipAgentPin"')
+      await loginPureCloud(pcEnvironment, pcConversationId, pexipNode, pexipAgentPin)
+    } else {
+      const parsedUrl = window.location.href.replace(/#/g, '?')
+      const queryParams = new URLSearchParams(parsedUrl)
+      const accessToken = queryParams.get('access_token') as string
+      const state = JSON.parse(decodeURIComponent(queryParams.get('state') as string))
+      const pexipNode = state.pexipNode
+      const pcConversationId = state.pcConversationId
+      const pexipAgentPin = state.pexipAgentPin
+      await setAccessTokenPureCloud(accessToken)
+      const localStream = await navigator.mediaDevices.getUserMedia({ video: true })
+      this.setState({ localStream })
+      await this.joinConference(pexipNode, pcConversationId, localStream, displayName, pexipAgentPin)
+    }
   }
 
   async componentWillUnmount (): Promise<void> {
