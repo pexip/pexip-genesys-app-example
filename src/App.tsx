@@ -140,13 +140,16 @@ class App extends React.Component<{}, AppState> {
     } else {
       const parsedUrl = new URL(window.location.href.replace(/#/g, '?'))
       const queryParams = new URLSearchParams(parsedUrl.search)
+
       const accessToken = queryParams.get('access_token') as string
-      console.log(accessToken)
+
       const state = JSON.parse(decodeURIComponent(queryParams.get('state') as string))
-      const pexipNode = state.pexipNode
+      const pcEnvironment = state.pcEnvironment
       const pcConversationId = state.pcConversationId
+      const pexipNode = state.pexipNode
       const pexipAgentPin = state.pexipAgentPin
-      await setAccessTokenPureCloud(accessToken)
+
+      await setAccessTokenPureCloud(pcEnvironment, accessToken)
       const localStream = await navigator.mediaDevices.getUserMedia({ video: true })
       this.setState({ localStream })
       await this.joinConference(pexipNode, pcConversationId, localStream, displayName, pexipAgentPin)

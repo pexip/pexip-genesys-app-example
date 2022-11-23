@@ -13,10 +13,10 @@ export const loginPureCloud = async (
   pcConversationId: string,
   pexipNode: string,
   pexipAgentPin: string): Promise<AuthData> => {
-  client.setPersistSettings(true)
   client.setEnvironment(pcEnvironment)
   const authData = await client.loginImplicitGrant(clientId, redirectUri, {
     state: JSON.stringify({
+      pcEnvironment,
       pcConversationId,
       pexipNode,
       pexipAgentPin
@@ -26,9 +26,12 @@ export const loginPureCloud = async (
   return authData
 }
 
-export const setAccessTokenPureCloud = async (accessToken: string): Promise<void> => {
+export const setAccessTokenPureCloud = async (pcEnvironment: string, accessToken: string): Promise<void> => {
   const client = platformClient.ApiClient.instance
+  console.log(pcEnvironment)
+  client.setEnvironment(pcEnvironment)
   client.setAccessToken(accessToken)
+  console.log(client)
   const usersApi = new platformClient.UsersApi(client)
-  console.log(usersApi.getUsersMe({ expand: ['presence'] }))
+  console.log(await usersApi.getUsersMe({ expand: ['presence'] }))
 }
