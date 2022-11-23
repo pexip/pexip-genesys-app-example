@@ -138,9 +138,10 @@ class App extends React.Component<{}, AppState> {
       //   'You have to define "pcEnvironment", "pcConversationId", "pexipNode" and "pexipAgentPin"')
       await loginPureCloud(pcEnvironment, pcConversationId, pexipNode, pexipAgentPin)
     } else {
-      const parsedUrl = window.location.href.replace(/#/g, '?')
-      const queryParams = new URLSearchParams(parsedUrl)
+      const parsedUrl = new URL(window.location.href.replace(/#/g, '?'))
+      const queryParams = new URLSearchParams(parsedUrl.search)
       const accessToken = queryParams.get('access_token') as string
+      console.log(accessToken)
       const state = JSON.parse(decodeURIComponent(queryParams.get('state') as string))
       const pexipNode = state.pexipNode
       const pcConversationId = state.pcConversationId
