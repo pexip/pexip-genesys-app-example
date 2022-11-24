@@ -1,20 +1,52 @@
-import { AuthData } from 'purecloud-platform-client-v2'
+import { ConversationsApi, Models, UsersApi } from 'purecloud-platform-client-v2'
+import config from './config.js'
+import controller from './notificationsController.js'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const platformClient = require('purecloud-platform-client-v2/dist/node/purecloud-platform-client-v2.js')
 
-const clientId = 'fa593b6d-c2f1-40a7-8a8f-a26fe7575f16'
-const redirectUri = 'https://localhost:3000' // Take into account that we are inside an iframe
+const clientId = config.environment === 'development' ? config.genesys.devOauthClientID : config.genesys.prodOauthClientID
+
+const redirectUri = config.environment === 'development' ? config.developmentUri : config.prodUri
 
 const client = platformClient.ApiClient.instance
 
+let state: genesysState
+
+let userMe: Models.UserMe
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+let usersApi: UsersApi
+
+let conversationApi: ConversationsApi
+
+let handleOnHold: (state: boolean) => any
+
+let handleEndCall: () => any
+
+/**
+ * @param pcEnvironment The enviroment context of the current Genesys session
+ * @param conversationId The current conversation id for the running interaction
+ */
+interface genesysState {
+  'pcEnvironment': string
+  'pcConversationId': string
+}
+
+/**
+ * Triggers the login process for Genesys
+ * @param pcEnvironment ToDo
+ * @param pcConversationId ToDo
+ * @param pexipNode ToDo
+ * @param pexipAgentPin ToDo
+ */
 export const loginPureCloud = async (
   pcEnvironment: string,
   pcConversationId: string,
   pexipNode: string,
-  pexipAgentPin: string): Promise<AuthData> => {
+  pexipAgentPin: string): Promise<void> => {
   client.setEnvironment(pcEnvironment)
-  const authData = await client.loginImplicitGrant(clientId, redirectUri, {
+  await client.loginImplicitGrant(clientId, redirectUri, {
     state: JSON.stringify({
       pcEnvironment,
       pcConversationId,
@@ -22,16 +54,61 @@ export const loginPureCloud = async (
       pexipAgentPin
     })
   })
-  console.log(authData)
-  return authData
 }
 
-export const setAccessTokenPureCloud = async (pcEnvironment: string, accessToken: string): Promise<void> => {
+/**
+ * Initiates the Genesys util object
+ * @param genesysState The necessary context information for the genesys util
+ * @param accessToken The access token provided by Genesys after successful login
+ */
+export const inititate = async (genesysState: genesysState, accessToken: string): Promise<void> => {
   const client = platformClient.ApiClient.instance
-  console.log(pcEnvironment)
-  client.setEnvironment(pcEnvironment)
+  state = genesysState
+  console.log(state.pcEnvironment)
+  client.setEnvironment(state.pcEnvironment)
   client.setAccessToken(accessToken)
   console.log(client)
-  const usersApi = new platformClient.UsersApi(client)
-  console.log(await usersApi.getUsersMe({ expand: ['presence'] }))
+  usersApi = new platformClient.UsersApi(client)
+  conversationApi = new platformClient.ConversationsApi(client)
+  userMe = await usersApi.getUsersMe()
+  controller.createChannel().then(() => {
+    controller.addSubscription(
+      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+      `v2.users.${userMe.id}.conversations.calls`,
+      (callEvent: { eventBody: { participants: any[] } }) => {
+        const agentParticipant = callEvent?.eventBody?.participants?.filter((p: { purpose: string }) => p.purpose === 'agent')[0]
+        // Disconnected event
+        if (agentParticipant?.state === 'disconnected') {
+          console.log('Agent has ended the call')
+          handleEndCall()
+        }
+        // Hold event
+        if (agentParticipant?.held === true) {
+          console.log('Agent has set the call on hold')
+        } else {
+          console.log('Agent has continued the call')
+        }
+        handleOnHold(agentParticipant?.held)
+      })
+  })
+  console.info('Genesys client layer initated')
+}
+
+/**
+ * Fetches the ani name provided by inbound SIP call. It uses the conversationid provided during initialization
+ * @returns The ani name which will be used as alias for the meeting
+ */
+export const fetchAniName = async (): Promise<string | undefined> => {
+  const aniName = await conversationApi.getConversation(state.pcConversationId).then((conversation) => {
+    return conversation.participants?.filter((p) => p.purpose === 'customer')[0]?.aniName
+  })
+  return aniName
+}
+
+export function addOnHoldListener (onHoldListener: (state: boolean) => any): void {
+  handleOnHold = onHoldListener
+}
+
+export function addEndCallLister (endCallListener: () => any): void {
+  handleEndCall = endCallListener
 }
