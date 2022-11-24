@@ -19,7 +19,7 @@ import { Toolbar } from './toolbar/Toolbar'
 import './App.scss'
 
 import Draggable from 'react-draggable'
-import { loginPureCloud, setAccessTokenPureCloud } from './genesys'
+import { loginPureCloud, setAccessTokenPureCloud } from './genesys/genesysUtils'
 
 enum CONNECTION_STATE {
   CONNECTING,
