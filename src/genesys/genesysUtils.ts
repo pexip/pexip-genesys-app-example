@@ -20,9 +20,15 @@ let usersApi: UsersApi
 
 let conversationApi: ConversationsApi
 
-let handleOnHold: (state: boolean) => any
+let handleOnHold: (flag: boolean) => any
 
 let handleEndCall: () => any
+
+let handleMuteCall: (flag: boolean) => any
+
+export let onHoldState: boolean = false
+
+export let muteState: boolean = false
 
 /**
  * @param pcEnvironment The enviroment context of the current Genesys session
@@ -82,16 +88,37 @@ export const inititate = async (genesysState: genesysState, accessToken: string)
           console.log('Agent has ended the call')
           handleEndCall()
         }
-        // Hold event
-        if (agentParticipant?.held === true) {
-          console.log('Agent has set the call on hold')
-        } else {
-          console.log('Agent has continued the call')
+        // Mute event
+        if (muteState !== agentParticipant?.muted) {
+          muteState = agentParticipant?.muted
+          processMute(muteState)
         }
-        handleOnHold(agentParticipant?.held)
+        // On hold event
+        if (onHoldState !== agentParticipant?.held) {
+          onHoldState = agentParticipant?.held
+          processOnHold(onHoldState)
+        }
       })
   })
   console.info('Genesys client layer initated')
+}
+
+function processOnHold (flag: boolean): void {
+  if (flag) {
+    console.log('Agent has set the call on hold')
+  } else {
+    console.log('Agent has continued the call')
+  }
+  handleOnHold(flag)
+}
+
+function processMute (flag: boolean): void {
+  if (flag) {
+    console.log('Agent has muted the call')
+  } else {
+    console.log('Agent has unmuted the call')
+  }
+  handleMuteCall(flag)
 }
 
 /**
@@ -105,10 +132,14 @@ export const fetchAniName = async (): Promise<string | undefined> => {
   return aniName
 }
 
-export function addOnHoldListener (onHoldListener: (state: boolean) => any): void {
+export function addOnHoldListener (onHoldListener: (flag: boolean) => any): void {
   handleOnHold = onHoldListener
 }
 
 export function addEndCallLister (endCallListener: () => any): void {
   handleEndCall = endCallListener
+}
+
+export function addMuteListenr (muteCallListener: (flag: boolean) => any): void {
+  handleMuteCall = muteCallListener
 }

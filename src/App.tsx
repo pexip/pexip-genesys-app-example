@@ -177,14 +177,20 @@ class App extends React.Component<{}, AppState> {
       const pexipNode = state.pexipNode
       const pexipAgentPin = state.pexipAgentPin
       await GenesysUtil.inititate(state, accessToken)
+      // Add on hold listener
       GenesysUtil.addOnHoldListener(
         async (mute) => await this.onHoldVideo(mute)
       )
+      // Add end call listener
       GenesysUtil.addEndCallLister(async () => await this.onEndCall())
       const aniName = (await GenesysUtil.fetchAniName()) ?? ''
       const localStream = await navigator.mediaDevices.getUserMedia({
         video: true
       })
+      // Add end call listener
+      GenesysUtil.addMuteListenr(
+        async (mute) => await this.onMuteCall(mute)
+      )
       this.setState({ localStream })
       const prefixedConfAlias = config.pexip.conferencePrefix + aniName
       await this.joinConference(
@@ -201,12 +207,17 @@ class App extends React.Component<{}, AppState> {
   async onHoldVideo (onHold: boolean): Promise<void> {
     // Mute current user video and set mute adio indicator even if no audio layer is used by web rtc
     await this.infinityClient.muteVideo({ muteVideo: onHold })
-    await this.infinityClient.mute({ mute: onHold })
+    await this.infinityClient.mute({ mute: GenesysUtil.muteState || onHold })
+    await this.infinityClient.muteAllGuests({ mute: onHold })
   }
 
   //
   async onEndCall (): Promise<void> {
     await this.infinityClient.disconnectAll({})
+  }
+
+  async onMuteCall (muted: boolean): Promise<void> {
+    await this.infinityClient.mute({ mute: muted })
   }
 
   async componentWillUnmount (): Promise<void> {
