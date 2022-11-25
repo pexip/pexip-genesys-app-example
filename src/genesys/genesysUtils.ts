@@ -76,7 +76,7 @@ export const inititate = async (genesysState: genesysState, accessToken: string)
       // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
       `v2.users.${userMe.id}.conversations.calls`,
       (callEvent: { eventBody: { participants: any[] } }) => {
-        const agentParticipant = callEvent?.eventBody?.participants?.filter((p: { purpose: string }) => p.purpose === 'agent')[0]
+        const agentParticipant = callEvent?.eventBody?.participants?.find((p: { purpose: string, state: string }) => p.purpose === 'agent' && p.state === 'connected')
         // Disconnected event
         if (agentParticipant?.state === 'disconnected') {
           console.log('Agent has ended the call')
