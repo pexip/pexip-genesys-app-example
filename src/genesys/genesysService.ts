@@ -20,7 +20,7 @@ let usersApi: UsersApi
 
 let conversationApi: ConversationsApi
 
-let handleOnHold: (flag: boolean) => any
+let handleHold: (flag: boolean) => any
 
 let handleEndCall: () => any
 
@@ -96,20 +96,20 @@ export const inititate = async (genesysState: genesysState, accessToken: string)
         // On hold event
         if (onHoldState !== agentParticipant?.held) {
           onHoldState = agentParticipant?.held
-          processOnHold(onHoldState)
+          processHold(onHoldState)
         }
       })
   })
   console.info('Genesys client layer initated')
 }
 
-function processOnHold (flag: boolean): void {
+function processHold (flag: boolean): void {
   if (flag) {
     console.log('Agent has set the call on hold')
   } else {
     console.log('Agent has continued the call')
   }
-  handleOnHold(flag)
+  handleHold(flag)
 }
 
 function processMute (flag: boolean): void {
@@ -132,8 +132,8 @@ export const fetchAniName = async (): Promise<string | undefined> => {
   return aniName
 }
 
-export function addOnHoldListener (onHoldListener: (flag: boolean) => any): void {
-  handleOnHold = onHoldListener
+export function addHoldListener (holdListener: (flag: boolean) => any): void {
+  handleHold = holdListener
 }
 
 export function addEndCallLister (endCallListener: () => any): void {

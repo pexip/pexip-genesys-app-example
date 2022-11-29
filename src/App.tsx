@@ -19,7 +19,7 @@ import { Toolbar } from './toolbar/Toolbar'
 import './App.scss'
 
 import Draggable from 'react-draggable'
-import * as GenesysUtil from './genesys/genesysUtils'
+import * as GenesysUtil from './genesys/genesysService'
 
 enum CONNECTION_STATE {
   CONNECTING,
@@ -178,7 +178,7 @@ class App extends React.Component<{}, AppState> {
       const pexipAgentPin = state.pexipAgentPin
       await GenesysUtil.inititate(state, accessToken)
       // Add on hold listener
-      GenesysUtil.addOnHoldListener(
+      GenesysUtil.addHoldListener(
         async (mute) => await this.onHoldVideo(mute)
       )
       // Add end call listener
@@ -214,6 +214,7 @@ class App extends React.Component<{}, AppState> {
   //
   async onEndCall (): Promise<void> {
     await this.infinityClient.disconnectAll({})
+    await this.infinityClient.disconnect({})
   }
 
   async onMuteCall (muted: boolean): Promise<void> {
