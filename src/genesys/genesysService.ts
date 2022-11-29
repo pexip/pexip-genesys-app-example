@@ -1,4 +1,6 @@
 import { ConversationsApi, Models, UsersApi } from 'purecloud-platform-client-v2'
+import { GenesysRole } from '../constants/GenesysRole'
+import { GenesysConnectionsState } from '../constants/GenesysConnectionState'
 import config from './config.js'
 import controller from './notificationsController.js'
 
@@ -82,9 +84,9 @@ export const inititate = async (genesysState: genesysState, accessToken: string)
       // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
       `v2.users.${userMe.id}.conversations.calls`,
       (callEvent: { eventBody: { participants: any[] } }) => {
-        const agentParticipant = callEvent?.eventBody?.participants?.find((p: { purpose: string, state: string }) => p.purpose === 'agent' && p.state === 'connected')
+        const agentParticipant = callEvent?.eventBody?.participants?.find((p: { purpose: string, state: string }) => p.purpose === GenesysRole.AGENT)
         // Disconnected event
-        if (agentParticipant?.state === 'disconnected') {
+        if (agentParticipant?.state === GenesysConnectionsState.DISCONNECTED) {
           console.log('Agent has ended the call')
           handleEndCall()
         }
@@ -127,7 +129,7 @@ function processMute (flag: boolean): void {
  */
 export const fetchAniName = async (): Promise<string | undefined> => {
   const aniName = await conversationApi.getConversation(state.pcConversationId).then((conversation) => {
-    return conversation.participants?.filter((p) => p.purpose === 'customer')[0]?.aniName
+    return conversation.participants?.filter((p) => p.purpose === GenesysRole.CUSTOMER)[0]?.aniName
   })
   return aniName
 }
