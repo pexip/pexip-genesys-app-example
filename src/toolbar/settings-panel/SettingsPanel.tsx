@@ -37,6 +37,7 @@ export function SettingsPanel (props: SettingsPanelProps): JSX.Element {
       setVideoInput(device)
     } }
     videoInput={videoInput}
+    setShowHelpVideo={() => {}}
   />
 
   useEffect(() => {

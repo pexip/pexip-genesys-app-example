@@ -50,7 +50,8 @@ const infinityClientMock: InfinityClient = {
   liveCaptions: jest.fn(),
   setRole: jest.fn(),
   setConferenceExtension: jest.fn(),
-  setPin: jest.fn()
+  setPin: jest.fn(),
+  dtmf: jest.fn()
 }
 
 const signalMock = {
