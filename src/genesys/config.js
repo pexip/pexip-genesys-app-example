@@ -10,11 +10,6 @@ export default {
   // This is different than the Pexip conference node value below.
   prodUri: 'https://pexip.github.io/pexip-genesys-agent-blueprint/agent-app/',
 
-  // Id for the video DOM element. Only change this if you customize index.html.
-  videoElementId: 'pexip-video-container',
-  selfviewElementId: 'pexip-selfview',
-  presentationElementId: 'pexip-presentation-container',
-
   genesys: {
     // OAuth Client ID
     // Created in "Create a Token Implicit OAuth Grant for Genesys Cloud deployment" step
