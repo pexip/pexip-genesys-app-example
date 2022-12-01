@@ -9,6 +9,7 @@ import { ReactComponent as unlockIcon } from './icons/unlock.svg'
 import { ReactComponent as lockIcon } from './icons/lock.svg'
 import { ReactComponent as settingsIcon } from './icons/settings.svg'
 import { ReactComponent as popUpVideoIcon } from './icons/pop-up-video.svg'
+import { ReactComponent as inviteLinkIcon } from './icons/invitelink.svg'
 import copy from 'copy-to-clipboard'
 
 import './Toolbar.scss'
@@ -137,7 +138,7 @@ export class Toolbar extends React.Component<ToolbarProps, ToolbarState> {
           selected={this.state.settingsEnabled}
           onClick={this.toggleSettings}
         />
-        <ToolbarButton icon={settingsIcon} toolTip='Copy invitation link'
+        <ToolbarButton icon={inviteLinkIcon} toolTip='Copy invitation link'
           onClick={this.copyInvitationLink}
         />
       </div>
