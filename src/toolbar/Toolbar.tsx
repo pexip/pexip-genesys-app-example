@@ -69,16 +69,14 @@ export class Toolbar extends React.Component<ToolbarProps, ToolbarState> {
   }
 
   private async togglePopOutVideo (): Promise<void> {
+    const videoElement = (document.getElementById('remoteVideo') as HTMLVideoElement)
+    if (videoElement === undefined) {
+      return
+    }
     if (document.pictureInPictureElement != null) {
       await document.exitPictureInPicture()
     } else if (document.pictureInPictureEnabled) {
-      const videoElement = (document.getElementById('remoteVideo') as HTMLVideoElement)
       await videoElement.requestPictureInPicture()
-      const disableButton = (): void => {
-        this.setState({ popOutVideoEnabled: false })
-        videoElement.removeEventListener('leavepictureinpicture', disableButton.bind(this))
-      }
-      videoElement.addEventListener('leavepictureinpicture', disableButton)
       this.setState({ popOutVideoEnabled: true })
     }
   }
@@ -88,6 +86,9 @@ export class Toolbar extends React.Component<ToolbarProps, ToolbarState> {
   }
 
   componentDidMount (): void {
+    const videoElement = (document.getElementById('remoteVideo') as HTMLVideoElement)
+    videoElement.addEventListener('enterpictureinpicture', () => this.setState({ popOutVideoEnabled: true }))
+    videoElement.addEventListener('leavepictureinpicture', () => this.setState({ popOutVideoEnabled: false }))
     this.props.callSignals.onPresentationConnectionChange.add((changeEvent: PresoConnectionChangeEvent): void => {
       console.log('onPresentationConnectionChange')
       if (changeEvent.send === 'connected') {
