@@ -87,8 +87,12 @@ export class Toolbar extends React.Component<ToolbarProps, ToolbarState> {
 
   componentDidMount (): void {
     const videoElement = (document.getElementById('remoteVideo') as HTMLVideoElement)
-    videoElement.addEventListener('enterpictureinpicture', () => this.setState({ popOutVideoEnabled: true }))
-    videoElement.addEventListener('leavepictureinpicture', () => this.setState({ popOutVideoEnabled: false }))
+    // Add listener for natvive pop out events for cusomer video element
+    // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+    if (videoElement) {
+      videoElement.addEventListener('enterpictureinpicture', () => this.setState({ popOutVideoEnabled: true }))
+      videoElement.addEventListener('leavepictureinpicture', () => this.setState({ popOutVideoEnabled: false }))
+    }
     this.props.callSignals.onPresentationConnectionChange.add((changeEvent: PresoConnectionChangeEvent): void => {
       console.log('onPresentationConnectionChange')
       if (changeEvent.send === 'connected') {
