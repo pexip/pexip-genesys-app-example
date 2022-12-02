@@ -13,6 +13,7 @@
     "@types/node": "^18.11.7",
     "@types/react": "^18.0.24",
     "@types/react-dom": "^18.0.8",
+    "copy-to-clipboard": "^3.3.3",
     "purecloud-platform-client-v2": "^153.0.0",
     "react": "^18.2.0",
     "react-app-rewired": "^2.2.1",

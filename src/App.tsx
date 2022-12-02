@@ -36,6 +36,12 @@ interface AppState {
   secondaryVideo: 'remote' | 'presentation'
 }
 
+export interface InfinityContext {
+  conferencePin: string
+  conferenceAlias: string
+  infinityHost: string
+}
+
 class App extends React.Component<{}, AppState> {
   private readonly selfViewRef = React.createRef<HTMLDivElement>()
   private readonly remoteVideoRef = React.createRef<HTMLVideoElement>()
@@ -43,6 +49,7 @@ class App extends React.Component<{}, AppState> {
   private signals!: InfinitySignals
   private callSignals!: CallSignals
   private infinityClient!: InfinityClient
+  private infinityContext!: InfinityContext
 
   constructor (props: {}) {
     super(props)
@@ -148,9 +155,9 @@ class App extends React.Component<{}, AppState> {
   async componentDidMount (): Promise<void> {
     const queryParams = new URLSearchParams(window.location.search)
     const pcEnvironment = queryParams.get('pcEnvironment')
-    const pcConversationId = queryParams.get('pcConversationId')
-    const pexipNode = queryParams.get('pexipNode')
-    const pexipAgentPin = queryParams.get('pexipAgentPin')
+    const pcConversationId = queryParams.get('pcConversationId') ?? ''
+    const pexipNode = queryParams.get('pexipNode') ?? ''
+    const pexipAgentPin = queryParams.get('pexipAgentPin') ?? ''
     const displayName = 'Agent'
     console.log(window.location.href)
     if (
@@ -193,6 +200,8 @@ class App extends React.Component<{}, AppState> {
       )
       this.setState({ localStream })
       const prefixedConfAlias = config.pexip.conferencePrefix + aniName
+      this.infinityContext = { conferencePin: pexipAgentPin, conferenceAlias: aniName, infinityHost: pexipNode }
+
       await this.joinConference(
         pexipNode,
         prefixedConfAlias,
@@ -262,8 +271,9 @@ class App extends React.Component<{}, AppState> {
               </div>
             </Draggable>
             <Toolbar
-              infinityClient={this.infinityClient}
-              callSignals={this.callSignals}
+              infinityClient = {this.infinityClient}
+              callSignals = {this.callSignals}
+              infinityContext = {this.infinityContext}
               onLocalPresentationStream={this.handleLocalPresentationStream.bind(
                 this
               )}
