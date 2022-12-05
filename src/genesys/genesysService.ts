@@ -93,9 +93,7 @@ export const inititate = async (genesysState: genesysState, accessToken: string)
         // Mute event
         if (muteState !== agentParticipant?.muted) {
           muteState = agentParticipant?.muted
-          if (!onHoldState) {
-            processMute(muteState)
-          }
+          processMute(muteState)
         }
         // On hold event
         if (onHoldState !== agentParticipant?.held) {
@@ -122,7 +120,10 @@ function processMute (flag: boolean): void {
   } else {
     console.log('Agent has unmuted the call')
   }
-  handleMuteCall(flag)
+  // Only process mute if onhold is not active
+  if (!onHoldState) {
+    handleMuteCall(flag)
+  }
 }
 
 /**
