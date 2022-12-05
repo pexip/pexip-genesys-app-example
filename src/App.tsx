@@ -235,6 +235,9 @@ class App extends React.Component<{}, AppState> {
     await this.infinityClient.muteVideo({ muteVideo: onHold })
     await this.infinityClient.mute({ mute: GenesysUtil.muteState || onHold })
     await this.infinityClient.muteAllGuests({ mute: onHold })
+    // Set selfview hidden or visibel depending on state
+    const selfViewWrapper = this.selfViewRef?.current
+    if (selfViewWrapper != null) { selfViewWrapper.hidden = onHold }
   }
 
   //
@@ -284,6 +287,7 @@ class App extends React.Component<{}, AppState> {
                   mediaStream={this.state.localStream}
                   flip={true}
                   objectFit={'cover'}
+                  id='selfview'
                 />
               </div>
             </Draggable>
