@@ -13,13 +13,15 @@ import {
   PresoConnectionChangeEvent
 } from '@pexip/infinity'
 
-import { Video } from './video/Video'
+// import { Video } from './video/Video'
 import { Toolbar } from './toolbar/Toolbar'
 
 import './App.scss'
-
+import { Video } from './video/Video'
 import Draggable from 'react-draggable'
 import * as GenesysUtil from './genesys/genesysService'
+
+// import Draggable from 'react-draggable'
 
 enum CONNECTION_STATE {
   CONNECTING,
@@ -90,6 +92,12 @@ class App extends React.Component<{}, AppState> {
       presentationStream,
       secondaryVideo: 'presentation'
     })
+  }
+
+  private handleLocalStream (localStream: MediaStream): void {
+    this.state.localStream.getTracks().forEach((track) => track.stop())
+    this.infinityClient.setStream(localStream)
+    this.setState({ localStream })
   }
 
   private configureSignals (): void {
@@ -191,9 +199,18 @@ class App extends React.Component<{}, AppState> {
       // Add end call listener
       GenesysUtil.addEndCallLister(async () => await this.onEndCall())
       const aniName = (await GenesysUtil.fetchAniName()) ?? ''
-      const localStream = await navigator.mediaDevices.getUserMedia({
-        video: true
-      })
+      let localStream: MediaStream
+      const deviceId = localStorage.getItem('pexipVideoInputId')
+      if (deviceId !== null) {
+        const device = (await navigator.mediaDevices.enumerateDevices()).find((device) => device.deviceId === deviceId)
+        if (device !== null) {
+          localStream = await navigator.mediaDevices.getUserMedia({ video: { deviceId } })
+        } else {
+          localStream = await navigator.mediaDevices.getUserMedia({ video: true })
+        }
+      } else {
+        localStream = await navigator.mediaDevices.getUserMedia({ video: true })
+      }
       // Add end call listener
       GenesysUtil.addMuteListenr(
         async (mute) => await this.onMuteCall(mute)
@@ -271,12 +288,11 @@ class App extends React.Component<{}, AppState> {
               </div>
             </Draggable>
             <Toolbar
-              infinityClient = {this.infinityClient}
-              callSignals = {this.callSignals}
+              infinityClient={this.infinityClient}
               infinityContext = {this.infinityContext}
-              onLocalPresentationStream={this.handleLocalPresentationStream.bind(
-                this
-              )}
+              callSignals={this.callSignals}
+              onLocalPresentationStream={this.handleLocalPresentationStream.bind(this)}
+              onLocalStream={this.handleLocalStream.bind(this)}
             />
           </>
         )}

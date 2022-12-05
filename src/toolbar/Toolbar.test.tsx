@@ -7,10 +7,18 @@ import { CallSignals, InfinityClient } from '@pexip/infinity'
 import { InfinityContext } from '../App'
 
 // Create a mock for the ToolbarButton
-jest.mock('./ToolbarButton', () => {
+jest.mock('./toolbar-button/ToolbarButton', () => {
   return {
     ToolbarButton: () => {
       return <button />
+    }
+  }
+})
+
+jest.mock('./settings-panel/SettingsPanel', () => {
+  return {
+    SettingsPanel: () => {
+      return <div />
     }
   }
 })
@@ -43,7 +51,8 @@ const infinityClientMock: InfinityClient = {
   liveCaptions: jest.fn(),
   setRole: jest.fn(),
   setConferenceExtension: jest.fn(),
-  setPin: jest.fn()
+  setPin: jest.fn(),
+  dtmf: jest.fn()
 }
 
 const signalMock = {
@@ -72,15 +81,18 @@ const callSignalsMock: CallSignals = {
 }
 
 const handleLocalPresentationStream = jest.fn()
+const handleLocalStream = jest.fn()
 
 test('renders the toolbar', () => {
-  render(<Toolbar infinityContext={infinityContextMock} infinityClient={ infinityClientMock } callSignals={ callSignalsMock } onLocalPresentationStream={handleLocalPresentationStream}/>)
+  render(<Toolbar infinityClient={ infinityClientMock } infinityContext={infinityContextMock} callSignals={ callSignalsMock }
+    onLocalPresentationStream={handleLocalPresentationStream} onLocalStream={handleLocalStream} />)
   const toolbar = screen.getByTestId('Toolbar')
   expect(toolbar).toBeInTheDocument()
 })
 
 test('it renders 5 buttons', () => {
-  render(<Toolbar infinityContext={infinityContextMock} infinityClient={ infinityClientMock } callSignals={ callSignalsMock } onLocalPresentationStream={handleLocalPresentationStream}/>)
+  render(<Toolbar infinityClient={ infinityClientMock } infinityContext={infinityContextMock} callSignals={ callSignalsMock }
+    onLocalPresentationStream={handleLocalPresentationStream} onLocalStream={handleLocalStream} />)
   const buttons = screen.getAllByRole('button')
   expect(buttons.length).toBe(5)
 })

@@ -2,7 +2,8 @@ import React from 'react'
 
 import { CallSignals, InfinityClient, PresoConnectionChangeEvent } from '@pexip/infinity'
 
-import { ToolbarButton } from './ToolbarButton'
+import { ToolbarButton } from './toolbar-button/ToolbarButton'
+import { SettingsPanel } from './settings-panel/SettingsPanel'
 
 import { ReactComponent as shareScreenIcon } from './icons/share-screen.svg'
 import { ReactComponent as unlockIcon } from './icons/unlock.svg'
@@ -18,9 +19,10 @@ import { InfinityContext } from '../App'
 
 interface ToolbarProps {
   infinityClient: InfinityClient
+  infinityContext: InfinityContext
   callSignals: CallSignals
   onLocalPresentationStream: Function
-  infinityContext: InfinityContext
+  onLocalStream: Function
 }
 
 interface ToolbarState {
@@ -89,7 +91,7 @@ export class Toolbar extends React.Component<ToolbarProps, ToolbarState> {
   }
 
   private toggleSettings (): void {
-
+    this.setState({ settingsEnabled: !this.state.settingsEnabled })
   }
 
   private async copyInvitationLink (): Promise<void> {
@@ -98,7 +100,7 @@ export class Toolbar extends React.Component<ToolbarProps, ToolbarState> {
     const infinityContext = this.props.infinityContext
     const invitationlink: string = 'https://' + infinityContext.infinityHost + '/webapp/#/?conference=mp' + infinityContext.conferenceAlias + '&pin=' + infinityContext.conferencePin
     this.copy(invitationlink)
-    toast('Invitaion link copied to clipboard!')
+    toast('Invitation link copied to clipboard!')
   }
 
   componentDidMount (): void {
@@ -121,27 +123,34 @@ export class Toolbar extends React.Component<ToolbarProps, ToolbarState> {
 
   render (): JSX.Element {
     return (
-      <div className="Toolbar" data-testid='Toolbar'>
-        <ToolbarButton icon={shareScreenIcon} toolTip={this.state.shareScreenEnabled ? 'Stop sharing screen' : 'Share screen'}
-          selected={this.state.shareScreenEnabled}
-          onClick={this.toggleShareScreen}
-        />
-        <ToolbarButton icon={this.state.lockRoomEnabled ? unlockIcon : lockIcon} toolTip={this.state.lockRoomEnabled ? 'Look room' : 'Unlock room' }
-          selected={this.state.lockRoomEnabled}
-          onClick={this.toggleLockRoom}
-        />
-        <ToolbarButton icon={popUpVideoIcon} toolTip={this.state.popOutVideoEnabled ? 'Return video' : 'Pop out video'}
-          selected={this.state.popOutVideoEnabled}
-          onClick={this.togglePopOutVideo}
-        />
-        <ToolbarButton icon={settingsIcon} toolTip='Open settings'
-          selected={this.state.settingsEnabled}
-          onClick={this.toggleSettings}
-        />
-        <ToolbarButton icon={inviteLinkIcon} toolTip='Copy invitation link'
-          onClick={this.copyInvitationLink}
-        />
-      </div>
+      <>
+        <div className="Toolbar" data-testid='Toolbar'>
+          <ToolbarButton icon={shareScreenIcon} toolTip={this.state.shareScreenEnabled ? 'Stop sharing screen' : 'Share screen'}
+            selected={this.state.shareScreenEnabled}
+            onClick={this.toggleShareScreen}
+          />
+          <ToolbarButton icon={this.state.lockRoomEnabled ? unlockIcon : lockIcon} toolTip={this.state.lockRoomEnabled ? 'Look room' : 'Unlock room' }
+            selected={this.state.lockRoomEnabled}
+            onClick={this.toggleLockRoom}
+          />
+          <ToolbarButton icon={popUpVideoIcon} toolTip={this.state.popOutVideoEnabled ? 'Return video' : 'Pop out video'}
+            selected={this.state.popOutVideoEnabled}
+            onClick={this.togglePopOutVideo}
+          />
+          <ToolbarButton icon={inviteLinkIcon} toolTip='Copy invitation link'
+            onClick={this.copyInvitationLink}
+          />
+          <ToolbarButton icon={settingsIcon} toolTip='Open settings'
+            selected={this.state.settingsEnabled}
+            onClick={this.toggleSettings}
+          />
+        </div>
+        {this.state.settingsEnabled &&
+          <SettingsPanel
+            onClose={() => this.setState({ settingsEnabled: false })}
+            onSave={(localStream: MediaStream) => this.props.onLocalStream(localStream)}
+          />}
+      </>
     )
   }
 }
