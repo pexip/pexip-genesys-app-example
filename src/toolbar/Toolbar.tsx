@@ -100,7 +100,7 @@ export class Toolbar extends React.Component<ToolbarProps, ToolbarState> {
     const infinityContext = this.props.infinityContext
     const invitationlink: string = 'https://' + infinityContext.infinityHost + '/webapp/#/?conference=mp' + infinityContext.conferenceAlias + '&pin=' + infinityContext.conferencePin
     this.copy(invitationlink)
-    toast('Invitaion link copied to clipboard!')
+    toast('Invitation link copied to clipboard!')
   }
 
   componentDidMount (): void {
