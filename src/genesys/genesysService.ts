@@ -93,7 +93,9 @@ export const inititate = async (genesysState: genesysState, accessToken: string)
         // Mute event
         if (muteState !== agentParticipant?.muted) {
           muteState = agentParticipant?.muted
-          processMute(muteState)
+          if (!onHoldState) {
+            processMute(muteState)
+          }
         }
         // On hold event
         if (onHoldState !== agentParticipant?.held) {
