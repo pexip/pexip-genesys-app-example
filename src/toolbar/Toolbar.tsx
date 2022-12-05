@@ -10,11 +10,16 @@ import { ReactComponent as unlockIcon } from './icons/unlock.svg'
 import { ReactComponent as lockIcon } from './icons/lock.svg'
 import { ReactComponent as settingsIcon } from './icons/settings.svg'
 import { ReactComponent as popUpVideoIcon } from './icons/pop-up-video.svg'
+import { ReactComponent as inviteLinkIcon } from './icons/invitelink.svg'
+import copy from 'copy-to-clipboard'
 
 import './Toolbar.scss'
+import { toast } from 'react-toastify'
+import { InfinityContext } from '../App'
 
 interface ToolbarProps {
   infinityClient: InfinityClient
+  infinityContext: InfinityContext
   callSignals: CallSignals
   onLocalPresentationStream: Function
   onLocalStream: Function
@@ -29,6 +34,7 @@ interface ToolbarState {
 
 export class Toolbar extends React.Component<ToolbarProps, ToolbarState> {
   private presentationStream!: MediaStream
+  private readonly copy = copy
   constructor (props: ToolbarProps) {
     super(props)
     this.state = {
@@ -41,6 +47,7 @@ export class Toolbar extends React.Component<ToolbarProps, ToolbarState> {
     this.toggleLockRoom = this.toggleLockRoom.bind(this)
     this.togglePopOutVideo = this.togglePopOutVideo.bind(this)
     this.toggleSettings = this.toggleSettings.bind(this)
+    this.copyInvitationLink = this.copyInvitationLink.bind(this)
   }
 
   private async toggleShareScreen (): Promise<void> {
@@ -87,6 +94,15 @@ export class Toolbar extends React.Component<ToolbarProps, ToolbarState> {
     this.setState({ settingsEnabled: !this.state.settingsEnabled })
   }
 
+  private async copyInvitationLink (): Promise<void> {
+    // Example: https://pexipdemo.com//webapp/#/?conference=mp555054c72bb44243bd0004b25d3ea45c&pin=2021
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions, @typescript-eslint/restrict-plus-operands
+    const infinityContext = this.props.infinityContext
+    const invitationlink: string = 'https://' + infinityContext.infinityHost + '/webapp/#/?conference=mp' + infinityContext.conferenceAlias + '&pin=' + infinityContext.conferencePin
+    this.copy(invitationlink)
+    toast('Invitaion link copied to clipboard!')
+  }
+
   componentDidMount (): void {
     const videoElement = (document.getElementById('remoteVideo') as HTMLVideoElement)
     // Add listener for natvive pop out events for cusomer video element
@@ -120,6 +136,9 @@ export class Toolbar extends React.Component<ToolbarProps, ToolbarState> {
           <ToolbarButton icon={popUpVideoIcon} toolTip={this.state.popOutVideoEnabled ? 'Return video' : 'Pop out video'}
             selected={this.state.popOutVideoEnabled}
             onClick={this.togglePopOutVideo}
+          />
+          <ToolbarButton icon={inviteLinkIcon} toolTip='Copy invitation link'
+            onClick={this.copyInvitationLink}
           />
           <ToolbarButton icon={settingsIcon} toolTip='Open settings'
             selected={this.state.settingsEnabled}

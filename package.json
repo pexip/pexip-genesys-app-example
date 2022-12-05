@@ -9,17 +9,11 @@
     "@pexip/media-components": "15.0.0",
     "@pexip/media-control": "15.0.0",
     "@tensorflow/tfjs-core": "^4.1.0",
-    "@testing-library/jest-dom": "^5.16.5",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^14.4.3",
-    "@types/jest": "^29.2.3",
-    "@types/node": "^18.11.9",
-    "@types/react": "^18.0.25",
-    "@types/react-dom": "^18.0.9",
     "@types/uuid": "^9.0.0",
     "i18next-browser-languagedetector": "^7.0.1",
     "i18next-http-backend": "^2.0.2",
     "patch-package": "^6.5.0",
+    "copy-to-clipboard": "^3.3.3",
     "purecloud-platform-client-v2": "^153.0.0",
     "react": "^18.2.0",
     "react-app-rewired": "^2.2.1",
@@ -33,6 +27,30 @@
     "sass-loader": "^13.2.0",
     "scss": "^0.2.4",
     "web-vitals": "^3.1.0"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^14.4.3",
+    "@types/jest": "^29.2.3",
+    "@types/node": "^18.11.9",
+    "@types/react": "^18.0.25",
+    "@types/react-dom": "^18.0.9",
+    "@types/jest": "^29.2.0",
+    "@types/node": "^18.11.7",
+    "@types/react": "^18.0.24",
+    "@types/react-dom": "^18.0.8",
+    "@typescript-eslint/eslint-plugin": "^5.45.0",
+    "eslint": "^8.28.0",
+    "eslint-config-standard-with-typescript": "^23.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-n": "^15.5.1",
+    "eslint-plugin-promise": "^6.1.1",
+    "eslint-plugin-react": "^7.31.11",
+    "stylelint": "^14.15.0",
+    "stylelint-config-prettier-scss": "^0.0.1",
+    "stylelint-config-standard-scss": "^6.1.0",
+    "typescript": "^4.9.3"
   },
   "scripts": {
     "postinstall": "patch-package",
@@ -58,18 +76,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^5.45.0",
-    "eslint": "^8.28.0",
-    "eslint-config-standard-with-typescript": "^23.0.0",
-    "eslint-plugin-import": "^2.26.0",
-    "eslint-plugin-n": "^15.5.1",
-    "eslint-plugin-promise": "^6.1.1",
-    "eslint-plugin-react": "^7.31.11",
-    "stylelint": "^14.15.0",
-    "stylelint-config-prettier-scss": "^0.0.1",
-    "stylelint-config-standard-scss": "^6.1.0",
-    "typescript": "^4.9.3"
   }
 }
