@@ -1,5 +1,5 @@
 import React from 'react'
-import config from './genesys/config.js'
+import config from './config.js'
 import { ToastContainer, toast, Slide } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
