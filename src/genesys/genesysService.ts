@@ -1,15 +1,20 @@
 import { ConversationsApi, Models, UsersApi } from 'purecloud-platform-client-v2'
 import { GenesysRole } from '../constants/GenesysRole'
 import { GenesysConnectionsState } from '../constants/GenesysConnectionState'
-import config from './config.js'
+import config from '../config.js'
 import controller from './notificationsController.js'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const platformClient = require('purecloud-platform-client-v2/dist/node/purecloud-platform-client-v2.js')
 
-const clientId = config.environment === 'development' ? config.genesys.devOauthClientID : config.genesys.prodOauthClientID
+const redirectUri = window.location.href.split('?')[0]
 
-const redirectUri = config.environment === 'development' ? config.developmentUri : config.prodUri
+let clientId: string
+if (process.env.NODE_ENV === 'development') {
+  clientId = config.genesys.devOauthClientID
+} else {
+  clientId = config.genesys.prodOauthClientID
+}
 
 const client = platformClient.ApiClient.instance
 
