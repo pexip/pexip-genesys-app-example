@@ -1,0 +1,686 @@
+{
+    "add-participant": {
+        "can-control": "회의 제어 가능 (호스트)",
+        "failed": "참가자 추가 실패",
+        "submit": "참가자 추가",
+        "transfer": "전송",
+        "type-details": "여기에 참가자 세부 정보를 입력하십시오"
+    },
+    "camera": {
+        "cant-see": "시각 장애가 있어 내 모습을 볼 수 없습니다",
+        "do-you-see-yourself": "자신의 모습이 보입니까?"
+    },
+    "common": {
+        "[microphone]": "마이크",
+        "[camera]": "카메라",
+        "[speaker]": "스피커",
+        "a-pexip-meeting": "<1></1>회의실",
+        "and-then": "그리고",
+        "are-you-sure": "확실합니까?",
+        "ask-for-permission": "허가 요청",
+        "brand-name": "Pexip Video Service",
+        "cancel": "취소",
+        "change": "변경",
+        "client-name[mobile-app]": "모바일 앱",
+        "client-name[pexip-room]": "Pexip Room",
+        "client-name[session]": "세션",
+        "client-name[web-app]": "웹 앱",
+        "close-tooltip": "툴팁 닫기",
+        "close-window": "창 닫기",
+        "host": "호스트",
+        "join": "지금 참가",
+        "label-logo": "로고",
+        "label-pexip-logo": "Pexip 로고",
+        "live-captions-default-on": "라이브 캡션 기본으로 켜기",
+        "live-captions-hide": "라이브 캡션 감추기",
+        "live-captions-show": "라이브 캡션 보이기",
+        "lower-hand": "손 내리기",
+        "me": "나",
+        "meeting": "회의",
+        "next": "다음",
+        "next-terms-and-conditions": "계속하시면 당사의 <2>사용 약관</2>에 동의하는 것입니다",
+        "no": "아니요",
+        "raise-hand": "손 들기",
+        "remove": "제거",
+        "replay": "다시 재생",
+        "retry": "재시도",
+        "send": "보내기",
+        "try-again": "다시 시도",
+        "welcome": "환영합니다",
+        "yes": "예"
+    },
+    "device-status": {
+        "audio-device-in-use": {
+            "message": "다른 응용 프로그램(예: Teams나 Slack)에서 마이크를 사용하고 있습니다. 여기서 사용하려면 먼저 해당 응용 프로그램을 꺼 주십시오",
+            "title": "마이크를 사용할 수 없음"
+        },
+        "audio-device-not-found": {
+            "message": "기본 마이크를 사용할 수 없습니다",
+            "title": "마이크를 찾을 수 없습니다"
+        },
+        "audio-overconstrained": {
+            "message": "품질 설정을 낮게 해 보십시오",
+            "title": "마이크가 지원되지 않습니다"
+        },
+        "audio-video-devices-not-found": {
+            "message": "기본 카메라와 마이크를 사용할 수 없습니다",
+            "title": "카메라와 마이크를 찾을 수 없습니다"
+        },
+        "audioinput-granted-videoinput-denied": {
+            "message": "통화에서 다른 사람들이 귀하를 볼 수 있으려면 카메라 액세스가 허용되어야 합니다.",
+            "title": "카메라 액세스를 허용하지 않으셨습니다"
+        },
+        "devices-in-use": {
+            "message": "다른 응용 프로그램(예: Teams나 Slack)에서 카메라를 사용하고 있습니다. Pexip에서 사용하려면 먼저 해당 응용 프로그램을 꺼 주십시오",
+            "title": "카메라와 마이크를 사용할 수 없음"
+        },
+        "initial-permissions-audio-input-granted": {
+            "message": "마이크 사용을 허용하셨습니다.",
+            "title": "권한 허용됨"
+        },
+        "initial-permissions-granted": {
+            "message": "카메라와 마이크 사용을 허용하셨습니다.",
+            "title": "권한 허용됨"
+        },
+        "initial-permissions-not-granted": {
+            "message": "다음 단계에서 브라우저의 질문에 <1>\"허용\"</1>을 선택하십시오. 회의 시간 동안만 액세스가 허용됩니다.",
+            "title": "카메라와 마이크 사용을 허용해야 합니다."
+        },
+        "initial-permissions-video-input-denied": {
+            "message": "카메라 사용을 허용하지 않으셨습니다.",
+            "title": "권한 허용되지 않음"
+        },
+        "initial-permissions-video-input-granted": {
+            "message": "카메라 사용을 허용하셨습니다.",
+            "title": "권한 허용됨"
+        },
+        "invalid-audio-constraints": {
+            "message": "브라우저 캐시를 지워 보십시오",
+            "title": "마이크가 올바로 구성되지 않았습니다"
+        },
+        "invalid-constraints": {
+            "message": "브라우저 캐시를 지워 보십시오",
+            "title": "카메라와 마이크가 올바로 구성되지 않았습니다"
+        },
+        "invalid-video-constraints": {
+            "message": "브라우저 캐시를 지워 보십시오",
+            "title": "카메라가 올바로 구성되지 않았습니다"
+        },
+        "no-audio-devices-found": {
+            "message": "마이크를 사용할 수 없습니다. 올바로 연결하고 설치하였는지 확인해 주십시오.",
+            "title": "연결된 마이크를 찾을 수 없습니다"
+        },
+        "no-devices-found": {
+            "message": "카메라와 마이크를 사용할 수 없습니다. 올바로 연결하고 설치하였는지 확인해 주십시오.",
+            "title": "연결된 카메라와 마이크를 찾을 수 없습니다"
+        },
+        "no-video-devices-found": {
+            "message": "카메라를 사용할 수 없습니다. 올바로 연결하고 설치하였는지 확인해 주십시오.",
+            "title": "연결된 카메라를 찾을 수 없습니다"
+        },
+        "not-supported-error": {
+            "message": "브라우저에서 미디어를 찾을 수 없습니다. 다른 최신 브라우저를 사용하십시오.",
+            "title": "브라우저를 지원하지 않습니다"
+        },
+        "not-supported-error-only-audio": {
+            "message": "브라우저에서 미디어를 찾을 수 없습니다. 다른 최신 브라우저를 사용하십시오.",
+            "title": "브라우저를 지원하지 않습니다"
+        },
+        "not-supported-error-only-video": {
+            "message": "브라우저에서 미디어를 찾을 수 없습니다. 다른 최신 브라우저를 사용하십시오.",
+            "title": "브라우저를 지원하지 않습니다"
+        },
+        "overconstrained": {
+            "message": "품질 설정을 낮게 해 보십시오",
+            "title": "카메라와 마이크가 지원되지 않습니다"
+        },
+        "permissions-granted-fallback-audioinput": {
+            "message": "기본 마이크를 사용할 수 없습니다",
+            "title": "기본 마이크를 사용할 수 없음"
+        },
+        "permissions-granted-fallback-devices": {
+            "message": "기본 카메라와 마이크를 사용할 수 없습니다",
+            "title": "기본 카메라와 마이크를 사용할 수 없습니다"
+        },
+        "permissions-granted-fallback-videoinput": {
+            "message": "기본 카메라를 사용할 수 없습니다",
+            "title": "기본 카메라를 사용할 수 없음"
+        },
+        "permissions-only-audioinput": {
+            "message": "카메라 사용을 허용하지 않으셨습니다. 권한을 요청하고 액세스를 허용하십시오",
+            "title": "카메라 비활성화"
+        },
+        "permissions-only-audioinput-no-video-devices": {
+            "message": "올바르게 연결하고 설치하였는지 확인해 주십시오",
+            "title": "카메라를 사용할 수 없습니다"
+        },
+        "permissions-only-fallback-audioinput": {
+            "message": "카메라 및 기본 마이크를 사용할 수 없습니다",
+            "title": "카메라 및 기본 마이크를 사용할 수 없습니다"
+        },
+        "permissions-only-fallback-audioinput-no-video-devices": {
+            "message": "카메라를 찾을 수 없으며 기본 마이크를 사용할 수 없습니다",
+            "title": "카메라 및 기본 마이크를 사용할 수 없습니다"
+        },
+        "permissions-only-fallback-videoinput": {
+            "message": "마이크 및 기본 카메라를 사용할 수 없습니다",
+            "title": "마이크 및 기본 카메라를 사용할 수 없습니다"
+        },
+        "permissions-only-fallback-videoinput-no-audio-devices": {
+            "message": "마이크를 찾을 수 없으며 기본 카메라를 사용할 수 없습니다",
+            "title": "마이크 및 기본 카메라를 사용할 수 없습니다"
+        },
+        "permissions-only-videoinput": {
+            "message": "마이크 사용을 허용하지 않으셨습니다. 권한을 요청하고 액세스를 허용하십시오",
+            "title": "마이크 비활성화"
+        },
+        "permissions-only-videoinput-no-audio-devices": {
+            "message": "올바르게 연결하고 설치하였는지 확인해 주십시오",
+            "title": "마이크를 사용할 수 없습니다"
+        },
+        "permissions-rejected": {
+            "message": "카메라 또는 마이크 액세스를 차단하셨습니다. 액세스를 허용하려면 다음 짧은 영상의 지시를 따르십시오.",
+            "title": "카메라 또는 마이크의 액세스를 차단하려고 하셨습니까?"
+        },
+        "permissions-rejected-audioinput": {
+            "message": "마이크 사용을 허용하지 않으셨습니다. 권한을 요청하고 액세스를 허용하십시오",
+            "title": "마이크 권한이 허용되지 않았습니다"
+        },
+        "permissions-rejected-videoinput": {
+            "message": "카메라 사용을 허용하지 않으셨습니다. 권한을 요청하고 액세스를 허용하십시오",
+            "title": "카메라 권한이 허용되지 않았습니다"
+        },
+        "unknown-error": {
+            "message": "기기에서 미디어를 찾을 수 없습니다. 기기를 다시 연결하거나 다른 기기를 사용하십시오",
+            "title": "카메라와 마이크를 사용할 수 없음"
+        },
+        "unknown-error-only-audioinput": {
+            "message": "카메라를 사용할 수 없습니다. 기기를 다시 연결하거나 다른 기기를 사용하십시오",
+            "title": "카메라 사용할 수 없음"
+        },
+        "unknown-error-only-videoinput": {
+            "message": "마이크를 사용할 수 없습니다. 기기를 다시 연결하거나 다른 기기를 사용하십시오",
+            "title": "마이크를 사용할 수 없음"
+        },
+        "video-device-in-use": {
+            "message": "다른 응용 프로그램(예: Teams나 Slack)에서 카메라를 사용하고 있습니다. Pexip에서 사용하려면 먼저 해당 응용 프로그램을 꺼 주십시오",
+            "title": "카메라 사용할 수 없음"
+        },
+        "video-device-not-found": {
+            "message": "기본 카메라를 사용할 수 없습니다",
+            "title": "카메라를 찾을 수 없습니다"
+        },
+        "video-overconstrained": {
+            "message": "품질 설정을 낮게 해 보십시오",
+            "title": "카메라가 지원되지 않습니다"
+        },
+        "videoinput-granted-audioinput-denied": {
+            "message": "통화에서 다른 사람들이 귀하의 소리를 들을 수 있으려면 마이크 액세스가 허용되어야 합니다.",
+            "title": "마이크 액세스를 허용하지 않으셨습니다"
+        }
+    },
+    "error": {
+        "choose-another": "다른 회의를 선택하십시오",
+        "code[#pex100]": "입력한 PIN이 유효하지 않습니다. 다시 시도하십시오.",
+        "code[#pex101]": "입력한 PIN이 유효하지 않습니다. 다시 시도하십시오.",
+        "code[#pex109]": "PEX109 사용자 오류 메시지",
+        "code[#pex110]": "사용하려는 시스템을 일시적으로 사용할 수 없습니다. 잠시 후 다시 시도하십시오.",
+        "code[#pex111]": "연결이 없습니다. 다시 시도하십시오.",
+        "code[#pex112]": "사용할 수 있는 연결이 없습니다.",
+        "code[#pex113]": "연결이 끊어졌습니다. 다시 시도하십시오.",
+        "code[#pex114]": "사용하려는 시스템이 용량을 초과합니다.",
+        "code[#pex115]": "전송에 실패했습니다.",
+        "code[#pex116]": "통화 실패 - 관리자에게 문의하십시오.",
+        "code[#pex117]": "통화에 실패했습니다. 다시 시도하십시오.",
+        "code[#pex118]": "서버에 접속할 수 없습니다.",
+        "code[#pex119]": "통화 실패: 요청을 전달하는 데 실패했습니다.",
+        "code[#pex120]": "호스트가 회의를 종료했습니다.",
+        "code[#pex121]": "호스트가 회의를 종료했습니다.",
+        "code[#pex122]": "관리자가 회의를 종료했습니다.",
+        "code[#pex123]": "관리자가 귀하를 회의에서 연결 해제했습니다.",
+        "code[#pex124]": "회의의 다른 참가자가 귀하를 회의에서 연결 해제했습니다.",
+        "code[#pex125]": "호스트가 회의를 종료했습니다.",
+        "code[#pex126]": "회의 호스트가 참가하거나 회의 잠금을 해제하지 않았습니다.",
+        "code[#pex127]": "'통화 실패: 꺼짐' 오류가 발생했을 때 사용자에게 표시되는 메시지",
+        "code[#pex128]": "통화 실패: 방화벽이 액세스를 막는 것일 수 있습니다.",
+        "code[#pex129]": "회의에서 무언가 잘못되었습니다. 다시 연결을 시도하십시오.",
+        "code[#pex130]": "회의에서 무언가 잘못되었습니다. 다시 연결을 시도하십시오.",
+        "code[#pex131]": "회의에서 무언가 잘못되었습니다. 다시 연결을 시도하십시오.",
+        "code[#pex132]": "회의에서 무언가 잘못되었습니다. 다시 연결을 시도하십시오.",
+        "code[#pex140]": "회의가 종료되었습니다.",
+        "code[#pex141]": "호스트가 퇴장하여 회의가 종료되었습니다.",
+        "code[#pex142]": "귀하가 회의에 마지막으로 남은 참가자였습니다.",
+        "code[#pex143]": "테스트 통화가 종료되었습니다.",
+        "code[#pex150]": "수신자가 전화를 받지 않았거나 수신자에게 전화를 걸 수 없었습니다.",
+        "code[#pex151]": "다른 참가자들은 연결 해제되었습니다.",
+        "code[#pex152]": "전화를 걸 수 없었습니다.",
+        "code[#pex153]": "전화를 걸 수 없었습니다. 관리자에게 문의하십시오.",
+        "code[#pex154]": "\"{{alias}}\"에 연결할 수 없습니다. 주소를 확인하고 다시 시도하십시오.",
+        "code[#pex155]": "{{host}}에 참가할 수 없었습니다.",
+        "code[#pex156]": "전화를 걸 수 없었습니다.",
+        "code[#pex157]": "{{host}}에 참가할 수 없었습니다.",
+        "code[#pex170]": "통화 실패: 브라우저의 프라이버시 확장 프로그램을 종료하십시오.",
+        "code[#pex171]": "카메라 및/또는 마이크를 사용할 수 없습니다. 다른 앱에서 사용하고 있는 것은 아닌지 확인하십시오.",
+        "code[#pex180]": "프레젠테이션이 종료되었습니다.",
+        "code[#pex181]": "프레젠테이션 스트림이 연결 해제되었습니다.",
+        "code[#pex182]": "프레젠테이션 스트림을 사용할 수 없습니다.",
+        "code[#pex183]": "화면 공유가 취소되었습니다.",
+        "code[#pex184]": "화면 공유에 무언가 잘못되었습니다. 다시 시도하십시오.",
+        "code[#pex185]": "화면 공유가 연결 해제되었습니다.",
+        "code[#pex190]": "회의 연결에 오류가 발생했습니다.",
+        "code[#pex191]": "회의 연결에 오류가 발생했습니다.",
+        "code[#pex192]": "PIN 입력 시도 횟수가 너무 많습니다.",
+        "code[#pex193]": "회의 연결에 오류가 발생했습니다. 관리자에게 문의하십시오.",
+        "code[#pex194]": "이 회의의 최대 참가자 수에 도달하였습니다.",
+        "code[#pex195]": "회의 연결에 오류가 발생했습니다. 관리자에게 문의하십시오.",
+        "code[#pex196]": "방화벽이 귀하의 참가를 차단하고 있습니다.",
+        "code[#pex197]": "죄송합니다. 전화를 연결할 수 없었습니다. 이 창을 닫고 다시 시도하십시오.",
+        "code[#pex200]": "SSO 인증에 실패했습니다.",
+        "code[#pex201]": "SSO를 사용할 수 있지만 작업 증명 공급자가 구성되지 않았습니다.",
+        "code[#pex202]": "SSO 인증을 위한 창을 열 수 없습니다. 팝업 차단 기능이 원인일 수 있습니다.",
+        "code[#pex203]": "SSO 인증에 실패했습니다. 현재 시스템이 유지 관리 모드입니다.",
+        "code[#pex204]": "SSO 인증에 실패했습니다. 이 도메인에는 SSO를 사용할 수 없습니다.",
+        "not-found": {
+            "subtitle": "원하시는 페이지를 찾을 수 없습니다.",
+            "title": "404 - Not Found 오류"
+        },
+        "rejoin": "다시 참가",
+        "reload-page": "페이지 다시 로드하기",
+        "smth-on-our-end": "당사 측에서 오류가 발생했습니다.",
+        "smth-went-wrong": "무언가 잘못되었습니다."
+    },
+    "free-dial": {
+        "how-to-find": "캘린더 또는 이메일의 회의 초대장에서 회의 ID를 찾을 수 있습니다.",
+        "join": "회의 참가",
+        "meeting-id": "회의 ID",
+        "placeholder": "예: 'meet.bob'"
+    },
+    "idp": {
+        "select-provider": "귀하의 자격 증명 공급자를 선택하십시오. 그러면 다른 창이 열릴 것입니다.",
+        "sign-in": "로그인",
+        "sign-in-with": "{{name}} 이름으로 로그인"
+    },
+    "infocard": {
+        "lobby": {
+            "header": "다른 사람들이 참가하기를 기다리는 중입니다."
+        },
+        "meeting": {
+            "body": "오늘 대화할 수 있기를 희망합니다.",
+            "header": "{{brandName}}에 오신 것을 환영합니다"
+        }
+    },
+    "invite": {
+        "cant-find-anyone": "해당 이름을 가진 사용자를 찾을 수 없습니다",
+        "click-search": "검색하려면 상단의 검색 창을 클릭하십시오.",
+        "copied": "복사하였습니다",
+        "copy": "복사",
+        "copy-to-clipboard": "링크를 클립보드에 복사",
+        "expiry": "초대 링크는 {{expiryHours}} 시간 뒤에 만료됩니다",
+        "instructions": "추가하려는 사람에게 아래의 회의 링크를 보내십시오",
+        "invite": "초대",
+        "invite-person": "참가자 초대하기",
+        "invite-someone": "회의에 다른 사람 초대하기",
+        "invited": "초대됨",
+        "meeting-invitation-modal": "회의 초대 방식",
+        "search-for-someone": "초대할 사람을 찾거나",
+        "send-invite-link": "초대 링크를 보내십시오"
+    },
+    "media": {
+        "all-guests-muted-by-host": "호스트가 모든 게스트를 음소거했습니다",
+        "all-guests-unmuted-by-host": "호스트가 모든 게스트의 음소거를 해제했습니다",
+        "audio": {
+            "you-are-temporarily-unmuted": "음소거가 잠시 해제되었습니다"
+        },
+        "background-effects-action": "배경 효과 변경",
+        "browser-privacy-settings-link": "프라이버시 설정",
+        "camera-action": "카메라에 {{videoInputAction}}을(를) 수행합니다",
+        "camera-help-tip-desktop-1": "드롭다운 메뉴에서 올바른 카메라를 선택했습니까?",
+        "camera-help-tip-desktop-2": "카메라 렌즈가 막혀 있습니까?",
+        "camera-help-tip-desktop-3": "카메라를 사용할지 모르는 다른 프로그램(예: Teams 또는 Slack)을 닫아 보십시오.",
+        "camera-help-tip-desktop-4": "위의 어떤 것에도 해당되지 않으면, 브라우저나 컴퓨터를 재시작하십시오.",
+        "camera-help-tip-mobile-1": "카메라가 다른 곳을 보고 있습니까? 반대편 카메라를 사용해 보십시오. 이 아이콘 보기",
+        "camera-help-tip-mobile-2": "카메라 렌즈가 막혀 있습니까?",
+        "camera-help-tip-mobile-3": "카메라를 사용할지 모르는 다른 앱(예: Teams 또는 WhatsApp 등)을 닫아 보십시오",
+        "camera-help-tip-mobile-4": "기기를 재시작해 보십시오.",
+        "check-everything-works": "모든 것이 잘 작동하는지 확인하십시오",
+        "check-everything-works-description": "장비가 잘 작동하는지 확인하여 회의에서 다른 사람들이 귀하를 보고 귀하의 소리를 들을 수 있게 하십시오.",
+        "do you have headphones connected to-your-device": "기기에 헤드폰을 연결하였습니까? 헤드폰의 마이크가 입 근처에 있어야 합니다.",
+        "effect": {
+            "blur": "흐리기",
+            "none": "없음",
+            "replace": "대체"
+        },
+        "first-check-that-you-have-selected-microphone": "우선 마이크를 올바로 선택하고 음량이 충분히 높게 되어 있는지 확인하십시오.",
+        "flip-camera": "반대편 카메라 사용",
+        "help-check-[camera]-again": "카메라를 다시 확인해 보십시오",
+        "help-check-[microphone]-again": "마이크를 다시 확인해 보십시오",
+        "help-check-[speaker]-again": "스피커를 다시 확인해 보십시오",
+        "help-proceed-without-camera": "카메라 없이 진행",
+        "help-proceed-without-microphone": "마이크 없이 진행",
+        "help-step-[1]": "1단계",
+        "help-step-[2]": "2단계",
+        "help-step-[3]": "3단계",
+        "help-step-[4]": "4단계",
+        "help-step-[5]": "5단계",
+        "help-tip-1-header": "팁 1",
+        "help-tip-2-header": "팁 2",
+        "help-tip-3-header": "팁 3",
+        "help-tip-4-header": "팁 4",
+        "how-to-unblock-access": "미디어 기기에 액세스를 허용하는 방법을 알려주는 애니메이션입니다.",
+        "if-you-dont-hear-yourself-try-this": "자신의 목소리가 들리지 않으면, 다음을 시도해 보십시오",
+        "learn-how-to-grant-permissions": "액세스 허용 방법 보기",
+        "learn-how-to-manage-browser-privacy-settings": "브라우저 프라이버시 설정",
+        "learn-how-to-manage-browser-privacy-settings-label": "브라우저 프라이버시 설정 관리 방법 (새 탭에서 열기)",
+        "lets-check": "귀하의 영상과 소리가 올바로 작동하는지 확인해 봅시다",
+        "lets-go": "시작합니다",
+        "make-sure-the-volume-is-turned-up-on-your-device": "기기의 음량이 충분히 높게 되어 있는지 확인합니다.",
+        "make-sure-you-have-the-correct-microphone": "올바른 마이크를 사용하는지 확인합니다",
+        "make-sure-you-have-the-correct-speaker": "올바른 스피커를 사용하는지 확인합니다",
+        "microphone-action": "마이크에 {{audioInputAction}}을(를) 수행합니다",
+        "microphone-help-tip-desktop-1": "기기의 음량이 충분히 높게 되어 있는지 확인합니다.",
+        "microphone-help-tip-desktop-2": "기기에 헤드폰을 연결하였습니까? 헤드폰의 마이크가 입 근처에 있어야 합니다.",
+        "microphone-help-tip-desktop-3": "데스크톱 컴퓨터를 사용할 경우, 스피커 또는 헤드폰에 연결해야 할 수 있습니다.",
+        "microphone-help-tip-mobile-1": "기기의 음량이 충분히 높게 되어 있는지 확인합니다.",
+        "microphone-help-tip-mobile-2": "기기에 헤드폰을 연결하였습니까? 헤드폰의 마이크가 입 근처에 있어야 합니다.",
+        "microphone-help-tip-mobile-3": "기기를 재시작해 보십시오.",
+        "mute": "음소거",
+        "mute-all-guests": "모든 게스트 음소거",
+        "mute-microphone": "마이크 음소거",
+        "mute-participant": "참가자 음소거",
+        "muted": "음소거됨",
+        "of-your-browser": "브라우저의",
+        "off": "끄기",
+        "on": "켜기",
+        "or-go-to-the": "또는 다음으로 이동 ",
+        "permission-info": {
+            "[camera]": {
+                "title": "카메라"
+            },
+            "[microphone-and-camera]": {
+                "title": "카메라 및 마이크"
+            },
+            "[microphone]": {
+                "title": "마이크"
+            }
+        },
+        "permissions-denied": "브라우저 권한이 허용되지 않음",
+        "permissions-try-this-label": "그래도 해결되지 않으면 다음을 시도하십시오.",
+        "permissions-unblock-help-step-[1]-[android]": "브라우저의 주소창 오른쪽에서 더 보기 > 설정을 누릅니다",
+        "permissions-unblock-help-step-[1]-[chrome]": "브라우저 상단 바에 카메라 아이콘을 선택합니다",
+        "permissions-unblock-help-step-[1]-[edge]": "Microsoft Edge의 경우, 설정 및 기타...를 선택하고 설정을 선택합니다",
+        "permissions-unblock-help-step-[1]-[firefox]": "좌측 주소창의 권한 아이콘을 클릭합니다",
+        "permissions-unblock-help-step-[1]-[safari-ios]": "아이폰의 설정에 들어갑니다",
+        "permissions-unblock-help-step-[1]-[safari-ipados]": "아이패드의 설정에 들어갑니다",
+        "permissions-unblock-help-step-[1]-[safari-macosx]": "맥의 Safari 앱에서 Safari > 설정을 선택하고 웹사이트를 클릭합니다",
+        "permissions-unblock-help-step-[2]-[android]": "사이트 설정을 누릅니다",
+        "permissions-unblock-help-step-[2]-[chrome]": "\"허용\"을 선택합니다",
+        "permissions-unblock-help-step-[2]-[edge]": "(좌측의) 쿠키 및 사이트 허가를 선택합니다",
+        "permissions-unblock-help-step-[2]-[firefox]": "허용됨, 일시적으로 허용됨, 차단됨 또는 일시적으로 차단됨 옆에 X를 클릭하여 상태를 지웁니다. 그러면 다음번 사이트에 방문할 때 Firefox가 권한 설정을 다시 물어봅니다.",
+        "permissions-unblock-help-step-[2]-[safari-ios]": "스크롤을 내려 Safari(또는 귀하가 사용하는 브라우저)를 누릅니다",
+        "permissions-unblock-help-step-[2]-[safari-ipados]": "스크롤을 내려 Safari(또는 귀하가 사용하는 브라우저)를 누릅니다",
+        "permissions-unblock-help-step-[2]-[safari-macosx]": "카메라 및 마이크 설정은 좌측 목록에 있습니다.",
+        "permissions-unblock-help-step-[3]-[android]": "마이크 또는 카메라를 누릅니다",
+        "permissions-unblock-help-step-[3]-[chrome]": "브라우저를 새로고침합니다",
+        "permissions-unblock-help-step-[3]-[edge]": "사이트 권한에서 카메라 또는 마이크를 선택합니다",
+        "permissions-unblock-help-step-[3]-[safari-ios]": "카메라 및 마이크를 찾습니다",
+        "permissions-unblock-help-step-[3]-[safari-ipados]": "카메라 및 마이크를 찾습니다",
+        "permissions-unblock-help-step-[3]-[safari-macosx]": "여기서 권한을 허용할 수 있습니다",
+        "permissions-unblock-help-step-[4]-[android]": "탭 하여 마이크 또는 카메라를 켜거나 끕니다.",
+        "permissions-unblock-help-step-[4]-[safari-ios]": "켜져 있는지 확인하십시오",
+        "permissions-unblock-help-step-[4]-[safari-ipados]": "켜져 있는지 확인하십시오",
+        "permissions-unblock-help-step-[5]-[safari-ios]": "브라우저로 돌아와서 페이지를 새로고침합니다",
+        "permissions-unblock-help-step-[5]-[safari-ipados]": "브라우저로 돌아와서 페이지를 새로고침합니다",
+        "permissions-unblock-video-overlay-step-[1]-[android]": "브라우저에서 이 아이콘을 찾습니다",
+        "permissions-unblock-video-overlay-step-[1]-[chrome]": "브라우저에서 이 아이콘을 찾습니다",
+        "permissions-unblock-video-overlay-step-[1]-[edge]": "브라우저에서 이 아이콘을 찾습니다",
+        "permissions-unblock-video-overlay-step-[1]-[firefox]": "이 아이콘들을 찾습니다",
+        "permissions-unblock-video-overlay-step-[1]-[safari-ios]": "기기에서 설정에 들어갑니다",
+        "permissions-unblock-video-overlay-step-[1]-[safari-ipados]": "기기에서 설정에 들어갑니다",
+        "permissions-unblock-video-overlay-step-[1]-[safari-macosx]": "Safari 설정에 들어갑니다",
+        "permissions-unblock-video-overlay-step-[2]-[android]": "누릅니다",
+        "permissions-unblock-video-overlay-step-[2]-[chrome]": "클릭합니다",
+        "permissions-unblock-video-overlay-step-[2]-[edge]": "클릭합니다",
+        "permissions-unblock-video-overlay-step-[2]-[firefox]": "클릭합니다",
+        "permissions-unblock-video-overlay-step-[2]-[safari-ios]": "스크롤을 내려 Safari(또는 귀하가 사용하는 브라우저)를 찾습니다",
+        "permissions-unblock-video-overlay-step-[2]-[safari-ipados]": "스크롤을 내려 Safari(또는 귀하가 사용하는 브라우저)를 찾습니다",
+        "permissions-unblock-video-overlay-step-[2]-[safari-macosx]": "클릭합니다",
+        "permissions-unblock-video-overlay-step-[3]-[android]": "설정으로 스크롤을 내립니다",
+        "permissions-unblock-video-overlay-step-[3]-[chrome]": "설정을 \"항상 허용\"으로 바꿉니다",
+        "permissions-unblock-video-overlay-step-[3]-[edge]": "설정을 \"항상 허용\"으로 바꿉니다",
+        "permissions-unblock-video-overlay-step-[3]-[firefox]": "\"X\"를 클릭하여 차단을 해제합니다",
+        "permissions-unblock-video-overlay-step-[3]-[safari-ios]": "누릅니다",
+        "permissions-unblock-video-overlay-step-[3]-[safari-ipados]": "누릅니다",
+        "permissions-unblock-video-overlay-step-[3]-[safari-macosx]": "\"{{hostName}} 설정\"을 클릭합니다",
+        "permissions-unblock-video-overlay-step-[4]-[android]": "누릅니다",
+        "permissions-unblock-video-overlay-step-[4]-[chrome]": "...그리고 페이지를 새로고침합니다",
+        "permissions-unblock-video-overlay-step-[4]-[edge]": "...그리고 페이지를 새로고침합니다",
+        "permissions-unblock-video-overlay-step-[4]-[firefox]": "...그리고 페이지를 새로고침합니다",
+        "permissions-unblock-video-overlay-step-[4]-[safari-ios]": "그리고 \"카메라\" 및 \"마이크\"를 찾습니다",
+        "permissions-unblock-video-overlay-step-[4]-[safari-ipados]": "그리고 \"카메라\" 및 \"마이크\"를 찾습니다",
+        "permissions-unblock-video-overlay-step-[4]-[safari-macosx]": "마우스 커서를 카메라 및 마이크 옵션 위에 올려놓습니다",
+        "permissions-unblock-video-overlay-step-[5]-[android]": "탭 하여 마이크와 카메라를 켭니다",
+        "permissions-unblock-video-overlay-step-[5]-[safari-ios]": "켜져 있거나 \"허용\"으로 되어 있는지 확인하십시오",
+        "permissions-unblock-video-overlay-step-[5]-[safari-ipados]": "켜져 있거나 \"허용\"으로 되어 있는지 확인하십시오",
+        "permissions-unblock-video-overlay-step-[5]-[safari-macosx]": "설정을 \"허용\"으로 바꿉니다",
+        "permissions-unblock-video-overlay-step-[6]-[android]": "당겨서 페이지를 새로고침합니다",
+        "permissions-unblock-video-overlay-step-[6]-[safari-ios]": "브라우저로 돌아옵니다. 그리고 페이지를 새로고침합니다",
+        "permissions-unblock-video-overlay-step-[6]-[safari-ipados]": "브라우저로 돌아옵니다. 그리고 페이지를 새로고침합니다",
+        "permissions-unblock-video-overlay-step-[6]-[safari-macosx]": "...그리고 페이지를 새로고침합니다",
+        "play": "재생",
+        "presentation": {
+            "dual-screen-mode": "듀얼 스크린 모드",
+            "nobody-sharing-screen": "현재 아무도 화면을 공유하고 있지 않습니다",
+            "pexip-presentation": "프레젠테이션 창",
+            "presenting": "공유 중",
+            "share-screen": "화면 공유",
+            "share-screen-placeholder": "누군가 화면을 공유하면 여기에 나타납니다",
+            "stop-share-screen": "공유 중지",
+            "take-over": "권한 가져오기",
+            "the-current": "현재",
+            "this-will-end": "그러면 {{normalizedPresenterName}}의 프레젠테이션이 끝나고 귀하의 프레젠테이션이 시작됩니다."
+        },
+        "previously-permissions-denied": "{{deniedDevice}}의 사용을 허용하지 않으셨습니다.",
+        "proceed-anyway": "그대로 진행",
+        "proceed-without-[camera]": "카메라 없이 진행",
+        "proceed-without-[microphone]": "마이크 없이 진행",
+        "proceed-without-[speaker]": "스피커 없이 진행",
+        "push-to-talk": "스페이스 바를 길게 눌러 음소거를 잠시 해제합니다",
+        "read-steps-label": "여기서 단계를 알아볼 수도 있습니다",
+        "remove-spotlight": "스포트라이트 제거",
+        "show-me-how": "방법 보기",
+        "speakers-help-tip-desktop-1": "기기의 음량이 충분히 높게 되어 있는지 확인합니다.",
+        "speakers-help-tip-desktop-2": "기기에 헤드폰을 연결하였습니까?",
+        "speakers-help-tip-desktop-3": "데스크톱 컴퓨터를 사용할 경우, 스피커 또는 헤드폰에 연결해야 할 수 있습니다.",
+        "speakers-help-tip-mobile-1": "기기의 음량이 충분히 높게 되어 있는지 확인합니다.",
+        "speakers-help-tip-mobile-2": "기기에 헤드폰을 연결하였습니까? 원하는 스피커에서 소리가 나오는지 확인합니다",
+        "speakers-help-tip-mobile-3": "기기를 재시작해 보십시오.",
+        "spotlight": "스포트라이트",
+        "start-test": "테스트 시작",
+        "still-having-issues": "여전히 문제가 있습니까? <2>문제 해결 가이드</2>",
+        "stop-playing": "재생 중지",
+        "test-your-microphone": "마이크 테스트",
+        "test-your-microphone-title-[before-testing]": "마이크 테스트",
+        "test-your-microphone-title-[get-ready]": "무언가 말해볼 것입니다",
+        "test-your-microphone-title-[playback-finished]": "재생",
+        "test-your-microphone-title-[playing-back]": "재생",
+        "test-your-microphone-title-[recording-success]": "완료",
+        "test-your-microphone-title-[recording]": "목소리 녹음 중...",
+        "testing-my-microphone": "\"마이크 테스트 1, 2, 3\"",
+        "this-is-how-you-will-sound-to-others": "다른 사람들에게 들리는 귀하의 목소리입니다",
+        "through-browser-settings": "브라우저 설정을 통해",
+        "tip-1-header": "팁 1",
+        "to-grant-access-follow-steps": "액세스를 허용하려면 다음 단계를 따르십시오 ",
+        "transfer": "전송",
+        "trying-to-speak": "말하고 계십니까? 마이크가 음소거되어 있습니다",
+        "turn-on-camera": "카메라 켜기",
+        "unblock-permissions-video-link": "짧은 영상",
+        "unmute": "음소거 해제",
+        "unmute-all-guests": "모든 게스트 음소거 해제",
+        "unmute-camera": "카메라 켜기",
+        "unmute-microphone": "마이크 음소거 해제",
+        "unmute-participant": "참가자 음소거 해제",
+        "waiting-for-permissions": "권한 허용을 기다리는 중...",
+        "we-will-help-you-header": "걱정하지 마세요. 저희가 도와드리겠습니다!",
+        "you-blocked-access": "{{seeOrHearYou}}의 액세스를 차단하셨습니다",
+        "you-can-say-something-like": "다음과 같은 말씀을 하실 수 있습니다 ",
+        "you-may-need-to-connect-speakers-or-headphones": "데스크톱 컴퓨터를 사용할 경우, 스피커 또는 헤드폰에 연결해야 할 수 있습니다."
+    },
+    "media-presentation": {
+        "do-you-want-to-take-over": "현재 프레젠테이션 권한을 가져오시겠습니까?"
+    },
+    "meeting": {
+        "admit": "수락",
+        "admit-participant": "참가자 수락",
+        "chat": "채팅",
+        "chat-history": "채팅 내역",
+        "chat-input": "텍스트 입력 채팅",
+        "chat-new-message": "새 메시지",
+        "chat-new-messages": "새 메시지 {{newMessagesCount}}개",
+        "chat-scroll-last-message": "마지막 채팅 메시지로 이동",
+        "close-new-chat-alert": "새로운 채팅 메시지 알림 닫기",
+        "connection-quality": "연결 품질",
+        "external-participants": "외부 참가자",
+        "folded-selfview": {
+            "drag": "셀프 뷰 이동"
+        },
+        "hide-self-view": "셀프 뷰 감추기",
+        "in-this-meeting": "이 회의에서",
+        "leave": "떠나기",
+        "more-participants": "참가자 {{inMeetingCount}}명",
+        "network-fixed": "해결되었습니다!",
+        "network-reconnecting": "네트워크 연결이 끊겼습니다. 연결을 다시 시도하는 중...",
+        "one-participant": "1 참가자",
+        "participants": "참가자",
+        "presentation": {
+            "collapse": "접기",
+            "expand": "펼치기"
+        },
+        "raised-hand": "손 들기",
+        "remove-participant": "참가자 제거",
+        "remove-user-confirmation": "이 회의에서 {{userName}}을(를) 정말 제거하시겠습니까?",
+        "show-self-view": "셀프 뷰 보이기",
+        "toggle-chat": "채팅 패널 여닫기",
+        "toggle-invite-modal": "초대 멤버 방식 여닫기",
+        "toggle-participants-panel": "참가자 패널 여닫기",
+        "video-label": "회의의 라이브 영상",
+        "video-label-presentation": "다른 참가자의 프레젠테이션 라이브 영상",
+        "waiting-in-lobby": "대기실에서 대기",
+        "write-message": "메시지 쓰기",
+        "you-left": "회의에서 퇴장하셨습니다"
+    },
+    "microphone": {
+        "cant-hear": "장애가 있어 듣지 못합니다",
+        "do-you-hear-yourself": "자신의 목소리가 들립니까?"
+    },
+    "pin": {
+        "are-you-host": "호스트입니까?",
+        "how-to-find": "캘린더 또는 이메일의 회의 초대장에서 PIN 번호를 찾을 수 있습니다.",
+        "label": "{{type}} PIN",
+        "placeholder": "예: '1234'",
+        "what-is-the-pin": "이 회의의 PIN 번호는 무엇입니까?"
+    },
+    "preflight": {
+        "accessibility": {
+            "camera-detected-1": "카메라가 이미지를 캡처하고 있으면 이를 감지할 수 있습니다. 하지만 귀하가 프레임 안에 있는지 확인할 수는 없습니다.",
+            "microphone-detected-1": "마이크의 소리를 감지할 수 있습니다.",
+            "microphone-detected-2": "회의에서 라이브 캡션을 지원할 경우, 라이브 캡션을 기본으로 켤 수 있습니다. 회의 중 언제든 라이브 캡션을 켜거나 끌 수 있습니다.",
+            "speakers-detected-1": "기기에 스피커가 연결되었습니다.",
+            "speakers-detected-1-chrome": "기기에 스피커가 연결되었습니다. 위 드롭다운에서 올바른 스피커가 선택되었는지 확인할 수 있습니다.",
+            "speakers-detected-2": "회의에서 라이브 캡션을 지원할 경우, 라이브 캡션을 기본으로 켤 수 있습니다. 회의 중 언제든 라이브 캡션을 켜거나 끌 수 있습니다."
+        },
+        "camera-missing": "다른 사람들이 귀하를 볼 수 없습니다",
+        "get-ready": "회의에 곧 들어갑니다",
+        "in-this-meeting": {
+            "plural": "<0>{inMeetingCount}명</0>이 이미 참가해 있습니다.",
+            "singular": "<0>1명</0>이 이미 참가해 있습니다."
+        },
+        "join-browser": "브라우저에서 회의 참가",
+        "microphone-missing": "다른 사람들이 귀하의 소리를 들을 수 없습니다",
+        "speaker-missing": "다른 사람의 소리를 들을 수 없습니다"
+    },
+    "quality": {
+        "auto": "자동",
+        "change-quality": "품질 변경",
+        "high": "높음",
+        "info": "이 설정은 귀하가 회의에 사용할 대역폭의 양에 영향을 줍니다 인터넷 연결이 느리거나 컴퓨터 성능에 안 좋은 영향이 간다면 설정값을 낮추십시오.",
+        "low": "낮음",
+        "medium": "중간",
+        "poor-connection-detected": "연결이 불안정합니다",
+        "quality": "연결 품질",
+        "select-quality": "회의 품질 선택",
+        "very-high": "매우 높음"
+    },
+    "settings": {
+        "cancel-changes": "변경 취소",
+        "collapsed-selfview-tooltip-description": "회의의 다른 사람들에게 영상을 계속 송출하고 있습니다",
+        "device-select": {
+            "select-camera": "카메라 선택",
+            "select-microphone": "마이크 선택",
+            "select-speaker": "스피커 선택"
+        },
+        "device-settings": "기기 설정",
+        "devices": "기기",
+        "disconnect-all": "모든 연결 해제",
+        "disconnect-all-confirmation": "정말로 모든 연결을 해제하시겠습니까?",
+        "disconnect-all-desc": "귀하를 포함한 모든 참가자의 회의 연결이 해제됩니다",
+        "effects": "효과",
+        "layout": "배열",
+        "layout-changes-info": "귀하가 영상 배열을 변경하면 모든 참가자에게 동일하게 적용됩니다",
+        "layout-confirmation-desc": "배열을 변경하면 자신뿐 아니라 회의의 모든 사람들이 보는 배열이 변경됩니다.",
+        "layout-confirmation-title": "배열 변경은 모든 사람에게 영향을 줍니다",
+        "layout[adaptive-composition]": "Adaptive Composition",
+        "layout[double-theatre]": "영화관 모드",
+        "layout[highlight]": "하이라이트",
+        "layout[single-theatre]": "영화관 모드",
+        "layout[speaker-focus]": "발화자 집중",
+        "layout[tiled]": "타일형",
+        "lock": "회의 잠그기",
+        "lock-desc": "회의에 자동으로 참가할 수 없게 합니다",
+        "meeting-layout": "회의 배열",
+        "meeting-settings": "회의 설정",
+        "noise-suppression": "노이스 감소",
+        "personal": "개인 설정",
+        "playing-sound": "소리 재생 중...",
+        "save-changes": "변경 저장",
+        "selfview-hidden": "셀프 뷰 감추어져 있음",
+        "settings": "설정",
+        "test-your-sound": "소리 테스트",
+        "unlock": "회의 잠금 해제"
+    },
+    "speaker": {
+        "cant-hear": "장애가 있어 듣지 못합니다",
+        "do-you-hear-sound": "소리가 들립니까?"
+    },
+    "stats": {
+        "[bitrate]": "비트 전송률",
+        "[codec]": "코덱",
+        "[jitter]": "지터",
+        "[packets-lost]": "패킷 손실",
+        "[packets-transmitted]": "패킷 전송됨",
+        "[recent-packet-loss]": "최근 패킷 손실",
+        "[resolution]": "해상도",
+        "[roundtrip-time]": "왕복 시간",
+        "[total-packet-loss]": "총 패킷 손실",
+        "audio": "오디오",
+        "in": "입력",
+        "nerd-stats": "전문 통계",
+        "out": "출력",
+        "video": "영상"
+    },
+    "transfer": {
+        "error": "참가자를 전송하는 동안 오류가 발생했습니다",
+        "fail": "참가자를 전송할 수 없습니다",
+        "meeting-id": "회의 ID",
+        "pin": "Pin",
+        "pin-placeholder": "예: '1234'",
+        "placeholder": "예: 'meet.bob'",
+        "success": "참가자를 성공적으로 전송했습니다",
+        "transfer-participant": "참가자 전송"
+    },
+    "username": {
+        "hey-whats-your-name": "안녕하세요. <1></1> 성함이 어떻게 되세요?",
+        "name-input-placeholder": "예: '데이비드'",
+        "usage-purpose": "표시할 이름을 입력하여 다른 사람들이 귀하가 누구인지 알게 하십시오",
+        "your-name": "귀하의 이름"
+    }
+}

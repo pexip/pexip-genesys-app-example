@@ -1,0 +1,686 @@
+{
+    "add-participant": {
+        "can-control": "拥有会议控制权（主持人）",
+        "failed": "无法添加此参会者",
+        "submit": "添加参会者",
+        "transfer": "转移",
+        "type-details": "在此输入参会者详情"
+    },
+    "camera": {
+        "cant-see": "我由于视力障碍无法看到自己",
+        "do-you-see-yourself": "您是否能看到自己？"
+    },
+    "common": {
+        "[microphone]": "麦克风",
+        "[camera]": "摄像头",
+        "[speaker]": "扬声器",
+        "a-pexip-meeting": "<1></1> 会议",
+        "and-then": "之后",
+        "are-you-sure": "是否确定？",
+        "ask-for-permission": "申请权限",
+        "brand-name": "Pexip 视频服务",
+        "cancel": "取消",
+        "change": "更改",
+        "client-name[mobile-app]": "移动应用程序",
+        "client-name[pexip-room]": "Pexip Room",
+        "client-name[session]": "会议",
+        "client-name[web-app]": "Web 应用程序",
+        "close-tooltip": "关闭工具提示",
+        "close-window": "关闭窗口",
+        "host": "主持",
+        "join": "现在加入",
+        "label-logo": "徽标",
+        "label-pexip-logo": "Pexip 徽标",
+        "live-captions-default-on": "默认开启实时字幕",
+        "live-captions-hide": "隐藏实时字幕",
+        "live-captions-show": "显示实时字幕",
+        "lower-hand": "取消举手",
+        "me": "我",
+        "meeting": "会议",
+        "next": "下一步",
+        "next-terms-and-conditions": "如继续下一步，即表示您确认同意我们的<2>条款及服务</2>",
+        "no": "否",
+        "raise-hand": "举手",
+        "remove": "移除",
+        "replay": "重放",
+        "retry": "重试",
+        "send": "发送",
+        "try-again": "再试一次",
+        "welcome": "欢迎",
+        "yes": "是"
+    },
+    "device-status": {
+        "audio-device-in-use": {
+            "message": "其他应用程序（如 Teams 或 Slack）正在使用您的麦克风。如要在 Pexip 上使用麦克风，请找到正在使用麦克风的其他应用程序并将其关闭",
+            "title": "麦克风不可用"
+        },
+        "audio-device-not-found": {
+            "message": "您的首选麦克风不可用",
+            "title": "没有找到您的麦克风"
+        },
+        "audio-overconstrained": {
+            "message": "尝试选择较低的质量设置",
+            "title": "麦克风无法提供支持"
+        },
+        "audio-video-devices-not-found": {
+            "message": "您的首选摄像头和麦克风不可用",
+            "title": "没有找到您的摄像头和麦克风"
+        },
+        "audioinput-granted-videoinput-denied": {
+            "message": "如要他人在通话时看到您，您需要启用摄像头。",
+            "title": "您未开启摄像头使用权限"
+        },
+        "devices-in-use": {
+            "message": "其他应用程序（如 Teams 或 Slack）正在使用您的摄像头。如要在 Pexip 上使用摄像头，请找到正在使用摄像头的其他应用程序并将其关闭",
+            "title": "摄像头和麦克风不可用"
+        },
+        "initial-permissions-audio-input-granted": {
+            "message": "您已授予麦克风使用权限。",
+            "title": "已授权"
+        },
+        "initial-permissions-granted": {
+            "message": "您已授予摄像头和麦克风使用权限。",
+            "title": "已授权"
+        },
+        "initial-permissions-not-granted": {
+            "message": "请在下一步骤中，根据浏览器的提示选择 <1>\"允许\"</1> 。我们仅在会议期间有访问权限。",
+            "title": "您授权后，我们才可以使用摄像头和麦克风"
+        },
+        "initial-permissions-video-input-denied": {
+            "message": "您已取消摄像头使用权限。",
+            "title": "权限已取消"
+        },
+        "initial-permissions-video-input-granted": {
+            "message": "您已授予摄像头使用权限。",
+            "title": "已授权"
+        },
+        "invalid-audio-constraints": {
+            "message": "尝试清除浏览器缓存",
+            "title": "麦克风配置不正确"
+        },
+        "invalid-constraints": {
+            "message": "尝试清除浏览器缓存",
+            "title": "摄像头和麦克风配置不正确"
+        },
+        "invalid-video-constraints": {
+            "message": "尝试清除浏览器缓存",
+            "title": "摄像头配置不正确"
+        },
+        "no-audio-devices-found": {
+            "message": "麦克风似乎不可用。请检查摄像头是否已插好电源并正确设置。",
+            "title": "麦克风未连接"
+        },
+        "no-devices-found": {
+            "message": "摄像头和麦克风似乎不可用。请检查摄像头和麦克风是否已插好电源并正确设置。",
+            "title": "摄像头和麦克风未连接"
+        },
+        "no-video-devices-found": {
+            "message": "摄像头似乎不可用。请检查摄像头是否已插好电源并正确设置。",
+            "title": "摄像头未连接"
+        },
+        "not-supported-error": {
+            "message": "我们无法从浏览器中获取媒体。请尝试使用其他新式浏览器。",
+            "title": "浏览器不支持"
+        },
+        "not-supported-error-only-audio": {
+            "message": "我们无法从浏览器中获取媒体。请尝试使用其他新式浏览器。",
+            "title": "浏览器不支持"
+        },
+        "not-supported-error-only-video": {
+            "message": "我们无法从浏览器中获取媒体。请尝试使用其他新式浏览器。",
+            "title": "浏览器不支持"
+        },
+        "overconstrained": {
+            "message": "尝试选择较低的质量设置",
+            "title": "摄像头和麦克风受到过多限制"
+        },
+        "permissions-granted-fallback-audioinput": {
+            "message": "我们无法使用首选麦克风",
+            "title": "无法使用首选麦克风"
+        },
+        "permissions-granted-fallback-devices": {
+            "message": "我们无法使用首选摄像头和麦克风",
+            "title": "无法使用首选摄像头和麦克风"
+        },
+        "permissions-granted-fallback-videoinput": {
+            "message": "我们无法使用首选摄像头",
+            "title": "无法使用首选摄像头"
+        },
+        "permissions-only-audioinput": {
+            "message": "您先前已取消摄像头使用权限。请申请权限并授予访问权限",
+            "title": "摄像头未启用"
+        },
+        "permissions-only-audioinput-no-video-devices": {
+            "message": "请检查摄像头是否已插好电源并正确设置",
+            "title": "摄像头似乎不可用"
+        },
+        "permissions-only-fallback-audioinput": {
+            "message": "我们无法使用任何摄像头和您的首选麦克风",
+            "title": "摄像头和首选麦克风不可用"
+        },
+        "permissions-only-fallback-audioinput-no-video-devices": {
+            "message": "我们没有发现任何摄像头和您的首选麦克风",
+            "title": "没有可用摄像头，首选麦克风不可用"
+        },
+        "permissions-only-fallback-videoinput": {
+            "message": "我们无法使用任何麦克风，首选摄像头不可用",
+            "title": "麦克风和首选摄像头不可用"
+        },
+        "permissions-only-fallback-videoinput-no-audio-devices": {
+            "message": "我们没有发现任何麦克风，首选摄像头不可用",
+            "title": "无麦克风，首选摄像头不可用"
+        },
+        "permissions-only-videoinput": {
+            "message": "您先前已取消麦克风使用权限。请申请权限并授予访问权限",
+            "title": "麦克风未启用"
+        },
+        "permissions-only-videoinput-no-audio-devices": {
+            "message": "请检查摄像头是否已插好电源并正确设置",
+            "title": "麦克风似乎不可用"
+        },
+        "permissions-rejected": {
+            "message": "您已禁用摄像头或麦克风。请根据此简短视频中的步骤授予访问权限：",
+            "title": "您是否曾想要禁用摄像头或麦克风？"
+        },
+        "permissions-rejected-audioinput": {
+            "message": "您先前已取消麦克风使用权限。请申请权限并授予访问权限",
+            "title": "未获得麦克风权限"
+        },
+        "permissions-rejected-videoinput": {
+            "message": "您先前已取消摄像头使用权限。请申请权限并授予访问权限",
+            "title": "未获取摄像头权限"
+        },
+        "unknown-error": {
+            "message": "我们无法从设备中获取媒体。请尝试重新连接设备或使用其他设备",
+            "title": "摄像头和麦克风不可用"
+        },
+        "unknown-error-only-audioinput": {
+            "message": "我们无法使用您的摄像头。请尝试重新连接设备或使用其他设备",
+            "title": "摄像头不可用"
+        },
+        "unknown-error-only-videoinput": {
+            "message": "我们无法使用您的麦克风。请尝试重新连接设备或使用其他设备",
+            "title": "麦克风不可用"
+        },
+        "video-device-in-use": {
+            "message": "其他应用程序（如 Teams 或 Slack）正在使用您的摄像头。如要在 Pexip 上使用摄像头，请找到正在使用摄像头的其他应用程序并将其关闭",
+            "title": "摄像头不可用"
+        },
+        "video-device-not-found": {
+            "message": "您的首选摄像头不可用",
+            "title": "没有找到您的摄像头"
+        },
+        "video-overconstrained": {
+            "message": "尝试选择较低的质量设置",
+            "title": "摄像头受到过多限制"
+        },
+        "videoinput-granted-audioinput-denied": {
+            "message": "如要他人在通话时听到您的声音，您需要启用麦克风。",
+            "title": "您未开启麦克风使用权限"
+        }
+    },
+    "error": {
+        "choose-another": "选择其他会议",
+        "code[#pex100]": "您输入的 PIN 码无效，请重试。",
+        "code[#pex101]": "您输入的 PIN 码无效，请重试。",
+        "code[#pex109]": "PEX109 用户遇到错误信息",
+        "code[#pex110]": "您尝试连接的系统暂时不可用。请稍后重试。",
+        "code[#pex111]": "无法连接。请再试一次。",
+        "code[#pex112]": "无法连接。",
+        "code[#pex113]": "连接已中断。请再试一次。",
+        "code[#pex114]": "您尝试连接的系统已超载。",
+        "code[#pex115]": "转移失败。",
+        "code[#pex116]": "呼叫失败，请联系您的管理员。",
+        "code[#pex117]": "呼叫失败。请再试一次。",
+        "code[#pex118]": "无法连接服务器。",
+        "code[#pex119]": "呼叫失败：请求转发失败。",
+        "code[#pex120]": "主持人结束了会议。",
+        "code[#pex121]": "主持人结束了会议。",
+        "code[#pex122]": "管理员结束了会议。",
+        "code[#pex123]": "管理员断开了您的会议连接。",
+        "code[#pex124]": "会议中的其他参会者断开了您的连接。",
+        "code[#pex125]": "主持人结束了会议。",
+        "code[#pex126]": "会议主持人尚未加入或解锁会议。",
+        "code[#pex127]": "当遇到“呼叫失败：已禁用”错误时所显示的信息",
+        "code[#pex128]": "呼叫失败：可能是防火墙阻止访问。",
+        "code[#pex129]": "会议出现错误。请尝试再次连接。",
+        "code[#pex130]": "会议出现错误。请尝试再次连接。",
+        "code[#pex131]": "会议出现错误。请尝试再次连接。",
+        "code[#pex132]": "会议出现错误。请尝试再次连接。",
+        "code[#pex140]": "会议已结束。",
+        "code[#pex141]": "会议由于主持人离场而结束。",
+        "code[#pex142]": "会议中仅剩您一位参会者。",
+        "code[#pex143]": "测试通话已结束。",
+        "code[#pex150]": "对方未接听或无法联系。",
+        "code[#pex151]": "其他参会者已断开连接。",
+        "code[#pex152]": "该通话无法接通。",
+        "code[#pex153]": "该通话无法接通。请联系您的管理员。",
+        "code[#pex154]": "无法连接“{{alias}}”。请检查地址后再试一次。",
+        "code[#pex155]": "无法加入 {{host}}。",
+        "code[#pex156]": "该通话无法接通。",
+        "code[#pex157]": "无法加入 {{host}}。",
+        "code[#pex170]": "呼叫失败：请禁用您浏览器上的任何隐私扩展程序。",
+        "code[#pex171]": "您的摄像头和/或麦克风不可用。请确保摄像头和麦克风未被其他应用程序过多占用。",
+        "code[#pex180]": "演示结束",
+        "code[#pex181]": "演示流连接已断开。",
+        "code[#pex182]": "演示流不可用",
+        "code[#pex183]": "屏幕共享已取消。",
+        "code[#pex184]": "屏幕共享出现错误。请再试一次。",
+        "code[#pex185]": "屏幕共享连接已断开。",
+        "code[#pex190]": "连接会议时出现错误。",
+        "code[#pex191]": "连接会议时出现错误。",
+        "code[#pex192]": "PIN 码输入次数过多。",
+        "code[#pex193]": "连接会议时出现错误。请联系您的管理员。",
+        "code[#pex194]": "本次会议参会人数已达到上限。",
+        "code[#pex195]": "连接会议时出现错误。请联系您的管理员。",
+        "code[#pex196]": "防火墙正在阻止您的加入",
+        "code[#pex197]": "抱歉，我们无法连接您的通话。请关闭窗口后再试一次。",
+        "code[#pex200]": "SSO 身份验证失败。",
+        "code[#pex201]": "已启用 SSO，但尚未配置身份提供程序。",
+        "code[#pex202]": "无法打开可用于 SSO 身份验证的窗口。窗口可能已被弹出窗口阻止程序拦截。",
+        "code[#pex203]": "SSO 身份验证失败。系统处于维护模式。",
+        "code[#pex204]": "SSO 身份验证失败。SSO 不适用于此域 。",
+        "not-found": {
+            "subtitle": "我们似乎找不到您想要的页面。",
+            "title": "抱歉，出现 404 错误 - 找不到页面"
+        },
+        "rejoin": "重新加入",
+        "reload-page": "重新加载页面",
+        "smth-on-our-end": "抱歉，我们似乎出现了错误。",
+        "smth-went-wrong": "出现错误"
+    },
+    "free-dial": {
+        "how-to-find": "您可以在日历或电子邮件内的会议邀请中找到会议 ID",
+        "join": "加入会议",
+        "meeting-id": "会议 ID",
+        "placeholder": "例如“meet.bob”"
+    },
+    "idp": {
+        "select-provider": "请选择您的身份提供程序。执行此操作后，系统将打开其他窗口。",
+        "sign-in": "登录",
+        "sign-in-with": "使用 {{name}} 登录"
+    },
+    "infocard": {
+        "lobby": {
+            "header": "请稍等，正在等待他人加入"
+        },
+        "meeting": {
+            "body": "我们很期待今天与您交谈",
+            "header": "欢迎使用 {{brandName}}"
+        }
+    },
+    "invite": {
+        "cant-find-anyone": "找不到有此名字的用户",
+        "click-search": "点击上方搜索栏以搜索",
+        "copied": "已复制",
+        "copy": "复制",
+        "copy-to-clipboard": "复制链接到剪贴板",
+        "expiry": "您的邀请链接将在 {{expiryHours}} 小时后失效",
+        "instructions": "将下方会议链接发送给您想添加的用户",
+        "invite": "邀请",
+        "invite-person": "邀请用户",
+        "invite-someone": "邀请用户加入会议",
+        "invited": "已邀请",
+        "meeting-invitation-modal": "会议邀请模式窗口",
+        "search-for-someone": "搜索要邀请的用户",
+        "send-invite-link": "或发送邀请链接"
+    },
+    "media": {
+        "all-guests-muted-by-host": "主持人已将所有访客静音",
+        "all-guests-unmuted-by-host": "主持人已取消所有访客静音",
+        "audio": {
+            "you-are-temporarily-unmuted": "您已被临时取消静音"
+        },
+        "background-effects-action": "更改背景效果",
+        "browser-privacy-settings-link": "隐私设置",
+        "camera-action": "设置摄像头  {{videoInputAction}}",
+        "camera-help-tip-desktop-1": "您是否在下拉菜单中选择了正确的摄像头？",
+        "camera-help-tip-desktop-2": "是否有物体遮挡摄像头镜头？",
+        "camera-help-tip-desktop-3": "请尝试关闭可能正在使用摄像头的其他程序（例如 Teams 或 Slack）。",
+        "camera-help-tip-desktop-4": "如果上述情况均不适用，请尝试重新启动您的浏览器或电脑。",
+        "camera-help-tip-mobile-1": "您的摄像头是否朝向错误？请尝试调转摄像头。搜寻此图标",
+        "camera-help-tip-mobile-2": "是否有物体遮挡摄像头镜头？",
+        "camera-help-tip-mobile-3": "尝试关闭可能正在使用摄像头的其他应用程序（例如 Teams 或 WhatsApp 等）",
+        "camera-help-tip-mobile-4": "尝试重启您的设备。",
+        "check-everything-works": "检查并确保整体工作正常",
+        "check-everything-works-description": "确保设备能正常工作，以便您在加入时可以正常使用麦克风和摄像头。",
+        "do you have headphones connected to-your-device": "设备上是否已连接耳机？确保耳机的麦克风靠近您的嘴部。",
+        "effect": {
+            "blur": "模糊",
+            "none": "无",
+            "replace": "替换"
+        },
+        "first-check-that-you-have-selected-microphone": "首先，检查您是否选择了正确的麦克风，以及音量是否已调高。",
+        "flip-camera": "调转摄像头",
+        "help-check-[camera]-again": "再次检查摄像头",
+        "help-check-[microphone]-again": "再次检查麦克风",
+        "help-check-[speaker]-again": "再次检查扬声器",
+        "help-proceed-without-camera": "在没有摄像头的情况下继续进行",
+        "help-proceed-without-microphone": "在没有麦克风的情况下继续进行",
+        "help-step-[1]": "第一步",
+        "help-step-[2]": "第二步",
+        "help-step-[3]": "第三步",
+        "help-step-[4]": "第四步",
+        "help-step-[5]": "第五步",
+        "help-tip-1-header": "小贴士 1",
+        "help-tip-2-header": "小贴士 2",
+        "help-tip-3-header": "小贴士 3",
+        "help-tip-4-header": "小贴士 4",
+        "how-to-unblock-access": "一段说明如何授予对媒体设备的访问权限的动画。",
+        "if-you-dont-hear-yourself-try-this": "如果您无法听到自己的声音，请尝试",
+        "learn-how-to-grant-permissions": "了解如何授权",
+        "learn-how-to-manage-browser-privacy-settings": "浏览器隐私设置",
+        "learn-how-to-manage-browser-privacy-settings-label": "如何管理浏览器隐私设置（将在新选项卡中打开）",
+        "lets-check": "让我们检查一下您的视频和声音是否运作正常",
+        "lets-go": "让我们开始吧",
+        "make-sure-the-volume-is-turned-up-on-your-device": "确保设备音量已调高。",
+        "make-sure-you-have-the-correct-microphone": "确保已使用合适的麦克风",
+        "make-sure-you-have-the-correct-speaker": "确保已使用合适的扬声器",
+        "microphone-action": "{{audioInputAction}} 麦克风",
+        "microphone-help-tip-desktop-1": "确保设备音量已调高。",
+        "microphone-help-tip-desktop-2": "设备上是否已连接耳机？确保耳机的麦克风靠近您的嘴部。",
+        "microphone-help-tip-desktop-3": "如果您使用的是台式电脑，可能需要连接扬声器或耳机。",
+        "microphone-help-tip-mobile-1": "确保设备音量已调高。",
+        "microphone-help-tip-mobile-2": "设备上是否已连接耳机？确保耳机的麦克风靠近您的嘴部。",
+        "microphone-help-tip-mobile-3": "尝试重启您的设备。",
+        "mute": "静音",
+        "mute-all-guests": "将所有访客静音",
+        "mute-microphone": "将麦克风静音",
+        "mute-participant": "将参会者静音",
+        "muted": "已静音",
+        "of-your-browser": "您浏览器的",
+        "off": "禁用",
+        "on": "启用",
+        "or-go-to-the": "或前往 ",
+        "permission-info": {
+            "[camera]": {
+                "title": "摄像头"
+            },
+            "[microphone-and-camera]": {
+                "title": "摄像头和麦克风"
+            },
+            "[microphone]": {
+                "title": "麦克风"
+            }
+        },
+        "permissions-denied": "已拒绝浏览器权限",
+        "permissions-try-this-label": "如果无法正常工作，请尝试：",
+        "permissions-unblock-help-step-[1]-[android]": "在浏览器中地址栏的右侧，点击“更多”>“设置”",
+        "permissions-unblock-help-step-[1]-[chrome]": "在浏览器的顶部栏中选择摄像头图标",
+        "permissions-unblock-help-step-[1]-[edge]": "在 Microsoft Edge 中，选择“设置及其他”，然后选择“设置”",
+        "permissions-unblock-help-step-[1]-[firefox]": "点击左侧地址栏中显示的权限图标。",
+        "permissions-unblock-help-step-[1]-[safari-ios]": "前往 iPhone 中的“设置”",
+        "permissions-unblock-help-step-[1]-[safari-ipados]": "前往 iPad 中的“设置”",
+        "permissions-unblock-help-step-[1]-[safari-macosx]": "在 Mac 的 Safari 应用程序中，选择“Safari”>“偏好”，然后点击“网站”",
+        "permissions-unblock-help-step-[2]-[android]": "点击“网站设置”",
+        "permissions-unblock-help-step-[2]-[chrome]": "选择“允许”",
+        "permissions-unblock-help-step-[2]-[edge]": "选择“Cookies 和网站权限”（左侧）",
+        "permissions-unblock-help-step-[2]-[firefox]": "点击“已允许”、“已暂时允许”、“已禁用”或 “已暂时禁用”旁边的“X”以清除状态，之后您再次访问该网站时，Firefox 会再次向您请求权限。",
+        "permissions-unblock-help-step-[2]-[safari-ios]": "向下滚动并点击 Safari（或您正在使用的任何浏览器）",
+        "permissions-unblock-help-step-[2]-[safari-ipados]": "向下滚动并点击 Safari（或您正在使用的任何浏览器）",
+        "permissions-unblock-help-step-[2]-[safari-macosx]": "摄像头和麦克风设置位于左侧",
+        "permissions-unblock-help-step-[3]-[android]": "点击麦克风或摄像头",
+        "permissions-unblock-help-step-[3]-[chrome]": "更新浏览器",
+        "permissions-unblock-help-step-[3]-[edge]": "在“网站权限”中，选择“摄像头”或“麦克风”",
+        "permissions-unblock-help-step-[3]-[safari-ios]": "定位摄像头和麦克风",
+        "permissions-unblock-help-step-[3]-[safari-ipados]": "定位摄像头和麦克风",
+        "permissions-unblock-help-step-[3]-[safari-macosx]": "您可以在此处选择是否授权",
+        "permissions-unblock-help-step-[4]-[android]": "点击即可打开或关闭麦克风或摄像头。",
+        "permissions-unblock-help-step-[4]-[safari-ios]": "确保麦克风或摄像头已启用",
+        "permissions-unblock-help-step-[4]-[safari-ipados]": "确保麦克风或摄像头已启用",
+        "permissions-unblock-help-step-[5]-[safari-ios]": "返回浏览器并更新页面",
+        "permissions-unblock-help-step-[5]-[safari-ipados]": "返回浏览器并更新页面",
+        "permissions-unblock-video-overlay-step-[1]-[android]": "在浏览器中搜寻此图标",
+        "permissions-unblock-video-overlay-step-[1]-[chrome]": "在浏览器中搜寻此图标",
+        "permissions-unblock-video-overlay-step-[1]-[edge]": "在浏览器中搜寻此图标",
+        "permissions-unblock-video-overlay-step-[1]-[firefox]": "搜寻这些图标",
+        "permissions-unblock-video-overlay-step-[1]-[safari-ios]": "前往设备中的“设置”",
+        "permissions-unblock-video-overlay-step-[1]-[safari-ipados]": "前往设备中的“设置”",
+        "permissions-unblock-video-overlay-step-[1]-[safari-macosx]": "前往 Safari 中的“设置”",
+        "permissions-unblock-video-overlay-step-[2]-[android]": "点击",
+        "permissions-unblock-video-overlay-step-[2]-[chrome]": "点击",
+        "permissions-unblock-video-overlay-step-[2]-[edge]": "点击",
+        "permissions-unblock-video-overlay-step-[2]-[firefox]": "点击它们",
+        "permissions-unblock-video-overlay-step-[2]-[safari-ios]": "向下滚动以定位 Safari（或您正在使用的任何浏览器）",
+        "permissions-unblock-video-overlay-step-[2]-[safari-ipados]": "向下滚动以定位 Safari（或您正在使用的任何浏览器）",
+        "permissions-unblock-video-overlay-step-[2]-[safari-macosx]": "点击",
+        "permissions-unblock-video-overlay-step-[3]-[android]": "向下滚动至设置",
+        "permissions-unblock-video-overlay-step-[3]-[chrome]": "在设置中更改为“总是允许”",
+        "permissions-unblock-video-overlay-step-[3]-[edge]": "在设置中更改为“总是允许”",
+        "permissions-unblock-video-overlay-step-[3]-[firefox]": "点击“X”以取消阻止",
+        "permissions-unblock-video-overlay-step-[3]-[safari-ios]": "点击",
+        "permissions-unblock-video-overlay-step-[3]-[safari-ipados]": "点击",
+        "permissions-unblock-video-overlay-step-[3]-[safari-macosx]": "点击“{{hostName}} 设置”",
+        "permissions-unblock-video-overlay-step-[4]-[android]": "点击",
+        "permissions-unblock-video-overlay-step-[4]-[chrome]": "然后更新页面",
+        "permissions-unblock-video-overlay-step-[4]-[edge]": "然后更新页面",
+        "permissions-unblock-video-overlay-step-[4]-[firefox]": "然后更新页面",
+        "permissions-unblock-video-overlay-step-[4]-[safari-ios]": "接下来定位“摄像头”和“麦克风”",
+        "permissions-unblock-video-overlay-step-[4]-[safari-ipados]": "接下来定位“摄像头”和“麦克风”",
+        "permissions-unblock-video-overlay-step-[4]-[safari-macosx]": "将鼠标悬停在摄像头和麦克风选项上",
+        "permissions-unblock-video-overlay-step-[5]-[android]": "点击即可打开麦克风或摄像头",
+        "permissions-unblock-video-overlay-step-[5]-[safari-ios]": "确保麦克风和摄像头已启用或已设置为“允许”",
+        "permissions-unblock-video-overlay-step-[5]-[safari-ipados]": "确保麦克风和摄像头已启用或已设置为“允许”",
+        "permissions-unblock-video-overlay-step-[5]-[safari-macosx]": "在设置中更改为“允许”",
+        "permissions-unblock-video-overlay-step-[6]-[android]": "下拉以刷新页面",
+        "permissions-unblock-video-overlay-step-[6]-[safari-ios]": "返回浏览器，然后更新页面",
+        "permissions-unblock-video-overlay-step-[6]-[safari-ipados]": "返回浏览器，然后更新页面",
+        "permissions-unblock-video-overlay-step-[6]-[safari-macosx]": "然后更新页面",
+        "play": "播放",
+        "presentation": {
+            "dual-screen-mode": "双屏模式",
+            "nobody-sharing-screen": "目前没有参会者在共享屏幕",
+            "pexip-presentation": "演示窗口",
+            "presenting": "正在演示",
+            "share-screen": "共享屏幕",
+            "share-screen-placeholder": "当参会者共享屏幕时，它将出现在此处",
+            "stop-share-screen": "停止共享",
+            "take-over": "接替",
+            "the-current": "目前",
+            "this-will-end": "执行此操作后，系统将结束 {{normalizedPresenterName}} 的演示并开启您自己的演示。"
+        },
+        "previously-permissions-denied": "您先前已取消 {{deniedDevice}} 使用权限。",
+        "proceed-anyway": "仍要继续",
+        "proceed-without-[camera]": "在没有摄像头的情况下继续进行",
+        "proceed-without-[microphone]": "在没有麦克风的情况下继续进行",
+        "proceed-without-[speaker]": "在没有扬声器的情况下继续进行",
+        "push-to-talk": "按住空格键可暂时取消静音",
+        "read-steps-label": "您也可同时阅读此处的步骤",
+        "remove-spotlight": "取消设为主视图",
+        "show-me-how": "告诉我怎么做",
+        "speakers-help-tip-desktop-1": "确保设备音量已调高。",
+        "speakers-help-tip-desktop-2": "设备上是否已连接耳机？",
+        "speakers-help-tip-desktop-3": "如果您使用的是台式电脑，可能需要连接扬声器或耳机。",
+        "speakers-help-tip-mobile-1": "确保设备音量已调高。",
+        "speakers-help-tip-mobile-2": "设备上是否已连接耳机？确保声音从预设的扬声器中发出",
+        "speakers-help-tip-mobile-3": "尝试重启您的设备。",
+        "spotlight": "设为主视图",
+        "start-test": "开始测试",
+        "still-having-issues": "仍有问题？请参考<2>故障排除指南</2>",
+        "stop-playing": "停止播放",
+        "test-your-microphone": "测试麦克风",
+        "test-your-microphone-title-[before-testing]": "测试麦克风",
+        "test-your-microphone-title-[get-ready]": "准备说些什么",
+        "test-your-microphone-title-[playback-finished]": "重放",
+        "test-your-microphone-title-[playing-back]": "重放",
+        "test-your-microphone-title-[recording-success]": "已完成！",
+        "test-your-microphone-title-[recording]": "正在录制您的音频……",
+        "testing-my-microphone": "“测试 1、2、3”",
+        "this-is-how-you-will-sound-to-others": "其他参会者听到您的声音会像这样",
+        "through-browser-settings": "通过您的浏览器设置",
+        "tip-1-header": "小贴士 1",
+        "to-grant-access-follow-steps": "要授予访问权限，请根据以下简短视频 ",
+        "transfer": "转移",
+        "trying-to-speak": "您要讲话吗？您的麦克风已静音",
+        "turn-on-camera": "开启摄像头",
+        "unblock-permissions-video-link": "中的步骤",
+        "unmute": "取消静音",
+        "unmute-all-guests": "取消所有访客静音",
+        "unmute-camera": "取消摄像头静音",
+        "unmute-microphone": "取消麦克风静音",
+        "unmute-participant": "取消参会者静音",
+        "waiting-for-permissions": "正在等待许可……",
+        "we-will-help-you-header": "别担心。我们会为您提供帮助！",
+        "you-blocked-access": "您已阻止对 {{seeOrHearYou}} 的访问",
+        "you-can-say-something-like": "您可以这样说 ",
+        "you-may-need-to-connect-speakers-or-headphones": "如果您使用的是台式电脑，可能需要连接扬声器或耳机。"
+    },
+    "media-presentation": {
+        "do-you-want-to-take-over": "您是否想要接替进行演示？"
+    },
+    "meeting": {
+        "admit": "准许进入",
+        "admit-participant": "准许参会者进入",
+        "chat": "聊天",
+        "chat-history": "聊天记录",
+        "chat-input": "聊天文本输入",
+        "chat-new-message": "新消息",
+        "chat-new-messages": "{{newMessagesCount}} 条新消息",
+        "chat-scroll-last-message": "滚动至最后一条聊天消息",
+        "close-new-chat-alert": "关闭新的聊天消息提醒",
+        "connection-quality": "连接质量",
+        "external-participants": "外部参会者",
+        "folded-selfview": {
+            "drag": "移动本端视频"
+        },
+        "hide-self-view": "隐藏本端视频",
+        "in-this-meeting": "在此会议中",
+        "leave": "离开",
+        "more-participants": "{{inMeetingCount}} 位参会者",
+        "network-fixed": "已修复！",
+        "network-reconnecting": "网络连接断开。正在重新连接……",
+        "one-participant": "一位参会者",
+        "participants": "参会者",
+        "presentation": {
+            "collapse": "折叠",
+            "expand": "展开"
+        },
+        "raised-hand": "举手",
+        "remove-participant": "移除参会者",
+        "remove-user-confirmation": "您确定要将 {{userName}} 从本次会议中移除吗？",
+        "show-self-view": "显示本端视频",
+        "toggle-chat": "切换聊天面板",
+        "toggle-invite-modal": "切换邀请成员模式窗口",
+        "toggle-participants-panel": "切换参会者面板",
+        "video-label": "会议直播视频",
+        "video-label-presentation": "其他参会者演示的直播视频",
+        "waiting-in-lobby": "正在大厅中等待",
+        "write-message": "写消息",
+        "you-left": "您已离开会议"
+    },
+    "microphone": {
+        "cant-hear": "我有听力障碍，因此无法听见声音",
+        "do-you-hear-yourself": "您可以听到自己的声音吗？"
+    },
+    "pin": {
+        "are-you-host": "您是主持人吗？",
+        "how-to-find": "您可以在日历或电子邮件内的会议邀请中找到 PIN 码",
+        "label": "{{type}} PIN 码",
+        "placeholder": "例如“1234”",
+        "what-is-the-pin": "此会议的 PIN 码是什么？"
+    },
+    "preflight": {
+        "accessibility": {
+            "camera-detected-1": "我们可以检测到您的摄像头正在采集图像。然而，我们无法确认您是否在镜头中。",
+            "microphone-detected-1": "我们可以从您的麦克风中检测到声音。",
+            "microphone-detected-2": "如果您的会议支持实时字幕功能，可以默认打开。您可以在会议期间随时打开或关闭实时字幕。",
+            "speakers-detected-1": "您的设备已连接至扬声器。",
+            "speakers-detected-1-chrome": "您的设备已连接至扬声器。您可以在上方下拉菜单中检查是否选择了正确的扬声器。",
+            "speakers-detected-2": "如果您的会议支持实时字幕功能，可以默认打开。您可以在会议期间随时打开或关闭实时字幕。"
+        },
+        "camera-missing": "其他人将无法看到您",
+        "get-ready": "为您的会议做准备",
+        "in-this-meeting": {
+            "plural": "<0>{inMeetingCount} 位其他用户</0>已进入会议。",
+            "singular": "<0>1 位其他用户</0>已进入会议。"
+        },
+        "join-browser": "在浏览器中加入会议",
+        "microphone-missing": "其他人将无法听到您的声音",
+        "speaker-missing": "您将无法听到其他人的声音"
+    },
+    "quality": {
+        "auto": "自动",
+        "change-quality": "更改质量",
+        "high": "高",
+        "info": "此设置会影响您在此会议中使用的带宽量。如果您的互联网连接速度较慢，或者您的电脑性能受到严重影响，请将此数值调整到较低水平。",
+        "low": "低",
+        "medium": "中",
+        "poor-connection-detected": "检测到连接不良",
+        "quality": "连接质量",
+        "select-quality": "选择会议质量",
+        "very-high": "很高"
+    },
+    "settings": {
+        "cancel-changes": "取消更改",
+        "collapsed-selfview-tooltip-description": "您仍然会向会议中的其他参会者发送视频",
+        "device-select": {
+            "select-camera": "选择摄像头",
+            "select-microphone": "选择麦克风",
+            "select-speaker": "选择扬声器"
+        },
+        "device-settings": "设备设置",
+        "devices": "设备",
+        "disconnect-all": "断开所有参会者连接",
+        "disconnect-all-confirmation": "您是否确定要断开所有参会者连接？",
+        "disconnect-all-desc": "断开所有会议参会者连接（包括您在内）",
+        "effects": "特效",
+        "layout": "布局",
+        "layout-changes-info": "您对视频布局所做的更改对每个参会者均可见。",
+        "layout-confirmation-desc": "您不仅会更改自己的布局，还会更改会议中所有参会者的布局。",
+        "layout-confirmation-title": "布局的更改会对所有参会者造成影响",
+        "layout[adaptive-composition]": "Adaptive Composition",
+        "layout[double-theatre]": "影院",
+        "layout[highlight]": "突出显示",
+        "layout[single-theatre]": "影院",
+        "layout[speaker-focus]": "演讲者中心",
+        "layout[tiled]": "平铺",
+        "lock": "锁定会议",
+        "lock-desc": "阻止任何用户自动加入会议",
+        "meeting-layout": "会议布局",
+        "meeting-settings": "会议设置",
+        "noise-suppression": "噪音抑制",
+        "personal": "个人设置",
+        "playing-sound": "播放声音……",
+        "save-changes": "保存更改",
+        "selfview-hidden": "已隐藏本端视频",
+        "settings": "设置",
+        "test-your-sound": "测试本人声音",
+        "unlock": "解锁会议 "
+    },
+    "speaker": {
+        "cant-hear": "我有听力障碍，因此无法听见声音",
+        "do-you-hear-sound": "您是否可以听到声音？"
+    },
+    "stats": {
+        "[bitrate]": "比特率",
+        "[codec]": "编码标准",
+        "[jitter]": "抖动",
+        "[packets-lost]": "数据包丢失",
+        "[packets-transmitted]": "传输的数据包",
+        "[recent-packet-loss]": "最近的数据包丢失情况",
+        "[resolution]": "分辨率",
+        "[roundtrip-time]": "往返传输时间",
+        "[total-packet-loss]": "数据包总体丢失情况",
+        "audio": "音频",
+        "in": "接收",
+        "nerd-stats": "专业统计数据",
+        "out": "发送",
+        "video": "视频"
+    },
+    "transfer": {
+        "error": "转移参会者时出现错误",
+        "fail": "无法转移参会者",
+        "meeting-id": "会议 ID",
+        "pin": "Pin 码",
+        "pin-placeholder": "例如“1234”",
+        "placeholder": "例如“meet.bob”",
+        "success": "已成功转移的参会者",
+        "transfer-participant": "转移参会者"
+    },
+    "username": {
+        "hey-whats-your-name": "您好，<1></1> 请问怎么称呼您？",
+        "name-input-placeholder": "例如“David”",
+        "usage-purpose": "请输入显示名，以便其他参会者知道谁在参加会议",
+        "your-name": "您的名字"
+    }
+}

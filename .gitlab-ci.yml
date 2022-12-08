@@ -7,6 +7,7 @@ cache:
 before_script:
   - echo "//gitlab.com/api/v4/projects/24337530/packages/npm/:_authToken=${CI_JOB_TOKEN}" >> .npmrc
   - npm install
+  - npm run postinstall
 
 test:
   stage: test
@@ -22,14 +23,14 @@ pages:
   environment: production
   stage: deploy
   script:
-    - CI=true npm run build
-    - rm -rf public
-    - mv build public
+    - dir="$CI_COMMIT_BRANCH"
+    - CI=false npm run build
+    - rm -rf public/$dir
+    - mkdir -p public/$dir
+    - mv build/* public/$dir
   artifacts:
     paths:
       - public # GitLab pages serve from a 'public' directory
-    expire_in: '900'
-  rules:
-    # This ensures that only pushes to the default branch will trigger
-    # a pages deploy
-    - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
+  only:
+    - dev
+    - main
