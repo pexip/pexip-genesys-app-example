@@ -15,18 +15,20 @@ test:
   script:
     - CI=true npm test
 
-lint:
-  stage: test
-  script:
-    - npm run lint
+#lint:
+ # stage: test
+  #script:
+   # - npm run lint
 pages:
   environment: production
   stage: deploy
   script:
     - dir="$CI_COMMIT_BRANCH"
+    - CI=false npm run build
     - rm -rf public/$dir
     - mkdir -p public/$dir
-    - CI=false BUILD_PATH=./$dir npm run build
+    - mv build/* public/$dir
+
   artifacts:
     paths:
       - public # GitLab pages serve from a 'public' directory
