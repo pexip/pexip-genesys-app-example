@@ -26,10 +26,10 @@ pages:
   stage: deploy
   script:
     - dir="$CI_COMMIT_BRANCH"
-    - CI=false npm run build
     - rm -rf public/$dir
     - mkdir -p public/$dir
-    - mv build/* public/$dir
+    - CI=false  BUILD_PATH=public/$dir npm run build
+
   artifacts:
     paths:
       - public # GitLab pages serve from a 'public' directory
