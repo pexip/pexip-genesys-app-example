@@ -3,6 +3,8 @@ image: node:14.19.0 # change to match your node version
 cache:
   paths:
     - node_modules/
+    - public/dev
+    - public/main
 
 before_script:
   - echo "//gitlab.com/api/v4/projects/24337530/packages/npm/:_authToken=${CI_JOB_TOKEN}" >> .npmrc
