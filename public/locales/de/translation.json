@@ -611,7 +611,7 @@
         "very-high": "Sehr hoch"
     },
     "settings": {
-        "cancel-changes": "Änderungen nicht übernehmen",
+        "cancel-changes": "Abbrechen",
         "collapsed-selfview-tooltip-description": "Sie senden noch immer ein Bild an andere Teilnehmer des Meetings.",
         "device-select": {
             "select-camera": "Kamera auswählen",
@@ -641,7 +641,7 @@
         "noise-suppression": "Geräuschunterderückung",
         "personal": "Persönliche Einstellungen",
         "playing-sound": "Ton wird wiedergegeben …",
-        "save-changes": "Änderungen speichern",
+        "save-changes": "Speichern",
         "selfview-hidden": "Selbstansicht ausgeblendet",
         "settings": "Einstellungen",
         "test-your-sound": "Tonausgabe testen",
