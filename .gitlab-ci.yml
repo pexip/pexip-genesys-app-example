@@ -11,15 +11,15 @@ before_script:
   - npm install
   - npm run postinstall
 
-#test:
- # stage: test
- # script:
-  #  - CI=true npm test
+test:
+  stage: test
+  script:
+   - CI=true npm test
 
-#lint:
- # stage: test
-  #script:
-   # - npm run lint
+lint:
+  stage: test
+  script:
+    - npm run lint
 pages:
   environment: production
   stage: deploy
