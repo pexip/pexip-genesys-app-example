@@ -3,8 +3,7 @@ image: node:14.19.0 # change to match your node version
 cache:
   paths:
     - node_modules/
-    - public/dev
-    - public/main
+    - public
 
 before_script:
   - echo "//gitlab.com/api/v4/projects/24337530/packages/npm/:_authToken=${CI_JOB_TOKEN}" >> .npmrc
@@ -28,11 +27,7 @@ pages:
     - dir="$CI_COMMIT_BRANCH"
     - rm -rf public/$dir
     - mkdir -p public/$dir
-    - CI=false  BUILD_PATH=public/$dir npm run build
-
-  artifacts:
-    paths:
-      - public # GitLab pages serve from a 'public' directory
+    - CI=false BUILD_PATH=public/$dir npm run build
   only:
     - dev
     - main
