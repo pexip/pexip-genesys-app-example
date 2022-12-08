@@ -27,7 +27,7 @@ pages:
     - CI=false npm run build
     - rm -rf public/$dir
     - mkdir -p public/$dir
-    - mv build public/$dir
+    - mv build/* public/$dir
   artifacts:
     paths:
       - public # GitLab pages serve from a 'public' directory
