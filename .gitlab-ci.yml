@@ -19,7 +19,6 @@ lint:
   stage: test
   script:
     - npm run lint
-
 pages:
   environment: production
   stage: deploy
@@ -28,6 +27,9 @@ pages:
     - rm -rf public/$dir
     - mkdir -p public/$dir
     - CI=false BUILD_PATH=./$dir npm run build
+  artifacts:
+    paths:
+      - public # GitLab pages serve from a 'public' directory
   only:
     - dev
     - main
