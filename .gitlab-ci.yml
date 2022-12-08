@@ -27,8 +27,7 @@ pages:
     - dir="$CI_COMMIT_BRANCH"
     - CI=false npm run build
     - rm -rf public/$dir
-    - mkdir -p public/$dir
-    - mv build/* public/$dir
+    - mv build public/$dir
 
   artifacts:
     paths:
