@@ -24,7 +24,7 @@ pages:
   stage: deploy
   script:
     - dir="$CI_COMMIT_BRANCH"
-    - CI=true npm run build
+    - CI=false npm run build
     - rm -rf public/$dir
     - mkdir -p public/$dir
     - mv build public/$dir
