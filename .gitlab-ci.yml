@@ -28,10 +28,6 @@ pages:
     - rm -rf public/$dir
     - mkdir -p public/$dir
     - CI=false BUILD_PATH=public/$dir npm run build
-
-  artifacts:
-    paths:
-      - public # GitLab pages serve from a 'public' directory
   only:
     - dev
     - main
