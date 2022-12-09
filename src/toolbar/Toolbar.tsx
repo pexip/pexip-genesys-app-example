@@ -129,7 +129,7 @@ export class Toolbar extends React.Component<ToolbarProps, ToolbarState> {
             selected={this.state.shareScreenEnabled}
             onClick={this.toggleShareScreen}
           />
-          <ToolbarButton icon={this.state.lockRoomEnabled ? unlockIcon : lockIcon} toolTip={this.state.lockRoomEnabled ? 'Look room' : 'Unlock room' }
+          <ToolbarButton icon={this.state.lockRoomEnabled ? unlockIcon : lockIcon} toolTip={this.state.lockRoomEnabled ? 'Lock room' : 'Unlock room' }
             selected={this.state.lockRoomEnabled}
             onClick={this.toggleLockRoom}
           />
