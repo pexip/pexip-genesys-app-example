@@ -5,6 +5,7 @@ import { render, screen } from '@testing-library/react'
 import { Toolbar } from './Toolbar'
 import { CallSignals, InfinityClient } from '@pexip/infinity'
 import { InfinityContext } from '../App'
+import JoinDetailsTextModuleScssModule from '@pexip/media-components/src/views/JoinDetailsText/JoinDetailsText.module.scss'
 
 // Create a mock for the ToolbarButton
 jest.mock('./toolbar-button/ToolbarButton', () => {
@@ -52,7 +53,9 @@ const infinityClientMock: InfinityClient = {
   setRole: jest.fn(),
   setConferenceExtension: jest.fn(),
   setPin: jest.fn(),
-  dtmf: jest.fn()
+  dtmf: jest.fn(),
+  sendConferenceRequest: jest.fn(),
+  setParticipantRoom: jest.fn()
 }
 
 const signalMock = {

@@ -5,7 +5,7 @@
   "homepage": ".",
   "dependencies": {
     "@pexip/components": "15.0.0",
-    "@pexip/infinity": "15.0.0",
+    "@pexip/infinity": "16.1.0",
     "@pexip/media-components": "15.0.0",
     "@pexip/media-control": "15.0.0",
     "@tensorflow/tfjs-core": "^4.1.0",
