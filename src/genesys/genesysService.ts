@@ -142,6 +142,17 @@ export const fetchAniName = async (): Promise<string | undefined> => {
   return aniName
 }
 
+/**
+ * Reads agents displayname via Genesys API
+ * @returns The agents displayname (returns "Agent" if name is undefined)
+ */
+export const fetchAgentName = async (): Promise<string> => {
+  const agentName = await conversationApi.getConversation(state.pcConversationId).then(() => {
+    return userMe.name
+  })
+  return agentName ?? 'Agent'
+}
+
 export function addHoldListener (holdListener: (flag: boolean) => any): void {
   handleHold = holdListener
 }

@@ -166,7 +166,6 @@ class App extends React.Component<{}, AppState> {
     const pcConversationId = queryParams.get('pcConversationId') ?? ''
     const pexipNode = queryParams.get('pexipNode') ?? ''
     const pexipAgentPin = queryParams.get('pexipAgentPin') ?? ''
-    const displayName = 'Agent'
     console.log(window.location.href)
     if (
       pcEnvironment != null &&
@@ -218,6 +217,9 @@ class App extends React.Component<{}, AppState> {
       this.setState({ localStream })
       const prefixedConfAlias = config.pexip.conferencePrefix + aniName
       this.infinityContext = { conferencePin: pexipAgentPin, conferenceAlias: aniName, infinityHost: pexipNode }
+
+      // Try to get agents displayname via Genesys API
+      const displayName = await GenesysUtil.fetchAgentName()
 
       await this.joinConference(
         pexipNode,
