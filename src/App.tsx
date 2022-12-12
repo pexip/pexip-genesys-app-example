@@ -10,7 +10,8 @@ import {
   InfinityClient,
   InfinitySignals,
   CallSignals,
-  PresoConnectionChangeEvent
+  PresoConnectionChangeEvent,
+  Participant
 } from '@pexip/infinity'
 
 // import { Video } from './video/Video'
@@ -125,6 +126,14 @@ class App extends React.Component<{}, AppState> {
         }
       }
     )
+    // Disconnect the playback service when connected
+    const checkPlaybackDisconnection = async (participant: Participant): Promise<void> => {
+      if (participant.uri.match(/^sip:.*\.playback@/) != null) {
+        await this.infinityClient.kick({ participantUuid: participant.uuid })
+        this.signals.onParticipantJoined.remove(checkPlaybackDisconnection)
+      }
+    }
+    this.signals.onParticipantJoined.add(checkPlaybackDisconnection)
   }
 
   private async joinConference (
