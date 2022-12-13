@@ -12,9 +12,10 @@
       color: #111;
   }
 
-  &.danger{
+  &.danger {
     background-color: red;
-    &:hover{
+    
+    &:hover {
       color: white;
       background-color: darkred;
     }
