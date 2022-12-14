@@ -243,10 +243,14 @@ class App extends React.Component<{}, AppState> {
 
   // Set the video to mute for all participants
   async onHoldVideo (onHold: boolean): Promise<void> {
+    const participantList = this.infinityClient.participants
     // Mute current user video and set mute adio indicator even if no audio layer is used by web rtc
     await this.infinityClient.muteVideo({ muteVideo: onHold })
     await this.infinityClient.mute({ mute: GenesysUtil.muteState || onHold })
     await this.infinityClient.muteAllGuests({ mute: onHold })
+    // Mute other participants video
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
+    participantList.forEach(async participant => await this.infinityClient.muteVideo({ muteVideo: onHold, participantUuid: participant.uuid }))
     this.toolbarRef?.current?.setState({ cameraMuted: onHold })
     // Set selfview hidden or visibel depending on state
     const selfViewWrapper = this.selfViewRef?.current

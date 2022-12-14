@@ -52,7 +52,9 @@ const infinityClientMock: InfinityClient = {
   setRole: jest.fn(),
   setConferenceExtension: jest.fn(),
   setPin: jest.fn(),
-  dtmf: jest.fn()
+  dtmf: jest.fn(),
+  sendConferenceRequest: jest.fn(),
+  setParticipantRoom: jest.fn()
 }
 
 const signalMock = {
