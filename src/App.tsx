@@ -48,6 +48,7 @@ export interface InfinityContext {
 class App extends React.Component<{}, AppState> {
   private readonly selfViewRef = React.createRef<HTMLDivElement>()
   private readonly remoteVideoRef = React.createRef<HTMLVideoElement>()
+  private readonly toolbarRef = React.createRef<Toolbar>()
 
   private signals!: InfinitySignals
   private callSignals!: CallSignals
@@ -246,6 +247,7 @@ class App extends React.Component<{}, AppState> {
     await this.infinityClient.muteVideo({ muteVideo: onHold })
     await this.infinityClient.mute({ mute: GenesysUtil.muteState || onHold })
     await this.infinityClient.muteAllGuests({ mute: onHold })
+    this.toolbarRef?.current?.setState({ cameraMuted: onHold })
     // Set selfview hidden or visibel depending on state
     const selfViewWrapper = this.selfViewRef?.current
     if (selfViewWrapper != null) { selfViewWrapper.hidden = onHold }
@@ -292,7 +294,7 @@ class App extends React.Component<{}, AppState> {
                 }
               />
             )}
-            <Draggable bounds='parent'>
+           <Draggable bounds='parent'>
               <div className='self-view' ref={this.selfViewRef}>
                 <Video
                   mediaStream={this.state.localStream}
@@ -302,12 +304,13 @@ class App extends React.Component<{}, AppState> {
                 />
               </div>
             </Draggable>
-            <Toolbar
+            <Toolbar ref={this.toolbarRef}
               infinityClient={this.infinityClient}
               infinityContext = {this.infinityContext}
               callSignals={this.callSignals}
               onLocalPresentationStream={this.handleLocalPresentationStream.bind(this)}
               onLocalStream={this.handleLocalStream.bind(this)}
+              selfViewRef = {this.selfViewRef}
             />
           </>
         )}

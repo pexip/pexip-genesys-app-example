@@ -8,8 +8,17 @@
   transition: background-color .3s ease;
 
   &:hover, &.selected {
-    background-color: #fffc;
-    color: #111;
+      background-color: #fffc;
+      color: #111;
+  }
+
+  &.danger {
+    background-color: red;
+    
+    &:hover {
+      color: white;
+      background-color: darkred;
+    }
   }
 
 }
