@@ -28,6 +28,7 @@ enum CONNECTION_STATE {
   CONNECTING,
   CONNECTED,
   DISCONNECTED,
+  NO_ACTIVE_CALL,
   ERROR,
 }
 
@@ -198,9 +199,19 @@ class App extends React.Component<{}, AppState> {
       const state = JSON.parse(
         decodeURIComponent(queryParams.get('state') as string)
       )
+
+      // Initiate Genesys enviroment
+      await GenesysUtil.inititate(state, accessToken)
+
+      // Stopp the initiliasation if no call is active
+      const callstate = await GenesysUtil.isCallActive() || false
+      if (!callstate) {
+        this.setState({ connectionState: CONNECTION_STATE.NO_ACTIVE_CALL })
+        return
+      }
+
       const pexipNode = state.pexipNode
       const pexipAgentPin = state.pexipAgentPin
-      await GenesysUtil.inititate(state, accessToken)
       // Add on hold listener
       GenesysUtil.addHoldListener(
         async (mute) => await this.onHoldVideo(mute)
@@ -274,6 +285,12 @@ class App extends React.Component<{}, AppState> {
   render (): JSX.Element {
     return (
       <div className='App' data-testid='App'>
+         {this.state.connectionState === CONNECTION_STATE.NO_ACTIVE_CALL && (
+             <div className="no-active-call">
+              <h1>No active call</h1>
+            </div>
+         )
+         }
         {this.state.connectionState === CONNECTION_STATE.CONNECTED && (
           <>
             <Video
