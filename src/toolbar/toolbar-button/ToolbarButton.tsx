@@ -1,5 +1,5 @@
 import React from 'react'
-import ReactTooltip from 'react-tooltip'
+import { Tooltip } from 'react-tooltip'
 
 import './ToolbarButton.scss'
 
@@ -12,10 +12,11 @@ interface ToolbarButtonProps {
 }
 
 export function ToolbarButton (props: ToolbarButtonProps): JSX.Element {
+  const id = props.toolTip.replace(' ', '-')
   return (
-    <button className={`ToolbarButton ${props.selected ?? false ? 'selected' : ''} ${props.danger ?? false ? 'danger' : ''}`} data-tip={props.toolTip} onClick={() => props.onClick()}>
+    <button id={id} className={`ToolbarButton ${props.selected ?? false ? 'selected' : ''} ${props.danger ?? false ? 'danger' : ''}`} data-tip={props.toolTip} onClick={() => props.onClick()}>
       <props.icon />
-      <ReactTooltip effect='solid' />
+      <Tooltip anchorId={id}/>
     </button>
   )
 }
