@@ -230,7 +230,8 @@ class App extends React.Component<{}, AppState> {
 
       // Try to get agents displayname via Genesys API
       const displayName = await GenesysUtil.fetchAgentName()
-
+      const holdState = await GenesysUtil.isHold()
+      const muteState = await GenesysUtil.isMuted()
       await this.joinConference(
         pexipNode,
         prefixedConfAlias,
@@ -238,6 +239,9 @@ class App extends React.Component<{}, AppState> {
         displayName,
         pexipAgentPin
       )
+      // Set inital context for hold and mute
+      await this.onMuteCall(muteState)
+      await this.onHoldVideo(holdState)
     }
   }
 
@@ -246,7 +250,7 @@ class App extends React.Component<{}, AppState> {
     const participantList = this.infinityClient.participants
     // Mute current user video and set mute adio indicator even if no audio layer is used by web rtc
     await this.infinityClient.muteVideo({ muteVideo: onHold })
-    await this.infinityClient.mute({ mute: GenesysUtil.muteState || onHold })
+    await this.infinityClient.mute({ mute: await GenesysUtil.isMuted() || onHold })
     await this.infinityClient.muteAllGuests({ mute: onHold })
     // Mute other participants video
     // eslint-disable-next-line @typescript-eslint/no-misused-promises

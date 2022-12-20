@@ -33,9 +33,9 @@ let handleEndCall: () => any
 
 let handleMuteCall: (flag: boolean) => any
 
-export let onHoldState: boolean = false
+let onHoldState: boolean = false
 
-export let muteState: boolean = false
+let muteState: boolean = false
 
 /**
  * @param pcEnvironment The enviroment context of the current Genesys session
@@ -147,10 +147,29 @@ export const fetchAniName = async (): Promise<string | undefined> => {
  * @returns The agents displayname (returns "Agent" if name is undefined)
  */
 export const fetchAgentName = async (): Promise<string> => {
-  const agentName = await conversationApi.getConversation(state.pcConversationId).then(() => {
-    return userMe.name
-  })
-  return agentName ?? 'Agent'
+  return userMe.name ?? 'Agent'
+}
+
+/**
+ * Reads agents hold state
+ * @returns Returns the hold state of the active call
+ */
+export const isHold = async (): Promise<boolean> => {
+  const conversation = await conversationApi.getConversation(state.pcConversationId)
+  const agentParticipant = conversation?.participants.find((p) => p.purpose === GenesysRole.AGENT)
+  const connectedCAll = agentParticipant?.calls?.find((call) => call.state === 'connected')
+  return connectedCAll?.held ?? false
+}
+
+/**
+ * Reads agents mute state
+ * @returns Returns the mute state of the active call
+ */
+export const isMuted = async (): Promise<boolean> => {
+  const conversation = await conversationApi.getConversation(state.pcConversationId)
+  const agentParticipant = conversation?.participants.find((p) => p.purpose === GenesysRole.AGENT)
+  const connectedCAll = agentParticipant?.calls?.find((call) => call.state === 'connected')
+  return connectedCAll?.muted ?? false
 }
 
 export function addHoldListener (holdListener: (flag: boolean) => any): void {
