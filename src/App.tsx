@@ -2,6 +2,7 @@ import React from 'react'
 import config from './config.js'
 import { ToastContainer, toast, Slide } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import { Bars } from 'react-loader-spinner'
 
 import {
   createInfinityClient,
@@ -21,7 +22,6 @@ import './App.scss'
 import { Video } from './video/Video'
 import Draggable from 'react-draggable'
 import * as GenesysUtil from './genesys/genesysService'
-
 // import Draggable from 'react-draggable'
 
 enum CONNECTION_STATE {
@@ -37,6 +37,7 @@ interface AppState {
   presentationStream: MediaStream
   connectionState: CONNECTION_STATE
   secondaryVideo: 'remote' | 'presentation'
+  loading: boolean
 }
 
 export interface InfinityContext {
@@ -62,7 +63,8 @@ class App extends React.Component<{}, AppState> {
       remoteStream: new MediaStream(),
       presentationStream: new MediaStream(),
       connectionState: CONNECTION_STATE.CONNECTING,
-      secondaryVideo: 'presentation'
+      secondaryVideo: 'presentation',
+      loading: true
     }
     // Workaround for maintain the selfView in the viewport when resizing
     window.addEventListener('resize', () => this.simulateSelfViewClick())
@@ -155,10 +157,10 @@ class App extends React.Component<{}, AppState> {
         bandwidth: 500,
         pin
       })
-      this.setState({ connectionState: CONNECTION_STATE.CONNECTED })
+      this.setState({ connectionState: CONNECTION_STATE.CONNECTED, loading: false })
       toast('Connected!')
     } catch (error) {
-      this.setState({ connectionState: CONNECTION_STATE.ERROR })
+      this.setState({ connectionState: CONNECTION_STATE.ERROR, loading: false })
     }
   }
 
@@ -273,7 +275,8 @@ class App extends React.Component<{}, AppState> {
 
   render (): JSX.Element {
     return (
-      <div className='App' data-testid='App'>
+        <div className='App' data-testid='App'>
+        <Bars height="100" width="100" color="#FFFFFF" ariaLabel="app loading" wrapperStyle={{}} wrapperClass="wrapper-class" visible={this.state.loading} />
         {this.state.connectionState === CONNECTION_STATE.CONNECTED && (
           <>
             <Video
