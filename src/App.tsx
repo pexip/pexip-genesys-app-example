@@ -252,6 +252,10 @@ class App extends React.Component<{}, AppState> {
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
     participantList.forEach(async participant => await this.infinityClient.muteVideo({ muteVideo: onHold, participantUuid: participant.uuid }))
     this.toolbarRef?.current?.setState({ cameraMuted: onHold })
+    // Stopp screen sharing on during hold is active
+    if (onHold) {
+      await this.toolbarRef?.current?.stoppScreenShare()
+    }
     // Set selfview hidden or visibel depending on state
     const selfViewWrapper = this.selfViewRef?.current
     if (selfViewWrapper != null) { selfViewWrapper.hidden = onHold }
