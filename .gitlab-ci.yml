@@ -3,8 +3,8 @@ image: node:14.19.0 # change to match your node version
 cache:
   paths:
     - work/node_modules/
-    - public/dev
-    - public/main
+    - cache/dev
+    - cache/main
 
 before_script:
   - echo "//gitlab.com/api/v4/projects/24337530/packages/npm/:_authToken=${CI_JOB_TOKEN}" >> .npmrc
@@ -25,24 +25,25 @@ pages:
   environment: production
   stage: deploy
   script:
-    - dir="$CI_COMMIT_BRANCH"
+    - DIR="$CI_COMMIT_BRANCH"
     - ls 
     - ls public
     - mkdir work
     - shopt -s extglob
-    - mv !(work|public) work
-    - cd public
-    - mkdir -p ../work/public
-    - mv !(dev|main) ../work/public
+    - mv !(work|cache) work
+    - mkdir -p cache/$DIR
+    - mv * cache/$DIR public/$DIR
     - ls 
+    - ls cache
     - ls public
-    - cd ../work
+    - cd work
     - ls
     - ls public
     - CI=false npm run build
-    - rm -rf ../public/$dir
-    - mkdir -p ../public/$dir
-    - copy build ../public/$dir
+    - rm -rf ../cache/$DIR
+    - mkdir -p ../cache/$DIR
+    - mv build ../public/$DIR
+    - mv build ../cache/$DIR
 
   artifacts:
     paths:
