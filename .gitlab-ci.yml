@@ -26,6 +26,7 @@ pages:
   script:
     - dir="$CI_COMMIT_BRANCH"
     - mkdir work
+    - shopt -s extglob
     - mv !(work) work
     - cd work
     - CI=false npm run build
