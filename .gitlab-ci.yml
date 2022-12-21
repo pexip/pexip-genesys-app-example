@@ -25,10 +25,12 @@ pages:
   stage: deploy
   script:
     - dir="$CI_COMMIT_BRANCH"
-    - rm -rf app
+    - mkdir work
+    - mv * work
+    - cd work
     - CI=false npm run build
-    - rm -rf public/$dir
-    - mv app public/$dir
+    - rm -rf ../public/$dir
+    - mv build ../public/$dir
 
   artifacts:
     paths:
