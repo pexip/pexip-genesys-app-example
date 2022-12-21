@@ -32,6 +32,7 @@ pages:
   artifacts:
     paths:
       - public # GitLab pages serve from a 'public' directory
+    expire_in: '900'
   only:
     - dev
     - main
