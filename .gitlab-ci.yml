@@ -2,7 +2,7 @@ image: node:14.19.0 # change to match your node version
 
 cache:
   paths:
-    - node_modules/
+    - work/node_modules/
     - public/dev
     - public/main
 
@@ -27,16 +27,19 @@ pages:
   script:
     - dir="$CI_COMMIT_BRANCH"
     - ls 
+    - ls /public
     - mkdir work
     - shopt -s extglob
     - mv !(work|public/dev|public/main) work
     - ls 
+    - ls /public
     - cd work
     - ls
+    - ls /public
     - CI=false npm run build
     - rm -rf ../public/$dir
     - mkdir -p ../public/$dir
-    - mv build ../public/$dir
+    - copy build ../public/$dir
 
   artifacts:
     paths:
