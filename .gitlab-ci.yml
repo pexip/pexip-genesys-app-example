@@ -26,15 +26,16 @@ pages:
   stage: deploy
   script:
     - dir="$CI_COMMIT_BRANCH"
-    - ls
+    - ls -R
     - mkdir work
     - shopt -s extglob
     - mv !(work|public/dev|public/main) work
+    - ls -R
     - cd work
-    - ls
+    - ls -R
     - CI=false npm run build
     - rm -rf ../public/$dir
-    - mkdir ../public/$dir
+    - mkdir -p ../public/$dir
     - mv build ../public/$dir
 
   artifacts:
