@@ -32,7 +32,7 @@ pages:
     - shopt -s extglob
     - mv !(work|public) work
     - cd public
-    - mkdir -rf ../work/public
+    - mkdir -p ../work/public
     - mv !(dev|main) ../work/public
     - ls 
     - ls public
