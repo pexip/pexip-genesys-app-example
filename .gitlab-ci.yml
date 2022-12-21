@@ -25,9 +25,10 @@ pages:
   stage: deploy
   script:
     - dir="$CI_COMMIT_BRANCH"
+    - rm -rf app
+    - rm -rf public
     - CI=false npm run build
-    - rm -rf public/$dir
-    - mv build public/$dir
+    - mv app public/$dir
 
   artifacts:
     paths:
