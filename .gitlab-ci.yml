@@ -27,15 +27,15 @@ pages:
   script:
     - dir="$CI_COMMIT_BRANCH"
     - ls 
-    - ls /public
+    - ls public
     - mkdir work
     - shopt -s extglob
     - mv !(work|public/dev|public/main) work
     - ls 
-    - ls /public
+    - ls public
     - cd work
     - ls
-    - ls /public
+    - ls public
     - CI=false npm run build
     - rm -rf ../public/$dir
     - mkdir -p ../public/$dir
