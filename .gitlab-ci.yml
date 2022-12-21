@@ -11,26 +11,30 @@ before_script:
   - npm install
   - npm run postinstall
 
-test:
-  stage: test
-  script:
-   - CI=true npm test
+#test:
+#  stage: test
+#  script:
+#   - CI=true npm test
 
-lint:
-  stage: test
-  script:
-    - npm run lint
+#lint:
+#  stage: test
+#  script:
+#    - npm run lint
+
 pages:
   environment: production
   stage: deploy
   script:
     - dir="$CI_COMMIT_BRANCH"
+    - -ls
     - mkdir work
     - shopt -s extglob
-    - mv !(work) work
+    - mv !(work|public/dev|public/main) work
     - cd work
+    - ls
     - CI=false npm run build
     - rm -rf ../public/$dir
+    - mkdir ../public/$dir
     - mv build ../public/$dir
 
   artifacts:
