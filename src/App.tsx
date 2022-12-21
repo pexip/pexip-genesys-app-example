@@ -2,6 +2,7 @@ import React from 'react'
 import config from './config.js'
 import { ToastContainer, toast, Slide } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import { Bars } from 'react-loader-spinner'
 
 import {
   createInfinityClient,
@@ -212,6 +213,7 @@ class App extends React.Component<{}, AppState> {
 
       const pexipNode = state.pexipNode
       const pexipAgentPin = state.pexipAgentPin
+      await GenesysUtil.inititate(state, accessToken)
       // Add on hold listener
       GenesysUtil.addHoldListener(
         async (mute) => await this.onHoldVideo(mute)
@@ -292,7 +294,8 @@ class App extends React.Component<{}, AppState> {
 
   render (): JSX.Element {
     return (
-      <div className='App' data-testid='App'>
+        <div className='App' data-testid='App'>
+        <Bars height="100" width="100" color="#FFFFFF" ariaLabel="app loading" wrapperStyle={{}} wrapperClass="wrapper-class" visible={this.state.connectionState === CONNECTION_STATE.CONNECTING} />
          {this.state.connectionState === CONNECTION_STATE.NO_ACTIVE_CALL && (
              <div className="no-active-call">
               <h1>No active call</h1>
