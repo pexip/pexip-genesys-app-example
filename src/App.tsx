@@ -37,7 +37,6 @@ interface AppState {
   presentationStream: MediaStream
   connectionState: CONNECTION_STATE
   secondaryVideo: 'remote' | 'presentation'
-  loading: boolean
 }
 
 export interface InfinityContext {
@@ -63,8 +62,7 @@ class App extends React.Component<{}, AppState> {
       remoteStream: new MediaStream(),
       presentationStream: new MediaStream(),
       connectionState: CONNECTION_STATE.CONNECTING,
-      secondaryVideo: 'presentation',
-      loading: true
+      secondaryVideo: 'presentation'
     }
     // Workaround for maintain the selfView in the viewport when resizing
     window.addEventListener('resize', () => this.simulateSelfViewClick())
@@ -157,10 +155,10 @@ class App extends React.Component<{}, AppState> {
         bandwidth: 500,
         pin
       })
-      this.setState({ connectionState: CONNECTION_STATE.CONNECTED, loading: false })
+      this.setState({ connectionState: CONNECTION_STATE.CONNECTED })
       toast('Connected!')
     } catch (error) {
-      this.setState({ connectionState: CONNECTION_STATE.ERROR, loading: false })
+      this.setState({ connectionState: CONNECTION_STATE.ERROR })
     }
   }
 
@@ -276,7 +274,7 @@ class App extends React.Component<{}, AppState> {
   render (): JSX.Element {
     return (
         <div className='App' data-testid='App'>
-        <Bars height="100" width="100" color="#FFFFFF" ariaLabel="app loading" wrapperStyle={{}} wrapperClass="wrapper-class" visible={this.state.loading} />
+        <Bars height="100" width="100" color="#FFFFFF" ariaLabel="app loading" wrapperStyle={{}} wrapperClass="wrapper-class" visible={this.state.connectionState === CONNECTION_STATE.CONNECTING} />
         {this.state.connectionState === CONNECTION_STATE.CONNECTED && (
           <>
             <Video
