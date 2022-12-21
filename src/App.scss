@@ -8,6 +8,10 @@
   height: calc(100% - 32px);
   gap: 16px;
 
+  .no-active-call{
+    color: white;
+  }
+
   .self-view {
     position: absolute;
     top: 16px;
