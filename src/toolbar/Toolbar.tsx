@@ -121,6 +121,12 @@ export class Toolbar extends React.Component<ToolbarProps, ToolbarState> {
     toast('Invitation link copied to clipboard!')
   }
 
+  public async stoppScreenShare (): Promise<void> {
+    if (this.state.shareScreenEnabled) {
+      await this.toggleShareScreen()
+    }
+  }
+
   componentDidMount (): void {
     const videoElement = (document.getElementById('remoteVideo') as HTMLVideoElement)
     // Add listener for natvive pop out events for cusomer video element
