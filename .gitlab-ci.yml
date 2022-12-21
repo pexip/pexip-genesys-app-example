@@ -30,10 +30,13 @@ pages:
     - ls public
     - mkdir work
     - shopt -s extglob
-    - mv !(work|public/dev|public/main) work
+    - mv !(work|public) work
+    - cd public
+    - mkdir -rf ../work/public
+    - mv !(dev|main) ../work/public
     - ls 
     - ls public
-    - cd work
+    - cd ../work
     - ls
     - ls public
     - CI=false npm run build
