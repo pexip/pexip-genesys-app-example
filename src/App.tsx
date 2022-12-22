@@ -255,6 +255,9 @@ class App extends React.Component<{}, AppState> {
       // Set inital context for hold and mute
       await this.onMuteCall(muteState)
       await this.onHoldVideo(holdState)
+      const participantList = this.infinityClient.participants
+      // eslint-disable-next-line @typescript-eslint/no-misused-promises
+      participantList.forEach(async participant => await this.infinityClient.setRole({ role: 'guest', participantUuid: participant.uuid }))
     }
   }
 
