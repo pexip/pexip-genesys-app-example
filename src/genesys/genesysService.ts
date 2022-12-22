@@ -174,9 +174,11 @@ export const isMuted = async (): Promise<boolean> => {
 
 export const isCallActive = async (): Promise<boolean> => {
   const calls = await conversationApi.getConversation(state.pcConversationId).then((conversation) => {
-    return conversation.participants?.filter((p) => p.purpose === GenesysRole.AGENT)[0]?.calls
-  })
-  return calls?.find((call) => call.state === GenesysConnectionsState.CONNECTED) != null
+    return conversation.participants?.filter((p) => p.purpose === GenesysRole.AGENT).map(participant =>
+      participant.calls).flatMap(calls => calls)
+  }
+  )
+  return calls?.find((call) => call?.state === GenesysConnectionsState.CONNECTED) != null
 }
 
 export function addHoldListener (holdListener: (flag: boolean) => any): void {

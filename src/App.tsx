@@ -257,7 +257,7 @@ class App extends React.Component<{}, AppState> {
       await this.onHoldVideo(holdState)
       const participantList = this.infinityClient.participants
       // eslint-disable-next-line @typescript-eslint/no-misused-promises
-      participantList.forEach(async participant => await this.infinityClient.setRole({ role: 'guest', participantUuid: participant.uuid }))
+      participantList.filter(participant => participant.uuid !== this.infinityClient.me?.uuid).forEach(async participant => await this.infinityClient.setRole({ role: 'guest', participantUuid: participant.uuid }))
     }
   }
 
