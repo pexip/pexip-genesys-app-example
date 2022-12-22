@@ -7,8 +7,8 @@ cache:
     - cache/main
 
 before_script:
-  - ls 
-  - ls public
+  - ls -a
+  - ls -a public
   - mkdir -p work
   - shopt -s extglob
   - mv !(work|cache) work
@@ -16,14 +16,14 @@ before_script:
   - mkdir -p public
   - cp -RT cache public
   - ls 
-  - ls cache
-  - ls public
+  - ls -a cache
+  - ls -a public
   - cd work
   - echo "//gitlab.com/api/v4/projects/24337530/packages/npm/:_authToken=${CI_JOB_TOKEN}" >> .npmrc
   - npm install
   - npm run postinstall
-  - ls
-  - ls public
+  - ls -a
+  - ls -a public
 
 test:
   stage: test
