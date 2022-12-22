@@ -28,7 +28,7 @@ pages:
     - DIR="$CI_COMMIT_BRANCH"
     - ls 
     - ls public
-    - mkdir work
+    - mkdir -p work
     - shopt -s extglob
     - mv !(work|cache) work
     - mkdir -p cache
