@@ -31,8 +31,9 @@ pages:
     - mkdir work
     - shopt -s extglob
     - mv !(work|cache) work
-    - mkdir -p cache/$DIR
-    - mv * cache/$DIR public/$DIR
+    - mkdir -p cache
+    - mkdir -p public
+    - cp -R cache/* public
     - ls 
     - ls cache
     - ls public
@@ -40,10 +41,11 @@ pages:
     - ls
     - ls public
     - CI=false npm run build
+    - rm -rf ../public/$DIR
+    - mv build ../public/$DIR
     - rm -rf ../cache/$DIR
     - mkdir -p ../cache/$DIR
-    - mv build ../public/$DIR
-    - mv build ../cache/$DIR
+    - cp ../public/$DIR/* ../cache/$DIR
 
   artifacts:
     paths:
