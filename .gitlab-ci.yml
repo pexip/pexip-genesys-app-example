@@ -2,21 +2,21 @@ image: node:14.19.0 # change to match your node version
 
 cache:
   paths:
-    - work/node_modules/
+    - work/node_modules
     - cache/dev
     - cache/main
 
 # before_script:
 
-#test:
-#  stage: test
-#  script:
-#   - CI=true npm test
+test:
+  stage: test
+  script:
+   - CI=true npm test
 
-#lint:
-#  stage: test
-#  script:
-#    - npm run lint
+lint:
+  stage: test
+  script:
+    - npm run lint
 
 pages:
   environment: production
@@ -45,7 +45,7 @@ pages:
     - mv build ../public/$DIR
     - rm -rf ../cache/$DIR
     - mkdir -p ../cache/$DIR
-    - cp -R ../public/$DIR ../cache/
+    - cp -R ../public/$DIR ../cache
 
   artifacts:
     paths:
