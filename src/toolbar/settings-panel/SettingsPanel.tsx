@@ -4,6 +4,8 @@ import { DevicesList, MediaControlSettings, StreamQuality } from '@pexip/media-c
 import { MediaDeviceInfoLike } from '@pexip/media-control'
 import { Modal } from '@pexip/components'
 
+import { getLocalStream, stopStream } from '../../media/media'
+
 import './SettingsPanel.scss'
 
 interface SettingsPanelProps {
@@ -45,20 +47,12 @@ export function SettingsPanel (props: SettingsPanelProps): JSX.Element {
     const asyncBootstrap = async (): Promise<void> => {
       const devices = await navigator.mediaDevices.enumerateDevices()
       setDevices(devices.filter((device) => device.kind === 'videoinput'))
-      if (videoInput == null) {
-        const videoInputId = localStorage.getItem('pexipVideoInputId')
-        let device = devices.find((device) => device.deviceId === videoInputId)
-        if (device == null) {
-          device = devices[0]
-        }
-        setVideoInput(device)
-      }
-      mediaStream = await navigator.mediaDevices.getUserMedia({ video: { deviceId: videoInput?.deviceId } })
+      const mediaStream = await getLocalStream(videoInput?.deviceId)
       setLocalMediaStream(mediaStream)
     }
     asyncBootstrap().catch((error) => console.error(error))
     return () => {
-      mediaStream?.getTracks().forEach((track) => track.stop())
+      if (mediaStream != null) stopStream(mediaStream)
     }
   }, [videoInput])
 
@@ -67,8 +61,7 @@ export function SettingsPanel (props: SettingsPanelProps): JSX.Element {
 
   const handleSave = (): void => {
     if (videoInput != null) {
-      localStorage.setItem('pexipVideoInputId', videoInput?.deviceId)
-      navigator.mediaDevices.getUserMedia({ video: { deviceId: videoInput?.deviceId } }).then((mediaStream) => {
+      getLocalStream(videoInput.deviceId, true).then((mediaStream) => {
         props.onSave(mediaStream)
       }).catch((error) => console.error(error))
     }

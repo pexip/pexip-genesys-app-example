@@ -84,17 +84,31 @@ const callSignalsMock: CallSignals = {
 
 const handleLocalPresentationStream = jest.fn()
 const handleLocalStream = jest.fn()
+const handleCameraMute = jest.fn()
 
 test('renders the toolbar', () => {
-  render(<Toolbar infinityClient={ infinityClientMock } infinityContext={infinityContextMock} callSignals={ callSignalsMock }
-    onLocalPresentationStream={handleLocalPresentationStream} onLocalStream={handleLocalStream} />)
+  render(<Toolbar
+    infinityClient={ infinityClientMock }
+    infinityContext={infinityContextMock}
+    callSignals={ callSignalsMock }
+    onLocalPresentationStream={handleLocalPresentationStream}
+    onLocalStream={handleLocalStream}
+    isCameraMuted={true}
+    onCameraMute={handleCameraMute}
+  />)
   const toolbar = screen.getByTestId('Toolbar')
   expect(toolbar).toBeInTheDocument()
 })
 
 test('it renders 6 buttons', () => {
-  render(<Toolbar infinityClient={ infinityClientMock } infinityContext={infinityContextMock} callSignals={ callSignalsMock }
-    onLocalPresentationStream={handleLocalPresentationStream} onLocalStream={handleLocalStream} />)
+  render(<Toolbar infinityClient={ infinityClientMock }
+    infinityContext={infinityContextMock}
+    callSignals={ callSignalsMock }
+    onLocalPresentationStream={handleLocalPresentationStream}
+    onLocalStream={handleLocalStream}
+    isCameraMuted={true}
+    onCameraMute={handleCameraMute}
+  />)
   const buttons = screen.getAllByRole('button')
   expect(buttons.length).toBe(6)
 })

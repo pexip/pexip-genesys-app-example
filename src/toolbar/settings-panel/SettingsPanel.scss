@@ -14,6 +14,11 @@
         display: none;
       }
     }
+
+    // Disable min-height
+    &>div:first-child>div:first-child {
+      min-height: 0;
+    }
     
     // Hide the audioInput selector
     &>div:first-child>div:first-child>div:first-child>div:first-child>div:nth-child(2) {
