@@ -282,6 +282,7 @@ class App extends React.Component<{}, AppState> {
   async onEndCall (): Promise<void> {
     await this.infinityClient.disconnectAll({})
     await this.infinityClient.disconnect({})
+    this.setState({ connectionState: CONNECTION_STATE.NO_ACTIVE_CALL })
   }
 
   async onMuteCall (muted: boolean): Promise<void> {
