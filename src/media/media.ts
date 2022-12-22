@@ -1,3 +1,5 @@
+import { StreamQuality } from '@pexip/media-components'
+
 /**
  * Get a local video stream with the provided device id. If a device id is not provided
  * it will take the first video device.
@@ -33,14 +35,29 @@ const stopStream = (stream: MediaStream): void => {
 }
 
 /**
- * Get the current media quality.
+ * Get the current chosen stream quality.
+ * TODO: For now it returns always auto.
  */
-const getMediaQuality = (): void => {
+const getStreamQuality = (): StreamQuality => {
+  const bandwidth = 'auto'
+  const [low, medium, high, veryHigh] = ['576', '1264', '2464', '6144']
 
+  switch (bandwidth) {
+    case low:
+      return StreamQuality.Low
+    case medium:
+      return StreamQuality.Medium
+    case high:
+      return StreamQuality.High
+    case veryHigh:
+      return StreamQuality.VeryHigh
+    default:
+      return StreamQuality.Auto
+  }
 }
 
 export {
   getLocalStream,
   stopStream,
-  getMediaQuality
+  getStreamQuality
 }

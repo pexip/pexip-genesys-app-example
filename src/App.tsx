@@ -155,7 +155,7 @@ class App extends React.Component<{}, AppState> {
         conferenceAlias,
         mediaStream,
         displayName,
-        bandwidth: 500,
+        bandwidth: 0, // auto
         pin
       })
       this.setState({ connectionState: CONNECTION_STATE.CONNECTED })
@@ -292,7 +292,7 @@ class App extends React.Component<{}, AppState> {
               />
             )}
             { this.state.localStream.active &&
-                <Selfview
+              <Selfview
                 floatRoot={appRef}
                 callSignals={this.callSignals}
                 username={this.state.displayName}

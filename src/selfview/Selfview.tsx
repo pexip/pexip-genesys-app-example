@@ -1,8 +1,9 @@
 import React, { RefObject, useState } from 'react'
 
-import { DraggableFoldableInMeetingSelfview, Stats } from '@pexip/media-components'
-import { Quality } from '@pexip/peer-connection-stats'
-import { CallSignals } from '@pexip/infinity'
+import { DraggableFoldableInMeetingSelfview, Stats, useCallQuality, useNetworkState } from '@pexip/media-components'
+import { callLivenessSignals, CallSignals } from '@pexip/infinity'
+
+import { getStreamQuality } from '../media/media'
 
 import './Selfview.scss'
 
@@ -18,6 +19,17 @@ export function Selfview (props: SelfViewProps): JSX.Element {
   const [showTooltip, setShowTooltip] = useState(true)
   const [folded, setFolded] = useState(false)
 
+  const networkState = useNetworkState(
+    callLivenessSignals.onReconnecting,
+    callLivenessSignals.onReconnected
+  )
+
+  const callQuality = useCallQuality({
+    getStreamQuality,
+    callQualitySignal: props.callSignals.onCallQuality,
+    networkState
+  })
+
   return (
     <div className='Selfview'>
       <DraggableFoldableInMeetingSelfview
@@ -25,7 +37,7 @@ export function Selfview (props: SelfViewProps): JSX.Element {
         shouldShowUserAvatar={false}
         username={props.username}
         localMediaStream={props.localStream}
-        quality={Quality.BAD}
+        quality={callQuality}
         onCollapseSelfview={() => setFolded(true)}
         onExpandSelfview={() => setFolded(false)}
         isFolded={folded}
