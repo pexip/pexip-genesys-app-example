@@ -33,7 +33,7 @@ pages:
     - mv !(work|cache) work
     - mkdir -p cache
     - mkdir -p public
-    - cp -R cache/* public
+    - cp -RT cache public
     - ls 
     - ls cache
     - ls public
@@ -45,7 +45,7 @@ pages:
     - mv build ../public/$DIR
     - rm -rf ../cache/$DIR
     - mkdir -p ../cache/$DIR
-    - cp ../public/$DIR/* ../cache/$DIR
+    - cp -R ../public/$DIR ../cache/
 
   artifacts:
     paths:
