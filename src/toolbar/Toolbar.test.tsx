@@ -52,7 +52,9 @@ const infinityClientMock: InfinityClient = {
   setRole: jest.fn(),
   setConferenceExtension: jest.fn(),
   setPin: jest.fn(),
-  dtmf: jest.fn()
+  dtmf: jest.fn(),
+  sendConferenceRequest: jest.fn(),
+  setParticipantRoom: jest.fn()
 }
 
 const signalMock = {
@@ -90,9 +92,9 @@ test('renders the toolbar', () => {
   expect(toolbar).toBeInTheDocument()
 })
 
-test('it renders 5 buttons', () => {
+test('it renders 6 buttons', () => {
   render(<Toolbar infinityClient={ infinityClientMock } infinityContext={infinityContextMock} callSignals={ callSignalsMock }
     onLocalPresentationStream={handleLocalPresentationStream} onLocalStream={handleLocalStream} />)
   const buttons = screen.getAllByRole('button')
-  expect(buttons.length).toBe(5)
+  expect(buttons.length).toBe(6)
 })

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { RefObject } from 'react'
 
 import { CallSignals, InfinityClient, PresoConnectionChangeEvent } from '@pexip/infinity'
 
@@ -11,6 +11,9 @@ import { ReactComponent as lockIcon } from './icons/lock.svg'
 import { ReactComponent as settingsIcon } from './icons/settings.svg'
 import { ReactComponent as popUpVideoIcon } from './icons/pop-up-video.svg'
 import { ReactComponent as inviteLinkIcon } from './icons/invitelink.svg'
+import { ReactComponent as cameraIcon } from './icons/camera.svg'
+import { ReactComponent as mutedCameraIcon } from './icons/mutedCamera.svg'
+
 import copy from 'copy-to-clipboard'
 
 import './Toolbar.scss'
@@ -23,6 +26,7 @@ interface ToolbarProps {
   callSignals: CallSignals
   onLocalPresentationStream: Function
   onLocalStream: Function
+  selfViewRef?: RefObject<HTMLDivElement>
 }
 
 interface ToolbarState {
@@ -30,6 +34,7 @@ interface ToolbarState {
   lockRoomEnabled: boolean
   popOutVideoEnabled: boolean
   settingsEnabled: boolean
+  cameraMuted: boolean
 }
 
 export class Toolbar extends React.Component<ToolbarProps, ToolbarState> {
@@ -41,8 +46,10 @@ export class Toolbar extends React.Component<ToolbarProps, ToolbarState> {
       shareScreenEnabled: false,
       lockRoomEnabled: !(this.props.infinityClient.conferenceStatus?.locked ?? false),
       popOutVideoEnabled: false,
-      settingsEnabled: false
+      settingsEnabled: false,
+      cameraMuted: false
     }
+    this.toggleCameraMute = this.toggleCameraMute.bind(this)
     this.toggleShareScreen = this.toggleShareScreen.bind(this)
     this.toggleLockRoom = this.toggleLockRoom.bind(this)
     this.togglePopOutVideo = this.togglePopOutVideo.bind(this)
@@ -94,6 +101,17 @@ export class Toolbar extends React.Component<ToolbarProps, ToolbarState> {
     this.setState({ settingsEnabled: !this.state.settingsEnabled })
   }
 
+  private async toggleCameraMute (): Promise<void> {
+    const response = await this.props.infinityClient.muteVideo({ muteVideo: !this.state.cameraMuted })
+    if (response?.status === 200) {
+      this.setState({
+        cameraMuted: !this.state.cameraMuted
+      })
+      const selfViewWrapper = this.props.selfViewRef?.current
+      if (selfViewWrapper != null) { selfViewWrapper.hidden = !this.state.cameraMuted }
+    }
+  }
+
   private async copyInvitationLink (): Promise<void> {
     // Example: https://pexipdemo.com//webapp/#/?conference=mp555054c72bb44243bd0004b25d3ea45c&pin=2021
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions, @typescript-eslint/restrict-plus-operands
@@ -101,6 +119,12 @@ export class Toolbar extends React.Component<ToolbarProps, ToolbarState> {
     const invitationlink: string = 'https://' + infinityContext.infinityHost + '/webapp/#/?conference=mp' + infinityContext.conferenceAlias + '&pin=' + infinityContext.conferencePin
     this.copy(invitationlink)
     toast('Invitation link copied to clipboard!')
+  }
+
+  public async stoppScreenShare (): Promise<void> {
+    if (this.state.shareScreenEnabled) {
+      await this.toggleShareScreen()
+    }
   }
 
   componentDidMount (): void {
@@ -125,11 +149,15 @@ export class Toolbar extends React.Component<ToolbarProps, ToolbarState> {
     return (
       <>
         <div className="Toolbar" data-testid='Toolbar'>
+          <ToolbarButton icon={this.state.cameraMuted ? mutedCameraIcon : cameraIcon} toolTip={this.state.cameraMuted ? 'Unmute camera' : 'Mute camera'}
+            danger={this.state.cameraMuted}
+            onClick={this.toggleCameraMute}
+          />
           <ToolbarButton icon={shareScreenIcon} toolTip={this.state.shareScreenEnabled ? 'Stop sharing screen' : 'Share screen'}
             selected={this.state.shareScreenEnabled}
             onClick={this.toggleShareScreen}
           />
-          <ToolbarButton icon={this.state.lockRoomEnabled ? unlockIcon : lockIcon} toolTip={this.state.lockRoomEnabled ? 'Look room' : 'Unlock room' }
+          <ToolbarButton icon={this.state.lockRoomEnabled ? unlockIcon : lockIcon} toolTip={this.state.lockRoomEnabled ? 'Lock room' : 'Unlock room' }
             selected={this.state.lockRoomEnabled}
             onClick={this.toggleLockRoom}
           />

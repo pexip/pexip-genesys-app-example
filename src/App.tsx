@@ -2,6 +2,7 @@ import React from 'react'
 import config from './config.js'
 import { ToastContainer, toast, Slide } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import { Bars } from 'react-loader-spinner'
 
 import {
   createInfinityClient,
@@ -10,7 +11,8 @@ import {
   InfinityClient,
   InfinitySignals,
   CallSignals,
-  PresoConnectionChangeEvent
+  PresoConnectionChangeEvent,
+  Participant
 } from '@pexip/infinity'
 
 // import { Video } from './video/Video'
@@ -27,6 +29,7 @@ enum CONNECTION_STATE {
   CONNECTING,
   CONNECTED,
   DISCONNECTED,
+  NO_ACTIVE_CALL,
   ERROR,
 }
 
@@ -47,6 +50,7 @@ export interface InfinityContext {
 class App extends React.Component<{}, AppState> {
   private readonly selfViewRef = React.createRef<HTMLDivElement>()
   private readonly remoteVideoRef = React.createRef<HTMLVideoElement>()
+  private readonly toolbarRef = React.createRef<Toolbar>()
 
   private signals!: InfinitySignals
   private callSignals!: CallSignals
@@ -125,6 +129,14 @@ class App extends React.Component<{}, AppState> {
         }
       }
     )
+    // Disconnect the playback service when connected
+    const checkPlaybackDisconnection = async (participant: Participant): Promise<void> => {
+      if (participant.uri.match(/^sip:.*\.playback@/) != null) {
+        await this.infinityClient.kick({ participantUuid: participant.uuid })
+        this.signals.onParticipantJoined.remove(checkPlaybackDisconnection)
+      }
+    }
+    this.signals.onParticipantJoined.add(checkPlaybackDisconnection)
   }
 
   private async joinConference (
@@ -166,7 +178,6 @@ class App extends React.Component<{}, AppState> {
     const pcConversationId = queryParams.get('pcConversationId') ?? ''
     const pexipNode = queryParams.get('pexipNode') ?? ''
     const pexipAgentPin = queryParams.get('pexipAgentPin') ?? ''
-    const displayName = 'Agent'
     console.log(window.location.href)
     if (
       pcEnvironment != null &&
@@ -189,6 +200,17 @@ class App extends React.Component<{}, AppState> {
       const state = JSON.parse(
         decodeURIComponent(queryParams.get('state') as string)
       )
+
+      // Initiate Genesys enviroment
+      await GenesysUtil.inititate(state, accessToken)
+
+      // Stopp the initiliasation if no call is active
+      const callstate = await GenesysUtil.isCallActive() || false
+      if (!callstate) {
+        this.setState({ connectionState: CONNECTION_STATE.NO_ACTIVE_CALL })
+        return
+      }
+
       const pexipNode = state.pexipNode
       const pexipAgentPin = state.pexipAgentPin
       await GenesysUtil.inititate(state, accessToken)
@@ -219,6 +241,10 @@ class App extends React.Component<{}, AppState> {
       const prefixedConfAlias = config.pexip.conferencePrefix + aniName
       this.infinityContext = { conferencePin: pexipAgentPin, conferenceAlias: aniName, infinityHost: pexipNode }
 
+      // Try to get agents displayname via Genesys API
+      const displayName = await GenesysUtil.fetchAgentName()
+      const holdState = await GenesysUtil.isHold()
+      const muteState = await GenesysUtil.isMuted()
       await this.joinConference(
         pexipNode,
         prefixedConfAlias,
@@ -226,15 +252,27 @@ class App extends React.Component<{}, AppState> {
         displayName,
         pexipAgentPin
       )
+      // Set inital context for hold and mute
+      await this.onMuteCall(muteState)
+      await this.onHoldVideo(holdState)
     }
   }
 
   // Set the video to mute for all participants
   async onHoldVideo (onHold: boolean): Promise<void> {
+    const participantList = this.infinityClient.participants
     // Mute current user video and set mute adio indicator even if no audio layer is used by web rtc
     await this.infinityClient.muteVideo({ muteVideo: onHold })
-    await this.infinityClient.mute({ mute: GenesysUtil.muteState || onHold })
+    await this.infinityClient.mute({ mute: await GenesysUtil.isMuted() || onHold })
     await this.infinityClient.muteAllGuests({ mute: onHold })
+    // Mute other participants video
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
+    participantList.forEach(async participant => await this.infinityClient.muteVideo({ muteVideo: onHold, participantUuid: participant.uuid }))
+    this.toolbarRef?.current?.setState({ cameraMuted: onHold })
+    // Stopp screen sharing on during hold is active
+    if (onHold) {
+      await this.toolbarRef?.current?.stoppScreenShare()
+    }
     // Set selfview hidden or visibel depending on state
     const selfViewWrapper = this.selfViewRef?.current
     if (selfViewWrapper != null) { selfViewWrapper.hidden = onHold }
@@ -256,7 +294,14 @@ class App extends React.Component<{}, AppState> {
 
   render (): JSX.Element {
     return (
-      <div className='App' data-testid='App'>
+        <div className='App' data-testid='App'>
+        <Bars height="100" width="100" color="#FFFFFF" ariaLabel="app loading" wrapperStyle={{}} wrapperClass="wrapper-class" visible={this.state.connectionState === CONNECTION_STATE.CONNECTING} />
+         {this.state.connectionState === CONNECTION_STATE.NO_ACTIVE_CALL && (
+             <div className="no-active-call">
+              <h1>No active call</h1>
+            </div>
+         )
+         }
         {this.state.connectionState === CONNECTION_STATE.CONNECTED && (
           <>
             <Video
@@ -281,7 +326,7 @@ class App extends React.Component<{}, AppState> {
                 }
               />
             )}
-            <Draggable bounds='parent'>
+           <Draggable bounds='parent'>
               <div className='self-view' ref={this.selfViewRef}>
                 <Video
                   mediaStream={this.state.localStream}
@@ -291,12 +336,13 @@ class App extends React.Component<{}, AppState> {
                 />
               </div>
             </Draggable>
-            <Toolbar
+            <Toolbar ref={this.toolbarRef}
               infinityClient={this.infinityClient}
               infinityContext = {this.infinityContext}
               callSignals={this.callSignals}
               onLocalPresentationStream={this.handleLocalPresentationStream.bind(this)}
               onLocalStream={this.handleLocalStream.bind(this)}
+              selfViewRef = {this.selfViewRef}
             />
           </>
         )}

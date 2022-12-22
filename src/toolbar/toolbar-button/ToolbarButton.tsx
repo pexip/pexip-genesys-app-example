@@ -8,11 +8,12 @@ interface ToolbarButtonProps {
   toolTip: string
   onClick: Function
   selected?: boolean
+  danger?: boolean
 }
 
 export function ToolbarButton (props: ToolbarButtonProps): JSX.Element {
   return (
-    <button className={`ToolbarButton ${props.selected ?? false ? 'selected' : ''}`} data-tip={props.toolTip} onClick={() => props.onClick()}>
+    <button className={`ToolbarButton ${props.selected ?? false ? 'selected' : ''} ${props.danger ?? false ? 'danger' : ''}`} data-tip={props.toolTip} onClick={() => props.onClick()}>
       <props.icon />
       <ReactTooltip effect='solid' />
     </button>
