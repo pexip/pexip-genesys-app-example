@@ -10,7 +10,7 @@ before_script:
   - ls -a
   - ls -a public
   - mkdir -p work
-  - shopt -s extglob
+  - shopt -s extglob dotglob
   - mv !(work|cache) work
   - mkdir -p cache
   - mkdir -p public
