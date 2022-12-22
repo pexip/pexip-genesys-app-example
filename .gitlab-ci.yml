@@ -6,10 +6,7 @@ cache:
     - cache/dev
     - cache/main
 
-before_script:
-  - echo "//gitlab.com/api/v4/projects/24337530/packages/npm/:_authToken=${CI_JOB_TOKEN}" >> .npmrc
-  - npm install
-  - npm run postinstall
+# before_script:
 
 #test:
 #  stage: test
@@ -38,6 +35,9 @@ pages:
     - ls cache
     - ls public
     - cd work
+    - echo "//gitlab.com/api/v4/projects/24337530/packages/npm/:_authToken=${CI_JOB_TOKEN}" >> .npmrc
+    - npm install
+    - npm run postinstall
     - ls
     - ls public
     - CI=false npm run build
