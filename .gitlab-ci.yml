@@ -6,7 +6,24 @@ cache:
     - cache/dev
     - cache/main
 
-# before_script:
+before_script:
+  - ls 
+  - ls public
+  - mkdir -p work
+  - shopt -s extglob
+  - mv !(work|cache) work
+  - mkdir -p cache
+  - mkdir -p public
+  - cp -RT cache public
+  - ls 
+  - ls cache
+  - ls public
+  - cd work
+  - echo "//gitlab.com/api/v4/projects/24337530/packages/npm/:_authToken=${CI_JOB_TOKEN}" >> .npmrc
+  - npm install
+  - npm run postinstall
+  - ls
+  - ls public
 
 test:
   stage: test
@@ -23,23 +40,6 @@ pages:
   stage: deploy
   script:
     - DIR="$CI_COMMIT_BRANCH"
-    - ls 
-    - ls public
-    - mkdir -p work
-    - shopt -s extglob
-    - mv !(work|cache) work
-    - mkdir -p cache
-    - mkdir -p public
-    - cp -RT cache public
-    - ls 
-    - ls cache
-    - ls public
-    - cd work
-    - echo "//gitlab.com/api/v4/projects/24337530/packages/npm/:_authToken=${CI_JOB_TOKEN}" >> .npmrc
-    - npm install
-    - npm run postinstall
-    - ls
-    - ls public
     - CI=false npm run build
     - rm -rf ../public/$DIR
     - mv build ../public/$DIR
