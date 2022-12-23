@@ -2,14 +2,28 @@ image: node:14.19.0 # change to match your node version
 
 cache:
   paths:
-    - node_modules/
-    - public/dev
-    - public/main
+    - work/node_modules
+    - cache/dev
+    - cache/main
 
 before_script:
+  - ls -a
+  - ls -a public
+  - mkdir -p work
+  - shopt -s extglob dotglob
+  - mv !(work|cache) work
+  - mkdir -p cache
+  - mkdir -p public
+  - cp -RT cache public
+  - ls 
+  - ls -a cache
+  - ls -a public
+  - cd work
   - echo "//gitlab.com/api/v4/projects/24337530/packages/npm/:_authToken=${CI_JOB_TOKEN}" >> .npmrc
   - npm install
   - npm run postinstall
+  - ls -a
+  - ls -a public
 
 test:
   stage: test
@@ -20,18 +34,23 @@ lint:
   stage: test
   script:
     - npm run lint
+
 pages:
   environment: production
   stage: deploy
   script:
-    - dir="$CI_COMMIT_BRANCH"
+    - DIR="$CI_COMMIT_BRANCH"
     - CI=false npm run build
-    - rm -rf public/$dir
-    - mv build public/$dir
+    - rm -rf ../public/$DIR
+    - mv build ../public/$DIR
+    - rm -rf ../cache/$DIR
+    - mkdir -p ../cache/$DIR
+    - cp -R ../public/$DIR ../cache
 
   artifacts:
     paths:
       - public # GitLab pages serve from a 'public' directory
+    expire_in: '900'
   only:
     - dev
     - main
