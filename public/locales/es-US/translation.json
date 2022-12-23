@@ -11,8 +11,8 @@
         "do-you-see-yourself": "¿Se ve a sí mismo?"
     },
     "common": {
-        "[microphone]": "Micrófono",
         "[camera]": "Cámara",
+        "[microphone]": "Micrófono",
         "[speaker]": "Altavoz",
         "a-pexip-meeting": "una<1></1>reunión",
         "and-then": "y a continuación",
@@ -83,7 +83,7 @@
             "title": "Permisos concedidos"
         },
         "initial-permissions-not-granted": {
-            "message": "Seleccione <1>\"Permitir\"</1> en el paso siguiente cuando se lo pida su navegador. Solo tendremos acceso mientras dure la reunión.\"",
+            "message": "Seleccione <1>Permitir</1> en el paso siguiente cuando se lo pida su navegador. Solo tendremos acceso mientras dure la reunión.",
             "title": "Necesitamos su permiso para utilizar su cámara y micrófono"
         },
         "initial-permissions-video-input-denied": {
@@ -293,7 +293,7 @@
         "how-to-find": "Puede encontrar el ID de la reunión en la invitación a la reunión en su calendario o correo electrónico",
         "join": "Entrar a la reunión",
         "meeting-id": "ID de la reunión",
-        "placeholder": "p. ej.: “meet.bob”"
+        "placeholder": "p. ej.: “meet.bob”"
     },
     "idp": {
         "select-provider": "Seleccione su proveedor de identidad. Se abrirá otra ventana.",
@@ -315,7 +315,7 @@
         "copied": "Copiado",
         "copy": "Copiar",
         "copy-to-clipboard": "Copiar un enlace en el portapapeles",
-        "expiry": "El enlace de invitación caduca en {{expiryHours}} horas",
+        "expiry": "El enlace de invitación caduca en {{expiryHours}} horas",
         "instructions": "Envíe el enlace de la reunión que aparece a continuación a la persona que desea agregar",
         "invite": "Invitar",
         "invite-person": "Invitar a una persona",
@@ -357,15 +357,15 @@
         "help-check-[speaker]-again": "Volver a comprobar el altavoz",
         "help-proceed-without-camera": "Continuar sin la cámara",
         "help-proceed-without-microphone": "Continuar sin el micrófono",
-        "help-step-[1]": "Paso 1",
-        "help-step-[2]": "Paso 2",
-        "help-step-[3]": "Paso 3",
-        "help-step-[4]": "Paso 4",
-        "help-step-[5]": "Paso 5",
-        "help-tip-1-header": "Consejo 1",
-        "help-tip-2-header": "Consejo 2",
-        "help-tip-3-header": "Consejo 3",
-        "help-tip-4-header": "Consejo 4",
+        "help-step-[1]": "Paso 1",
+        "help-step-[2]": "Paso 2",
+        "help-step-[3]": "Paso 3",
+        "help-step-[4]": "Paso 4",
+        "help-step-[5]": "Paso 5",
+        "help-tip-1-header": "Consejo 1",
+        "help-tip-2-header": "Consejo 2",
+        "help-tip-3-header": "Consejo 3",
+        "help-tip-4-header": "Consejo 4",
         "how-to-unblock-access": "Una animación con instrucciones para dar permiso de acceso a los dispositivos multimedia.",
         "if-you-dont-hear-yourself-try-this": "Si no se escucha a sí mismo pruebe esto",
         "learn-how-to-grant-permissions": "Descubra cómo conceder acceso",
@@ -391,7 +391,7 @@
         "of-your-browser": "de su navegador",
         "off": "desactivado",
         "on": "activado",
-        "or-go-to-the": "o acceda a la ",
+        "or-go-to-the": "o acceda a la",
         "permission-info": {
             "[camera]": {
                 "title": "cámara"
@@ -508,8 +508,8 @@
         "testing-my-microphone": "“Probando 1 2 3”",
         "this-is-how-you-will-sound-to-others": "Así es como lo escucharán los demás",
         "through-browser-settings": "a través de la configuración de su navegador",
-        "tip-1-header": "Consejo 1",
-        "to-grant-access-follow-steps": "Para conceder el acceso siga los pasos que se indican en ",
+        "tip-1-header": "Consejo 1",
+        "to-grant-access-follow-steps": "Para conceder el acceso siga los pasos que se indican en",
         "transfer": "Transferir",
         "trying-to-speak": "¿Quiere hablar? Su micrófono está silenciado",
         "turn-on-camera": "Activar la cámara",
@@ -522,7 +522,7 @@
         "waiting-for-permissions": "Esperando los permisos...",
         "we-will-help-you-header": "No se preocupe. Lo ayudaremos.",
         "you-blocked-access": "Ha bloqueado el acceso a su {{seeOrHearYou}}",
-        "you-can-say-something-like": "Puede decir algo como ",
+        "you-can-say-something-like": "Puede decir algo como",
         "you-may-need-to-connect-speakers-or-headphones": "Si utiliza un ordenador de escritorio es posible que tenga que conectar altavoces o auriculares."
     },
     "media-presentation": {
@@ -549,7 +549,7 @@
         "more-participants": "{{inMeetingCount}} participantes",
         "network-fixed": "¡Corregido!",
         "network-reconnecting": "Se ha perdido la conexión de red. Reconectando...",
-        "one-participant": "1 participante",
+        "one-participant": "1 participante",
         "participants": "Participantes",
         "presentation": {
             "collapse": "Contraer",
@@ -576,7 +576,7 @@
         "are-you-host": "¿Es usted organizador?",
         "how-to-find": "Puede encontrar el PIN en la invitación a la reunión en su calendario o correo electrónico",
         "label": "PIN de {{type}}",
-        "placeholder": "p. ej.: “1234”",
+        "placeholder": "p. ej.: “1234”",
         "what-is-the-pin": "¿Cuál es el PIN de esta reunión?"
     },
     "preflight": {
@@ -672,14 +672,14 @@
         "fail": "No se puede transferir el participante",
         "meeting-id": "ID de la reunión",
         "pin": "Pin",
-        "pin-placeholder": "p. ej.: “1234”",
-        "placeholder": "p. ej.: “meet.bob”",
+        "pin-placeholder": "p. ej.: “1234”",
+        "placeholder": "p. ej.: “meet.bob”",
         "success": "Participante transferido correctamente",
         "transfer-participant": "Transferir participante"
     },
     "username": {
         "hey-whats-your-name": "Hola. <1></1> ¿Cómo se llama?",
-        "name-input-placeholder": "p. ej.: “David”",
+        "name-input-placeholder": "p. ej.: “David”",
         "usage-purpose": "Introduzca un nombre que otras personas sepan quién está en la reunión",
         "your-name": "Su nombre"
     }

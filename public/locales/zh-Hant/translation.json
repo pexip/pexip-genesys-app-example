@@ -11,8 +11,8 @@
         "do-you-see-yourself": "您是否能看到自己？"
     },
     "common": {
-        "[microphone]": "麥克風",
         "[camera]": "攝影機",
+        "[microphone]": "麥克風",
         "[speaker]": "喇叭",
         "a-pexip-meeting": "<1></1> 會議",
         "and-then": "之後",
@@ -83,7 +83,7 @@
             "title": "已授權"
         },
         "initial-permissions-not-granted": {
-            "message": "請在下個步驟中根據瀏覽器的提示選擇<1>\"「允許\"</1> 。我們僅在會議期間有存取權限。",
+            "message": "請在下個步驟中根據瀏覽器的提示選擇<1>允許</1> 。我們僅在會議期間有存取權限。",
             "title": "您授權後，我們才可以使用攝影機和麥克風"
         },
         "initial-permissions-video-input-denied": {

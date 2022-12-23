@@ -11,8 +11,8 @@
         "do-you-see-yourself": "자신의 모습이 보입니까?"
     },
     "common": {
-        "[microphone]": "마이크",
         "[camera]": "카메라",
+        "[microphone]": "마이크",
         "[speaker]": "스피커",
         "a-pexip-meeting": "<1></1>회의실",
         "and-then": "그리고",
@@ -83,7 +83,7 @@
             "title": "권한 허용됨"
         },
         "initial-permissions-not-granted": {
-            "message": "다음 단계에서 브라우저의 질문에 <1>\"허용\"</1>을 선택하십시오. 회의 시간 동안만 액세스가 허용됩니다.",
+            "message": "다음 단계에서 브라우저의 질문에 <1>허용</1>을 선택하십시오. 회의 시간 동안만 액세스가 허용됩니다.",
             "title": "카메라와 마이크 사용을 허용해야 합니다."
         },
         "initial-permissions-video-input-denied": {

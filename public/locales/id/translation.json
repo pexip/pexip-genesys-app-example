@@ -11,8 +11,8 @@
         "do-you-see-yourself": "Anda dapat melihat diri sendiri?"
     },
     "common": {
-        "[microphone]": "Mikrofon",
         "[camera]": "Kamera",
+        "[microphone]": "Mikrofon",
         "[speaker]": "Speaker",
         "a-pexip-meeting": "<1></1>rapat",
         "and-then": "kemudian",
@@ -83,7 +83,7 @@
             "title": "Izin diberikan"
         },
         "initial-permissions-not-granted": {
-            "message": "Pilih <1>\"Izinkan\"</1> di langkah berikutnya saat diminta oleh browser Anda. Kami hanya akan memiliki akses selama durasi rapat.",
+            "message": "Pilih <1>Izinkan</1> di langkah berikutnya saat diminta oleh browser Anda. Kami hanya akan memiliki akses selama durasi rapat.",
             "title": "Kami perlu izin Anda untuk menggunakan kamera dan mikrofon"
         },
         "initial-permissions-video-input-denied": {

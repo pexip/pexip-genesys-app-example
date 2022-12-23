@@ -11,8 +11,8 @@
         "do-you-see-yourself": "Bạn có nhìn thấy chính mình không?"
     },
     "common": {
-        "[microphone]": "Micrô",
         "[camera]": "Máy ảnh",
+        "[microphone]": "Micrô",
         "[speaker]": "Loa",
         "a-pexip-meeting": "một<1></1>cuộc họp",
         "and-then": "sau đó",
@@ -83,7 +83,7 @@
             "title": "Đã cấp quyền"
         },
         "initial-permissions-not-granted": {
-            "message": "Vui lòng chọn <1>\"Allow\"</1> (Cho phép) ở bước tiếp theo khi có lời nhắc của trình duyệt. Chúng tôi chỉ có quyền truy cập trong thời gian diễn ra cuộc họp.",
+            "message": "Vui lòng chọn <1>Allow</1> (Cho phép) ở bước tiếp theo khi có lời nhắc của trình duyệt. Chúng tôi chỉ có quyền truy cập trong thời gian diễn ra cuộc họp.",
             "title": "Chúng tôi cần bạn cho phép sử dụng máy ảnh và micrô"
         },
         "initial-permissions-video-input-denied": {
