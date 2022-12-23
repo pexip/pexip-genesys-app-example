@@ -1,8 +1,8 @@
-import React, { PropsWithChildren } from 'react'
+import React from 'react'
 
-// import { render, screen } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 
-// import App from './App'
+import App from './App'
 
 // Create a mocks
 jest.mock('./toolbar/Toolbar', () => {
@@ -13,12 +13,6 @@ jest.mock('./toolbar/Toolbar', () => {
   }
 })
 
-jest.mock('react-draggable', () => {
-  const draggableMock = (props: PropsWithChildren): JSX.Element => <div data-testid='Draggable'>{props.children}</div>
-  draggableMock.displayName = 'Draggable'
-  return draggableMock
-})
-
 jest.mock('./video/Video', () => {
   return {
     Video: () => {
@@ -27,6 +21,22 @@ jest.mock('./video/Video', () => {
   }
 })
 
+jest.mock('./selfview/Selfview', () => {
+  return {
+    Selfview: () => {
+      return <div data-testid='Selfview' />
+    }
+  }
+})
+
+jest.mock('@pexip/media-components', () => {
+  return {
+    StreamQuality: jest.fn()
+  }
+})
+
+jest.mock('@pexip/infinity', () => {}, { virtual: true })
+
 beforeAll(() => {
   window.MediaStream = jest.fn().mockImplementation(() => ({
     addTrack: jest.fn()
@@ -34,23 +44,14 @@ beforeAll(() => {
   }))
 })
 
-beforeEach(() => {
-  Object.defineProperty(global.navigator, 'mediaDevices', {
-    value: {
-      getUserMedia: jest.fn(async () => await new Promise<void>(resolve => resolve()))
-    }
-  })
+Object.defineProperty(window, 'location', {
+  value: {
+    href: 'https://myurl/#access_token=secret&state=%7B%22pcEnvironment%22%3A%22usw2.pure.cloud%22%2C%22pcConversationId%22%3A%2262698915-ae56-4efc-b5d7-71d6ad487fae%22%2C%22pexipNode%22%3A%22pexipdemo.com%22%2C%22pexipAgentPin%22%3A%222021%22%7D'
+  }
 })
 
-/**
- * Empty test to bypass the problem linkin the @pexip/infinity library
- */
-test('empty test (to delete)', async () => {
-  expect(true).toBe(true)
+test('renders app', async () => {
+  await render(<App />)
+  const app = await screen.findByTestId('App')
+  expect(app).toBeInTheDocument()
 })
-
-// test('renders app', async () => {
-//   await render(<App />)
-//   const app = await screen.findByTestId('App')
-//   expect(app).toBeInTheDocument()
-// })

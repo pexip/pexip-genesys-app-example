@@ -77,10 +77,8 @@ export const loginPureCloud = async (
 export const inititate = async (genesysState: genesysState, accessToken: string): Promise<void> => {
   const client = platformClient.ApiClient.instance
   state = genesysState
-  console.log(state.pcEnvironment)
   client.setEnvironment(state.pcEnvironment)
   client.setAccessToken(accessToken)
-  console.log(client)
   usersApi = new platformClient.UsersApi(client)
   conversationApi = new platformClient.ConversationsApi(client)
   userMe = await usersApi.getUsersMe()

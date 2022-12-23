@@ -31,7 +31,7 @@ export function Selfview (props: SelfViewProps): JSX.Element {
   })
 
   return (
-    <div className='Selfview'>
+    <div className='Selfview' data-testid='Selfview'>
       <DraggableFoldableInMeetingSelfview
         floatRoot={props.floatRoot}
         shouldShowUserAvatar={false}
@@ -59,7 +59,7 @@ export function Selfview (props: SelfViewProps): JSX.Element {
         }}
       />
       { showStats &&
-        <Stats
+        <Stats data-testid='Stats'
           onClose={() => setShowStats(false)}
           statsSignal={props.callSignals.onRtcStats}
           callQualityStatsSignal={(props.callSignals.onCallQualityStats)}

@@ -98,9 +98,11 @@ class App extends React.Component<{}, AppState> {
         this.setState({
           localStream
         })
+        this.infinityClient.setStream(localStream)
       } else {
         stopStream(this.state.localStream)
       }
+      this.infinityClient.setStream(new MediaStream())
       this.setState({ isCameraMuted: !muted })
     }
   }
@@ -260,7 +262,7 @@ class App extends React.Component<{}, AppState> {
   }
 
   async componentWillUnmount (): Promise<void> {
-    await this.infinityClient.disconnect({})
+    await this.infinityClient?.disconnect({})
   }
 
   render (): JSX.Element {
