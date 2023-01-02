@@ -13,7 +13,7 @@ const getLocalStream = async (deviceId?: string | null, save: boolean = false): 
   if (deviceId !== null) {
     const device = (await navigator.mediaDevices.enumerateDevices()).find((device) => device.deviceId === deviceId)
     if (device !== null) {
-      localStream = await navigator.mediaDevices.getUserMedia({ video: { deviceId } })
+      localStream = await navigator.mediaDevices.getUserMedia({ video: { deviceId, height: 720 } })
     } else {
       localStream = await navigator.mediaDevices.getUserMedia({ video: true })
     }
