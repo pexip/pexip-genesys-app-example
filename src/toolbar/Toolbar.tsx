@@ -1,4 +1,4 @@
-import React, { RefObject } from 'react'
+import React from 'react'
 
 import { CallSignals, InfinityClient, PresoConnectionChangeEvent } from '@pexip/infinity'
 
@@ -26,7 +26,8 @@ interface ToolbarProps {
   callSignals: CallSignals
   onLocalPresentationStream: Function
   onLocalStream: Function
-  selfViewRef?: RefObject<HTMLDivElement>
+  isCameraMuted: boolean
+  onCameraMute: () => Promise<void>
 }
 
 interface ToolbarState {
@@ -34,7 +35,6 @@ interface ToolbarState {
   lockRoomEnabled: boolean
   popOutVideoEnabled: boolean
   settingsEnabled: boolean
-  cameraMuted: boolean
 }
 
 export class Toolbar extends React.Component<ToolbarProps, ToolbarState> {
@@ -46,10 +46,8 @@ export class Toolbar extends React.Component<ToolbarProps, ToolbarState> {
       shareScreenEnabled: false,
       lockRoomEnabled: !(this.props.infinityClient.conferenceStatus?.locked ?? false),
       popOutVideoEnabled: false,
-      settingsEnabled: false,
-      cameraMuted: false
+      settingsEnabled: false
     }
-    this.toggleCameraMute = this.toggleCameraMute.bind(this)
     this.toggleShareScreen = this.toggleShareScreen.bind(this)
     this.toggleLockRoom = this.toggleLockRoom.bind(this)
     this.togglePopOutVideo = this.togglePopOutVideo.bind(this)
@@ -101,17 +99,6 @@ export class Toolbar extends React.Component<ToolbarProps, ToolbarState> {
     this.setState({ settingsEnabled: !this.state.settingsEnabled })
   }
 
-  private async toggleCameraMute (): Promise<void> {
-    const response = await this.props.infinityClient.muteVideo({ muteVideo: !this.state.cameraMuted })
-    if (response?.status === 200) {
-      this.setState({
-        cameraMuted: !this.state.cameraMuted
-      })
-      const selfViewWrapper = this.props.selfViewRef?.current
-      if (selfViewWrapper != null) { selfViewWrapper.hidden = !this.state.cameraMuted }
-    }
-  }
-
   private async copyInvitationLink (): Promise<void> {
     // Example: https://pexipdemo.com//webapp/#/?conference=mp555054c72bb44243bd0004b25d3ea45c&pin=2021
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions, @typescript-eslint/restrict-plus-operands
@@ -149,9 +136,9 @@ export class Toolbar extends React.Component<ToolbarProps, ToolbarState> {
     return (
       <>
         <div className="Toolbar" data-testid='Toolbar'>
-          <ToolbarButton icon={this.state.cameraMuted ? mutedCameraIcon : cameraIcon} toolTip={this.state.cameraMuted ? 'Unmute camera' : 'Mute camera'}
-            danger={this.state.cameraMuted}
-            onClick={this.toggleCameraMute}
+          <ToolbarButton icon={this.props.isCameraMuted ? mutedCameraIcon : cameraIcon} toolTip={this.props.isCameraMuted ? 'Unmute camera' : 'Mute camera'}
+            danger={this.props.isCameraMuted}
+            onClick={this.props.onCameraMute}
           />
           <ToolbarButton icon={shareScreenIcon} toolTip={this.state.shareScreenEnabled ? 'Stop sharing screen' : 'Share screen'}
             selected={this.state.shareScreenEnabled}

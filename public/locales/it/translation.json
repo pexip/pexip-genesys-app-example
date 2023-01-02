@@ -11,8 +11,8 @@
         "do-you-see-yourself": "puoi vederti ?"
     },
     "common": {
-        "[microphone]": "Microfono",
         "[camera]": "Telecamera",
+        "[microphone]": "Microfono",
         "[speaker]": "Altoparlante",
         "a-pexip-meeting": "una<1></1>riunione",
         "and-then": "e poi",
@@ -83,7 +83,7 @@
             "title": "Autorizzazioni concesse"
         },
         "initial-permissions-not-granted": {
-            "message": "Seleziona <1>\"Consenti\"</1> nel prossimo passaggio alla richiesta del browser. Potremo accedervi solo nel corso della riunione.",
+            "message": "Seleziona <1>Consenti</1> nel prossimo passaggio alla richiesta del browser. Potremo accedervi solo nel corso della riunione.",
             "title": "Ci serve la tua autorizzazione per usare la telecamera e il microfono"
         },
         "initial-permissions-video-input-denied": {
@@ -591,8 +591,8 @@
         "camera-missing": "gli altri non saranno in grado di vederti",
         "get-ready": "Preparati alla riunione",
         "in-this-meeting": {
-            "plural": "<0>le altre persono ({inMeetingCount})<0/> son già dentro",
-            "singular": "<0>un'altra persona</0> è già dentro"
+            "plural": "<0>Altre {inMeetingCount} persono</0> sono già dentro",
+            "singular": "<0>1 altra persona</0> è già dentro."
         },
         "join-browser": "Partecipa alla riunione dal browser",
         "microphone-missing": "gli altri non saranno in grado di sentirti",

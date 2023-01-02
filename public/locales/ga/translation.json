@@ -11,8 +11,8 @@
         "do-you-see-yourself": "An bhfeiceann tú tú féin?"
     },
     "common": {
-        "[microphone]": "Micreafón",
         "[camera]": "Ceamara",
+        "[microphone]": "Micreafón",
         "[speaker]": "Callaire",
         "a-pexip-meeting": "a<1></1>cruinniú",
         "and-then": "agus ansin",
@@ -83,7 +83,7 @@
             "title": "Ceadanna tugtha"
         },
         "initial-permissions-not-granted": {
-            "message": "Roghnaigh <1>\"Ceadaigh\"</1> sa chéad chéim eile nuair a fhaigheann tú leid ó do bhrabhsálaí. Ní bheidh rochtain againn ach ar feadh thréimhse an chruinnithe.",
+            "message": "Roghnaigh <1>Ceadaigh</1> sa chéad chéim eile nuair a fhaigheann tú leid ó do bhrabhsálaí. Ní bheidh rochtain againn ach ar feadh thréimhse an chruinnithe.",
             "title": "Teastaíonn do chead uainn chun do cheamara agus micreafón a úsáid"
         },
         "initial-permissions-video-input-denied": {

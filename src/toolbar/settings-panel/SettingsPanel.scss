@@ -10,6 +10,8 @@
 
     // Hide the part for selecting the quality
     &>div:first-child>div:first-child {
+      min-height: 0;
+      
       &>h3, &>p, &>div:nth-child(4){
         display: none;
       }

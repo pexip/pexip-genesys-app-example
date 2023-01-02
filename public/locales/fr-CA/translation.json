@@ -1,28 +1,28 @@
 {
     "add-participant": {
         "can-control": "Peut contrôler une réunion (hôte)",
-        "failed": "L'ajout de ce participant a échoué",
+        "failed": "Impossible d'ajouter ce participant",
         "submit": "Ajouter un participant",
         "transfer": "Transférer",
-        "type-details": "Veuillez renseinger ici les informations du participant"
+        "type-details": "Veuillez renseinger les informations du participant"
     },
     "camera": {
         "cant-see": "Je ne me vois pas en raison d'un handicap visuel",
-        "do-you-see-yourself": "Êtes-vous en mesure de vous voir? "
+        "do-you-see-yourself": "Êtes-vous en mesure de vous voir?"
     },
     "common": {
-        "[microphone]": "Microphone",
         "[camera]": "Caméra",
+        "[microphone]": "Microphone",
         "[speaker]": "Haut-parleur",
         "a-pexip-meeting": "une<1></1>réunion",
-        "and-then": "et puis",
+        "and-then": "Puis",
         "are-you-sure": "Êtes-vous certain?",
         "ask-for-permission": "Demander l'autorisation",
         "brand-name": "Service vidéo Pexip",
         "cancel": "Annuler",
         "change": "Modifier",
         "client-name[mobile-app]": "Application mobile",
-        "client-name[pexip-room]": "Pexip Room",
+        "client-name[pexip-room]": "Pexip Room",
         "client-name[session]": "Session",
         "client-name[web-app]": "Application Web",
         "close-tooltip": "Fermer l'outil de conseils",
@@ -31,7 +31,7 @@
         "join": "Rejoindre maintenant",
         "label-logo": "logo",
         "label-pexip-logo": "Logo Pexip",
-        "live-captions-default-on": "Activer par défault les sous-titres",
+        "live-captions-default-on": "Activer les sous-titres par défault",
         "live-captions-hide": "Masquer les sous-titres",
         "live-captions-show": "Afficher les sous-titres",
         "lower-hand": "Baisser la main",
@@ -41,7 +41,7 @@
         "next-terms-and-conditions": "En continuant, vous confirmez que vous acceptez nos <2>conditions et services</2>",
         "no": "Non",
         "raise-hand": "Lever la main",
-        "remove": "Retirer",
+        "remove": "Supprimer",
         "replay": "Relecture",
         "retry": "Réessayer",
         "send": "Envoyer",
@@ -55,15 +55,15 @@
             "title": "Microphone non disponible"
         },
         "audio-device-not-found": {
-            "message": "Votre microphone préféré n'est pas disponible",
+            "message": "Votre microphone par défaut n'est pas disponible",
             "title": "Nous ne trouvons pas votre microphone"
         },
         "audio-overconstrained": {
             "message": "Essayez de réduire vos réglages de qualité",
-            "title": "Le microphone est trop sollicité"
+            "title": "Le microphone n'est pas compatible"
         },
         "audio-video-devices-not-found": {
-            "message": "Votre caméra et votre microphone préférés ne sont pas disponibles",
+            "message": "Votre caméra et votre microphone par défaut ne sont pas disponibles",
             "title": "Nous ne trouvons pas votre caméra et votre microphone"
         },
         "audioinput-granted-videoinput-denied": {
@@ -83,7 +83,7 @@
             "title": "Autorisations accordées"
         },
         "initial-permissions-not-granted": {
-            "message": "Veuillez sélectionner <1>\"Autoriser\"</1> dans la prochaine étape lorsque votre navigateur vous le demandera. Nous n'aurons accès que pour la durée de la réunion.",
+            "message": "Veuillez sélectionner <1>Autoriser</1> à l'étape suivante, lorsque votre navigateur vous le demandera. Nous n'y aurons accès que pour la durée de la réunion.",
             "title": "Nous avons besoin de votre autorisation pour utiliser votre caméra et votre microphone."
         },
         "initial-permissions-video-input-denied": {
@@ -95,27 +95,27 @@
             "title": "Autorisations accordées"
         },
         "invalid-audio-constraints": {
-            "message": "Essayez de vider le cache de votre navigateur",
-            "title": "Le microphone n'est pas configuré correctement"
+            "message": "Essayez de vider la cache de votre navigateur",
+            "title": "Le microphone n'est pas correctement configuré"
         },
         "invalid-constraints": {
             "message": "Essayez de vider le cache de votre navigateur",
-            "title": "La caméra et le microphone ne sont pas configurés correctement"
+            "title": "La caméra et le microphone ne sont pas correctement configurés"
         },
         "invalid-video-constraints": {
             "message": "Essayez de vider le cache de votre navigateur",
-            "title": "La caméra n'est pas configuré correctement"
+            "title": "La caméra n'est pas configurée correctement"
         },
         "no-audio-devices-found": {
-            "message": "Votre microphone ne semble pas être disponible. Veuillez vérifier s'il est branché et configuré correctement.",
+            "message": "Votre microphone semble être indisponible. Veuillez vérifier s'il est correctement branché et configuré.",
             "title": "Aucun microphone n'est connecté"
         },
         "no-devices-found": {
-            "message": "Votre caméra et votre microphone ne semblent pas être disponibles. Veuillez vérifier s'ils sont branchés et configurés correctement.",
+            "message": "Votre caméra et votre microphone semblent être indisponibles. Veuillez vérifier s'ils sont correctement branchés et configurés.",
             "title": "Aucune caméra et aucun microphone ne sont connectés"
         },
         "no-video-devices-found": {
-            "message": "Votre caméra ne semble pas être disponible. Veuillez vérifier si elle est branchée et configurée correctement.",
+            "message": "Votre caméra semble être indisponible. Veuillez vérifier si elle est correctement branchée et configurée.",
             "title": "Aucune caméra n'est connectée"
         },
         "not-supported-error": {
@@ -132,70 +132,70 @@
         },
         "overconstrained": {
             "message": "Essayez de réduire vos paramètres de qualité",
-            "title": "La caméra et le microphone sont trop sollicités"
+            "title": "La caméra et le microphone ne sont pas compatibles"
         },
         "permissions-granted-fallback-audioinput": {
-            "message": "Nous ne sommes pas en mesure d'utiliser votre microphone préféré",
-            "title": "Impossible d'utiliser votre microphone préféré"
+            "message": "Nous ne sommes pas en mesure d'utiliser votre microphone par défaut",
+            "title": "Impossible d'utiliser votre microphone par défaut"
         },
         "permissions-granted-fallback-devices": {
-            "message": "Nous ne sommes pas en mesure d'utiliser votre caméra et votre microphone préférés",
-            "title": "Impossible d'utiliser votre caméra et votre microphone préférés"
+            "message": "Nous ne sommes pas en mesure d'utiliser votre caméra et votre microphone par défaut",
+            "title": "Impossible d'utiliser votre caméra et votre microphone par défaut"
         },
         "permissions-granted-fallback-videoinput": {
-            "message": "Nous ne sommes pas en mesure d'utiliser votre caméra préférée",
-            "title": "Impossible d'utiliser votre caméra préférée"
+            "message": "Nous ne sommes pas en mesure d'utiliser votre caméra par défaut",
+            "title": "Impossible d'utiliser votre caméra par défaut"
         },
         "permissions-only-audioinput": {
-            "message": "Vous avez déjà refusé l'utilisation de votre caméra. Veuillez demander les autorisations et accorder l'accès",
+            "message": "Vous avez précédemment refusé l'utilisation de votre caméra. Veuillez accéder aux permissions et autoriser l'accès.",
             "title": "Caméra inactive"
         },
         "permissions-only-audioinput-no-video-devices": {
             "message": "Veuillez vérifier si elle est branchée et configurée correctement",
-            "title": "Votre caméra ne semble pas être disponible"
+            "title": "Votre caméra semble être indisponible"
         },
         "permissions-only-fallback-audioinput": {
-            "message": "Nous ne pouvons pas utiliser de caméra, et votre microphone préféré n'est pas disponible",
+            "message": "Nous ne pouvons pas utiliser de caméra, et votre microphone par défaut n'est pas disponible",
             "title": "La caméra et le microphone préférés ne sont pas disponibles"
         },
         "permissions-only-fallback-audioinput-no-video-devices": {
-            "message": "Nous ne trouvons pas de caméra, et votre microphone préféré n'est pas disponible",
-            "title": "Aucune caméra disponible et le microphone préféré n'est pas disponible"
+            "message": "Nous ne trouvons pas de caméra, et votre microphone par défaut n'est pas disponible",
+            "title": "Aucune caméra ainsi que le microphone par défaut ne sont disponibles"
         },
         "permissions-only-fallback-videoinput": {
-            "message": "Nous ne pouvons pas utiliser de microphone, et votre caméra préférée n'est pas disponible",
-            "title": "Le microphone et la caméra préférée ne sont pas disponibles"
+            "message": "Nous ne pouvons pas utiliser de microphone, et votre caméra par défaut n'est pas disponible",
+            "title": "Le microphone ainsi que la caméra par défaut ne sont disponibles"
         },
         "permissions-only-fallback-videoinput-no-audio-devices": {
-            "message": "Nous ne trouvons pas de microphone, et votre caméra préférée n'est pas disponible",
-            "title": "Aucun microphone et la caméra préférée n'est pas disponible"
+            "message": "Nous ne trouvons pas de microphone, et votre caméra par défaut n'est pas disponible",
+            "title": "Aucun microphone ainsi que la caméra par défaut ne sont disponibles"
         },
         "permissions-only-videoinput": {
-            "message": "Vous avez déjà refusé l'utilisation de votre microphone. Veuillez demander les autorisations et accorder l'accès",
+            "message": "Vous avez précédemment refusé l'utilisation de votre microphone. Veuillez accéder aux permissions et autoriser l'accès.",
             "title": "Microphone inactif"
         },
         "permissions-only-videoinput-no-audio-devices": {
             "message": "Veuillez vérifier s'il est branché et configuré correctement",
-            "title": "Votre microphone ne semble pas être disponible"
+            "title": "Votre microphone semble être indisponible"
         },
         "permissions-rejected": {
-            "message": "Vous avez restreint l'accès à votre caméra et à votre microphone. Pour accorder l'accès, veuillez suivre les étapes mentionnées dans cette courte vidéo :",
+            "message": "Vous avez restreint l'accès à votre caméra et à votre microphone. Pour accorder l'accès, veuillez suivre les étapes mentionnées dans cette courte vidéo :",
             "title": "Souhaitiez-vous restreindre l'accès à votre caméra ou à votre microphone?"
         },
         "permissions-rejected-audioinput": {
             "message": "Vous avez déjà refusé l'utilisation de votre microphone. Veuillez demander les autorisations et accorder l'accès",
-            "title": "Autorisation du microphone non accordée"
+            "title": "Accès au microphone non autorisé"
         },
         "permissions-rejected-videoinput": {
-            "message": "Vous avez déjà refusé l'utilisation de votre caméra. Veuillez demander les autorisations et accorder l'accès",
-            "title": "Autorisation de la caméra non accordée"
+            "message": "Vous avez précédemment refusé l'utilisation de votre microphone. Veuillez accéder aux permissions et autoriser l'accès.",
+            "title": "Accès à la caméra non autorisé"
         },
         "unknown-error": {
-            "message": "Nous ne sommes pas en mesure d'obtenir de flux média de vos appareils. Essayez de vous reconnecter ou utilisez d'autres appareils",
+            "message": "Nous ne sommes pas en mesure d'obtenir de flux média de vos périphériques. Essayez de les reconnecter ou d'en utilisez d'autres",
             "title": "Caméra et microphone non disponibles"
         },
         "unknown-error-only-audioinput": {
-            "message": "Nous ne sommes pas en mesure d'utiliser votre caméra. Essayez de la reconnecter ou utilisez un autre appareil",
+            "message": "Nous ne sommes pas en mesure d'utiliser votre caméra. Essayez de la reconnecter ou d'en utilisez une autre",
             "title": "Caméra non disponible"
         },
         "unknown-error-only-videoinput": {
@@ -207,12 +207,12 @@
             "title": "Caméra non disponible"
         },
         "video-device-not-found": {
-            "message": "Votre caméra préférée n'est pas disponible",
+            "message": "Votre caméra par défaut n'est pas disponible",
             "title": "Nous ne trouvons pas votre caméra"
         },
         "video-overconstrained": {
             "message": "Essayez de réduire vos réglages de qualité",
-            "title": "La caméra est trop sollicitée"
+            "title": "La caméra n'est pas compatible"
         },
         "videoinput-granted-audioinput-denied": {
             "message": "L'accès à votre microphone est requis si vous voulez que les autres vous entendent pendant l'appel.",
@@ -227,13 +227,13 @@
         "code[#pex110]": "Le système que vous tentez de rejoindre est temporairement non disponible. Veuillez réessayer bientôt.",
         "code[#pex111]": "Pas de connexion. Veuillez réessayer.",
         "code[#pex112]": "Aucune connexion disponible.",
-        "code[#pex113]": "Votre connexion a été perdue. Veuillez réessayer.",
+        "code[#pex113]": "Votre connexion a été interrompue. Veuillez réessayer.",
         "code[#pex114]": "Le système que vous tentez de rejoindre a atteint sa capacité maximale.",
         "code[#pex115]": "Échec du transfert.",
         "code[#pex116]": "Échec de l'appel, veuillez contacter votre administrateur.",
         "code[#pex117]": "L'appel a échoué. Veuillez réessayer.",
         "code[#pex118]": "Impossible de joindre le serveur.",
-        "code[#pex119]": "Échec de l'appel : échec du transfert de la demande.",
+        "code[#pex119]": "Échec de l'appel : échec du transfert de la demande.",
         "code[#pex120]": "Un hôte a mis fin à la réunion.",
         "code[#pex121]": "Un hôte a mis fin à la réunion.",
         "code[#pex122]": "Un administrateur a mis fin à la réunion.",
@@ -241,8 +241,8 @@
         "code[#pex124]": "Un autre participant de la réunion vous a déconnecté.",
         "code[#pex125]": "Un hôte a mis fin à la réunion.",
         "code[#pex126]": "L'hôte de la réunion n'a pas rejoint ou déverrouillé la visioconférence.",
-        "code[#pex127]": "Message affiché aux utilisateurs lorsqu'une erreur 'Échec de l'appel : désactivé' se produit",
-        "code[#pex128]": "Échec de l'appel : un pare-feu pourrait restreindre l'accès.",
+        "code[#pex127]": "Message affiché aux utilisateurs lorsqu'une erreur 'Échec de l'appel : désactivé' se produit",
+        "code[#pex128]": "Échec de l'appel : un pare-feu pourrait restreindre l'accès.",
         "code[#pex129]": "Un problème est survenu lors de la réunion. Veuillez essayer de vous connecter à nouveau.",
         "code[#pex130]": "Un problème est survenu lors de la réunion. Veuillez essayer de vous connecter à nouveau.",
         "code[#pex131]": "Un problème est survenu lors de la réunion. Veuillez essayer de vous connecter à nouveau.",
@@ -255,11 +255,11 @@
         "code[#pex151]": "L'autre participant est déconnecté.",
         "code[#pex152]": "L'appel n'a pas pu être effectué.",
         "code[#pex153]": "L'appel n'a pas pu être effectué. Veuillez contacter votre administrateur.",
-        "code[#pex154]": "Impossible de se connecter à « {{alias}} ». Vérifiez cette adresse et réessayez.",
+        "code[#pex154]": "Impossible de se connecter à « {{alias}} ». Vérifiez cette adresse et réessayez.",
         "code[#pex155]": "Impossible de rejoindre {{host}}.",
         "code[#pex156]": "L'appel n'a pas pu être effectué.",
         "code[#pex157]": "Impossible de rejoindre {{host}}.",
-        "code[#pex170]": "Échec de l'appel : veuillez désactiver les extensions de confidentialité de votre navigateur.",
+        "code[#pex170]": "Échec de l'appel : veuillez désactiver les extensions de confidentialité de votre navigateur.",
         "code[#pex171]": "Votre caméra et/ou votre microphone ne sont pas disponibles. Veuillez vous assurer qu'ils ne sont pas activement utilisés par une autre application.",
         "code[#pex180]": "La présentation est terminée.",
         "code[#pex181]": "La diffusion de la présentation est déconnectée.",
@@ -284,7 +284,7 @@
             "subtitle": "Nous ne trouvons pas la page que vous cherchez.",
             "title": "Oups! 404 – Introuvable"
         },
-        "rejoin": "Joindre à nouveau",
+        "rejoin": "Joindre de nouveau",
         "reload-page": "Recharger la page",
         "smth-on-our-end": "Oups, il semble qu'une erreur soit survenue de notre côté.",
         "smth-went-wrong": "Un problème est survenu"
@@ -315,18 +315,18 @@
         "copied": "Copié",
         "copy": "Copier",
         "copy-to-clipboard": "Copier un lien dans le presse-papiers",
-        "expiry": "Votre lien d'invitation expire dans {{expiryHours}} heures",
+        "expiry": "Votre lien d'invitation expire dans {{expiryHours}} heures",
         "instructions": "Envoyez le lien de la réunion ci-dessous à la personne que vous souhaitez ajouter",
         "invite": "Inviter",
         "invite-person": "Inviter la personne",
         "invite-someone": "Inviter quelqu'un à la réunion",
         "invited": "Invité",
-        "meeting-invitation-modal": "Fenêtre modale de l'invitation à la réunion",
+        "meeting-invitation-modal": "Fenêtre d'invitation à la réunion",
         "search-for-someone": "Chercher quelqu'un à inviter",
         "send-invite-link": "ou envoyez un lien d'invitation"
     },
     "media": {
-        "all-guests-muted-by-host": "Tous les invités mis en sourdine par l'hôte",
+        "all-guests-muted-by-host": "L'hôte a désactivé le microphone de tous les invités",
         "all-guests-unmuted-by-host": "L'hôte a réactivé le microphone de tous les invités",
         "audio": {
             "you-are-temporarily-unmuted": "Votre microphone est temporairement activé"
@@ -352,9 +352,9 @@
         },
         "first-check-that-you-have-selected-microphone": "Vérifiez tout d'abord que vous avez sélectionné le bon microphone et que votre volume est assez élevé.",
         "flip-camera": "Tourner la caméra",
-        "help-check-[camera]-again": "Vérifier la caméra à nouveau",
-        "help-check-[microphone]-again": "Vérifier le microphone à nouveau",
-        "help-check-[speaker]-again": "Vérifier le haut-parleur à nouveau",
+        "help-check-[camera]-again": "Vérifier la caméra de nouveau",
+        "help-check-[microphone]-again": "Vérifier le microphone de nouveau",
+        "help-check-[speaker]-again": "Vérifier le haut-parleur de nouveau",
         "help-proceed-without-camera": "Continuer sans la caméra",
         "help-proceed-without-microphone": "Continuer sans le microphone",
         "help-step-[1]": "Étape 1",
@@ -384,9 +384,9 @@
         "microphone-help-tip-mobile-2": "Des écouteurs sont-ils connectés à votre appareil? Assurez-vous que le microphone du casque d'écoute est près de votre bouche.",
         "microphone-help-tip-mobile-3": "Essayez de redémarrer votre appareil.",
         "mute": "Sourdine",
-        "mute-all-guests": "Mettre tous les invités en sourdine",
-        "mute-microphone": "Mettre le microphone en sourdine",
-        "mute-participant": "Mettre le participant en sourdine",
+        "mute-all-guests": "Désactiver le microphone de tous les invités",
+        "mute-microphone": "Désactiver le microphone",
+        "mute-participant": "Désactiver le microphone du participant",
         "muted": "En sourdine",
         "of-your-browser": "de votre navigateur",
         "off": "désactivé",
@@ -404,7 +404,7 @@
             }
         },
         "permissions-denied": "Autorisations du navigateur refusées",
-        "permissions-try-this-label": "SI cela ne fonctionne pas, essayez ceci :",
+        "permissions-try-this-label": "Si cela ne fonctionne pas, essayez ceci :",
         "permissions-unblock-help-step-[1]-[android]": "Dans votre navigateur, à droite de la barre d'adresse, tapez Plus > Paramètres",
         "permissions-unblock-help-step-[1]-[chrome]": "Sélectionnez l'icône de la caméra dans la barre supérieure de votre navigateur",
         "permissions-unblock-help-step-[1]-[edge]": "Dans Microsoft Edge, sélectionnez Paramètres et plus... puis sélectionnez Paramètres",
@@ -413,7 +413,7 @@
         "permissions-unblock-help-step-[1]-[safari-ipados]": "Accédez aux réglages de votre iPad",
         "permissions-unblock-help-step-[1]-[safari-macosx]": "Dans l'application Safari sur votre Mac, choisissez Safari > Préférences, puis cliquez sur Sites Web",
         "permissions-unblock-help-step-[2]-[android]": "Appuyez sur Réglages du site",
-        "permissions-unblock-help-step-[2]-[chrome]": "Sélectionnez « Autoriser »",
+        "permissions-unblock-help-step-[2]-[chrome]": "Sélectionnez « Autoriser »",
         "permissions-unblock-help-step-[2]-[edge]": "Sélectionnez Témoins et autorisations du site (sur la gauche)",
         "permissions-unblock-help-step-[2]-[firefox]": "Cliquez sur le X à côté de Autorisé, Autorisé temporairement, Bloqué ou Bloqué temporairement pour effacer la statut pour que Firefox demande l'autorisation à nouveau la prochaine fois que vous visiterez le site.",
         "permissions-unblock-help-step-[2]-[safari-ios]": "Faites défiler vers le bas et appuyez sur Safari (ou le navigateur que vous utilisez)",
@@ -445,37 +445,37 @@
         "permissions-unblock-video-overlay-step-[2]-[safari-ipados]": "Faites défiler vers le bas et trouvez Safari (ou le navigateur que vous utilisez)",
         "permissions-unblock-video-overlay-step-[2]-[safari-macosx]": "Cliquez dessus",
         "permissions-unblock-video-overlay-step-[3]-[android]": "Faites défiler vers le bas jusqu'aux paramètres",
-        "permissions-unblock-video-overlay-step-[3]-[chrome]": "Modifier les paramètres pour « Toujours autoriser »",
-        "permissions-unblock-video-overlay-step-[3]-[edge]": "Modifier les paramètres pour « Toujours autoriser »",
-        "permissions-unblock-video-overlay-step-[3]-[firefox]": "Cliquez sur le « X » pour retirer le blocage",
+        "permissions-unblock-video-overlay-step-[3]-[chrome]": "Modifier les paramètres pour « Toujours autoriser »",
+        "permissions-unblock-video-overlay-step-[3]-[edge]": "Modifier les paramètres pour « Toujours autoriser »",
+        "permissions-unblock-video-overlay-step-[3]-[firefox]": "Cliquez sur le « X » pour retirer le blocage",
         "permissions-unblock-video-overlay-step-[3]-[safari-ios]": "Appuyez dessus",
         "permissions-unblock-video-overlay-step-[3]-[safari-ipados]": "Appuyez dessus",
-        "permissions-unblock-video-overlay-step-[3]-[safari-macosx]": "Cliquez sur « Réglages pour {{hostName}} »",
+        "permissions-unblock-video-overlay-step-[3]-[safari-macosx]": "Cliquez sur « Réglages pour {{hostName}} »",
         "permissions-unblock-video-overlay-step-[4]-[android]": "Appuyez dessus",
         "permissions-unblock-video-overlay-step-[4]-[chrome]": "...puis actualisez la page",
         "permissions-unblock-video-overlay-step-[4]-[edge]": "...puis actualisez la page",
         "permissions-unblock-video-overlay-step-[4]-[firefox]": "...puis actualisez la page",
-        "permissions-unblock-video-overlay-step-[4]-[safari-ios]": "Puis trouvez « Caméra » et « Microphone »",
-        "permissions-unblock-video-overlay-step-[4]-[safari-ipados]": "Puis trouvez « Caméra » et « Microphone »",
+        "permissions-unblock-video-overlay-step-[4]-[safari-ios]": "Puis trouvez « Caméra » et « Microphone »",
+        "permissions-unblock-video-overlay-step-[4]-[safari-ipados]": "Puis trouvez « Caméra » et « Microphone »",
         "permissions-unblock-video-overlay-step-[4]-[safari-macosx]": "Passez le curseur de la souris sur les options de caméra et de microphone",
         "permissions-unblock-video-overlay-step-[5]-[android]": "Appuyez pour allumer le microphone et la caméra",
-        "permissions-unblock-video-overlay-step-[5]-[safari-ios]": "Assurez-vous qu'ils sont activés ou définis comme « autorisés ",
-        "permissions-unblock-video-overlay-step-[5]-[safari-ipados]": "Assurez-vous qu'ils sont activés ou définis comme « autorisés »",
-        "permissions-unblock-video-overlay-step-[5]-[safari-macosx]": "Modifier les réglages pour « Autoriser »",
+        "permissions-unblock-video-overlay-step-[5]-[safari-ios]": "Assurez-vous qu'ils sont activés ou définis comme « autorisés »",
+        "permissions-unblock-video-overlay-step-[5]-[safari-ipados]": "Assurez-vous qu'ils sont activés ou définis comme « autorisés »",
+        "permissions-unblock-video-overlay-step-[5]-[safari-macosx]": "Modifier les réglages pour « Autoriser »",
         "permissions-unblock-video-overlay-step-[6]-[android]": "Tirez la page vers le bas pour l'actualiser",
         "permissions-unblock-video-overlay-step-[6]-[safari-ios]": "Revenez à ce navigateur ...puis actualisez la page",
         "permissions-unblock-video-overlay-step-[6]-[safari-ipados]": "Revenez à ce navigateur ...puis actualisez la page",
         "permissions-unblock-video-overlay-step-[6]-[safari-macosx]": "...puis actualisez la page",
         "play": "Lire",
         "presentation": {
-            "dual-screen-mode": "Mode à deux écrans",
+            "dual-screen-mode": "Mode double écran",
             "nobody-sharing-screen": "Personne ne partage son écran actuellement",
             "pexip-presentation": "Fenêtre de présentation",
             "presenting": "Présentation en cours",
             "share-screen": "Partager l'écran",
             "share-screen-placeholder": "Lorsque quelqu'un partage son écran, il apparaîtra ici",
             "stop-share-screen": "Arrêter le partage",
-            "take-over": "Prendre le relais",
+            "take-over": "Prendre la main",
             "the-current": "actuelle",
             "this-will-end": "Cela terminera la présentation de {{normalizedPresenterName}} et commencera la vôtre."
         },
@@ -484,15 +484,15 @@
         "proceed-without-[camera]": "Continuer sans la caméra",
         "proceed-without-[microphone]": "Continuer sans le microphone",
         "proceed-without-[speaker]": "Continuer sans le haut-parleur",
-        "push-to-talk": "Appuyez et maintenez enfoncée la barre d'espacement pour réactiver votre son temporairement",
+        "push-to-talk": "Appuyez et maintenez enfoncée la barre d'espacement pour réactiver temporairement votre microphone",
         "read-steps-label": "Vous pouvez également lire les étapes ici",
-        "remove-spotlight": "Retirer la mise en vedette",
+        "remove-spotlight": "Désactiver la mise en évidence",
         "show-me-how": "Montrez-moi comment",
         "speakers-help-tip-desktop-1": "Assurez-vous que le volume est assez élevé sur votre appareil.",
         "speakers-help-tip-desktop-2": "Un casque d'écoute est-il connecté à votre appareil?",
         "speakers-help-tip-desktop-3": "Si vous utilisez un ordinateur de bureau, vous pourriez devoir connecter des haut-parleurs ou un casque d'écoute.",
         "speakers-help-tip-mobile-1": "Assurez-vous que le volume est assez élevé sur votre appareil.",
-        "speakers-help-tip-mobile-2": "Des écouteurs sont-ils connectés à votre appareil? Assurez-vous que le son sort du bon haut-parleur",
+        "speakers-help-tip-mobile-2": "Avez-vous un casque audio ou des écouteurs connecté(s) à votre appareil ? Assurez-vous que le son provient du bon haut-parleur.",
         "speakers-help-tip-mobile-3": "Essayez de redémarrer votre appareil.",
         "spotlight": "Mise en vedette",
         "start-test": "Démarrer le test",
@@ -505,18 +505,18 @@
         "test-your-microphone-title-[playing-back]": "Lecture",
         "test-your-microphone-title-[recording-success]": "Terminé!",
         "test-your-microphone-title-[recording]": "Enregistrement de votre voix...",
-        "testing-my-microphone": "« Test, 1, 2, 3 »",
+        "testing-my-microphone": "« Test, 1, 2, 3 »",
         "this-is-how-you-will-sound-to-others": "C'est comme ça que les autres vous entendront",
         "through-browser-settings": "dans les paramètres de votre navigateur",
         "tip-1-header": "Conseil 1",
         "to-grant-access-follow-steps": "Pour accorder l'accès, veuillez suivre les étapes mentionnées dans ",
         "transfer": "Transférer",
-        "trying-to-speak": "Vous essayez de parler? Votre microphone est en sourdine",
+        "trying-to-speak": "Tentez-vous de parler ? Votre microphone est désactivé",
         "turn-on-camera": "Allumer la caméra",
         "unblock-permissions-video-link": "cette courte vidéo",
         "unmute": "Réactiver le son",
         "unmute-all-guests": "Réactiver le son de tous les invités",
-        "unmute-camera": "Réactiver le son de la caméra",
+        "unmute-camera": "Réactiver la vidéo de la caméra",
         "unmute-microphone": "Réactiver le son du microphone",
         "unmute-participant": "Réactiver le son du participant",
         "waiting-for-permissions": "En attente d'autorisations...",
@@ -526,41 +526,41 @@
         "you-may-need-to-connect-speakers-or-headphones": "Si vous utilisez un ordinateur de bureau, vous pourriez devoir connecter des haut-parleurs ou un casque d'écoute."
     },
     "media-presentation": {
-        "do-you-want-to-take-over": "Voulez-vous prendre la relève de la présentation?"
+        "do-you-want-to-take-over": "Voulez-vous prendre la main sur la présentation ?"
     },
     "meeting": {
         "admit": "Accepter",
         "admit-participant": "Accepter le participant",
         "chat": "Clavardage",
         "chat-history": "Historique de clavardage",
-        "chat-input": "Entrée de texte du clavardage",
+        "chat-input": "Insertion du texte",
         "chat-new-message": "nouveau message",
-        "chat-new-messages": "{{newMessagesCount}} nouveaux messages",
+        "chat-new-messages": "{{newMessagesCount}} nouveaux messages",
         "chat-scroll-last-message": "Faire défiler jusqu'au dernier message de clavardage",
         "close-new-chat-alert": "Fermer l'alerte de nouveau message de clavardage",
         "connection-quality": "Qualité de la connexion",
         "external-participants": "Participants externes",
         "folded-selfview": {
-            "drag": "Déplacer l'autovisualisation"
+            "drag": "Déplacer l'image propre"
         },
-        "hide-self-view": "Masquer l'autovisualisation",
+        "hide-self-view": "Masquer l'image propre",
         "in-this-meeting": "Dans cette réunion",
         "leave": "Quitter",
-        "more-participants": "{{inMeetingCount}} participants",
-        "network-fixed": "Réparé!",
+        "more-participants": "{{inMeetingCount}} participants",
+        "network-fixed": "Résolu !",
         "network-reconnecting": "Connexion au serveur perdue. Reconnexion en cours...",
-        "one-participant": "1 participant",
+        "one-participant": "1 participant",
         "participants": "Participants",
         "presentation": {
             "collapse": "Réduire",
             "expand": "Agrandir"
         },
         "raised-hand": "A levé la main",
-        "remove-participant": "Retirer le participant",
-        "remove-user-confirmation": "Souhaitez-vous vraiment retirer {{userName}} de cette réunion?",
-        "show-self-view": "Afficher l'autovisualisation",
+        "remove-participant": "Déconnecter le participant",
+        "remove-user-confirmation": "Souhaitez-vous vraiment déconnecter {{userName}} de cette réunion ?",
+        "show-self-view": "Afficher l'image propre",
         "toggle-chat": "Basculer le panneau de clavardage",
-        "toggle-invite-modal": "Basculer la fenêtre modale d'invitation de membres",
+        "toggle-invite-modal": "Basculer la fenêtre d'invitation",
         "toggle-participants-panel": "Basculer le panneau des participants",
         "video-label": "Vidéo en direct de la réunion",
         "video-label-presentation": "Vidéo en direct de la présentation d'un autre participant",
@@ -583,18 +583,18 @@
         "accessibility": {
             "camera-detected-1": "Nous avons détecté que votre caméra capture une image. Toutefois, nous ne sommes pas en mesure de confirmer que vous êtes dans le cadre.",
             "microphone-detected-1": "Nous pouvons détecter du son provenant de votre microphone.",
-            "microphone-detected-2": "Les sous-titres en direct peuvent être activés par défaut si votre réunion prend cette fonctionnalité en charge. Vous pouvez activer ou désactiver les sous-titres en direct à tout moment pendant votre réunion.",
+            "microphone-detected-2": "Les sous-titres peuvent être activés par défaut si votre réunion prend cette fonctionnalité en charge. Vous pouvez activer ou désactiver les sous-titres à tout moment pendant votre réunion.",
             "speakers-detected-1": "Votre appareil est connecté à des haut-parleurs.",
             "speakers-detected-1-chrome": "Votre appareil est connecté à des haut-parleurs. Vous pouvez vérifier que les bons haut-parleurs sont sélectionnés dans la liste déroulante ci-dessus.",
-            "speakers-detected-2": "Les sous-titres en direct peuvent être activés par défaut si votre réunion prend cette fonctionnalité en charge. Vous pouvez activer ou désactiver les sous-titres en direct à tout moment pendant votre réunion."
+            "speakers-detected-2": "Les sous-titres peuvent être activés par défaut si votre réunion prend cette fonctionnalité en charge. Vous pouvez activer ou désactiver les sous-titres à tout moment pendant votre réunion."
         },
         "camera-missing": "Les autres ne pourront pas vous voir",
         "get-ready": "Préparez-vous pour votre réunion",
         "in-this-meeting": {
-            "plural": "<0>{inMeetingCount} autres personnes</0> sont déjà présentes.",
-            "singular": "<0>1 autre personne</0> est déjà présente."
+            "plural": "<0>{inMeetingCount} autres personnes</0> sont déjà présentes.",
+            "singular": "<0>1 autre personne</0> est déjà présente."
         },
-        "join-browser": "Rejoindre la réunion dans le navigateur",
+        "join-browser": "Rejoindre la réunion à partir du navigateur web",
         "microphone-missing": "Les autres ne pourront pas vous entendre",
         "speaker-missing": "Vous ne pourrez pas entendre les autres"
     },
@@ -607,7 +607,7 @@
         "medium": "Moyenne",
         "poor-connection-detected": "Mauvaise connexion détectée",
         "quality": "Qualité de la connexion",
-        "select-quality": "Sélectionner la qualité pour la réunion",
+        "select-quality": "Sélectionner la qualité de la connexion",
         "very-high": "Très haute"
     },
     "settings": {
@@ -627,11 +627,11 @@
         "layout": "Disposition",
         "layout-changes-info": "Les modifications que vous apportez à la disposition de la vidéo seront les mêmes pour tous les participants.",
         "layout-confirmation-desc": "Vous vous apprêtez à modifier la disposition pour tous les participants à la réunion, pas seulement pour vous-même.",
-        "layout-confirmation-title": "Le fait de modifier la disposition affectera tout le monde",
-        "layout[adaptive-composition]": "Composition adaptative",
-        "layout[double-theatre]": "Salle",
-        "layout[highlight]": "Mise en exergue",
-        "layout[single-theatre]": "Salle",
+        "layout-confirmation-title": "La modification de la disposition affectera tous les participants",
+        "layout[adaptive-composition]": "Composition Adaptative",
+        "layout[double-theatre]": "Auditorium",
+        "layout[highlight]": "Intervenant seul",
+        "layout[single-theatre]": "Auditorium",
         "layout[speaker-focus]": "Mise en évidence de l'intervenant",
         "layout[tiled]": "Tuiles",
         "lock": "Verrouiller la réunion",
@@ -642,7 +642,7 @@
         "personal": "Paramètres personnels",
         "playing-sound": "Lecture du son...",
         "save-changes": "Enregistrer les modifications",
-        "selfview-hidden": "Autovisualisation masquée",
+        "selfview-hidden": "Image propre masquée",
         "settings": "Paramètres",
         "test-your-sound": "Testez votre son",
         "unlock": "Déverrouiller la réunion"
@@ -652,19 +652,19 @@
         "do-you-hear-sound": "Entendez-vous le son?"
     },
     "stats": {
-        "[bitrate]": "Débit binaire",
+        "[bitrate]": "Débit",
         "[codec]": "Codec",
         "[jitter]": "Instabilité",
         "[packets-lost]": "Perte de paquets",
         "[packets-transmitted]": "Paquets transmis",
-        "[recent-packet-loss]": "Perte récente de paquets",
+        "[recent-packet-loss]": "Perte de paquets (Récents)",
         "[resolution]": "Résolution",
         "[roundtrip-time]": "Durée de l'aller-retour",
-        "[total-packet-loss]": "Perte de paquets totale",
+        "[total-packet-loss]": "Perte de paquets (Total)",
         "audio": "Audio",
-        "in": "Entrée",
-        "nerd-stats": "Statistiques détaillées",
-        "out": "Sortie",
+        "in": "Réception",
+        "nerd-stats": "Statistiques de l'appel",
+        "out": "Emission",
         "video": "Vidéo"
     },
     "transfer": {

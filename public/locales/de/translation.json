@@ -11,8 +11,8 @@
         "do-you-see-yourself": "Sehen Sie sich selbst?"
     },
     "common": {
-        "[microphone]": "Mikrofon",
         "[camera]": "Kamera",
+        "[microphone]": "Mikrofon",
         "[speaker]": "Lautsprecher",
         "a-pexip-meeting": "ein<1></1>Meeting",
         "and-then": "und dann",
@@ -51,7 +51,7 @@
     },
     "device-status": {
         "audio-device-in-use": {
-            "message": "Eine andere Anwendung (z. B. Teams oder Slack) verwendet das Mikrofon. Damit Sie das Mikrofon hier verwenden können, müssen Sie diese Anwendung finden und abschalten.",
+            "message": "Eine andere Anwendung (z. B. Teams oder Slack) verwendet das Mikrofon. Damit Sie das Mikrofon hier verwenden können, müssen Sie diese Anwendung finden und abschalten.",
             "title": "Mikrofon nicht verfügbar"
         },
         "audio-device-not-found": {
@@ -71,7 +71,7 @@
             "title": "Sie haben keinen Zugriff auf die Kamera gewährt."
         },
         "devices-in-use": {
-            "message": "Eine andere Anwendung (z. B. Teams oder Slack) verwendet die Kamera. Damit Sie das Mikrofon mit Pexip verwenden können, müssen Sie diese Anwendung finden und abschalten.",
+            "message": "Eine andere Anwendung (z. B. Teams oder Slack) verwendet die Kamera. Damit Sie das Mikrofon mit Pexip verwenden können, müssen Sie diese Anwendung finden und abschalten.",
             "title": "Kamera und Mikrofon nicht verfügbar"
         },
         "initial-permissions-audio-input-granted": {
@@ -83,7 +83,7 @@
             "title": "Berechtigungen erteilt"
         },
         "initial-permissions-not-granted": {
-            "message": "Wählen Sie im nächsten Schritt die Option zum <1>\"Zulassen\"</1>, wenn sie im Browser erscheint. Der Zugriff besteht nur für die Dauer des Meetings.",
+            "message": "Wählen Sie im nächsten Schritt die Option zum <1>Zulassen</1>, wenn sie im Browser erscheint. Der Zugriff besteht nur für die Dauer des Meetings.",
             "title": "Wir benötigen Ihre Erlaubnis, um die Kamera und das Mikrofon zu verwenden."
         },
         "initial-permissions-video-input-denied": {
@@ -132,7 +132,7 @@
         },
         "overconstrained": {
             "message": "Versuchen Sie, die Qualitätseinstellungen zu senken.",
-            "title": "Die Kamera und das Mikrofon sind stark eingeschränkt. "
+            "title": "Die Kamera und das Mikrofon sind stark eingeschränkt."
         },
         "permissions-granted-fallback-audioinput": {
             "message": "Wir können das bevorzugte Mikrofon nicht verwenden.",
@@ -203,7 +203,7 @@
             "title": "Mikrofon nicht verfügbar"
         },
         "video-device-in-use": {
-            "message": "Eine andere Anwendung (z. B. Teams oder Slack) verwendet die Kamera. Damit Sie das Mikrofon mit Pexip verwenden können, müssen Sie diese Anwendung finden und abschalten.",
+            "message": "Eine andere Anwendung (z. B. Teams oder Slack) verwendet die Kamera. Damit Sie das Mikrofon mit Pexip verwenden können, müssen Sie diese Anwendung finden und abschalten.",
             "title": "Kamera nicht verfügbar"
         },
         "video-device-not-found": {
@@ -223,7 +223,7 @@
         "choose-another": "Anderes Meeting auswählen",
         "code[#pex100]": "Die eingegebene PIN ist ungültig. Versuchen Sie es erneut.",
         "code[#pex101]": "Die eingegebene PIN ist ungültig. Versuchen Sie es erneut.",
-        "code[#pex109]": "PEX109 – Fehlermeldung für Benutzer",
+        "code[#pex109]": "PEX109 – Fehlermeldung für Benutzer",
         "code[#pex110]": "Das System, das Sie zu erreichen versuchen, ist momentan nicht verfügbar. Versuchen Sie es in Kürze noch einmal.",
         "code[#pex111]": "Es besteht keine Verbindung. Versuchen Sie es erneut.",
         "code[#pex112]": "Es ist keine Verbindung verfügbar.",
@@ -282,7 +282,7 @@
         "code[#pex204]": "SSO-Authentifizierung fehlgeschlagen. SSO von dieser Domain ist nicht verfügbar.",
         "not-found": {
             "subtitle": "Die gewünschte Seite konnte nicht gefunden werden.",
-            "title": "404 – Nicht gefunden"
+            "title": "404 – Nicht gefunden"
         },
         "rejoin": "Erneut beitreten",
         "reload-page": "Seite neu laden",
@@ -293,7 +293,7 @@
         "how-to-find": "Die Meeting-ID finden Sie in der Einladung zum Meeting in Ihrem Kalender oder Ihren E-Mails.",
         "join": "Meeting beitreten",
         "meeting-id": "Meeting-ID",
-        "placeholder": "z. B. „meeting.mit.bob“"
+        "placeholder": "z. B. „meeting.mit.bob“"
     },
     "idp": {
         "select-provider": "Wählen Sie Ihren Identitätsprovider aus. Anschließend wird ein anderes Fenster geöffnet.",
@@ -336,7 +336,7 @@
         "camera-action": "Kamera drehen {{videoInputAction}}",
         "camera-help-tip-desktop-1": "Haben Sie im Drop-down-Menü die richtige Kamera ausgewählt?",
         "camera-help-tip-desktop-2": "Ist etwas vor dem Kameraobjektiv?",
-        "camera-help-tip-desktop-3": "Versuchen Sie es damit, andere Programme zu schließen, die die Kamera verwenden könnten (z. B. Teams oder Slack).",
+        "camera-help-tip-desktop-3": "Versuchen Sie es damit, andere Programme zu schließen, die die Kamera verwenden könnten (z. B. Teams oder Slack).",
         "camera-help-tip-desktop-4": "Falls keine der oben genannten Punkte zutreffen, versuchen Sie, den Browser oder Computer neu zu starten.",
         "camera-help-tip-mobile-1": "Ist die Kamera in die falsche Richtung gerichtet? Versuchen Sie die Kamera zu drehen. Suchen Sie nach diesem Symbol.",
         "camera-help-tip-mobile-2": "Ist etwas vor dem Kameraobjektiv?",
@@ -357,15 +357,15 @@
         "help-check-[speaker]-again": "Lautsprecher erneut prüfen",
         "help-proceed-without-camera": "Ohne Kamera fortfahren",
         "help-proceed-without-microphone": "Ohne Mikrofon fortfahren",
-        "help-step-[1]": "Schritt 1",
-        "help-step-[2]": "Schritt 2",
-        "help-step-[3]": "Schritt 3",
-        "help-step-[4]": "Schritt 4",
-        "help-step-[5]": "Schritt 5",
-        "help-tip-1-header": "Tipp 1",
-        "help-tip-2-header": "Tipp 2",
-        "help-tip-3-header": "Tipp 3",
-        "help-tip-4-header": "Tipp 4",
+        "help-step-[1]": "Schritt 1",
+        "help-step-[2]": "Schritt 2",
+        "help-step-[3]": "Schritt 3",
+        "help-step-[4]": "Schritt 4",
+        "help-step-[5]": "Schritt 5",
+        "help-tip-1-header": "Tipp 1",
+        "help-tip-2-header": "Tipp 2",
+        "help-tip-3-header": "Tipp 3",
+        "help-tip-4-header": "Tipp 4",
         "how-to-unblock-access": "Eine Animation mit einer Anleitung dazu, wie der Zugriff auf Mediengeräte gewährt werden kann.",
         "if-you-dont-hear-yourself-try-this": "Versuchen Sie das, falls Sie sich nicht hören können.",
         "learn-how-to-grant-permissions": "Lernen Sie, wie Sie Zugriff gewähren",
@@ -504,11 +504,11 @@
         "test-your-microphone-title-[playback-finished]": "Wiedergabe",
         "test-your-microphone-title-[playing-back]": "Wiedergabe",
         "test-your-microphone-title-[recording-success]": "Fertig!",
-        "test-your-microphone-title-[recording]": "Ihre Stimme wird aufgenommen …",
-        "testing-my-microphone": "„Test 1, 2, 3“",
+        "test-your-microphone-title-[recording]": "Ihre Stimme wird aufgenommen …",
+        "testing-my-microphone": "„Test 1, 2, 3“",
         "this-is-how-you-will-sound-to-others": "So klingen Sie für andere.",
         "through-browser-settings": "durch Ihre Browsereinstellungen.",
-        "tip-1-header": "Tipp 1",
+        "tip-1-header": "Tipp 1",
         "to-grant-access-follow-steps": "Um den Zugriff zu gewähren, führen Sie bitte die Schritte in .... aus ",
         "transfer": "Übertragen",
         "trying-to-speak": "Versuchen Sie, etwas zu sagen? Ihr Mikrofon ist stumm geschaltet.",
@@ -519,7 +519,7 @@
         "unmute-camera": "Stummschaltung der Kamera aufheben",
         "unmute-microphone": "Stummschaltung des Mikrofons aufheben",
         "unmute-participant": "Stummschaltung des Teilnehmers aufheben",
-        "waiting-for-permissions": "Warten auf Berechtigungen …",
+        "waiting-for-permissions": "Warten auf Berechtigungen …",
         "we-will-help-you-header": "Keine Sorge. Wir helfen Ihnen.",
         "you-blocked-access": "Sie haben den Zugriff auf {{seeOrHearYou}} blockiert.",
         "you-can-say-something-like": "Sie können etwas sagen wie ",
@@ -546,10 +546,10 @@
         "hide-self-view": "Selbstansicht ausblenden",
         "in-this-meeting": "In diesem Meeting",
         "leave": "Verlassen",
-        "more-participants": "{{inMeetingCount}} Teilnehmer",
+        "more-participants": "{{inMeetingCount}} Teilnehmer",
         "network-fixed": "Repariert!",
         "network-reconnecting": "Netzwerkverbindung verloren. Verbindung wird wiederhergestellt...",
-        "one-participant": "Ein Teilnehmer",
+        "one-participant": "Ein Teilnehmer",
         "participants": "Teilnehmer",
         "presentation": {
             "collapse": "Einklappen",
@@ -576,7 +576,7 @@
         "are-you-host": "Sind Sie ein Host?",
         "how-to-find": "Die PIN finden Sie in der Einladung zum Meeting in Ihrem Kalender oder Ihren E-Mails.",
         "label": "{{type}}-PIN",
-        "placeholder": "z. B. „1234“",
+        "placeholder": "z. B. „1234“",
         "what-is-the-pin": "Wie lautet die PIN für dieses Meeting?"
     },
     "preflight": {
@@ -611,7 +611,7 @@
         "very-high": "Sehr hoch"
     },
     "settings": {
-        "cancel-changes": "Abbrechen",
+        "cancel-changes": "Änderungen nicht übernehmen",
         "collapsed-selfview-tooltip-description": "Sie senden noch immer ein Bild an andere Teilnehmer des Meetings.",
         "device-select": {
             "select-camera": "Kamera auswählen",
@@ -640,8 +640,8 @@
         "meeting-settings": "Meetingeinstellungen",
         "noise-suppression": "Geräuschunterderückung",
         "personal": "Persönliche Einstellungen",
-        "playing-sound": "Ton wird wiedergegeben …",
-        "save-changes": "Speichern",
+        "playing-sound": "Ton wird wiedergegeben …",
+        "save-changes": "Änderungen speichern",
         "selfview-hidden": "Selbstansicht ausgeblendet",
         "settings": "Einstellungen",
         "test-your-sound": "Tonausgabe testen",
@@ -672,14 +672,14 @@
         "fail": "Teilnehmer kann nicht transferiert werden",
         "meeting-id": "Meeting-ID",
         "pin": "Pin",
-        "pin-placeholder": "z. B. „1234“",
-        "placeholder": "z. B. „meeting.mit.bob“",
+        "pin-placeholder": "z. B. „1234“",
+        "placeholder": "z. B. „meeting.mit.bob“",
         "success": "Teilnehmer erfolgreich transferiert",
         "transfer-participant": "Teilnehmer transferieren"
     },
     "username": {
         "hey-whats-your-name": "Hallo. <1></1> Wie heißen Sie?",
-        "name-input-placeholder": "z. B. „David“",
+        "name-input-placeholder": "z. B. „David“",
         "usage-purpose": "Geben Sie einen Anzeigenamen ein, damit die anderen Teilnehmer wissen, wer am Meeting teilnimmt.",
         "your-name": "Ihr Name"
     }

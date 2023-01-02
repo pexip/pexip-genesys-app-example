@@ -11,8 +11,8 @@
         "do-you-see-yourself": "Você consegue se ver?"
     },
     "common": {
-        "[microphone]": "Microfone",
         "[camera]": "Câmera",
+        "[microphone]": "Microfone",
         "[speaker]": "Alto-falante",
         "a-pexip-meeting": "uma reunião <1></1>",
         "and-then": "e depois",
@@ -83,7 +83,7 @@
             "title": "Permissão concedida"
         },
         "initial-permissions-not-granted": {
-            "message": "Selecione <1>\"Permitir\"</1> na próxima etapa quando o navegador solicitar. Vamos ter acesso apenas durante a reunião.",
+            "message": "Selecione <1>Permitir</1> na próxima etapa quando o navegador solicitar. Vamos ter acesso apenas durante a reunião.",
             "title": "Precisamos da sua permissão para usar a câmera e o microfone"
         },
         "initial-permissions-video-input-denied": {

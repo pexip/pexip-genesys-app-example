@@ -11,7 +11,7 @@ interface VideoProps {
   id?: string
 }
 
-export function Video (props: VideoProps): JSX.Element {
+export const Video = React.memo((props: VideoProps): JSX.Element => {
   const className = 'Video' +
     (props.flip ?? false ? ' flip' : '') +
     (props.secondary ?? false ? ' secondary' : '')
@@ -22,4 +22,6 @@ export function Video (props: VideoProps): JSX.Element {
       onClick={() => { if (props.onClick != null) props.onClick() }}
     />
   )
-}
+})
+
+Video.displayName = 'Video'

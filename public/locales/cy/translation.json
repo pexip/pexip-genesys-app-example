@@ -1,6 +1,6 @@
 {
     "add-participant": {
-        "can-control": "Yn gallu rheoli cyfarfod (gwesteiwr)",
+        "can-control": "Yn gallu rheoli cyfarfod (lletywr)",
         "failed": "Wedi methu ag ychwanegu'r cyfranogwr hwn",
         "submit": "Ychwanegu cyfranogwr",
         "transfer": "Trosglwyddo",
@@ -11,8 +11,8 @@
         "do-you-see-yourself": "Ydych chi'n gweld eich hun?"
     },
     "common": {
-        "[microphone]": "Meicroffon",
         "[camera]": "Camera",
+        "[microphone]": "Meicroffon",
         "[speaker]": "Seinydd",
         "a-pexip-meeting": "cyfarfod<1></1>",
         "and-then": "ac wedyn",
@@ -25,9 +25,9 @@
         "client-name[pexip-room]": "Pexip Room",
         "client-name[session]": "Sesiwn",
         "client-name[web-app]": "Ap Gwe",
-        "close-tooltip": "Cau cyngor offer",
+        "close-tooltip": "Cau blwch offer",
         "close-window": "Cau ffenestr",
-        "host": "Gwesteiwr",
+        "host": "Lletywr",
         "join": "Ymunwch nawr",
         "label-logo": "logo",
         "label-pexip-logo": "Logo Pexip",
@@ -38,7 +38,7 @@
         "me": "fi",
         "meeting": "Cyfarfod",
         "next": "Nesaf",
-        "next-terms-and-conditions": "Trwy barhau rydych chi'n gadarnhau eich bod yn cytuno i'n <2>termau a gwasanaethau</2>",
+        "next-terms-and-conditions": "Trwy barhau rydych chi'n gadarnhau eich bod yn gytuno i'n <2>termau gwasanaeth</2>",
         "no": "Na",
         "raise-hand": "Codi llaw",
         "remove": "Tynnu",
@@ -51,7 +51,7 @@
     },
     "device-status": {
         "audio-device-in-use": {
-            "message": "Mae rhaglen arall (e.e. Teams neu Slack) yn defnyddio'ch meicroffon. Er mwyn ei ddefnyddio yma, dewch o hyd i'r rhaglen hwnnw a'i ddiffodd",
+            "message": "Mae rhaglen arall (e.e. Teams neu Slack) yn ddefnyddio'ch meicroffon. Er mwyn ei ddefnyddio yma, dewch o hyd i'r rhaglen hwnnw a'i ddiffodd",
             "title": "Meicroffon ddim ar gael"
         },
         "audio-device-not-found": {
@@ -71,7 +71,7 @@
             "title": "Nid ydych wedi caniatáu mynediad i'ch camera"
         },
         "devices-in-use": {
-            "message": "Mae rhaglen arall (e.e. Teams neu Slack) yn defnyddio'ch camera. Er mwyn ei ddefnyddio gyda Pexip, dewch o hyd i'r rhaglen hwnnw a'i ddiffodd",
+            "message": "Mae rhaglen arall (e.e. Teams neu Slack) yn ddefnyddio'ch camera. Er mwyn ei ddefnyddio gyda Pexip, dewch o hyd i'r rhaglen hwnnw a'i ddiffodd",
             "title": "Camera a meicroffon ddim ar gael"
         },
         "initial-permissions-audio-input-granted": {
@@ -83,7 +83,7 @@
             "title": "Caniatâd wedi'i rhoi"
         },
         "initial-permissions-not-granted": {
-            "message": "Dewiswch <1>\"caniatáu\"</1> yn y cam nesaf pan gaiff ei annog gan eich porwr. Dim ond trwy gydol y cyfarfod y bydd gennym fynediad.",
+            "message": "Dewiswch <1>Caniatáu</1> yn y cam nesaf pan gaiff ei annog gan eich porwr. Dim ond trwy gydol y cyfarfod y bydd gennym fynediad.",
             "title": "Mae angen eich caniatâd i ddefnyddio'ch camera a'ch meicroffon"
         },
         "initial-permissions-video-input-denied": {
@@ -100,7 +100,7 @@
         },
         "invalid-constraints": {
             "message": "Ceisiwch glirio storfa eich porwr",
-            "title": "Nid yw wich camera a meicroffon wedi'i sefydlu'n gywir"
+            "title": "Nid yw eich camera a meicroffon wedi'i sefydlu'n gywir"
         },
         "invalid-video-constraints": {
             "message": "Ceisiwch glirio storfa eich porwr",
@@ -195,15 +195,15 @@
             "title": "Camera a meicroffon ddim ar gael"
         },
         "unknown-error-only-audioinput": {
-            "message": "Ni allwn ddefnyddio'ch camera. Ceisiwch ailgysylltu'r dyfais neu ddefnyddio un arall",
+            "message": "Ni allwn ddefnyddio'ch camera. Ceisiwch ailgysylltu'r ddyfais neu ddefnyddio un arall",
             "title": "Camera ddim ar gael"
         },
         "unknown-error-only-videoinput": {
-            "message": "Ni allwn ddefnyddio'ch meicroffon. Ceisiwch ailgysylltu'r dyfais neu ddefnyddio un arall",
+            "message": "Ni allwn ddefnyddio'ch meicroffon. Ceisiwch ailgysylltu'r ddyfais neu ddefnyddio un arall",
             "title": "Meicroffon ddim ar gael"
         },
         "video-device-in-use": {
-            "message": "Mae rhaglen arall (e.e. Teams neu Slack) yn defnyddio'ch camera. Er mwyn ei ddefnyddio gyda Pexip, dewch o hyd i'r rhaglen hwnnw a'i ddiffodd",
+            "message": "Mae rhaglen arall (e.e. Teams neu Slack) yn ddefnyddio'ch camera. Er mwyn ei ddefnyddio gyda Pexip, dewch o hyd i'r rhaglen hwnnw a'i ddiffodd",
             "title": "Camera ddim ar gael"
         },
         "video-device-not-found": {
@@ -228,27 +228,27 @@
         "code[#pex111]": "Nid oes unrhyw gysylltiad. Rhowch gynnig arall arni.",
         "code[#pex112]": "Nid oes cysylltiad ar gael.",
         "code[#pex113]": "Collwyd eich cysylltiad. Rhowch gynning arall arni.",
-        "code[#pex114]": "Mae'r system rydych chi'n ceisio ei chyraedd yn dros gapasiti.",
+        "code[#pex114]": "Mae'r system rydych chi'n geisio ei chyraedd yn ddros gapasiti.",
         "code[#pex115]": "Methodd y trosglwyddiad.",
-        "code[#pex116]": "Methodd y galwad - cysylltwch â'ch gweinyddwr",
-        "code[#pex117]": "Methodd y galwad. Rhowch gynnig arall arni.",
+        "code[#pex116]": "Methodd yr alwad - cysylltwch â'ch gweinyddwr",
+        "code[#pex117]": "Methodd yr alwad. Rhowch gynnig arall arni.",
         "code[#pex118]": "Ni ellir cyrraedd y gweinydd.",
-        "code[#pex119]": "Methodd y galwad: Wedi methu anfon cais ymlaen.",
-        "code[#pex120]": "Daeth gwesteiwr a'r gyfarfod i ben",
-        "code[#pex121]": "Daeth gwesteiwr a'r gyfarfod i ben",
+        "code[#pex119]": "Methodd yr alwad: Wedi methu anfon cais ymlaen.",
+        "code[#pex120]": "Daeth Lletywr y cyfarfod i ben",
+        "code[#pex121]": "Daeth Lletywr y cyfarfod i ben",
         "code[#pex122]": "Daeth gweinyddwr a'r gyfarfod i ben",
         "code[#pex123]": "Fe wnaeth gweinyddwr eich datgysylltu o'r cyfarfod.",
         "code[#pex124]": "Fe wnaeth cyfranogwr arall yn y cyfarfod eich datgysylltu.",
-        "code[#pex125]": "Daeth gwesteiwr a'r gyfarfod i ben",
-        "code[#pex126]": "Nid ydy gwesteiwr y cyfarfod wedi ymuno a neu datgloi'r cyfarfod",
+        "code[#pex125]": "Daeth Lletywr y cyfarfod i ben",
+        "code[#pex126]": "Nid yw Lletywr y cyfarfod wedi ymuno neu wedi datgloi'r cyfarfod",
         "code[#pex127]": "Neges a ddangosir i ddefnyddwyr pan ddaw gwall `Method yr Alwad: Wedi'i analluogi`",
-        "code[#pex128]": "Methodd yr alwad: Efallai bod wal dân yn blocio myndediad.",
+        "code[#pex128]": "Methodd yr alwad: Efallai bod wal dân yn flocio myndediad.",
         "code[#pex129]": "Aeth rhywbeth o'i le gyda'r cyfarfod. Ceisiwch gysylltu eto.",
         "code[#pex130]": "Aeth rhywbeth o'i le gyda'r cyfarfod. Ceisiwch gysylltu eto.",
         "code[#pex131]": "Aeth rhywbeth o'i le gyda'r cyfarfod. Ceisiwch gysylltu eto.",
         "code[#pex132]": "Aeth rhywbeth o'i le gyda'r cyfarfod. Ceisiwch gysylltu eto.",
         "code[#pex140]": "Mae'r cyfarfod wedi dod i ben.",
-        "code[#pex141]": "Daeth y cyfarfod i ben oherwydd i'r gwesteiwr (au) adael.",
+        "code[#pex141]": "Daeth y cyfarfod i ben ar ôl i'r Lletyw(y)r adael.",
         "code[#pex142]": "Chi oedd yr unig gyfranogwr ar ôl yn y cyfarfod.",
         "code[#pex143]": "Mae'r alwad prawf wedi gorffen.",
         "code[#pex150]": "Ni atebodd y person rydych chi'n ceisio ei alw neu ni ellid ei gyrraedd.",
@@ -265,7 +265,7 @@
         "code[#pex181]": "Datgysylltwyd y llif cyflwyno.",
         "code[#pex182]": "Nid yw'r llif cyflwyno ar gael.",
         "code[#pex183]": "Cafodd rhannu sgrin sgrin ei chanslo.",
-        "code[#pex184]": "Digwyddodd gwall wrth rhannu sgrin. Triwch eto, os gwelwch yn dda.",
+        "code[#pex184]": "Digwyddodd gwall wrth rannu sgrin. Triwch eto, os gwelwch yn dda.",
         "code[#pex185]": "Datgysylltwyd y rhannu sgrin.",
         "code[#pex190]": "Gwall yn cysylltu â'r cyfarfod.",
         "code[#pex191]": "Gwall yn cysylltu â'r cyfarfod.",
@@ -290,7 +290,7 @@
         "smth-went-wrong": "Aeth rhywbeth yn anghywir"
     },
     "free-dial": {
-        "how-to-find": "Gallwch ddod o hyd i ID y cyfarfod yn y gwahodd cyfarfod yn eich calendr neu e-bost",
+        "how-to-find": "Gallwch ddod o hyd i ID y cyfarfod yn y gwahoddiad cyfarfod yn eich calendr neu e-bost",
         "join": "Ymunwch â Chyfarfod",
         "meeting-id": "ID Cyfarfod",
         "placeholder": "e.e. 'meet.bob'"
@@ -315,8 +315,8 @@
         "copied": "Wedi copïo",
         "copy": "Copïo",
         "copy-to-clipboard": "Copïwch ddolen i'r glipfwrdd",
-        "expiry": "Mae eich cyswllt gwahodd yn dod i ben yn {{expiryHours}} oriau",
-        "instructions": "Anfonwch ddolen y cyfarfod isod at y person yr hoffech ei ychwanegu",
+        "expiry": "Mae eich dolen gwahodd yn ddod i ben yn {{expiryHours}} oriau",
+        "instructions": "Anfonwch y ddolen cyfarfod isod i'r person yr hoffech chi ei ychwanegu",
         "invite": "Wedi gwahodd",
         "invite-person": "Gwahodd person",
         "invite-someone": "Gwahoddwch rywun i'r cyfarfod",
@@ -326,21 +326,21 @@
         "send-invite-link": "neu anfon dolen wahodd"
     },
     "media": {
-        "all-guests-muted-by-host": "Pob Gwestai wedi'u tewi gan Westeiwr",
-        "all-guests-unmuted-by-host": "Pob Gwestai wedi'u dad-dewi gan Westeiwr",
+        "all-guests-muted-by-host": "Pob Gwestai wedi'u tewi gan Lletywr",
+        "all-guests-unmuted-by-host": "Pob Gwestai wedi'u dad-dewi gan Lletywr",
         "audio": {
             "you-are-temporarily-unmuted": "Rydych chi wedi'i dad-dewi dros dro"
         },
         "background-effects-action": "Newid effaith cefndir",
         "browser-privacy-settings-link": "gosodiadau preifatrwydd",
-        "camera-action": "Trowch gamera {{videoInputAction}}",
-        "camera-help-tip-desktop-1": "Ydych chi wedi dewis y camera cywir yn y dewislen cwymplen?",
-        "camera-help-tip-desktop-2": "Ydy rhywbeth yn blocio lens y camera?",
-        "camera-help-tip-desktop-3": "Ceisiwch gau rhaglenni eraill a allai fod yn defnyddio'r camera (e.e. Teams neu Slack).",
+        "camera-action": "Troi camera {{videoInputAction}}",
+        "camera-help-tip-desktop-1": "Ydych chi wedi dewis y camera cywir yn y ddewislen cwymplen?",
+        "camera-help-tip-desktop-2": "Oes rhywbeth yn flocio lens y camera?",
+        "camera-help-tip-desktop-3": "Ceisiwch gau rhaglenni eraill a allai fod yn ddefnyddio'r camera (e.e. Teams neu Slack).",
         "camera-help-tip-desktop-4": "Os nad oes yr un o'r uchod yn berthnasol, ceisiwch ailgychwyn eich porwr neu'ch cyfrifiadur.",
         "camera-help-tip-mobile-1": "Ydy'ch camera'n wynebu'r ffordd anghywir? Ceisiwch fflipio'ch camera. Edrychwch am yr eicon hwn",
-        "camera-help-tip-mobile-2": "Ydy rhywbeth yn blocio lens y camera?",
-        "camera-help-tip-mobile-3": "Ceisiwch gau apiau eraill a allai fod yn defnyddio'ch camera (e.e. Teams neu WhatsApp ac ati)",
+        "camera-help-tip-mobile-2": "Oes rhywbeth yn flocio lens y camera?",
+        "camera-help-tip-mobile-3": "Ceisiwch gau apiau eraill a allai fod yn ddefnyddio'ch camera (e.e. Teams neu WhatsApp ac ati)",
         "camera-help-tip-mobile-4": "Ceisiwch ailgychwyn eich dyfais.",
         "check-everything-works": "Gwiriwch fod popeth yn gweithio",
         "check-everything-works-description": "Sicrhewch fod eich offer yn gweithio fel y gallwch gael eich clywed a'ch gweld pan ymunwch.",
@@ -372,11 +372,11 @@
         "learn-how-to-manage-browser-privacy-settings": "Gosodiadau preifatrwydd porwr",
         "learn-how-to-manage-browser-privacy-settings-label": "Sut i reoli gosodiadau preifatrwydd porwr (yn agor mewn tab newydd)",
         "lets-check": "Gadewch i ni wirio bod eich fideo a'ch sain yn gweithio'n iawn",
-        "lets-go": "Awn ni",
+        "lets-go": "Nesaf",
         "make-sure-the-volume-is-turned-up-on-your-device": "Sicrhewch fod y lefel sain wedi cael ei throi i fyny ar eich dyfais.",
         "make-sure-you-have-the-correct-microphone": "Gwnewch yn siŵr bod gennych y meicroffon cywir",
         "make-sure-you-have-the-correct-speaker": "Gwnewch yn siŵr bod gennych y seinydd cywir",
-        "microphone-action": "Meicroffon {{audioInputAction}}",
+        "microphone-action": "{{audioInputAction}} meicroffon",
         "microphone-help-tip-desktop-1": "Sicrhewch fod y lefel sain wedi cael ei throi i fyny ar eich dyfais.",
         "microphone-help-tip-desktop-2": "Oes gennych chi glustffonau wedi'u cysylltu â'ch dyfais? Sicrhewch fod y meicroffon ar y clustffonau ger eich ceg.",
         "microphone-help-tip-desktop-3": "Os ydych chi'n defnyddio cyfrifiadur bwrdd gwaith, efallai y bydd angen i chi gysylltu siaradwyr neu glustffonau.",
@@ -384,14 +384,14 @@
         "microphone-help-tip-mobile-2": "Oes gennych chi glustffonau wedi'u cysylltu â'ch dyfais? Sicrhewch fod meicroffon y clustffonau ger eich ceg.",
         "microphone-help-tip-mobile-3": "Ceisiwch ailgychwyn eich dyfais.",
         "mute": "Tewi",
-        "mute-all-guests": "Tewi pob gwestai",
+        "mute-all-guests": "Tewi pob Gwestai",
         "mute-microphone": "Tewi meicroffon",
         "mute-participant": "Tewi cyfranogwr",
         "muted": "Wedi tewi",
         "of-your-browser": "o'ch porwr",
         "off": "i ffwrdd",
         "on": "ymlaen",
-        "or-go-to-the": "neu ewch i'r ",
+        "or-go-to-the": "neu ewch i'r",
         "permission-info": {
             "[camera]": {
                 "title": "camera"
@@ -415,7 +415,7 @@
         "permissions-unblock-help-step-[2]-[android]": "Tapiwch Gosodiadau Safle",
         "permissions-unblock-help-step-[2]-[chrome]": "Dewiswch \"Caniatáu\"",
         "permissions-unblock-help-step-[2]-[edge]": "Dewiswch Cwcis a Chaniatâd Safle (ar yr ochr chwith)",
-        "permissions-unblock-help-step-[2]-[firefox]": "Cliciwch yr X yn ymyl i Wedi Ganiatáu, Wedi Ganiatáu Dros Dro, Wedi Rwystro neu Wedi Rwystro Dros Dro i glirio'r statws fel y bydd Firefox yn gofyn eto am ganiatâd pan ymwelwch â'r wefan nesaf.",
+        "permissions-unblock-help-step-[2]-[firefox]": "Cliciwch yr X yn ymyl i Wedi Ganiatáu, Wedi Ganiatáu Dros Dro, Wedi Rwystro neu Wedi Rwystro Dros Dro i glirio'r statws fel y bydd Firefox yn ofyn eto am ganiatâd pan ymwelwch â'r wefan nesaf.",
         "permissions-unblock-help-step-[2]-[safari-ios]": "Sgroliwch i lawr a thapiwch ar Safari (neu pa bynnag borwr rydych chi'n ei ddefnyddio)",
         "permissions-unblock-help-step-[2]-[safari-ipados]": "Sgroliwch i lawr a thapiwch ar Safari (neu pa bynnag borwr rydych chi'n ei ddefnyddio)",
         "permissions-unblock-help-step-[2]-[safari-macosx]": "Rhestrir gosodiadau camera a meicroffon ar y chwith",
@@ -477,53 +477,53 @@
             "stop-share-screen": "Stopio rhannu",
             "take-over": "Cymeryd drosodd",
             "the-current": "y cyfredol",
-            "this-will-end": "Bydd hyn yn dod â chyflwyniad {{normalizedPresenterName}} i ben ac yn cychwyn eich un chi."
+            "this-will-end": "Bydd hyn yn ddod â chyflwyniad {{normalizedPresenterName}} i ben ac yn gychwyn eich un chi."
         },
         "previously-permissions-denied": "Rydych wedi gwrthod caniatâd o'r blaen i ddefnyddio'ch {{deniedDevice}}.",
         "proceed-anyway": "Ewch ymlaen beth bynnag",
         "proceed-without-[camera]": "Ewch ymlaen heb gamera",
         "proceed-without-[microphone]": "Ewch ymlaen heb feicroffon",
         "proceed-without-[speaker]": "Ewch ymlaen heb seinydd",
-        "push-to-talk": "Gwthiwch a dal eich bylchwr i ddiad-dewi'ch hun dros dro",
+        "push-to-talk": "Gwthiwch a daliwch eich bylchwr i ddad-dewi'ch hun dros dro",
         "read-steps-label": "Gallwch hefyd ddarllen y camau yma",
         "remove-spotlight": "Tynnu sbotolau",
         "show-me-how": "Dangos i mi sut",
         "speakers-help-tip-desktop-1": "Sicrhewch fod y lefel sain wedi cael ei throi i fyny ar eich dyfais.",
         "speakers-help-tip-desktop-2": "Oes gennych chi glustffonau wedi'u cysylltu â'ch dyfais?",
-        "speakers-help-tip-desktop-3": "Os ydych chi'n defnyddio cyfrifiadur bwrdd gwaith, efallai y bydd angen i chi gysylltu seinyddion neu glustffonau.",
+        "speakers-help-tip-desktop-3": "Os ydych chi'n ddefnyddio cyfrifiadur bwrdd gwaith, efallai y bydd angen i chi gysylltu seinyddion neu glustffonau.",
         "speakers-help-tip-mobile-1": "Sicrhewch fod y lefel sain wedi cael ei throi i fyny ar eich dyfais.",
-        "speakers-help-tip-mobile-2": "Oes gennych chi glustffonau wedi'u cysylltu â'ch dyfais? Sicrhewch fod y sain yn dod allan o'r seinyddion a fwriadwyd",
+        "speakers-help-tip-mobile-2": "Oes gennych chi glustffonau wedi'u cysylltu â'ch dyfais? Sicrhewch fod y sain yn ddod allan o'r seinyddion a fwriadwyd",
         "speakers-help-tip-mobile-3": "Ceisiwch ailgychwyn eich dyfais.",
         "spotlight": "Sbotoleuo",
         "start-test": "Dechrae prawf",
         "still-having-issues": "Dal i gael problemau? <2>Arweiniad datrys problemau</2>",
-        "stop-playing": "Gorffen chwarae",
+        "stop-playing": "Stopio chwarae",
         "test-your-microphone": "Profwch eich meicroffon",
         "test-your-microphone-title-[before-testing]": "Profwch eich meicroffon",
         "test-your-microphone-title-[get-ready]": "Paratowch i ddweud rhywbeth",
-        "test-your-microphone-title-[playback-finished]": "Ailchwarae",
-        "test-your-microphone-title-[playing-back]": "Ailchwarae",
+        "test-your-microphone-title-[playback-finished]": "Chwarae nôl",
+        "test-your-microphone-title-[playing-back]": "Chwarae nôl",
         "test-your-microphone-title-[recording-success]": "Wedi gorffen!",
-        "test-your-microphone-title-[recording]": "Recordio'ch llais ...",
+        "test-your-microphone-title-[recording]": "Recordio'ch llais...",
         "testing-my-microphone": "Profi 1, 2, 3",
         "this-is-how-you-will-sound-to-others": "Dyma sut y byddwch chi'n swnio i eraill",
         "through-browser-settings": "trwy osodiadau eich porwr",
         "tip-1-header": "Awgrym 1",
-        "to-grant-access-follow-steps": "I ganiatáu mynediad dilynwch y camau yn ",
+        "to-grant-access-follow-steps": "I ganiatáu mynediad dilynwch y camau yn",
         "transfer": "Trosglwyddo",
         "trying-to-speak": "Ceisio siarad? Mae eich meicroffon wedi'i ddad-dewi",
-        "turn-on-camera": "Trowch ymlaen y camera",
-        "unblock-permissions-video-link": "Y fideo fer hon",
+        "turn-on-camera": "Troi camera ymlaen",
+        "unblock-permissions-video-link": "Y fideo fyr hon",
         "unmute": "Dad-dewi",
         "unmute-all-guests": "Dad-dewi pob gwestai",
         "unmute-camera": "Dad-dewi camera",
         "unmute-microphone": "Dad-dewi meicroffon",
         "unmute-participant": "Dad-dewi cyfranogwr",
         "waiting-for-permissions": "Aros am ganiatâd...",
-        "we-will-help-you-header": "Peidiwch â phoeni. Byddwn yn eich helpu chi!",
-        "you-blocked-access": "Fe wnaethoch chi rwystro mynediad i'ch {{seeOrHearYou}}",
-        "you-can-say-something-like": "Gallwch chi ddweud rhywbeth fel ",
-        "you-may-need-to-connect-speakers-or-headphones": "Os ydych chi'n defnyddio cyfrifiadur bwrdd gwaith, efallai y bydd angen i chi gysylltu seinyddion neu glustffonau."
+        "we-will-help-you-header": "Peidiwch â phoeni. Gallwn ni eich helpu chi!",
+        "you-blocked-access": "Rydych chi wedi rwystro mynediad i'ch {{seeOrHearYou}}",
+        "you-can-say-something-like": "Gallwch chi ddweud rhywbeth fel",
+        "you-may-need-to-connect-speakers-or-headphones": "Os ydych chi'n ddefnyddio cyfrifiadur bwrdd gwaith, efallai y bydd angen i chi gysylltu seinyddion neu glustffonau."
     },
     "media-presentation": {
         "do-you-want-to-take-over": "Ydych chi eisau cymryd drosodd y cyflwyniad?"
@@ -546,7 +546,7 @@
         "hide-self-view": "Cuddio hunan-olwg",
         "in-this-meeting": "Yn y cyfarfod hwn",
         "leave": "Gadael",
-        "more-participants": "{{inmeetingcount}} cyfranogwyr",
+        "more-participants": "{{inMeetingCount}} Cyfranogwyr",
         "network-fixed": "Wedi'i trwsio!",
         "network-reconnecting": "Wedi colli cysylltiad rhwydwaith. Ailgysylltu...",
         "one-participant": "1 Cyfranogwr",
@@ -557,7 +557,7 @@
         },
         "raised-hand": "Codi llaw",
         "remove-participant": "Cael gwared â'r cyfranogwr",
-        "remove-user-confirmation": "Ydych chi'n siŵr eich bod chi eisiau gael gwared â {{userName}} o'r cyfarfod hwn?",
+        "remove-user-confirmation": "Ydych chi'n siŵr eich bod chi eisiau cael gwared â {{userName}} o'r cyfarfod hwn?",
         "show-self-view": "Dangos hunan-olwg",
         "toggle-chat": "Toglo panel sgwrsio",
         "toggle-invite-modal": "Toglo blwch deialog gwahodd aelodau",
@@ -573,9 +573,9 @@
         "do-you-hear-yourself": "Ydych chi'n clywed eich hun?"
     },
     "pin": {
-        "are-you-host": "Ydych chi'n westeiwr?",
-        "how-to-find": "Gallwch ddod o hyd i'r pin yn y cyfarfod gwahodd yn eich calendr neu e -bost",
-        "label": "pin {{type}}",
+        "are-you-host": "Ydych chi'n Westeiwr?",
+        "how-to-find": "Gallwch ddod o hyd i'r PIN yn y gwahoddiad cyfarfod yn eich calendr neu e-bost",
+        "label": "PIN {{type}}",
         "placeholder": "e.e. '1234'",
         "what-is-the-pin": "Beth yw'r PIN ar gyfer y cyfarfod hwn?"
     },
@@ -612,7 +612,7 @@
     },
     "settings": {
         "cancel-changes": "Canslo newidiadau",
-        "collapsed-selfview-tooltip-description": "Rydych chi'n dal i anfon fideo at bobl eraill yn y cyfarfod",
+        "collapsed-selfview-tooltip-description": "Rydych chi'n dal i anfon fideo i bobl eraill yn y cyfarfod",
         "device-select": {
             "select-camera": "Dewiswch camera",
             "select-microphone": "Dewiswch meicroffon",
@@ -644,12 +644,12 @@
         "save-changes": "Cadw newidiadau",
         "selfview-hidden": "Hunan-olwg wedi cuddio",
         "settings": "Gosodiadau",
-        "test-your-sound": "Profi eich sain",
+        "test-your-sound": "Profwch eich sain",
         "unlock": "Datgloi'r cyfarfod"
     },
     "speaker": {
         "cant-hear": "Ni allaf glywed oherwydd anabledd",
-        "do-you-hear-sound": "Ydych chi'n clywed y sain?"
+        "do-you-hear-sound": "Ydych chi'n glywed y sain?"
     },
     "stats": {
         "[bitrate]": "cyfraddau didol",
@@ -680,7 +680,7 @@
     "username": {
         "hey-whats-your-name": "Helo. <1></1> Beth yw eich enw?",
         "name-input-placeholder": "e.e. 'Dafydd'",
-        "usage-purpose": "Rhowch enw i arddangos er mwyn i pobl eraill cael gwybod pwy sydd yn y cyfarfod",
+        "usage-purpose": "Rhowch enw i'w ddangos i bobl eraill er mwyn iddynt wybod pwy sydd yn y cyfarfod",
         "your-name": "Eich enw"
     }
 }

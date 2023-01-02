@@ -1,0 +1,25 @@
+.Selfview {
+  display: contents;
+
+  >div:first-child {
+    top: var(--size-4);
+    width: 20em;
+    display: flex;
+    justify-content: right;
+  }
+
+  // Workaround hide audio mute
+  &>div>div>div>div:nth-child(2)>button {
+    display: none;
+  }
+
+  &>div>div>div>div>div>div>button:nth-child(1){
+    visibility: hidden;
+  }
+
+}
+
+// Workaround to Hide the Audio Stats
+div[role=dialog]>div[class^="_statsBox_"]>div:nth-child(2) {
+  display: none;
+}
