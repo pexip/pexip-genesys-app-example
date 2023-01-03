@@ -35,6 +35,8 @@ jest.mock('@pexip/media-components', () => {
   }
 })
 
+jest.mock('@pexip/media-processor', () => {}, { virtual: true })
+
 jest.mock('@pexip/infinity', () => {}, { virtual: true })
 
 beforeAll(() => {

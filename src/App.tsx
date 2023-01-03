@@ -23,6 +23,7 @@ import * as GenesysUtil from './genesys/genesysService'
 import {
   getLocalStream, stopStream
 } from './media/media'
+import { getProcessedStream } from './media/processor'
 
 import './App.scss'
 
@@ -96,7 +97,8 @@ class App extends React.Component<{}, AppState> {
     const response = await this.infinityClient.muteVideo({ muteVideo: !muted })
     if (response?.status === 200) {
       if (muted) {
-        const localStream = await getLocalStream()
+        let localStream = await getLocalStream()
+        localStream = await getProcessedStream(localStream)
         this.setState({
           localStream
         })
@@ -233,7 +235,8 @@ class App extends React.Component<{}, AppState> {
       const prefixedConfAlias = config.pexip.conferencePrefix + aniName
       this.infinityContext = { conferencePin: pexipAgentPin, conferenceAlias: aniName, infinityHost: pexipNode }
 
-      const localStream = await getLocalStream()
+      let localStream = await getLocalStream()
+      localStream = await getProcessedStream(localStream)
       const displayName = await GenesysUtil.fetchAgentName()
 
       this.setState({

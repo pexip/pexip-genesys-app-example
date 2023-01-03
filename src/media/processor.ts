@@ -13,7 +13,16 @@ const selfieModel = 'general' // 'landscape' or 'general'
 const PROCESSING_WIDTH = 768
 const PROCESSING_HEIGHT = 432
 
-const getProcessedStream = async (stream: MediaStream, effect: RenderEffects): Promise<MediaStream> => {
+const getProcessedStream = async (stream: MediaStream, effect?: RenderEffects, save: boolean = false): Promise<MediaStream> => {
+  effect = effect ?? localStorage.getItem('pexipEffect') as RenderEffects
+  effect = effect ?? 'none'
+
+  if (save) localStorage.setItem('pexipEffect', effect)
+
+  if (effect === 'none') {
+    return stream
+  }
+
   // Create symbolic link to link bg-blur/selfie_segmentation to a public folder
   // Thus we can create a URL object to get the link to be used for the `gluePath`
   const selfieJs = new URL(
@@ -59,6 +68,11 @@ const getProcessedStream = async (stream: MediaStream, effect: RenderEffects): P
   return processedStream
 }
 
+const getCurrentEffect = (): RenderEffects => {
+  return localStorage.getItem('pexipEffect') as RenderEffects ?? 'none'
+}
+
 export {
-  getProcessedStream
+  getProcessedStream,
+  getCurrentEffect
 }

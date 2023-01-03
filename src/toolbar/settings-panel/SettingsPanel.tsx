@@ -11,7 +11,7 @@ import './SettingsPanel.scss'
 import { Effect } from './effect/Effect'
 
 import { Trans, useTranslation } from 'react-i18next'
-import { getProcessedStream } from '../../media/processor'
+import { getCurrentEffect, getProcessedStream } from '../../media/processor'
 
 interface SettingsPanelProps {
   onClose: () => void
@@ -28,7 +28,7 @@ export function SettingsPanel (props: SettingsPanelProps): JSX.Element {
   const [videoInput, setVideoInput] = useState<MediaDeviceInfoLike>()
   const [localMediaStream, setLocalMediaStream] = useState<MediaStream>()
   const [streamQuality, setStreamQuality] = useState<StreamQuality>(StreamQuality.Auto)
-  const [effect, setEffect] = useState<RenderEffects>('none')
+  const [effect, setEffect] = useState<RenderEffects>(getCurrentEffect())
 
   const bgImageUrl = './media-processor/background.jpg'
 
@@ -111,31 +111,24 @@ export function SettingsPanel (props: SettingsPanelProps): JSX.Element {
   }
 
   useEffect(() => {
-    console.log('Changes in Settings panel')
-    let mediaStream: MediaStream
     const asyncBootstrap = async (): Promise<void> => {
       const devices = await navigator.mediaDevices.enumerateDevices()
       setDevices(devices.filter((device) => device.kind === 'videoinput'))
       let mediaStream = await getLocalStream(videoInput?.deviceId)
-      if (effect !== 'none') {
-        console.log('PROCESSING')
-        mediaStream = await getProcessedStream(mediaStream, effect)
-      } else {
-        console.log('NONE')
-      }
+      mediaStream = await getProcessedStream(mediaStream, effect)
       setLocalMediaStream(mediaStream)
     }
     asyncBootstrap().catch((error) => console.error(error))
     return () => {
-      if (mediaStream != null) stopStream(mediaStream)
+      if (localMediaStream != null) stopStream(localMediaStream)
     }
   }, [videoInput, effect])
 
-  const handleSave = (): void => {
+  const handleSave = async (): Promise<void> => {
     if (videoInput != null) {
-      getLocalStream(videoInput.deviceId, true).then((mediaStream) => {
-        props.onSave(mediaStream)
-      }).catch((error) => console.error(error))
+      let mediaStream = await getLocalStream(videoInput.deviceId, true)
+      mediaStream = await getProcessedStream(mediaStream, effect, true)
+      props.onSave(mediaStream)
     }
     props.onClose()
   }
@@ -187,7 +180,7 @@ export function SettingsPanel (props: SettingsPanelProps): JSX.Element {
           </Button>
 
           <Button
-            onClick={handleSave}
+            onClick={() => { handleSave().catch((err) => console.error(err)) }}
             type="submit"
             modifier="fullWidth"
             className="ml-2"
