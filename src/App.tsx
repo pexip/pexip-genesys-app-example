@@ -53,7 +53,7 @@ export interface InfinityContext {
 class App extends React.Component<{}, AppState> {
   private readonly toolbarRef = React.createRef<Toolbar>()
 
-  private signals!: InfinitySignals
+  private infinitySignals!: InfinitySignals
   private callSignals!: CallSignals
   private infinityClient!: InfinityClient
   private infinityContext!: InfinityContext
@@ -110,7 +110,7 @@ class App extends React.Component<{}, AppState> {
   }
 
   private configureSignals (): void {
-    this.signals = createInfinityClientSignals([])
+    this.infinitySignals = createInfinityClientSignals([])
     this.callSignals = createCallSignals([])
     this.callSignals.onRemoteStream.add((remoteStream) => {
       this.setState({ remoteStream })
@@ -138,10 +138,10 @@ class App extends React.Component<{}, AppState> {
     const checkPlaybackDisconnection = async (participant: Participant): Promise<void> => {
       if (participant.uri.match(/^sip:.*\.playback@/) != null) {
         await this.infinityClient.kick({ participantUuid: participant.uuid })
-        this.signals.onParticipantJoined.remove(checkPlaybackDisconnection)
+        this.infinitySignals.onParticipantJoined.remove(checkPlaybackDisconnection)
       }
     }
-    this.signals.onParticipantJoined.add(checkPlaybackDisconnection)
+    this.infinitySignals.onParticipantJoined.add(checkPlaybackDisconnection)
   }
 
   private async joinConference (
@@ -152,7 +152,7 @@ class App extends React.Component<{}, AppState> {
     pin: string
   ): Promise<void> {
     this.configureSignals()
-    this.infinityClient = createInfinityClient(this.signals, this.callSignals)
+    this.infinityClient = createInfinityClient(this.infinitySignals, this.callSignals)
     try {
       await this.infinityClient.call({
         node,
@@ -337,6 +337,7 @@ class App extends React.Component<{}, AppState> {
               infinityClient={this.infinityClient}
               infinityContext = {this.infinityContext}
               callSignals={this.callSignals}
+              infinitySignals={this.infinitySignals}
               onLocalPresentationStream={this.handleLocalPresentationStream.bind(this)}
               onLocalStream={this.handleLocalStream}
               isCameraMuted={this.state.isCameraMuted}

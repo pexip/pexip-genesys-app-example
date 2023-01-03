@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { CallSignals, InfinityClient, PresoConnectionChangeEvent } from '@pexip/infinity'
+import { CallSignals, InfinitySignals, InfinityClient, PresoConnectionChangeEvent, ConferenceStatus } from '@pexip/infinity'
 
 import { ToolbarButton } from './toolbar-button/ToolbarButton'
 import { SettingsPanel } from './settings-panel/SettingsPanel'
@@ -24,6 +24,7 @@ interface ToolbarProps {
   infinityClient: InfinityClient
   infinityContext: InfinityContext
   callSignals: CallSignals
+  infinitySignals: InfinitySignals
   onLocalPresentationStream: Function
   onLocalStream: Function
   isCameraMuted: boolean
@@ -44,7 +45,7 @@ export class Toolbar extends React.Component<ToolbarProps, ToolbarState> {
     super(props)
     this.state = {
       shareScreenEnabled: false,
-      lockRoomEnabled: !(this.props.infinityClient.conferenceStatus?.locked ?? false),
+      lockRoomEnabled: false,
       popOutVideoEnabled: false,
       settingsEnabled: false
     }
@@ -129,6 +130,11 @@ export class Toolbar extends React.Component<ToolbarProps, ToolbarState> {
       } else {
         this.setState({ shareScreenEnabled: false })
       }
+    })
+    // Handle lock room context
+    this.setState({ lockRoomEnabled: !(this.props.infinityClient.conferenceStatus?.locked ?? false) })
+    this.props.infinitySignals.onConferenceStatus.add((conferenceStatus: ConferenceStatus): void => {
+      this.setState({ lockRoomEnabled: !conferenceStatus.locked })
     })
   }
 
