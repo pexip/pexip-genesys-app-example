@@ -709,7 +709,7 @@
         "[total-packet-loss]": "Total packet loss",
         "audio": "Audio",
         "in": "In",
-        "nerd-stats": "Nerd stats",
+        "nerd-stats": "Network statistics",
         "out": "Out",
         "preso": "Presentation",
         "secure-check-code": "Secure check code",
