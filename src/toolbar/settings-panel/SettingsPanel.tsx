@@ -141,7 +141,7 @@ export function SettingsPanel (props: SettingsPanelProps): JSX.Element {
   const { t } = useTranslation()
 
   return (
-    <Modal isOpen={true} className='SettingsPanel' data-testid='SettingsPanel'>
+    <Modal isOpen={true} withCloseButton={true} className='SettingsPanel' data-testid='SettingsPanel'>
 
       <SelfViewSettings mediaStream={localMediaStream} />
 
