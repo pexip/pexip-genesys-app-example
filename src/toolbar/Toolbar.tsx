@@ -171,8 +171,10 @@ export class Toolbar extends React.Component<ToolbarProps, ToolbarState> {
         {this.state.settingsEnabled &&
           <SettingsPanel
             onClose={() => this.setState({ settingsEnabled: false })}
-            onSave={(localStream: MediaStream, streamQuality?: StreamQuality) => {
-              this.props.onLocalStream(localStream)
+            onSave={(localStream?: MediaStream, streamQuality?: StreamQuality) => {
+              if (localStream != null) {
+                this.props.onLocalStream(localStream)
+              }
               if (streamQuality != null) {
                 this.props.onChangeStreamQuality(streamQuality)
               }

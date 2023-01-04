@@ -1,6 +1,6 @@
 import { StreamQuality } from '@pexip/media-components'
 
-const [auto, low, medium, high, veryHigh] = [0, 57, 1264, 2464, 6144]
+const [auto, low, medium, high, veryHigh] = [0, 64, 1024, 2048, 6144]
 
 /**
  * Convert from a bandwidth value (number) to a StreamQuality.
@@ -47,7 +47,7 @@ const getBandwidth = (streamQuality: StreamQuality): number => {
  * @param {StreamQuality} streamQuality The stream quality in one of the 5 values.
  */
 const saveStreamQuality = (streamQuality: StreamQuality): void => {
-  localStorage.setItem('PexipStreamQuality', streamQuality)
+  localStorage.setItem('pexipStreamQuality', streamQuality)
 }
 
 /**
@@ -55,7 +55,7 @@ const saveStreamQuality = (streamQuality: StreamQuality): void => {
  * @returns {StreamQuality} The stream quality in one of the 5 values.
  */
 const retrieveStreamQuality = (): StreamQuality => {
-  return localStorage.getItem('PexipStreamQuality') as StreamQuality
+  return localStorage.getItem('pexipStreamQuality') as StreamQuality
 }
 
 export {

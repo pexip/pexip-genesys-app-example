@@ -7,16 +7,17 @@ import { RenderEffects } from '@pexip/media-processor'
 
 import { getLocalStream, stopStream } from '../../media/media'
 
-import './SettingsPanel.scss'
 import { Effect } from './effect/Effect'
 
 import { Trans, useTranslation } from 'react-i18next'
 import { getCurrentEffect, getProcessedStream } from '../../media/processor'
 import { retrieveStreamQuality } from '../../media/quality'
 
+import './SettingsPanel.scss'
+
 interface SettingsPanelProps {
   onClose: () => void
-  onSave: (localMediaStream: MediaStream, streamQuality?: StreamQuality) => void
+  onSave: (localMediaStream?: MediaStream, streamQuality?: StreamQuality) => void
 }
 
 interface HeaderProps {
@@ -126,15 +127,16 @@ export function SettingsPanel (props: SettingsPanelProps): JSX.Element {
   }, [videoInput, effect])
 
   const handleSave = async (): Promise<void> => {
+    let newMediaStream
+    let newStreamQuality
     if (videoInput != null) {
-      let mediaStream = await getLocalStream(videoInput.deviceId, true)
-      mediaStream = await getProcessedStream(mediaStream, effect, true)
-      if (streamQuality !== retrieveStreamQuality()) {
-        props.onSave(mediaStream, streamQuality)
-      } else {
-        props.onSave(mediaStream)
-      }
+      newMediaStream = await getLocalStream(videoInput.deviceId, true)
+      newMediaStream = await getProcessedStream(newMediaStream, effect, true)
     }
+    if (streamQuality !== retrieveStreamQuality()) {
+      newStreamQuality = streamQuality
+    }
+    props.onSave(newMediaStream, newStreamQuality)
     props.onClose()
   }
 
