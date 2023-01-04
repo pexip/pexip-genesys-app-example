@@ -24,6 +24,8 @@ import {
   getLocalStream, stopStream
 } from './media/media'
 import { getProcessedStream } from './media/processor'
+import { StreamQuality } from '@pexip/media-components'
+import { getBandwidth, retrieveStreamQuality, saveStreamQuality } from './media/quality'
 
 import './App.scss'
 
@@ -76,6 +78,7 @@ class App extends React.Component<{}, AppState> {
     this.handleLocalPresentationStream = this.handleLocalPresentationStream.bind(this)
     this.handleLocalStream = this.handleLocalStream.bind(this)
     this.toggleCameraMute = this.toggleCameraMute.bind(this)
+    this.handleChangeStreamQuality = this.handleChangeStreamQuality.bind(this)
   }
 
   private handleLocalPresentationStream (presentationStream: MediaStream): void {
@@ -155,13 +158,15 @@ class App extends React.Component<{}, AppState> {
   ): Promise<void> {
     this.configureSignals()
     this.infinityClient = createInfinityClient(this.infinitySignals, this.callSignals)
+    const streamQuality = retrieveStreamQuality()
+    const bandwidth = getBandwidth(streamQuality)
     try {
       await this.infinityClient.call({
         node,
         conferenceAlias,
         mediaStream,
         displayName,
-        bandwidth: 0, // auto
+        bandwidth,
         pin
       })
       this.setState({ connectionState: CONNECTION_STATE.CONNECTED })
@@ -289,6 +294,11 @@ class App extends React.Component<{}, AppState> {
     await this.infinityClient.mute({ mute: muted })
   }
 
+  handleChangeStreamQuality (streamQuality: StreamQuality): void {
+    this.infinityClient.setBandwidth(getBandwidth(streamQuality))
+    saveStreamQuality(streamQuality)
+  }
+
   async componentWillUnmount (): Promise<void> {
     await this.infinityClient?.disconnect({})
   }
@@ -340,10 +350,11 @@ class App extends React.Component<{}, AppState> {
               infinityContext = {this.infinityContext}
               callSignals={this.callSignals}
               infinitySignals={this.infinitySignals}
-              onLocalPresentationStream={this.handleLocalPresentationStream.bind(this)}
+              onLocalPresentationStream={this.handleLocalPresentationStream}
               onLocalStream={this.handleLocalStream}
               isCameraMuted={this.state.isCameraMuted}
               onCameraMute={this.toggleCameraMute}
+              onChangeStreamQuality={this.handleChangeStreamQuality}
             />
           </>
         )}

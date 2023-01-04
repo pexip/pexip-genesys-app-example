@@ -1,0 +1,66 @@
+import { StreamQuality } from '@pexip/media-components'
+
+const [auto, low, medium, high, veryHigh] = [0, 57, 1264, 2464, 6144]
+
+/**
+ * Convert from a bandwidth value (number) to a StreamQuality.
+ * @param {number} bandwidth Value of for the bandwidth in kbps.
+ * @returns {StreamQuality} The stream quality in one of the 5 values.
+ */
+const getStreamQuality = (bandwidth: number): StreamQuality => {
+  switch (bandwidth) {
+    case low:
+      return StreamQuality.Low
+    case medium:
+      return StreamQuality.Medium
+    case high:
+      return StreamQuality.High
+    case veryHigh:
+      return StreamQuality.VeryHigh
+    default:
+      return StreamQuality.Auto
+  }
+}
+
+/**
+ * Convert from StreamQuality to the bandwidth value (number).
+ * @param {StreamQuality} streamQuality The stream quality in one of the 5 values.
+ * @returns {number} Value of the bandwidth in kbps.
+ */
+const getBandwidth = (streamQuality: StreamQuality): number => {
+  switch (streamQuality) {
+    case StreamQuality.Low:
+      return low
+    case StreamQuality.Medium:
+      return medium
+    case StreamQuality.High:
+      return high
+    case StreamQuality.VeryHigh:
+      return veryHigh
+    default:
+      return auto
+  }
+}
+
+/**
+ * Save the stream quality in the local storage.
+ * @param {StreamQuality} streamQuality The stream quality in one of the 5 values.
+ */
+const saveStreamQuality = (streamQuality: StreamQuality): void => {
+  localStorage.setItem('PexipStreamQuality', streamQuality)
+}
+
+/**
+ * Retrieve the current stream quality from the local storage.
+ * @returns {StreamQuality} The stream quality in one of the 5 values.
+ */
+const retrieveStreamQuality = (): StreamQuality => {
+  return localStorage.getItem('PexipStreamQuality') as StreamQuality
+}
+
+export {
+  getStreamQuality,
+  getBandwidth,
+  saveStreamQuality,
+  retrieveStreamQuality
+}

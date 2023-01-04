@@ -118,6 +118,7 @@ const infinitySignalsMock: InfinitySignals = {
 const handleLocalPresentationStream = jest.fn()
 const handleLocalStream = jest.fn()
 const handleCameraMute = jest.fn()
+const handleChangeStreamQuality = jest.fn()
 
 test('renders the toolbar', () => {
   render(<Toolbar
@@ -129,6 +130,7 @@ test('renders the toolbar', () => {
     onLocalStream={handleLocalStream}
     isCameraMuted={true}
     onCameraMute={handleCameraMute}
+    onChangeStreamQuality={handleChangeStreamQuality}
   />)
   const toolbar = screen.getByTestId('Toolbar')
   expect(toolbar).toBeInTheDocument()
@@ -143,6 +145,7 @@ test('it renders 6 buttons', () => {
     onLocalStream={handleLocalStream}
     isCameraMuted={true}
     onCameraMute={handleCameraMute}
+    onChangeStreamQuality={handleChangeStreamQuality}
   />)
   const buttons = screen.getAllByRole('button')
   expect(buttons.length).toBe(6)

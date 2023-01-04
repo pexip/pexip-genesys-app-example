@@ -19,6 +19,7 @@ import copy from 'copy-to-clipboard'
 import './Toolbar.scss'
 import { toast } from 'react-toastify'
 import { InfinityContext } from '../App'
+import { StreamQuality } from '@pexip/media-components'
 
 interface ToolbarProps {
   infinityClient: InfinityClient
@@ -29,6 +30,7 @@ interface ToolbarProps {
   onLocalStream: Function
   isCameraMuted: boolean
   onCameraMute: () => Promise<void>
+  onChangeStreamQuality: (streamQuality: StreamQuality) => void
 }
 
 interface ToolbarState {
@@ -169,7 +171,12 @@ export class Toolbar extends React.Component<ToolbarProps, ToolbarState> {
         {this.state.settingsEnabled &&
           <SettingsPanel
             onClose={() => this.setState({ settingsEnabled: false })}
-            onSave={(localStream: MediaStream) => this.props.onLocalStream(localStream)}
+            onSave={(localStream: MediaStream, streamQuality?: StreamQuality) => {
+              this.props.onLocalStream(localStream)
+              if (streamQuality != null) {
+                this.props.onChangeStreamQuality(streamQuality)
+              }
+            }}
           />}
       </>
     )

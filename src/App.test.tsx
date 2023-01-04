@@ -7,25 +7,19 @@ import App from './App'
 // Create a mocks
 jest.mock('./toolbar/Toolbar', () => {
   return {
-    Toolbar: () => {
-      return <div data-testid='Toolbar' />
-    }
+    Toolbar: () => <div data-testid='Toolbar' />
   }
 })
 
 jest.mock('./video/Video', () => {
   return {
-    Video: () => {
-      return <div data-testid='Video' />
-    }
+    Video: () => <div data-testid='Video' />
   }
 })
 
 jest.mock('./selfview/Selfview', () => {
   return {
-    Selfview: () => {
-      return <div data-testid='Selfview' />
-    }
+    Selfview: () => <div data-testid='Selfview' />
   }
 })
 

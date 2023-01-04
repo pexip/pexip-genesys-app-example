@@ -12,10 +12,11 @@ import { Effect } from './effect/Effect'
 
 import { Trans, useTranslation } from 'react-i18next'
 import { getCurrentEffect, getProcessedStream } from '../../media/processor'
+import { retrieveStreamQuality } from '../../media/quality'
 
 interface SettingsPanelProps {
   onClose: () => void
-  onSave: (localMediaStream: MediaStream) => void
+  onSave: (localMediaStream: MediaStream, streamQuality?: StreamQuality) => void
 }
 
 interface HeaderProps {
@@ -27,7 +28,7 @@ export function SettingsPanel (props: SettingsPanelProps): JSX.Element {
   const [devices, setDevices] = useState<MediaDeviceInfoLike[]>([])
   const [videoInput, setVideoInput] = useState<MediaDeviceInfoLike>()
   const [localMediaStream, setLocalMediaStream] = useState<MediaStream>()
-  const [streamQuality, setStreamQuality] = useState<StreamQuality>(StreamQuality.Auto)
+  const [streamQuality, setStreamQuality] = useState<StreamQuality>(retrieveStreamQuality())
   const [effect, setEffect] = useState<RenderEffects>(getCurrentEffect())
 
   const bgImageUrl = './media-processor/background.jpg'
@@ -128,7 +129,11 @@ export function SettingsPanel (props: SettingsPanelProps): JSX.Element {
     if (videoInput != null) {
       let mediaStream = await getLocalStream(videoInput.deviceId, true)
       mediaStream = await getProcessedStream(mediaStream, effect, true)
-      props.onSave(mediaStream)
+      if (streamQuality !== retrieveStreamQuality()) {
+        props.onSave(mediaStream, streamQuality)
+      } else {
+        props.onSave(mediaStream)
+      }
     }
     props.onClose()
   }
@@ -136,7 +141,7 @@ export function SettingsPanel (props: SettingsPanelProps): JSX.Element {
   const { t } = useTranslation()
 
   return (
-    <Modal isOpen={true} className='SettingsPanel'>
+    <Modal isOpen={true} className='SettingsPanel' data-testid='SettingsPanel'>
 
       <SelfViewSettings mediaStream={localMediaStream} />
 
