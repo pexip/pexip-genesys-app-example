@@ -23,10 +23,10 @@ export function Effect (props: EffectProps): JSX.Element {
     <div className='Effect' data-testid='Effect'>
       <InteractiveElement className='button' onClick={() => props.onClick()}>
         <Box padding='compact' className={'box' + (props.active ? ' active ' : '')} >
-          { props.iconSource != null && <Icon source={props.iconSource} colorScheme='light' /> }
+          { props.iconSource != null && <Icon source={props.iconSource} colorScheme='light' className='icon' /> }
           { props.bgImageUrl != null && <div style={{ backgroundImage: `url(${props.bgImageUrl})` }} className='background' /> }
         </Box>
-        <Text htmlTag="span">{props.name}</Text>
+        <Text htmlTag="span" className='label'>{props.name}</Text>
       </InteractiveElement>
     </div>
   )

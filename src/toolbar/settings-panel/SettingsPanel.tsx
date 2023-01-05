@@ -129,15 +129,16 @@ export function SettingsPanel (props: SettingsPanelProps): JSX.Element {
   const handleSave = async (): Promise<void> => {
     let newMediaStream
     let newStreamQuality
-    if (videoInput != null) {
-      newMediaStream = await getLocalStream(videoInput.deviceId, true)
+    if (videoInput != null || (effect !== getCurrentEffect())) {
+      let deviceId = videoInput?.deviceId
+      if (deviceId == null) deviceId = devices[0].deviceId
+      newMediaStream = await getLocalStream(deviceId, true)
       newMediaStream = await getProcessedStream(newMediaStream, effect, true)
     }
     if (streamQuality !== retrieveStreamQuality()) {
       newStreamQuality = streamQuality
     }
     props.onSave(newMediaStream, newStreamQuality)
-    props.onClose()
   }
 
   const { t } = useTranslation()

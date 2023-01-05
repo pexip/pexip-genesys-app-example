@@ -16,10 +16,11 @@ import { ReactComponent as mutedCameraIcon } from './icons/mutedCamera.svg'
 
 import copy from 'copy-to-clipboard'
 
-import './Toolbar.scss'
 import { toast } from 'react-toastify'
 import { InfinityContext } from '../App'
 import { StreamQuality } from '@pexip/media-components'
+
+import './Toolbar.scss'
 
 interface ToolbarProps {
   infinityClient: InfinityClient
@@ -172,6 +173,7 @@ export class Toolbar extends React.Component<ToolbarProps, ToolbarState> {
           <SettingsPanel
             onClose={() => this.setState({ settingsEnabled: false })}
             onSave={(localStream?: MediaStream, streamQuality?: StreamQuality) => {
+              this.setState({ settingsEnabled: false })
               if (localStream != null) {
                 this.props.onLocalStream(localStream)
               }
