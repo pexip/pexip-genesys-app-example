@@ -6,24 +6,7 @@ import { IconTypes } from '@pexip/components'
 import { Effect } from './Effect'
 
 jest.mock('@pexip/components', () => {
-  return {
-    Icon: (props: any) => {
-      const { colorScheme, ...newProps } = props
-      return <div {...newProps}/>
-    },
-    InteractiveElement: (props: any) => {
-      return <div {...props}/>
-    },
-    Box: (props: any) => {
-      return <div {...props}/>
-    },
-    Text: (props: any) => {
-      // Remove htmlTag from the props
-      const { htmlTag, ...newProps } = props
-      return <div {...newProps}>{props.children}</div>
-    },
-    IconTypes: { IconBlock: 'Icon' }
-  }
+  return require('../../../__mocks__/components')
 })
 
 describe('SettingsPanel component', () => {
