@@ -35,6 +35,7 @@ export function SettingsPanel (props: SettingsPanelProps): JSX.Element {
   const bgImageUrl = './media-processor/background.jpg'
 
   const deviceList = <DevicesList
+    data-testid='devices-list'
     devices={devices}
     audioInputError={{
       title: '',
@@ -146,7 +147,7 @@ export function SettingsPanel (props: SettingsPanelProps): JSX.Element {
   return (
     <Modal isOpen={true} withCloseButton={true} className='SettingsPanel' data-testid='SettingsPanel'>
 
-      <SelfViewSettings mediaStream={localMediaStream} />
+      <SelfViewSettings mediaStream={localMediaStream} data-testid='selfview'/>
 
       <Header text='Devices' i18key='settings.devices' />
       { deviceList }

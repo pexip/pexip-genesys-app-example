@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { screen, render, act } from '@testing-library/react'
+
 import '../../__mocks__/mediaDevices'
 
 import { SettingsPanel } from './SettingsPanel'
@@ -36,17 +37,57 @@ describe('SettingsPanel component', () => {
       await act(() => {
         render(<SettingsPanel onClose={handleCloseMock} onSave={handleSaveMock} />)
       })
-      const settingsPanel = screen.getByTestId('SettingsPanel')
-      const selfview = settingsPanel.getElementsByClassName('selfview')[0]
+      const selfview = screen.getByTestId('selfview')
       expect(selfview).toBeInTheDocument()
-      // const mediaStream = selfview.p
-      // expect(selfview).to
     })
   })
 
   describe('Devices selector component', () => {
-    it('should display a list of all available devices in a select HTML element', () => {
+    it('should render', async () => {
+      await act(() => {
+        render(<SettingsPanel onClose={handleCloseMock} onSave={handleSaveMock} />)
+      })
+      const devicesList = screen.getByTestId('devices-list')
+      expect(devicesList).toBeInTheDocument()
+    })
 
+    it('should display a list of all available devices in a select HTML element', async () => {
+      await act(() => {
+        render(<SettingsPanel onClose={handleCloseMock} onSave={handleSaveMock} />)
+      })
+      const devicesList = screen.getByTestId('devices-list')
+      const options = devicesList.getElementsByTagName('option')
+      expect(options.length).toBeGreaterThanOrEqual(2)
+    })
+
+    it('should only display the video devices', async () => {
+      await act(() => {
+        render(<SettingsPanel onClose={handleCloseMock} onSave={handleSaveMock} />)
+      })
+      const devicesList = screen.getByTestId('devices-list')
+      const options = devicesList.getElementsByTagName('option')
+      const devices = await navigator.mediaDevices.enumerateDevices()
+      for (let i = 0; i < options.length; i++) {
+        const device = devices.find((device) => device.deviceId === options[i].value)
+        expect(device).toBeDefined()
+        expect(device?.kind).toBe('videoinput')
+      }
+    })
+
+    it('should select the first camera if localStorage empty', async () => {
+      // await act(() => {
+      //   render(<SettingsPanel onClose={handleCloseMock} onSave={handleSaveMock} />)
+      // })
+      // const devicesList = screen.getByTestId('devices-list')
+      // console.log(prettyDOM(devicesList))
+    })
+
+    it('should select the camera of the localStorage if any', async () => {
+      // await act(() => {
+      //   render(<SettingsPanel onClose={handleCloseMock} onSave={handleSaveMock} />)
+      // })
+      // const devicesList = screen.getByTestId('devices-list')
+      // console.log(prettyDOM(devicesList))
     })
   })
 
