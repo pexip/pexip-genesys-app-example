@@ -1,10 +1,10 @@
 import React from 'react'
 
 import { screen, render, act } from '@testing-library/react'
-
 import '../../__mocks__/mediaDevices'
 
 import { SettingsPanel } from './SettingsPanel'
+import { setCurrentDeviceId } from '../../media/media'
 
 jest.mock('react-i18next', () => {
   return require('../../__mocks__/reacti18next')
@@ -43,6 +43,10 @@ describe('SettingsPanel component', () => {
   })
 
   describe('Devices selector component', () => {
+    beforeEach(() => {
+      localStorage.clear()
+    })
+
     it('should render', async () => {
       await act(() => {
         render(<SettingsPanel onClose={handleCloseMock} onSave={handleSaveMock} />)
@@ -75,27 +79,30 @@ describe('SettingsPanel component', () => {
     })
 
     it('should select the first camera if localStorage empty', async () => {
-      // await act(() => {
-      //   render(<SettingsPanel onClose={handleCloseMock} onSave={handleSaveMock} />)
-      // })
-      // const devicesList = screen.getByTestId('devices-list')
-      // console.log(prettyDOM(devicesList))
+      await act(() => {
+        render(<SettingsPanel onClose={handleCloseMock} onSave={handleSaveMock} />)
+      })
+      const devicesList = screen.getByTestId('devices-list')
+      expect((devicesList as HTMLSelectElement).selectedIndex).toBe(0)
     })
 
     it('should select the camera of the localStorage if any', async () => {
-      // await act(() => {
-      //   render(<SettingsPanel onClose={handleCloseMock} onSave={handleSaveMock} />)
-      // })
-      // const devicesList = screen.getByTestId('devices-list')
-      // console.log(prettyDOM(devicesList))
+      const devices = await navigator.mediaDevices.enumerateDevices()
+      const device = devices.filter((device) => device.kind === 'videoinput')[1]
+      setCurrentDeviceId(device.deviceId)
+      await act(() => {
+        render(<SettingsPanel onClose={handleCloseMock} onSave={handleSaveMock} />)
+      })
+      const devicesList = screen.getByTestId('devices-list')
+      expect((devicesList as HTMLSelectElement).selectedIndex).toBe(1)
     })
   })
 
-  describe('Effect selector component', () => {
+  // describe('Effect selector component', () => {
 
-  })
+  // })
 
-  describe('Connection quality component', () => {
+  // describe('Connection quality component', () => {
 
-  })
+  // })
 })

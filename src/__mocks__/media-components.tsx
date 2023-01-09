@@ -13,8 +13,15 @@ const mediaComponentsMock = {
       ...newProps
     } = props
     return (
-      <select {...newProps}>
-        {props.devices.map((device: any) => <option key={device.deviceId} value={device.deviceId}>{device.label}</option>)}
+      <select {...newProps} value={videoInput?.deviceId}>
+        {props.devices.map((device: any) => (
+          <option
+            key={device.deviceId}
+            value={device.deviceId}
+          >
+            {device.label}
+          </option>
+        ))}
       </select>
     )
   },

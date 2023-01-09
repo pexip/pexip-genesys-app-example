@@ -6,7 +6,7 @@
  * @returns Local media stream.
  */
 const getLocalStream = async (deviceId?: string | null, save: boolean = false): Promise<MediaStream> => {
-  deviceId = deviceId ?? localStorage.getItem('pexipVideoInputId')
+  deviceId = deviceId ?? getCurrentDeviceId()
   let localStream: MediaStream
   if (deviceId !== null) {
     const device = (await navigator.mediaDevices.enumerateDevices()).find((device) => device.deviceId === deviceId)
@@ -19,7 +19,7 @@ const getLocalStream = async (deviceId?: string | null, save: boolean = false): 
     localStream = await navigator.mediaDevices.getUserMedia({ video: true })
   }
   if (save && deviceId != null) {
-    localStorage.setItem('pexipVideoInputId', deviceId)
+    setCurrentDeviceId(deviceId)
   }
   return localStream
 }
@@ -32,7 +32,25 @@ const stopStream = (stream: MediaStream): void => {
   stream.getTracks().forEach((track) => track.stop())
 }
 
+/**
+ * Get the id of the current camera device selected by the user.
+ * @returns {string | null} Current media device id.
+ */
+const getCurrentDeviceId = (): string | null => {
+  return localStorage.getItem('pexipVideoInputId')
+}
+
+/**
+ * Set the id of the current camera device selected by the user.
+ * @param {string} deviceId Current media device id.
+ */
+const setCurrentDeviceId = (deviceId: string): void => {
+  return localStorage.setItem('pexipVideoInputId', deviceId)
+}
+
 export {
   getLocalStream,
-  stopStream
+  stopStream,
+  getCurrentDeviceId,
+  setCurrentDeviceId
 }

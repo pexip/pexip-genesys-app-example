@@ -56,9 +56,22 @@ Object.defineProperty(global.navigator, 'mediaDevices', {
   }
 })
 
-window.MediaStream = jest.fn().mockImplementation(() => ({
-  addTrack: jest.fn()
-  // Add any method you want to mock
-}))
+class MediaStream {
+  id: string = '1234'
+  active: boolean = true
+  addTrack: any = jest.fn()
+  getTracks: any = jest.fn(() => [])
+  onaddtrack: any = jest.fn()
+  onremovetrack: any = jest.fn()
+  clone: any = jest.fn()
+  getAudioTracks: any = jest.fn()
+  getTrackById: any = jest.fn()
+  getVideoTracks: any = jest.fn()
+  removeTrack: any = jest.fn()
+  addEventListener: any = jest.fn()
+  removeEventListener: any = jest.fn()
+  dispatchEvent: any = jest.fn()
+}
+window.MediaStream = MediaStream
 
 export {}

@@ -5,7 +5,7 @@ import { MediaDeviceInfoLike } from '@pexip/media-control'
 import { Bar, Button, Modal, TextHeading, FontVariant, Select, IconTypes } from '@pexip/components'
 import { RenderEffects } from '@pexip/media-processor'
 
-import { getLocalStream, stopStream } from '../../media/media'
+import { getCurrentDeviceId, getLocalStream, stopStream } from '../../media/media'
 
 import { Effect } from './effect/Effect'
 
@@ -116,7 +116,15 @@ export function SettingsPanel (props: SettingsPanelProps): JSX.Element {
   useEffect(() => {
     const asyncBootstrap = async (): Promise<void> => {
       const devices = await navigator.mediaDevices.enumerateDevices()
-      setDevices(devices.filter((device) => device.kind === 'videoinput'))
+      const videoDevices = devices.filter((device) => device.kind === 'videoinput')
+      const currentDeviceId = getCurrentDeviceId()
+      const currentDevice = videoDevices.find(
+        (device) => device.deviceId === currentDeviceId
+      ) ?? videoDevices[0]
+      if (videoInput == null) {
+        setVideoInput(currentDevice)
+      }
+      setDevices(videoDevices)
       let mediaStream = await getLocalStream(videoInput?.deviceId)
       mediaStream = await getProcessedStream(mediaStream, effect)
       setLocalMediaStream(mediaStream)
