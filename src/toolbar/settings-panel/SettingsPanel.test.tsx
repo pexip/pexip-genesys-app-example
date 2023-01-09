@@ -5,6 +5,7 @@ import '../../__mocks__/mediaDevices'
 
 import { SettingsPanel } from './SettingsPanel'
 import { setCurrentDeviceId } from '../../media/media'
+import { StreamQuality } from '@pexip/media-components'
 
 jest.mock('react-i18next', () => {
   return require('../../__mocks__/reacti18next')
@@ -164,7 +165,62 @@ describe('SettingsPanel component', () => {
     })
   })
 
-  // describe('Connection quality component', () => {
+  describe('Connection quality component', () => {
+    it('should render', async () => {
+      await act(() => {
+        render(<SettingsPanel onClose={handleCloseMock} onSave={handleSaveMock} />)
+      })
+      const settingsPanel = screen.getByTestId('SettingsPanel')
+      const qualityList = settingsPanel.getElementsByClassName('QualityList')[0]
+      expect(qualityList).toBeDefined()
+    })
 
-  // })
+    it('should have 5 options (one per stream quality)', async () => {
+      await act(() => {
+        render(<SettingsPanel onClose={handleCloseMock} onSave={handleSaveMock} />)
+      })
+      const settingsPanel = screen.getByTestId('SettingsPanel')
+      const qualityList = settingsPanel.getElementsByClassName('QualityList')[0]
+      const options = qualityList.getElementsByTagName('option')
+      expect(options.length).toBe(5)
+    })
+
+    it('should have the value with the stream quality ID', async () => {
+      await act(() => {
+        render(<SettingsPanel onClose={handleCloseMock} onSave={handleSaveMock} />)
+      })
+      const settingsPanel = screen.getByTestId('SettingsPanel')
+      const qualityList = settingsPanel.getElementsByClassName('QualityList')[0]
+      const options = qualityList.getElementsByTagName('option')
+      const low = options[0]
+      const medium = options[1]
+      const high = options[2]
+      const veryHigh = options[3]
+      const auto = options[4]
+      expect(low.value).toBe(StreamQuality.Low)
+      expect(medium.value).toBe(StreamQuality.Medium)
+      expect(high.value).toBe(StreamQuality.High)
+      expect(veryHigh.value).toBe(StreamQuality.VeryHigh)
+      expect(auto.value).toBe(StreamQuality.Auto)
+    })
+
+    it('should have the text with the stream quality label', async () => {
+      await act(() => {
+        render(<SettingsPanel onClose={handleCloseMock} onSave={handleSaveMock} />)
+      })
+      const settingsPanel = screen.getByTestId('SettingsPanel')
+      const qualityList = settingsPanel.getElementsByClassName('QualityList')[0]
+      const options = qualityList.getElementsByTagName('option')
+      const low = options[0]
+      const medium = options[1]
+      const high = options[2]
+      const veryHigh = options[3]
+      const auto = options[4]
+      expect(low.innerHTML).toBe('Low')
+      expect(medium.innerHTML).toBe('Medium')
+      expect(high.innerHTML).toBe('High')
+      expect(veryHigh.innerHTML).toBe('Very High')
+      expect(auto.innerHTML).toBe('Auto')
+    })
+  })
 })

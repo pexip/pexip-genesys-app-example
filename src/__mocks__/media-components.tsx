@@ -29,7 +29,13 @@ const mediaComponentsMock = {
     const { mediaStream, ...newProps } = props
     return <div {...newProps} className='selfview' />
   },
-  StreamQuality: jest.fn()
+  StreamQuality: {
+    Low: 'low',
+    Medium: 'medium',
+    High: 'high',
+    VeryHigh: 'very-high',
+    Auto: 'auto'
+  }
 }
 
 module.exports = mediaComponentsMock

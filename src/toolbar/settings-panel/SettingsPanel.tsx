@@ -77,7 +77,7 @@ export function SettingsPanel (props: SettingsPanelProps): JSX.Element {
   const QualityList = (): JSX.Element => {
     return (
       <Select
-        className="mb-5 mt-4"
+        className="QualityList mb-5 mt-4"
         iconType={IconTypes.IconBandwidth}
         isFullWidth
         label={t('quality.select-quality', 'Select meeting quality')}

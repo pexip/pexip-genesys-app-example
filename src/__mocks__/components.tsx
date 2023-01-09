@@ -15,7 +15,14 @@ const componentsMock = {
     const { isOpen, withCloseButton, ...newProps } = props
     return <div {...newProps}>{props.children}</div>
   },
-  Select: () => <select />,
+  Select: (props: any) => {
+    const { labelModifier, sizeModifier, onValueChange, isFullWidth, iconType, value, ...newProps } = props
+    return (
+      <select {...newProps} value={value ?? ''} onChange={(ev) => onValueChange(ev)}>
+        {props.options.map((option: any) => <option key={option.id} value={option.id}>{option.label}</option>)}
+      </select>
+    )
+  },
   Text: (props: any) => {
     // Remove htmlTag from the props
     const { htmlTag, ...newProps } = props
