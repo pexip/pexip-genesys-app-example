@@ -18,7 +18,9 @@ jest.mock('@pexip/media-components', () => {
   return require('../../__mocks__/media-components')
 })
 
-jest.mock('@pexip/media-processor', () => {}, { virtual: true })
+jest.mock('@pexip/media-processor', () => {
+  return require('../../__mocks__/media-processor')
+}, { virtual: true })
 
 const handleCloseMock = jest.fn()
 const handleSaveMock = jest.fn()
@@ -98,9 +100,69 @@ describe('SettingsPanel component', () => {
     })
   })
 
-  // describe('Effect selector component', () => {
+  describe('Effect selector component', () => {
+    it('should render 3 buttons', async () => {
+      await act(() => {
+        render(<SettingsPanel onClose={handleCloseMock} onSave={handleSaveMock} />)
+      })
+      const effects = screen.getAllByTestId('Effect')
+      expect(effects.length).toBe(3)
+    })
 
-  // })
+    it('should mark "none" as active when click on the button and the rest inactive', async () => {
+      await act(() => {
+        render(<SettingsPanel onClose={handleCloseMock} onSave={handleSaveMock} />)
+      })
+      await act(() => {
+        const effects = screen.getAllByTestId('Effect')
+        const none = effects[0]
+        none.getElementsByTagName('button')[0].click()
+      })
+      const effects = await screen.getAllByTestId('Effect')
+      const none = effects[0]
+      const blur = effects[1]
+      const overlay = effects[2]
+      expect(none.getElementsByClassName('active').length).toBe(1)
+      expect(blur.getElementsByClassName('active').length).toBe(0)
+      expect(overlay.getElementsByClassName('active').length).toBe(0)
+    })
+
+    it('should mark "blur" as active when click on the button and the rest inactive', async () => {
+      await act(() => {
+        render(<SettingsPanel onClose={handleCloseMock} onSave={handleSaveMock} />)
+      })
+      await act(() => {
+        const effects = screen.getAllByTestId('Effect')
+        const blur = effects[1]
+        blur.getElementsByTagName('button')[0].click()
+      })
+      const effects = await screen.getAllByTestId('Effect')
+      const none = effects[0]
+      const blur = effects[1]
+      const overlay = effects[2]
+      expect(none.getElementsByClassName('active').length).toBe(0)
+      expect(blur.getElementsByClassName('active').length).toBe(1)
+      expect(overlay.getElementsByClassName('active').length).toBe(0)
+    })
+
+    it('should mark "overlay" as active when click on the button and the rest inactive', async () => {
+      await act(() => {
+        render(<SettingsPanel onClose={handleCloseMock} onSave={handleSaveMock} />)
+      })
+      await act(() => {
+        const effects = screen.getAllByTestId('Effect')
+        const overlay = effects[2]
+        overlay.getElementsByTagName('button')[0].click()
+      })
+      const effects = await screen.getAllByTestId('Effect')
+      const none = effects[0]
+      const blur = effects[1]
+      const overlay = effects[2]
+      expect(none.getElementsByClassName('active').length).toBe(0)
+      expect(blur.getElementsByClassName('active').length).toBe(0)
+      expect(overlay.getElementsByClassName('active').length).toBe(1)
+    })
+  })
 
   // describe('Connection quality component', () => {
 
