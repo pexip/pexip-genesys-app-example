@@ -1,11 +1,14 @@
 import React from 'react'
 
 import { screen, render, act } from '@testing-library/react'
-import '../../__mocks__/mediaDevices'
 
 import { SettingsPanel } from './SettingsPanel'
 import { setCurrentDeviceId } from '../../media/media'
 import { StreamQuality } from '@pexip/media-components'
+import { setStreamQuality } from '../../media/quality'
+import { setCurrentEffect } from '../../media/processor'
+
+import '../../__mocks__/mediaDevices'
 
 jest.mock('react-i18next', () => {
   return require('../../__mocks__/reacti18next')
@@ -163,9 +166,40 @@ describe('SettingsPanel component', () => {
       expect(blur.getElementsByClassName('active').length).toBe(0)
       expect(overlay.getElementsByClassName('active').length).toBe(1)
     })
+
+    it('should select the "none" effect if localStorage empty', async () => {
+      await act(() => {
+        render(<SettingsPanel onClose={handleCloseMock} onSave={handleSaveMock} />)
+      })
+      const effects = await screen.getAllByTestId('Effect')
+      const none = effects[0]
+      const blur = effects[1]
+      const overlay = effects[2]
+      expect(none.getElementsByClassName('active').length).toBe(1)
+      expect(blur.getElementsByClassName('active').length).toBe(0)
+      expect(overlay.getElementsByClassName('active').length).toBe(0)
+    })
+
+    it('should select the effect of the localStorage if any', async () => {
+      setCurrentEffect('blur')
+      await act(() => {
+        render(<SettingsPanel onClose={handleCloseMock} onSave={handleSaveMock} />)
+      })
+      const effects = await screen.getAllByTestId('Effect')
+      const none = effects[0]
+      const blur = effects[1]
+      const overlay = effects[2]
+      expect(none.getElementsByClassName('active').length).toBe(0)
+      expect(blur.getElementsByClassName('active').length).toBe(1)
+      expect(overlay.getElementsByClassName('active').length).toBe(0)
+    })
   })
 
   describe('Connection quality component', () => {
+    beforeEach(() => {
+      localStorage.clear()
+    })
+
     it('should render', async () => {
       await act(() => {
         render(<SettingsPanel onClose={handleCloseMock} onSave={handleSaveMock} />)
@@ -222,5 +256,24 @@ describe('SettingsPanel component', () => {
       expect(veryHigh.innerHTML).toBe('Very High')
       expect(auto.innerHTML).toBe('Auto')
     })
+  })
+
+  it('should select the auto stream quality if empty', async () => {
+    await act(() => {
+      render(<SettingsPanel onClose={handleCloseMock} onSave={handleSaveMock} />)
+    })
+    const settingsPanel = screen.getByTestId('SettingsPanel')
+    const qualityList = settingsPanel.getElementsByClassName('QualityList')[0]
+    expect((qualityList as HTMLSelectElement).selectedIndex).toBe(4)
+  })
+
+  it('should select the stream quality of the localStorage if any', async () => {
+    setStreamQuality(StreamQuality.Medium)
+    await act(() => {
+      render(<SettingsPanel onClose={handleCloseMock} onSave={handleSaveMock} />)
+    })
+    const settingsPanel = screen.getByTestId('SettingsPanel')
+    const qualityList = settingsPanel.getElementsByClassName('QualityList')[0]
+    expect((qualityList as HTMLSelectElement).selectedIndex).toBe(1)
   })
 })

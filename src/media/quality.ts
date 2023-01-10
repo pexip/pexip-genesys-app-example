@@ -7,7 +7,7 @@ const [auto, low, medium, high, veryHigh] = [0, 64, 1024, 2048, 6144]
  * @param {number} bandwidth Value of for the bandwidth in kbps.
  * @returns {StreamQuality} The stream quality in one of the 5 values.
  */
-const getStreamQuality = (bandwidth: number): StreamQuality => {
+const convertToStreamQuality = (bandwidth: number): StreamQuality => {
   switch (bandwidth) {
     case low:
       return StreamQuality.Low
@@ -27,7 +27,7 @@ const getStreamQuality = (bandwidth: number): StreamQuality => {
  * @param {StreamQuality} streamQuality The stream quality in one of the 5 values.
  * @returns {number} Value of the bandwidth in kbps.
  */
-const getBandwidth = (streamQuality: StreamQuality): number => {
+const convertToBandwidth = (streamQuality: StreamQuality): number => {
   switch (streamQuality) {
     case StreamQuality.Low:
       return low
@@ -46,7 +46,7 @@ const getBandwidth = (streamQuality: StreamQuality): number => {
  * Save the stream quality in the local storage.
  * @param {StreamQuality} streamQuality The stream quality in one of the 5 values.
  */
-const saveStreamQuality = (streamQuality: StreamQuality): void => {
+const setStreamQuality = (streamQuality: StreamQuality): void => {
   localStorage.setItem('pexipStreamQuality', streamQuality)
 }
 
@@ -54,13 +54,13 @@ const saveStreamQuality = (streamQuality: StreamQuality): void => {
  * Retrieve the current stream quality from the local storage.
  * @returns {StreamQuality} The stream quality in one of the 5 values.
  */
-const retrieveStreamQuality = (): StreamQuality => {
-  return localStorage.getItem('pexipStreamQuality') as StreamQuality
+const getStreamQuality = (): StreamQuality => {
+  return localStorage.getItem('pexipStreamQuality') as StreamQuality ?? 'auto'
 }
 
 export {
-  getStreamQuality,
-  getBandwidth,
-  saveStreamQuality,
-  retrieveStreamQuality
+  convertToStreamQuality,
+  convertToBandwidth,
+  setStreamQuality,
+  getStreamQuality
 }

@@ -3,7 +3,7 @@ import React, { RefObject, useState } from 'react'
 import { DraggableFoldableInMeetingSelfview, Stats, useCallQuality, useNetworkState } from '@pexip/media-components'
 import { callLivenessSignals, CallSignals } from '@pexip/infinity'
 
-import { retrieveStreamQuality } from '../media/quality'
+import { getStreamQuality } from '../media/quality'
 
 import './Selfview.scss'
 
@@ -25,7 +25,7 @@ export function Selfview (props: SelfViewProps): JSX.Element {
   )
 
   const callQuality = useCallQuality({
-    getStreamQuality: retrieveStreamQuality,
+    getStreamQuality,
     callQualitySignal: props.callSignals.onCallQuality,
     networkState
   })

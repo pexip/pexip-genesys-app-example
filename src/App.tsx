@@ -25,7 +25,7 @@ import {
 } from './media/media'
 import { getProcessedStream } from './media/processor'
 import { StreamQuality } from '@pexip/media-components'
-import { getBandwidth, retrieveStreamQuality, saveStreamQuality } from './media/quality'
+import { convertToBandwidth, setStreamQuality, getStreamQuality } from './media/quality'
 
 import './App.scss'
 
@@ -158,8 +158,8 @@ class App extends React.Component<{}, AppState> {
   ): Promise<void> {
     this.configureSignals()
     this.infinityClient = createInfinityClient(this.infinitySignals, this.callSignals)
-    const streamQuality = retrieveStreamQuality()
-    const bandwidth = getBandwidth(streamQuality)
+    const streamQuality = getStreamQuality()
+    const bandwidth = convertToBandwidth(streamQuality)
     try {
       await this.infinityClient.call({
         node,
@@ -295,8 +295,8 @@ class App extends React.Component<{}, AppState> {
   }
 
   handleChangeStreamQuality (streamQuality: StreamQuality): void {
-    this.infinityClient.setBandwidth(getBandwidth(streamQuality))
-    saveStreamQuality(streamQuality)
+    this.infinityClient.setBandwidth(convertToBandwidth(streamQuality))
+    setStreamQuality(streamQuality)
   }
 
   async componentWillUnmount (): Promise<void> {

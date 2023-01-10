@@ -17,7 +17,7 @@ const getProcessedStream = async (stream: MediaStream, effect?: RenderEffects, s
   effect = effect ?? localStorage.getItem('pexipEffect') as RenderEffects
   effect = effect ?? 'none'
 
-  if (save) localStorage.setItem('pexipEffect', effect)
+  if (save) setCurrentEffect(effect)
 
   if (effect === 'none') {
     return stream
@@ -72,7 +72,12 @@ const getCurrentEffect = (): RenderEffects => {
   return localStorage.getItem('pexipEffect') as RenderEffects ?? 'none'
 }
 
+const setCurrentEffect = (effect: RenderEffects): void => {
+  localStorage.setItem('pexipEffect', effect)
+}
+
 export {
   getProcessedStream,
-  getCurrentEffect
+  getCurrentEffect,
+  setCurrentEffect
 }

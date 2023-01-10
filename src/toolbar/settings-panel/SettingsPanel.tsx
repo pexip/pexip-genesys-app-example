@@ -11,7 +11,7 @@ import { Effect } from './effect/Effect'
 
 import { Trans, useTranslation } from 'react-i18next'
 import { getCurrentEffect, getProcessedStream } from '../../media/processor'
-import { retrieveStreamQuality } from '../../media/quality'
+import { getStreamQuality } from '../../media/quality'
 
 import './SettingsPanel.scss'
 
@@ -29,7 +29,7 @@ export function SettingsPanel (props: SettingsPanelProps): JSX.Element {
   const [devices, setDevices] = useState<MediaDeviceInfoLike[]>([])
   const [videoInput, setVideoInput] = useState<MediaDeviceInfoLike>()
   const [localMediaStream, setLocalMediaStream] = useState<MediaStream>()
-  const [streamQuality, setStreamQuality] = useState<StreamQuality>(retrieveStreamQuality())
+  const [streamQuality, setStreamQuality] = useState<StreamQuality>(getStreamQuality())
   const [effect, setEffect] = useState<RenderEffects>(getCurrentEffect())
 
   const bgImageUrl = './media-processor/background.jpg'
@@ -144,7 +144,7 @@ export function SettingsPanel (props: SettingsPanelProps): JSX.Element {
       newMediaStream = await getLocalStream(deviceId, true)
       newMediaStream = await getProcessedStream(newMediaStream, effect, true)
     }
-    if (streamQuality !== retrieveStreamQuality()) {
+    if (streamQuality !== getStreamQuality()) {
       newStreamQuality = streamQuality
     }
     props.onSave(newMediaStream, newStreamQuality)
