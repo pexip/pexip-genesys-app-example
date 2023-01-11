@@ -6,7 +6,7 @@ import { IconTypes } from '@pexip/components'
 import { Effect } from './Effect'
 
 jest.mock('@pexip/components', () => {
-  return require('../../../__mocks__/components')
+  return require('../../__mocks__/components')
 })
 
 describe('SettingsPanel component', () => {

@@ -5,13 +5,13 @@ import { MediaDeviceInfoLike } from '@pexip/media-control'
 import { Bar, Button, Modal, TextHeading, FontVariant, Select, IconTypes } from '@pexip/components'
 import { RenderEffects } from '@pexip/media-processor'
 
-import { getCurrentDeviceId, getLocalStream, stopStream } from '../../media/media'
+import { getCurrentDeviceId, getLocalStream, stopStream } from '../media/media'
 
 import { Effect } from './effect/Effect'
 
 import { Trans, useTranslation } from 'react-i18next'
-import { getCurrentEffect, getProcessedStream } from '../../media/processor'
-import { getStreamQuality } from '../../media/quality'
+import { getCurrentEffect, getProcessedStream, stopProcessedStream } from '../media/processor'
+import { getStreamQuality } from '../media/quality'
 
 import './SettingsPanel.scss'
 
@@ -114,7 +114,12 @@ export function SettingsPanel (props: SettingsPanelProps): JSX.Element {
   }
 
   useEffect(() => {
+    let mediaStream: MediaStream
     const asyncBootstrap = async (): Promise<void> => {
+      if (localMediaStream != null) {
+        stopProcessedStream(localMediaStream.id)
+        stopStream(localMediaStream)
+      }
       const devices = await navigator.mediaDevices.enumerateDevices()
       const videoDevices = devices.filter((device) => device.kind === 'videoinput')
       const currentDeviceId = getCurrentDeviceId()
@@ -124,14 +129,22 @@ export function SettingsPanel (props: SettingsPanelProps): JSX.Element {
       if (videoInput == null) {
         setVideoInput(currentDevice)
       }
+      // Only get the localStream if we have already obtained the devices
+      // If we don't do this, we will obtain the localStream twice
+      if (devices.length > 0) {
+        mediaStream = await getLocalStream(videoInput?.deviceId)
+        const preview = true
+        mediaStream = await getProcessedStream(mediaStream, effect, preview)
+        setLocalMediaStream(mediaStream)
+      }
       setDevices(videoDevices)
-      let mediaStream = await getLocalStream(videoInput?.deviceId)
-      mediaStream = await getProcessedStream(mediaStream, effect)
-      setLocalMediaStream(mediaStream)
     }
     asyncBootstrap().catch((error) => console.error(error))
     return () => {
-      if (localMediaStream != null) stopStream(localMediaStream)
+      if (mediaStream != null) {
+        stopProcessedStream(mediaStream.id)
+        stopStream(mediaStream)
+      }
     }
   }, [videoInput, effect])
 
@@ -142,7 +155,9 @@ export function SettingsPanel (props: SettingsPanelProps): JSX.Element {
       let deviceId = videoInput?.deviceId
       if (deviceId == null) deviceId = devices[0].deviceId
       newMediaStream = await getLocalStream(deviceId, true)
-      newMediaStream = await getProcessedStream(newMediaStream, effect, true)
+      const preview = false
+      const save = true
+      newMediaStream = await getProcessedStream(newMediaStream, effect, preview, save)
     }
     if (streamQuality !== getStreamQuality()) {
       newStreamQuality = streamQuality
@@ -160,8 +175,8 @@ export function SettingsPanel (props: SettingsPanelProps): JSX.Element {
       <Header text='Devices' i18key='settings.devices' />
       { deviceList }
 
-      <Header text='Effects' i18key='settings.effects' />
-      <Bar className='effect-list'>
+      {/* <Header text='Effects' i18key='settings.effects' /> */}
+      <Bar className='effect-list' style={{ display: 'none' }}>
         <Effect
           name={t('media.effect.none', 'None')}
           onClick={() => setEffect('none')}

@@ -4,6 +4,8 @@ import { render, screen } from '@testing-library/react'
 
 import App from './App'
 
+import './__mocks__/mediaDevices'
+
 // Create a mocks
 jest.mock('./toolbar/Toolbar', () => {
   return {
@@ -32,13 +34,6 @@ jest.mock('@pexip/media-components', () => {
 jest.mock('@pexip/media-processor', () => {}, { virtual: true })
 
 jest.mock('@pexip/infinity', () => {}, { virtual: true })
-
-beforeAll(() => {
-  window.MediaStream = jest.fn().mockImplementation(() => ({
-    addTrack: jest.fn()
-    // Add any method you want to mock
-  }))
-})
 
 Object.defineProperty(window, 'location', {
   value: {

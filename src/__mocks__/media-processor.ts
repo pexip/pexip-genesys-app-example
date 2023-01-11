@@ -1,9 +1,17 @@
 const mediaProcessorMock = {
-  createCanvasTransform: jest.fn(),
-  createMediapipeSegmenter: jest.fn(),
+  createCanvasTransform: () => ({
+    close: jest.fn(),
+    destroy: jest.fn()
+  }),
+  createMediapipeSegmenter: () => ({
+    close: jest.fn(),
+    destroy: jest.fn()
+  }),
   createVideoTrackProcessor: jest.fn(),
   createVideoTrackProcessorWithFallback: jest.fn(),
   createVideoProcessor: () => ({
+    close: jest.fn(),
+    destroy: jest.fn(),
     open: jest.fn(),
     process: jest.fn()
   }),

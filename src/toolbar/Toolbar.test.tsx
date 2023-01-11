@@ -15,7 +15,7 @@ jest.mock('./toolbar-button/ToolbarButton', () => {
   }
 })
 
-jest.mock('./settings-panel/SettingsPanel', () => {
+jest.mock('../settings-panel/SettingsPanel', () => {
   return {
     SettingsPanel: () => {
       return <div />

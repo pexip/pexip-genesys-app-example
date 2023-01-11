@@ -3,27 +3,27 @@ import React from 'react'
 import { screen, render, act } from '@testing-library/react'
 
 import { SettingsPanel } from './SettingsPanel'
-import { setCurrentDeviceId } from '../../media/media'
+import { setCurrentDeviceId } from '../media/media'
 import { StreamQuality } from '@pexip/media-components'
-import { setStreamQuality } from '../../media/quality'
-import { setCurrentEffect } from '../../media/processor'
+import { setStreamQuality } from '../media/quality'
+import { setCurrentEffect } from '../media/processor'
 
-import '../../__mocks__/mediaDevices'
+import '../__mocks__/mediaDevices'
 
 jest.mock('react-i18next', () => {
-  return require('../../__mocks__/reacti18next')
+  return require('../__mocks__/reacti18next')
 })
 
 jest.mock('@pexip/components', () => {
-  return require('../../__mocks__/components')
+  return require('../__mocks__/components')
 })
 
 jest.mock('@pexip/media-components', () => {
-  return require('../../__mocks__/media-components')
+  return require('../__mocks__/media-components')
 })
 
 jest.mock('@pexip/media-processor', () => {
-  return require('../../__mocks__/media-processor')
+  return require('../__mocks__/media-processor')
 }, { virtual: true })
 
 const handleCloseMock = jest.fn()

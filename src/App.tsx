@@ -23,7 +23,7 @@ import * as GenesysUtil from './genesys/genesysService'
 import {
   getLocalStream, stopStream
 } from './media/media'
-import { getProcessedStream } from './media/processor'
+import { getCurrentEffect, getProcessedStream, stopProcessedStream } from './media/processor'
 import { StreamQuality } from '@pexip/media-components'
 import { convertToBandwidth, setStreamQuality, getStreamQuality } from './media/quality'
 
@@ -89,6 +89,10 @@ class App extends React.Component<{}, AppState> {
   }
 
   private handleLocalStream (localStream: MediaStream): void {
+    if (this.state.localStream != null) {
+      stopProcessedStream(this.state.localStream.id)
+      stopStream(this.state.localStream)
+    }
     this.state.localStream.getTracks().forEach((track) => track.stop())
     this.infinityClient.setStream(localStream)
     this.setState({ localStream })
@@ -99,15 +103,17 @@ class App extends React.Component<{}, AppState> {
     if (value != null) muted = !value
     const response = await this.infinityClient.muteVideo({ muteVideo: !muted })
     if (response?.status === 200) {
+      if (this.state.localStream != null) {
+        stopProcessedStream(this.state.localStream.id)
+        stopStream(this.state.localStream)
+      }
       if (muted) {
         let localStream = await getLocalStream()
-        localStream = await getProcessedStream(localStream)
+        localStream = await getProcessedStream(localStream, getCurrentEffect())
         this.setState({
           localStream
         })
         this.infinityClient.setStream(localStream)
-      } else {
-        stopStream(this.state.localStream)
       }
       this.infinityClient.setStream(new MediaStream())
       this.setState({ isCameraMuted: !muted })
@@ -300,6 +306,10 @@ class App extends React.Component<{}, AppState> {
   }
 
   async componentWillUnmount (): Promise<void> {
+    if (this.state.localStream != null) {
+      stopProcessedStream(this.state.localStream.id)
+      stopStream(this.state.localStream)
+    }
     await this.infinityClient?.disconnect({})
   }
 

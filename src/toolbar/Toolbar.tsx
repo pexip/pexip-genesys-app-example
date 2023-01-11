@@ -3,7 +3,7 @@ import React from 'react'
 import { CallSignals, InfinitySignals, InfinityClient, PresoConnectionChangeEvent, ConferenceStatus } from '@pexip/infinity'
 
 import { ToolbarButton } from './toolbar-button/ToolbarButton'
-import { SettingsPanel } from './settings-panel/SettingsPanel'
+import { SettingsPanel } from '../settings-panel/SettingsPanel'
 
 import { ReactComponent as shareScreenIcon } from './icons/share-screen.svg'
 import { ReactComponent as unlockIcon } from './icons/unlock.svg'
