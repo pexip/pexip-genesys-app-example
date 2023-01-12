@@ -23,6 +23,9 @@ import * as GenesysUtil from './genesys/genesysService'
 import {
   getLocalStream, stopStream
 } from './media/media'
+import { getCurrentEffect, getProcessedStream, stopProcessedStream } from './media/processor'
+import { StreamQuality } from '@pexip/media-components'
+import { convertToBandwidth, setStreamQuality, getStreamQuality } from './media/quality'
 
 import './App.scss'
 
@@ -75,6 +78,7 @@ class App extends React.Component<{}, AppState> {
     this.handleLocalPresentationStream = this.handleLocalPresentationStream.bind(this)
     this.handleLocalStream = this.handleLocalStream.bind(this)
     this.toggleCameraMute = this.toggleCameraMute.bind(this)
+    this.handleChangeStreamQuality = this.handleChangeStreamQuality.bind(this)
   }
 
   private handleLocalPresentationStream (presentationStream: MediaStream): void {
@@ -85,6 +89,10 @@ class App extends React.Component<{}, AppState> {
   }
 
   private handleLocalStream (localStream: MediaStream): void {
+    if (this.state.localStream != null) {
+      stopProcessedStream(this.state.localStream.id)
+      stopStream(this.state.localStream)
+    }
     this.state.localStream.getTracks().forEach((track) => track.stop())
     this.infinityClient.setStream(localStream)
     this.setState({ localStream })
@@ -95,14 +103,17 @@ class App extends React.Component<{}, AppState> {
     if (value != null) muted = !value
     const response = await this.infinityClient.muteVideo({ muteVideo: !muted })
     if (response?.status === 200) {
+      if (this.state.localStream != null) {
+        stopProcessedStream(this.state.localStream.id)
+        stopStream(this.state.localStream)
+      }
       if (muted) {
-        const localStream = await getLocalStream()
+        let localStream = await getLocalStream()
+        localStream = await getProcessedStream(localStream, getCurrentEffect())
         this.setState({
           localStream
         })
         this.infinityClient.setStream(localStream)
-      } else {
-        stopStream(this.state.localStream)
       }
       this.infinityClient.setStream(new MediaStream())
       this.setState({ isCameraMuted: !muted })
@@ -153,13 +164,15 @@ class App extends React.Component<{}, AppState> {
   ): Promise<void> {
     this.configureSignals()
     this.infinityClient = createInfinityClient(this.infinitySignals, this.callSignals)
+    const streamQuality = getStreamQuality()
+    const bandwidth = convertToBandwidth(streamQuality)
     try {
       await this.infinityClient.call({
         node,
         conferenceAlias,
         mediaStream,
         displayName,
-        bandwidth: 0, // auto
+        bandwidth,
         pin
       })
       this.setState({ connectionState: CONNECTION_STATE.CONNECTED })
@@ -233,7 +246,8 @@ class App extends React.Component<{}, AppState> {
       const prefixedConfAlias = config.pexip.conferencePrefix + aniName
       this.infinityContext = { conferencePin: pexipAgentPin, conferenceAlias: aniName, infinityHost: pexipNode }
 
-      const localStream = await getLocalStream()
+      let localStream = await getLocalStream()
+      localStream = await getProcessedStream(localStream)
       const displayName = await GenesysUtil.fetchAgentName()
 
       this.setState({
@@ -286,7 +300,16 @@ class App extends React.Component<{}, AppState> {
     await this.infinityClient.mute({ mute: muted })
   }
 
+  handleChangeStreamQuality (streamQuality: StreamQuality): void {
+    this.infinityClient.setBandwidth(convertToBandwidth(streamQuality))
+    setStreamQuality(streamQuality)
+  }
+
   async componentWillUnmount (): Promise<void> {
+    if (this.state.localStream != null) {
+      stopProcessedStream(this.state.localStream.id)
+      stopStream(this.state.localStream)
+    }
     await this.infinityClient?.disconnect({})
   }
 
@@ -337,10 +360,11 @@ class App extends React.Component<{}, AppState> {
               infinityContext = {this.infinityContext}
               callSignals={this.callSignals}
               infinitySignals={this.infinitySignals}
-              onLocalPresentationStream={this.handleLocalPresentationStream.bind(this)}
+              onLocalPresentationStream={this.handleLocalPresentationStream}
               onLocalStream={this.handleLocalStream}
               isCameraMuted={this.state.isCameraMuted}
               onCameraMute={this.toggleCameraMute}
+              onChangeStreamQuality={this.handleChangeStreamQuality}
             />
           </>
         )}

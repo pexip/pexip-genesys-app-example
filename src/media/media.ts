@@ -1,5 +1,3 @@
-import { StreamQuality } from '@pexip/media-components'
-
 /**
  * Get a local video stream with the provided device id. If a device id is not provided
  * it will take the first video device.
@@ -8,12 +6,12 @@ import { StreamQuality } from '@pexip/media-components'
  * @returns Local media stream.
  */
 const getLocalStream = async (deviceId?: string | null, save: boolean = false): Promise<MediaStream> => {
-  deviceId = deviceId ?? localStorage.getItem('pexipVideoInputId')
+  deviceId = deviceId ?? getCurrentDeviceId()
   let localStream: MediaStream
   if (deviceId !== null) {
     const device = (await navigator.mediaDevices.enumerateDevices()).find((device) => device.deviceId === deviceId)
     if (device !== null) {
-      localStream = await navigator.mediaDevices.getUserMedia({ video: { deviceId } })
+      localStream = await navigator.mediaDevices.getUserMedia({ video: { deviceId, height: 720 } })
     } else {
       localStream = await navigator.mediaDevices.getUserMedia({ video: true })
     }
@@ -21,7 +19,7 @@ const getLocalStream = async (deviceId?: string | null, save: boolean = false): 
     localStream = await navigator.mediaDevices.getUserMedia({ video: true })
   }
   if (save && deviceId != null) {
-    localStorage.setItem('pexipVideoInputId', deviceId)
+    setCurrentDeviceId(deviceId)
   }
   return localStream
 }
@@ -35,29 +33,24 @@ const stopStream = (stream: MediaStream): void => {
 }
 
 /**
- * Get the current chosen stream quality.
- * TODO: For now it returns always auto.
+ * Get the id of the current camera device selected by the user.
+ * @returns {string | null} Current media device id.
  */
-const getStreamQuality = (): StreamQuality => {
-  const bandwidth = 'auto'
-  const [low, medium, high, veryHigh] = ['576', '1264', '2464', '6144']
+const getCurrentDeviceId = (): string | null => {
+  return localStorage.getItem('pexipVideoInputId')
+}
 
-  switch (bandwidth) {
-    case low:
-      return StreamQuality.Low
-    case medium:
-      return StreamQuality.Medium
-    case high:
-      return StreamQuality.High
-    case veryHigh:
-      return StreamQuality.VeryHigh
-    default:
-      return StreamQuality.Auto
-  }
+/**
+ * Set the id of the current camera device selected by the user.
+ * @param {string} deviceId Current media device id.
+ */
+const setCurrentDeviceId = (deviceId: string): void => {
+  return localStorage.setItem('pexipVideoInputId', deviceId)
 }
 
 export {
   getLocalStream,
   stopStream,
-  getStreamQuality
+  getCurrentDeviceId,
+  setCurrentDeviceId
 }

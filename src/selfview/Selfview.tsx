@@ -3,7 +3,7 @@ import React, { RefObject, useState } from 'react'
 import { DraggableFoldableInMeetingSelfview, Stats, useCallQuality, useNetworkState } from '@pexip/media-components'
 import { callLivenessSignals, CallSignals } from '@pexip/infinity'
 
-import { getStreamQuality } from '../media/media'
+import { getStreamQuality } from '../media/quality'
 
 import './Selfview.scss'
 

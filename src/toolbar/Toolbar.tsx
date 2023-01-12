@@ -3,7 +3,7 @@ import React from 'react'
 import { CallSignals, InfinitySignals, InfinityClient, PresoConnectionChangeEvent, ConferenceStatus } from '@pexip/infinity'
 
 import { ToolbarButton } from './toolbar-button/ToolbarButton'
-import { SettingsPanel } from './settings-panel/SettingsPanel'
+import { SettingsPanel } from '../settings-panel/SettingsPanel'
 
 import { ReactComponent as shareScreenIcon } from './icons/share-screen.svg'
 import { ReactComponent as unlockIcon } from './icons/unlock.svg'
@@ -16,9 +16,11 @@ import { ReactComponent as mutedCameraIcon } from './icons/mutedCamera.svg'
 
 import copy from 'copy-to-clipboard'
 
-import './Toolbar.scss'
 import { toast } from 'react-toastify'
 import { InfinityContext } from '../App'
+import { StreamQuality } from '@pexip/media-components'
+
+import './Toolbar.scss'
 
 interface ToolbarProps {
   infinityClient: InfinityClient
@@ -29,6 +31,7 @@ interface ToolbarProps {
   onLocalStream: Function
   isCameraMuted: boolean
   onCameraMute: () => Promise<void>
+  onChangeStreamQuality: (streamQuality: StreamQuality) => void
 }
 
 interface ToolbarState {
@@ -169,7 +172,15 @@ export class Toolbar extends React.Component<ToolbarProps, ToolbarState> {
         {this.state.settingsEnabled &&
           <SettingsPanel
             onClose={() => this.setState({ settingsEnabled: false })}
-            onSave={(localStream: MediaStream) => this.props.onLocalStream(localStream)}
+            onSave={(localStream?: MediaStream, streamQuality?: StreamQuality) => {
+              this.setState({ settingsEnabled: false })
+              if (localStream != null) {
+                this.props.onLocalStream(localStream)
+              }
+              if (streamQuality != null) {
+                this.props.onChangeStreamQuality(streamQuality)
+              }
+            }}
           />}
       </>
     )

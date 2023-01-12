@@ -4,28 +4,24 @@ import { render, screen } from '@testing-library/react'
 
 import App from './App'
 
+import './__mocks__/mediaDevices'
+
 // Create a mocks
 jest.mock('./toolbar/Toolbar', () => {
   return {
-    Toolbar: () => {
-      return <div data-testid='Toolbar' />
-    }
+    Toolbar: () => <div data-testid='Toolbar' />
   }
 })
 
 jest.mock('./video/Video', () => {
   return {
-    Video: () => {
-      return <div data-testid='Video' />
-    }
+    Video: () => <div data-testid='Video' />
   }
 })
 
 jest.mock('./selfview/Selfview', () => {
   return {
-    Selfview: () => {
-      return <div data-testid='Selfview' />
-    }
+    Selfview: () => <div data-testid='Selfview' />
   }
 })
 
@@ -35,14 +31,9 @@ jest.mock('@pexip/media-components', () => {
   }
 })
 
-jest.mock('@pexip/infinity', () => {}, { virtual: true })
+jest.mock('@pexip/media-processor', () => {}, { virtual: true })
 
-beforeAll(() => {
-  window.MediaStream = jest.fn().mockImplementation(() => ({
-    addTrack: jest.fn()
-    // Add any method you want to mock
-  }))
-})
+jest.mock('@pexip/infinity', () => {}, { virtual: true })
 
 Object.defineProperty(window, 'location', {
   value: {
