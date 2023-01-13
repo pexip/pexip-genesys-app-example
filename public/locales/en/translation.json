@@ -730,5 +730,11 @@
         "name-input-placeholder": "e.g. 'David'",
         "usage-purpose": "Please enter a display name so other people know who's in the meeting",
         "your-name": "Your name"
+    },
+    "errors": {
+        "camera_access": {
+            "title": "Cannot access the camera",
+            "message": "You are connected with audio, but a camera is not detected. Connect a camera and reload the Genesys app. If the issue persist, contact the IT department."
+        }
     }
 }
