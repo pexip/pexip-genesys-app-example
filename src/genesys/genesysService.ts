@@ -74,7 +74,7 @@ export const loginPureCloud = async (
  * @param genesysState The necessary context information for the genesys util
  * @param accessToken The access token provided by Genesys after successful login
  */
-export const inititate = async (genesysState: genesysState, accessToken: string): Promise<void> => {
+export const initialize = async (genesysState: genesysState, accessToken: string): Promise<void> => {
   const client = platformClient.ApiClient.instance
   state = genesysState
   client.setEnvironment(state.pcEnvironment)
@@ -183,10 +183,10 @@ export function addHoldListener (holdListener: (flag: boolean) => any): void {
   handleHold = holdListener
 }
 
-export function addEndCallLister (endCallListener: () => any): void {
+export function addEndCallListener (endCallListener: () => any): void {
   handleEndCall = endCallListener
 }
 
-export function addMuteListenr (muteCallListener: (flag: boolean) => any): void {
+export function addMuteListener (muteCallListener: (flag: boolean) => any): void {
   handleMuteCall = muteCallListener
 }

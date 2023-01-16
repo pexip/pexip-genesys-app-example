@@ -28,6 +28,8 @@ import { StreamQuality } from '@pexip/media-components'
 import { convertToBandwidth, setStreamQuality, getStreamQuality } from './media/quality'
 
 import './App.scss'
+import { ErrorPanel } from './error-panel/ErrorPanel'
+import { WithTranslation, withTranslation } from 'react-i18next'
 
 enum CONNECTION_STATE {
   CONNECTING,
@@ -35,6 +37,15 @@ enum CONNECTION_STATE {
   DISCONNECTED,
   NO_ACTIVE_CALL,
   ERROR,
+}
+
+interface ErrorInfo {
+  title: string
+  message: string
+}
+
+interface AppProps extends WithTranslation {
+  t: any
 }
 
 interface AppState {
@@ -45,6 +56,7 @@ interface AppState {
   secondaryVideo: 'remote' | 'presentation'
   displayName: string
   isCameraMuted: boolean
+  error: ErrorInfo | null
 }
 
 export interface InfinityContext {
@@ -53,7 +65,7 @@ export interface InfinityContext {
   infinityHost: string
 }
 
-class App extends React.Component<{}, AppState> {
+class App extends React.Component<AppProps, AppState> {
   private readonly toolbarRef = React.createRef<Toolbar>()
 
   private infinitySignals!: InfinitySignals
@@ -61,7 +73,7 @@ class App extends React.Component<{}, AppState> {
   private infinityClient!: InfinityClient
   private infinityContext!: InfinityContext
 
-  constructor (props: {}) {
+  constructor (props: AppProps) {
     super(props)
     this.state = {
       localStream: new MediaStream(),
@@ -70,7 +82,8 @@ class App extends React.Component<{}, AppState> {
       connectionState: CONNECTION_STATE.CONNECTING,
       secondaryVideo: 'presentation',
       displayName: 'Agent',
-      isCameraMuted: false
+      isCameraMuted: false,
+      error: null
     }
     window.addEventListener('beforeunload', () => {
       this.infinityClient.disconnect({}).catch(null)
@@ -79,6 +92,18 @@ class App extends React.Component<{}, AppState> {
     this.handleLocalStream = this.handleLocalStream.bind(this)
     this.toggleCameraMute = this.toggleCameraMute.bind(this)
     this.handleChangeStreamQuality = this.handleChangeStreamQuality.bind(this)
+  }
+
+  private async checkCameraAccess (): Promise<void> {
+    const devices = await navigator.mediaDevices.enumerateDevices()
+    if (devices.filter((device) => device.kind === 'videoinput').length === 0) {
+      this.setState({
+        error: {
+          title: this.props.t('errors.camera_access.title', 'Cannot access the camera'),
+          message: this.props.t('errors.camera_access.message', 'You are connected with audio, but a camera is not detected. Connect a camera and reload the Genesys app. If the issue persist, contact the IT department.')
+        }
+      })
+    }
   }
 
   private handleLocalPresentationStream (presentationStream: MediaStream): void {
@@ -191,6 +216,7 @@ class App extends React.Component<{}, AppState> {
   }
 
   async componentDidMount (): Promise<void> {
+    await this.checkCameraAccess()
     const queryParams = new URLSearchParams(window.location.search)
     const pcEnvironment = queryParams.get('pcEnvironment')
     const pcConversationId = queryParams.get('pcConversationId') ?? ''
@@ -217,30 +243,32 @@ class App extends React.Component<{}, AppState> {
       const state = JSON.parse(
         decodeURIComponent(queryParams.get('state') as string)
       )
-
       // Initiate Genesys enviroment
-      await GenesysUtil.inititate(state, accessToken)
+      await GenesysUtil.initialize(state, accessToken)
 
       // Stopp the initiliasation if no call is active
       const callstate = await GenesysUtil.isCallActive() || false
       if (!callstate) {
         this.setState({ connectionState: CONNECTION_STATE.NO_ACTIVE_CALL })
         return
+      } else {
+        if (this.state.error != null) {
+          this.setState({ connectionState: CONNECTION_STATE.ERROR })
+        }
       }
-
       const pexipNode = state.pexipNode
       const pexipAgentPin = state.pexipAgentPin
-      await GenesysUtil.inititate(state, accessToken)
+      await GenesysUtil.initialize(state, accessToken)
       // Add on hold listener
       GenesysUtil.addHoldListener(
         async (mute) => await this.onHoldVideo(mute)
       )
       // Add end call listener
-      GenesysUtil.addEndCallLister(async () => await this.onEndCall())
+      GenesysUtil.addEndCallListener(async () => await this.onEndCall())
       const aniName = (await GenesysUtil.fetchAniName()) ?? ''
 
       // Add end call listener
-      GenesysUtil.addMuteListenr(
+      GenesysUtil.addMuteListener(
         async (mute) => await this.onMuteCall(mute)
       )
       const prefixedConfAlias = config.pexip.conferencePrefix + aniName
@@ -317,6 +345,12 @@ class App extends React.Component<{}, AppState> {
     const appRef = createRef<HTMLDivElement>()
     return (
       <div className='App' data-testid='App' ref={appRef}>
+        { this.state.error != null && this.state.connectionState === CONNECTION_STATE.ERROR &&
+          <ErrorPanel title={this.state.error.title} message={this.state.error.message}
+            onClick={() => {
+              this.setState({ error: null })
+              this.componentDidMount().catch((error) => console.error(error))
+            }}></ErrorPanel>}
         <Bars height="100" width="100" color="#FFFFFF" ariaLabel="app loading" wrapperStyle={{}} wrapperClass="wrapper-class" visible={this.state.connectionState === CONNECTION_STATE.CONNECTING} />
          {this.state.connectionState === CONNECTION_STATE.NO_ACTIVE_CALL &&
             <div className="no-active-call">
@@ -386,4 +420,4 @@ class App extends React.Component<{}, AppState> {
   }
 }
 
-export default App
+export default withTranslation()(App)
