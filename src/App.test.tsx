@@ -30,7 +30,7 @@ jest.mock('./genesys/genesysService', () => {
 jest.mock('./error-panel/ErrorPanel', () => {
   return {
     ErrorPanel: (props: any) => (
-      <div data-testid='ErrorPanel'>
+      <div data-testid='ErrorPanel' className='ErrorPanel'>
         <h3>{props.title}</h3>
         <p>{props.message}</p>
       </div>
@@ -72,14 +72,34 @@ describe('App component', () => {
   })
 
   describe('Error panel', () => {
+    beforeEach(() => {
+      (navigator.mediaDevices as any).noEnumerateDevices = false;
+      (navigator.mediaDevices as any).rejectGetUserMedia = false
+    })
+    it('shouldn\'t display the panel if there isn\'t an error', async () => {
+      await act(async () => {
+        await render(<App />)
+      })
+      const app = await screen.findByTestId('App')
+      expect(app.getElementsByClassName('ErrorPanel').length).toBe(0)
+    })
+
     it('should display an error if the camera isn\'t connected', async () => {
       await act(async () => {
         (navigator.mediaDevices as any).noEnumerateDevices = true
-        await render(<App />);
-        (navigator.mediaDevices as any).setEnumerateEmpty = false
+        await render(<App />)
       })
       const errorPanel = await screen.findByTestId('ErrorPanel')
-      expect(errorPanel.getElementsByTagName('h3')[0].innerHTML).toBe('Cannot access the camera')
+      expect(errorPanel.getElementsByTagName('h3')[0].innerHTML).toBe('Camera not connected')
+    })
+
+    it('should display an error if the user didn\'t grant camera permission', async () => {
+      await act(async () => {
+        (navigator.mediaDevices as any).rejectGetUserMedia = true
+        await render(<App />)
+      })
+      const errorPanel = await screen.findByTestId('ErrorPanel')
+      expect(errorPanel.getElementsByTagName('h3')[0].innerHTML).toBe('Camera access denied')
     })
   })
 })

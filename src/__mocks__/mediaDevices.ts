@@ -1,7 +1,7 @@
 Object.defineProperty(global.navigator, 'mediaDevices', {
   value: {
-    // setEnumerateEmpty: (value: boolean) => { (navigator.mediaDevices as any).noEnumerateDevices = value },
-    noEnumerateDevices: false,
+    rejectGetUserMedia: false, // For testing media device permission
+    noEnumerateDevices: false, // For testing no camera available
     enumerateDevices: async () => {
       return await new Promise<any[]>(resolve => {
         if ((navigator.mediaDevices as any).noEnumerateDevices === true) {
@@ -55,8 +55,12 @@ Object.defineProperty(global.navigator, 'mediaDevices', {
       })
     },
     getUserMedia: async () => {
-      return await new Promise<MediaStream>(resolve => {
-        resolve(new MediaStream())
+      return await new Promise<MediaStream>((resolve, reject) => {
+        if ((navigator.mediaDevices as any).rejectGetUserMedia === true) {
+          reject(new Error('Permission denied'))
+        } else {
+          resolve(new MediaStream())
+        }
       })
     }
   }

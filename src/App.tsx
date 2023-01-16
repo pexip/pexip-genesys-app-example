@@ -99,8 +99,8 @@ class App extends React.Component<AppProps, AppState> {
     if (devices.filter((device) => device.kind === 'videoinput').length === 0) {
       this.setState({
         error: {
-          title: this.props.t('errors.camera_access.title', 'Cannot access the camera'),
-          message: this.props.t('errors.camera_access.message', 'You are connected with audio, but a camera is not detected. Connect a camera and reload the Genesys app. If the issue persist, contact the IT department.')
+          title: this.props.t('errors.camera_not_connected.title', 'Camera not connected'),
+          message: this.props.t('errors.camera_not_connected.message', 'You are connected with audio, but a camera is not detected. Connect a camera and push "Try again". If the issue persist, contact the IT department.')
         }
       })
     }
@@ -274,7 +274,17 @@ class App extends React.Component<AppProps, AppState> {
       const prefixedConfAlias = config.pexip.conferencePrefix + aniName
       this.infinityContext = { conferencePin: pexipAgentPin, conferenceAlias: aniName, infinityHost: pexipNode }
 
-      let localStream = await getLocalStream()
+      let localStream: MediaStream = new MediaStream()
+      try {
+        localStream = await getLocalStream()
+      } catch (err) {
+        const error: ErrorInfo = {
+          title: this.props.t('errors.camera_permission_denied.title', 'Camera access denied'),
+          message: this.props.t('errors.camera_permission_denied.message', 'You are connected with audio, but the permission to the camera wasn’t granted. Go to the browser configuration, grant the permission and push on "Try again". If the issue persist, contact the IT department.')
+        }
+        this.setState({ error, connectionState: CONNECTION_STATE.ERROR })
+        return
+      }
       localStream = await getProcessedStream(localStream)
       const displayName = await GenesysUtil.fetchAgentName()
 
@@ -348,7 +358,7 @@ class App extends React.Component<AppProps, AppState> {
         { this.state.error != null && this.state.connectionState === CONNECTION_STATE.ERROR &&
           <ErrorPanel title={this.state.error.title} message={this.state.error.message}
             onClick={() => {
-              this.setState({ error: null })
+              this.setState({ error: null, connectionState: CONNECTION_STATE.CONNECTING })
               this.componentDidMount().catch((error) => console.error(error))
             }}></ErrorPanel>}
         <Bars height="100" width="100" color="#FFFFFF" ariaLabel="app loading" wrapperStyle={{}} wrapperClass="wrapper-class" visible={this.state.connectionState === CONNECTION_STATE.CONNECTING} />
