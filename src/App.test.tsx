@@ -7,9 +7,6 @@ import { act } from 'react-dom/test-utils'
 
 // Create a mocks
 require('./__mocks__/mediaDevices')
-jest.mock('react-i18next', () => {
-  return require('./__mocks__/reacti18next')
-})
 
 jest.mock('@pexip/media-components', () => {
   return {
@@ -29,12 +26,15 @@ jest.mock('./genesys/genesysService', () => {
 
 jest.mock('./error-panel/ErrorPanel', () => {
   return {
-    ErrorPanel: (props: any) => (
-      <div data-testid='ErrorPanel' className='ErrorPanel'>
-        <h3>{props.title}</h3>
-        <p>{props.message}</p>
-      </div>
-    )
+    ErrorPanel: (props: any) => {
+      const errorId: string = props.errorId
+      return (
+        <div data-testid='ErrorPanel' className='ErrorPanel'>
+          <h3>{`${errorId}.title`}</h3>
+          <p>{`${errorId}.message`}</p>
+        </div>
+      )
+    }
   }
 })
 

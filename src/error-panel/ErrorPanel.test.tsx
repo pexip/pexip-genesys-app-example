@@ -8,6 +8,12 @@ jest.mock('@pexip/components', () => {
   return require('../__mocks__/components')
 })
 
+jest.mock('react-i18next', () => {
+  return require('../__mocks__/reacti18next')
+})
+
+const errorId = 'errors.camera-not-connected'
+
 describe('ErrorPanel component', () => {
   const handleClick = jest.fn()
 
@@ -17,8 +23,7 @@ describe('ErrorPanel component', () => {
 
   it('should render', () => {
     render(<ErrorPanel
-      title='Title'
-      message='Content'
+      errorId={errorId}
       onClick={handleClick}
     />)
     const errorPanel = screen.getByTestId('ErrorPanel')
@@ -27,28 +32,25 @@ describe('ErrorPanel component', () => {
 
   it('should display the title', () => {
     render(<ErrorPanel
-      title='Title'
-      message='Content'
+      errorId={errorId}
       onClick={handleClick}
     />)
     const errorPanel = screen.getByTestId('ErrorPanel')
-    expect(errorPanel.getElementsByTagName('h3')[0].innerHTML).toBe('Title')
+    expect(errorPanel.getElementsByTagName('h3')[0].innerHTML).toBe(`${errorId}.title`)
   })
 
   it('should display the message content', () => {
     render(<ErrorPanel
-      title='Title'
-      message='Content'
+      errorId={errorId}
       onClick={handleClick}
     />)
     const errorPanel = screen.getByTestId('ErrorPanel')
-    expect(errorPanel.getElementsByTagName('p')[0].innerHTML).toBe('Content')
+    expect(errorPanel.getElementsByTagName('p')[0].innerHTML).toBe(`${errorId}.message`)
   })
 
   it('should trigger "onClick" when the "try again" button is pressed', () => {
     render(<ErrorPanel
-      title='Title'
-      message='Content'
+      errorId={errorId}
       onClick={handleClick}
     />)
     const errorPanel = screen.getByTestId('ErrorPanel')
