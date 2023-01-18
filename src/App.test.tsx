@@ -39,9 +39,7 @@ jest.mock('./error-panel/ErrorPanel', () => {
 })
 
 jest.mock('./toolbar/Toolbar', () => {
-  return {
-    Toolbar: () => <div data-testid='Toolbar' />
-  }
+  return require('./__mocks__/toolbar')
 })
 
 jest.mock('./video/Video', () => {

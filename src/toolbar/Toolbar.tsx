@@ -112,7 +112,7 @@ export class Toolbar extends React.Component<ToolbarProps, ToolbarState> {
     toast('Invitation link copied to clipboard!')
   }
 
-  public async stoppScreenShare (): Promise<void> {
+  public async stopScreenShare (): Promise<void> {
     if (this.state.shareScreenEnabled) {
       await this.toggleShareScreen()
     }

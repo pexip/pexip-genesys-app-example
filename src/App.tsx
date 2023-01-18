@@ -254,7 +254,7 @@ class App extends React.Component<AppProps, AppState> {
       // Initiate Genesys enviroment
       await GenesysUtil.initialize(state, accessToken)
 
-      // Stopp the initiliasation if no call is active
+      // Stop the initialization if no call is active
       const callstate = await GenesysUtil.isCallActive() || false
       if (!callstate) {
         this.setState({ connectionState: CONNECTION_STATE.NO_ACTIVE_CALL })
@@ -327,7 +327,7 @@ class App extends React.Component<AppProps, AppState> {
     participantList.forEach(async participant => await this.infinityClient.muteVideo({ muteVideo: onHold, participantUuid: participant.uuid }))
     await this.toggleCameraMute(onHold)
     if (onHold) {
-      await this.toolbarRef?.current?.stoppScreenShare()
+      await this.toolbarRef?.current?.stopScreenShare()
     }
   }
 
