@@ -87,7 +87,7 @@ export const initialize = async (genesysState: genesysState, accessToken: string
       // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
       `v2.users.${userMe.id}.conversations.calls`,
       (callEvent: { eventBody: { participants: any[] } }) => {
-        const agentParticipant = callEvent?.eventBody?.participants?.find((p: { purpose: string, state: string }) => p.purpose === GenesysRole.AGENT)
+        const agentParticipant = callEvent?.eventBody?.participants?.find((p: { purpose: string, state: string }) => p.purpose === GenesysRole.AGENT && p.state !== 'terminated')
         // Disconnected event
         if (agentParticipant?.state === GenesysConnectionsState.DISCONNECTED) {
           console.log('Agent has ended the call')
@@ -153,8 +153,7 @@ export const fetchAgentName = async (): Promise<string> => {
  * @returns Returns the hold state of the active call
  */
 export const isHold = async (): Promise<boolean> => {
-  const conversation = await conversationApi.getConversation(state.pcConversationId)
-  const agentParticipant = conversation?.participants.find((p) => p.purpose === GenesysRole.AGENT)
+  const agentParticipant = await getActiveAgent()
   const connectedCAll = agentParticipant?.calls?.find((call) => call.state === 'connected')
   return connectedCAll?.held ?? false
 }
@@ -164,8 +163,7 @@ export const isHold = async (): Promise<boolean> => {
  * @returns Returns the mute state of the active call
  */
 export const isMuted = async (): Promise<boolean> => {
-  const conversation = await conversationApi.getConversation(state.pcConversationId)
-  const agentParticipant = conversation?.participants.find((p) => p.purpose === GenesysRole.AGENT)
+  const agentParticipant = await getActiveAgent()
   const connectedCAll = agentParticipant?.calls?.find((call) => call.state === 'connected')
   return connectedCAll?.muted ?? false
 }
@@ -177,6 +175,16 @@ export const isCallActive = async (): Promise<boolean> => {
   }
   )
   return calls?.find((call) => call?.state === GenesysConnectionsState.CONNECTED) != null
+}
+
+/**
+ * Returns the active agent (endtime === undefined && purpose === 'agent')
+ * @returns The active agent
+ */
+const getActiveAgent = async (): Promise<Models.Participant | undefined> => {
+  const conversation = await conversationApi.getConversation(state.pcConversationId)
+  const agentParticipant = conversation?.participants.find((p) => p.purpose === GenesysRole.AGENT && p.endTime === undefined)
+  return agentParticipant
 }
 
 export function addHoldListener (holdListener: (flag: boolean) => any): void {
