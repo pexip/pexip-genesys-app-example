@@ -73,8 +73,9 @@ describe('App component', () => {
 
   describe('Error panel', () => {
     beforeEach(() => {
-      (navigator.mediaDevices as any).noEnumerateDevices = false;
-      (navigator.mediaDevices as any).rejectGetUserMedia = false
+      (window as any).testParams.enumerateDevicesEmpty = false;
+      (window as any).testParams.rejectGetUserMedia = false;
+      (window as any).testParams.rejectGetUserMedia = false
     })
     it('shouldn\'t display the panel if there isn\'t an error', async () => {
       await act(async () => {
@@ -86,20 +87,30 @@ describe('App component', () => {
 
     it('should display an error if the camera isn\'t connected', async () => {
       await act(async () => {
-        (navigator.mediaDevices as any).noEnumerateDevices = true
+        (window as any).testParams.enumerateDevicesEmpty = true;
+        (window as any).testParams.rejectGetUserMedia = true
         await render(<App />)
       })
       const errorPanel = await screen.findByTestId('ErrorPanel')
-      expect(errorPanel.getElementsByTagName('h3')[0].innerHTML).toBe('Camera not connected')
+      expect(errorPanel.getElementsByTagName('h3')[0].innerHTML).toBe('errors.camera-not-connected.title')
     })
 
     it('should display an error if the user didn\'t grant camera permission', async () => {
       await act(async () => {
-        (navigator.mediaDevices as any).rejectGetUserMedia = true
+        (window as any).testParams.rejectGetUserMedia = true
         await render(<App />)
       })
       const errorPanel = await screen.findByTestId('ErrorPanel')
-      expect(errorPanel.getElementsByTagName('h3')[0].innerHTML).toBe('Camera access denied')
+      expect(errorPanel.getElementsByTagName('h3')[0].innerHTML).toBe('errors.camera-access-denied.title')
+    })
+
+    it('should display an error if there is not a connection with the Infinity server', async () => {
+      await act(async () => {
+        (window as any).testParams.infinityUnavailable = true
+        await render(<App />)
+      })
+      const errorPanel = await screen.findByTestId('ErrorPanel')
+      expect(errorPanel.getElementsByTagName('h3')[0].innerHTML).toBe('errors.infinity-server-unavailable.title')
     })
   })
 })

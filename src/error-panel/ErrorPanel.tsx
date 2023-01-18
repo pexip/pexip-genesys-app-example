@@ -14,7 +14,11 @@ export function ErrorPanel (props: ErrorMessageProps): JSX.Element {
   return (
     <Modal isOpen={true} className='ErrorPanel' data-testid='ErrorPanel'>
       <h3>{props.title}</h3>
-      <p>{props.message}</p>
+      <div className='container'>{
+        props.message.split('\n').map(
+          (paragraph, index) => <p key={index}>{paragraph}</p>
+        )}
+      </div>
       { props.onClick != null && <Button onClick={() => { if (props.onClick != null) props.onClick() }}>Try again</Button>}
     </Modal>
   )

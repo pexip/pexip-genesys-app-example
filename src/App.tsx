@@ -99,10 +99,12 @@ class App extends React.Component<AppProps, AppState> {
     if (devices.filter((device) => device.kind === 'videoinput').length === 0) {
       this.setState({
         error: {
-          title: this.props.t('errors.camera_not_connected.title', 'Camera not connected'),
-          message: this.props.t('errors.camera_not_connected.message', 'You are connected with audio, but a camera is not detected. Connect a camera and push "Try again". If the issue persist, contact the IT department.')
-        }
+          title: this.props.t('errors.camera-not-connected.title'),
+          message: this.props.t('errors.camera-not-connected.message')
+        },
+        connectionState: CONNECTION_STATE.ERROR
       })
+      throw new Error('Camera not connected')
     }
   }
 
@@ -191,19 +193,25 @@ class App extends React.Component<AppProps, AppState> {
     this.infinityClient = createInfinityClient(this.infinitySignals, this.callSignals)
     const streamQuality = getStreamQuality()
     const bandwidth = convertToBandwidth(streamQuality)
-    try {
-      await this.infinityClient.call({
-        node,
-        conferenceAlias,
-        mediaStream,
-        displayName,
-        bandwidth,
-        pin
-      })
+    const response = await this.infinityClient.call({
+      node,
+      conferenceAlias,
+      mediaStream,
+      displayName,
+      bandwidth,
+      pin
+    })
+    if (response != null) {
       this.setState({ connectionState: CONNECTION_STATE.CONNECTED })
       toast('Connected!')
-    } catch (error) {
-      this.setState({ connectionState: CONNECTION_STATE.ERROR })
+    } else {
+      this.setState({
+        error: {
+          title: this.props.t('errors.infinity-server-unavailable.title'),
+          message: this.props.t('errors.infinity-server-unavailable.message')
+        },
+        connectionState: CONNECTION_STATE.ERROR
+      })
     }
   }
 
@@ -216,7 +224,7 @@ class App extends React.Component<AppProps, AppState> {
   }
 
   async componentDidMount (): Promise<void> {
-    await this.checkCameraAccess()
+    try { await this.checkCameraAccess() } catch (error) { return }
     const queryParams = new URLSearchParams(window.location.search)
     const pcEnvironment = queryParams.get('pcEnvironment')
     const pcConversationId = queryParams.get('pcConversationId') ?? ''
@@ -251,10 +259,6 @@ class App extends React.Component<AppProps, AppState> {
       if (!callstate) {
         this.setState({ connectionState: CONNECTION_STATE.NO_ACTIVE_CALL })
         return
-      } else {
-        if (this.state.error != null) {
-          this.setState({ connectionState: CONNECTION_STATE.ERROR })
-        }
       }
       const pexipNode = state.pexipNode
       const pexipAgentPin = state.pexipAgentPin
@@ -279,8 +283,8 @@ class App extends React.Component<AppProps, AppState> {
         localStream = await getLocalStream()
       } catch (err) {
         const error: ErrorInfo = {
-          title: this.props.t('errors.camera_permission_denied.title', 'Camera access denied'),
-          message: this.props.t('errors.camera_permission_denied.message', 'You are connected with audio, but the permission to the camera wasn’t granted. Go to the browser configuration, grant the permission and push on "Try again". If the issue persist, contact the IT department.')
+          title: this.props.t('errors.camera-access-denied.title'),
+          message: this.props.t('errors.camera-access-denied.message')
         }
         this.setState({ error, connectionState: CONNECTION_STATE.ERROR })
         return

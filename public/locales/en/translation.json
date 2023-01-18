@@ -732,13 +732,17 @@
         "your-name": "Your name"
     },
     "errors": {
-        "camera_not_connected": {
-            "title": "Camera not connected'",
-            "message": "You are connected with audio, but a camera is not detected. Connect a camera and push \"Try again\". If the issue persist, contact the IT department."
+        "camera-not-connected": {
+            "title": "Camera not connected",
+            "message": "You are connected with audio, but a camera is not detected. Connect a camera and push \"Try again\".\nIf the issue persist, contact the IT department."
         },
-        "camera_permission_denied": {
+        "camera-access-denied": {
             "title": "Camera access denied",
-            "message": "You are connected with audio, but the permission to the camera wasn’t granted. Go to the browser configuration, grant the permission and push on \"Try again\". If the issue persist, contact the IT department."
+            "message": "You are connected with audio, but the permission to the camera wasn’t granted. Go to the browser configuration, grant the permission and push on \"Try again\".\nIf the issue persist, contact the IT department."
+        },
+        "infinity-server-unavailable": {
+            "title": "Video platform unavailable",
+            "message": "You are connected with audio, but we weren’t able to establish a video connection.\nTry again later and contact the IT department if the problem persist."
         }
     }
 }
