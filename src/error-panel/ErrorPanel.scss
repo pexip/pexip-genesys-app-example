@@ -1,14 +1,16 @@
 .ErrorPanel {
+  width: 350px;
+  
   h3 {
     margin-bottom: 1em;
+    text-align: center;
   }
 
-  p {
+  .container {
     margin-bottom: 1.5em;
   }
   
   button {
-    display: block;
-    margin: auto;
+    width: 100%
   }
 }

@@ -1,3 +1,5 @@
+import './test-params'
+
 const infinityMock = {
   createCallSignals: () => ({
     onRemoteStream: {
@@ -16,6 +18,20 @@ const infinityMock = {
     }
   }),
   createInfinityClient: () => ({
+    call: () => {
+      if ((window as any).testParams.infinityUnavailable === true) {
+        return undefined
+      }
+      return {
+        status: 200,
+        data: {
+          status: 'success',
+          result: {
+            token: '1234'
+          }
+        }
+      }
+    },
     mute: jest.fn(),
     muteVideo: jest.fn(),
     disconnect: jest.fn(),

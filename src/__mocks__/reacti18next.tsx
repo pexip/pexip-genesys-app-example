@@ -12,10 +12,6 @@ const reactI18Next = {
       }
     }
   },
-  withTranslation: () => (Component: any) => {
-    Component.defaultProps = { ...Component.defaultProps, t }
-    return Component
-  },
   Trans: () => <span />
 }
 

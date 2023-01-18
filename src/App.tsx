@@ -27,9 +27,10 @@ import { getCurrentEffect, getProcessedStream, stopProcessedStream } from './med
 import { StreamQuality } from '@pexip/media-components'
 import { convertToBandwidth, setStreamQuality, getStreamQuality } from './media/quality'
 
-import './App.scss'
 import { ErrorPanel } from './error-panel/ErrorPanel'
-import { WithTranslation, withTranslation } from 'react-i18next'
+import ERROR_ID from './constants/error-ids'
+
+import './App.scss'
 
 enum CONNECTION_STATE {
   CONNECTING,
@@ -37,15 +38,6 @@ enum CONNECTION_STATE {
   DISCONNECTED,
   NO_ACTIVE_CALL,
   ERROR,
-}
-
-interface ErrorInfo {
-  title: string
-  message: string
-}
-
-interface AppProps extends WithTranslation {
-  t: any
 }
 
 interface AppState {
@@ -56,7 +48,7 @@ interface AppState {
   secondaryVideo: 'remote' | 'presentation'
   displayName: string
   isCameraMuted: boolean
-  error: ErrorInfo | null
+  errorId: string
 }
 
 export interface InfinityContext {
@@ -65,7 +57,7 @@ export interface InfinityContext {
   infinityHost: string
 }
 
-class App extends React.Component<AppProps, AppState> {
+class App extends React.Component<{}, AppState> {
   private readonly toolbarRef = React.createRef<Toolbar>()
 
   private infinitySignals!: InfinitySignals
@@ -73,7 +65,7 @@ class App extends React.Component<AppProps, AppState> {
   private infinityClient!: InfinityClient
   private infinityContext!: InfinityContext
 
-  constructor (props: AppProps) {
+  constructor (props: {}) {
     super(props)
     this.state = {
       localStream: new MediaStream(),
@@ -83,7 +75,7 @@ class App extends React.Component<AppProps, AppState> {
       secondaryVideo: 'presentation',
       displayName: 'Agent',
       isCameraMuted: false,
-      error: null
+      errorId: ''
     }
     window.addEventListener('beforeunload', () => {
       this.infinityClient.disconnect({}).catch(null)
@@ -98,11 +90,10 @@ class App extends React.Component<AppProps, AppState> {
     const devices = await navigator.mediaDevices.enumerateDevices()
     if (devices.filter((device) => device.kind === 'videoinput').length === 0) {
       this.setState({
-        error: {
-          title: this.props.t('errors.camera_not_connected.title', 'Camera not connected'),
-          message: this.props.t('errors.camera_not_connected.message', 'You are connected with audio, but a camera is not detected. Connect a camera and push "Try again". If the issue persist, contact the IT department.')
-        }
+        errorId: ERROR_ID.CAMERA_NOT_CONNECTED,
+        connectionState: CONNECTION_STATE.ERROR
       })
+      throw new Error('Camera not connected')
     }
   }
 
@@ -191,19 +182,22 @@ class App extends React.Component<AppProps, AppState> {
     this.infinityClient = createInfinityClient(this.infinitySignals, this.callSignals)
     const streamQuality = getStreamQuality()
     const bandwidth = convertToBandwidth(streamQuality)
-    try {
-      await this.infinityClient.call({
-        node,
-        conferenceAlias,
-        mediaStream,
-        displayName,
-        bandwidth,
-        pin
-      })
+    const response = await this.infinityClient.call({
+      node,
+      conferenceAlias,
+      mediaStream,
+      displayName,
+      bandwidth,
+      pin
+    })
+    if (response != null) {
       this.setState({ connectionState: CONNECTION_STATE.CONNECTED })
       toast('Connected!')
-    } catch (error) {
-      this.setState({ connectionState: CONNECTION_STATE.ERROR })
+    } else {
+      this.setState({
+        errorId: ERROR_ID.INFINITY_SERVER_UNAVAILABLE,
+        connectionState: CONNECTION_STATE.ERROR
+      })
     }
   }
 
@@ -216,7 +210,7 @@ class App extends React.Component<AppProps, AppState> {
   }
 
   async componentDidMount (): Promise<void> {
-    await this.checkCameraAccess()
+    try { await this.checkCameraAccess() } catch (error) { return }
     const queryParams = new URLSearchParams(window.location.search)
     const pcEnvironment = queryParams.get('pcEnvironment')
     const pcConversationId = queryParams.get('pcConversationId') ?? ''
@@ -246,15 +240,11 @@ class App extends React.Component<AppProps, AppState> {
       // Initiate Genesys enviroment
       await GenesysUtil.initialize(state, accessToken)
 
-      // Stopp the initiliasation if no call is active
+      // Stop the initialization if no call is active
       const callstate = await GenesysUtil.isCallActive() || false
       if (!callstate) {
         this.setState({ connectionState: CONNECTION_STATE.NO_ACTIVE_CALL })
         return
-      } else {
-        if (this.state.error != null) {
-          this.setState({ connectionState: CONNECTION_STATE.ERROR })
-        }
       }
       const pexipNode = state.pexipNode
       const pexipAgentPin = state.pexipAgentPin
@@ -278,11 +268,10 @@ class App extends React.Component<AppProps, AppState> {
       try {
         localStream = await getLocalStream()
       } catch (err) {
-        const error: ErrorInfo = {
-          title: this.props.t('errors.camera_permission_denied.title', 'Camera access denied'),
-          message: this.props.t('errors.camera_permission_denied.message', 'You are connected with audio, but the permission to the camera wasn’t granted. Go to the browser configuration, grant the permission and push on "Try again". If the issue persist, contact the IT department.')
-        }
-        this.setState({ error, connectionState: CONNECTION_STATE.ERROR })
+        this.setState({
+          errorId: ERROR_ID.CAMERA_ACCESS_DENIED,
+          connectionState: CONNECTION_STATE.ERROR
+        })
         return
       }
       localStream = await getProcessedStream(localStream)
@@ -323,7 +312,7 @@ class App extends React.Component<AppProps, AppState> {
     participantList.forEach(async participant => await this.infinityClient.muteVideo({ muteVideo: onHold, participantUuid: participant.uuid }))
     await this.toggleCameraMute(onHold)
     if (onHold) {
-      await this.toolbarRef?.current?.stoppScreenShare()
+      await this.toolbarRef?.current?.stopScreenShare()
     }
   }
 
@@ -355,10 +344,10 @@ class App extends React.Component<AppProps, AppState> {
     const appRef = createRef<HTMLDivElement>()
     return (
       <div className='App' data-testid='App' ref={appRef}>
-        { this.state.error != null && this.state.connectionState === CONNECTION_STATE.ERROR &&
-          <ErrorPanel title={this.state.error.title} message={this.state.error.message}
+        { this.state.errorId !== '' && this.state.connectionState === CONNECTION_STATE.ERROR &&
+          <ErrorPanel errorId={this.state.errorId}
             onClick={() => {
-              this.setState({ error: null, connectionState: CONNECTION_STATE.CONNECTING })
+              this.setState({ errorId: '', connectionState: CONNECTION_STATE.CONNECTING })
               this.componentDidMount().catch((error) => console.error(error))
             }}></ErrorPanel>}
         <Bars height="100" width="100" color="#FFFFFF" ariaLabel="app loading" wrapperStyle={{}} wrapperClass="wrapper-class" visible={this.state.connectionState === CONNECTION_STATE.CONNECTING} />
@@ -430,4 +419,4 @@ class App extends React.Component<AppProps, AppState> {
   }
 }
 
-export default withTranslation()(App)
+export default App

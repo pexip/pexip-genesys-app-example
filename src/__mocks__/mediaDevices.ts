@@ -1,10 +1,10 @@
+import './test-params'
+
 Object.defineProperty(global.navigator, 'mediaDevices', {
   value: {
-    rejectGetUserMedia: false, // For testing media device permission
-    noEnumerateDevices: false, // For testing no camera available
     enumerateDevices: async () => {
       return await new Promise<any[]>(resolve => {
-        if ((navigator.mediaDevices as any).noEnumerateDevices === true) {
+        if ((window as any).testParams.enumerateDevicesEmpty === true) {
           resolve([])
         } else {
           resolve([
@@ -56,7 +56,7 @@ Object.defineProperty(global.navigator, 'mediaDevices', {
     },
     getUserMedia: async () => {
       return await new Promise<MediaStream>((resolve, reject) => {
-        if ((navigator.mediaDevices as any).rejectGetUserMedia === true) {
+        if ((window as any).testParams.rejectGetUserMedia === true) {
           reject(new Error('Permission denied'))
         } else {
           resolve(new MediaStream())
