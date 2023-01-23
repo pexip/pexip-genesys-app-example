@@ -73,7 +73,8 @@ describe('App component', () => {
     beforeEach(() => {
       (window as any).testParams.enumerateDevicesEmpty = false;
       (window as any).testParams.rejectGetUserMedia = false;
-      (window as any).testParams.rejectGetUserMedia = false
+      (window as any).testParams.infinityUnavailable = false;
+      (window as any).testParams.conferenceNotFound = false
     })
     it('shouldn\'t display the panel if there isn\'t an error', async () => {
       await act(async () => {
@@ -109,6 +110,15 @@ describe('App component', () => {
       })
       const errorPanel = await screen.findByTestId('ErrorPanel')
       expect(errorPanel.getElementsByTagName('h3')[0].innerHTML).toBe('errors.infinity-server-unavailable.title')
+    })
+
+    it('should display an error if the conference cannot be found', async () => {
+      await act(async () => {
+        (window as any).testParams.conferenceNotFound = true
+        await render(<App />)
+      })
+      const errorPanel = await screen.findByTestId('ErrorPanel')
+      expect(errorPanel.getElementsByTagName('h3')[0].innerHTML).toBe('errors.conference-not-found.title')
     })
   })
 })

@@ -22,6 +22,15 @@ const infinityMock = {
       if ((window as any).testParams.infinityUnavailable === true) {
         return undefined
       }
+      if ((window as any).testParams.conferenceNotFound === true) {
+        return {
+          status: 404,
+          data: {
+            status: 'failed',
+            result: 'Neither conference nor gateway found'
+          }
+        }
+      }
       return {
         status: 200,
         data: {

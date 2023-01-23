@@ -191,8 +191,20 @@ class App extends React.Component<{}, AppState> {
       pin
     })
     if (response != null) {
-      this.setState({ connectionState: CONNECTION_STATE.CONNECTED })
-      toast('Connected!')
+      switch (response.status) {
+        case 404: {
+          this.setState({
+            errorId: ERROR_ID.CONFERENCE_NOT_FOUND,
+            connectionState: CONNECTION_STATE.ERROR
+          })
+          break
+        }
+        default: {
+          this.setState({ connectionState: CONNECTION_STATE.CONNECTED })
+          toast('Connected!')
+          break
+        }
+      }
     } else {
       this.setState({
         errorId: ERROR_ID.INFINITY_SERVER_UNAVAILABLE,

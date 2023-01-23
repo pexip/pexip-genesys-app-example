@@ -743,6 +743,10 @@
         "infinity-server-unavailable": {
             "title": "Video platform unavailable",
             "message": "You are connected with audio, but we weren’t able to establish a video connection.\nTry again later and contact the IT department if the problem persist."
+        },
+        "conference-not-found": {
+            "title": "Video room not found",
+            "message": "You are connected with audio, but the video room cannot be found.\nTry again later and contact the IT department if the problem persist."
         }
     }
 }
