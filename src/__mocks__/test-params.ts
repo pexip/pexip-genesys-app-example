@@ -10,7 +10,9 @@ Object.defineProperty(window, 'testParams', {
     // Simulate that the media permission was rejected
     rejectGetUserMedia: false,
     // Simulate that the Infinity conference node isn't available
-    infinityUnavailable: false
+    infinityUnavailable: false,
+    // Simulate that the conference doesn't exist
+    conferenceNotFound: false
   }
 })
 
