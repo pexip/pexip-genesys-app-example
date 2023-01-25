@@ -31,6 +31,15 @@ const infinityMock = {
           }
         }
       }
+      if ((window as any).testParams.conferenceWrongPIN === true) {
+        return {
+          status: 403,
+          data: {
+            status: 'failed',
+            result: 'Invalid PIN'
+          }
+        }
+      }
       return {
         status: 200,
         data: {

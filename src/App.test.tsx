@@ -74,8 +74,10 @@ describe('App component', () => {
       (window as any).testParams.enumerateDevicesEmpty = false;
       (window as any).testParams.rejectGetUserMedia = false;
       (window as any).testParams.infinityUnavailable = false;
-      (window as any).testParams.conferenceNotFound = false
+      (window as any).testParams.conferenceNotFound = false;
+      (window as any).testParams.conferenceWrongPIN = false
     })
+
     it('shouldn\'t display the panel if there isn\'t an error', async () => {
       await act(async () => {
         await render(<App />)
@@ -119,6 +121,15 @@ describe('App component', () => {
       })
       const errorPanel = await screen.findByTestId('ErrorPanel')
       expect(errorPanel.getElementsByTagName('h3')[0].innerHTML).toBe('errors.conference-not-found.title')
+    })
+
+    it('should display an error if the conference PIN is wrong', async () => {
+      await act(async () => {
+        (window as any).testParams.conferenceWrongPIN = true
+        await render(<App />)
+      })
+      const errorPanel = await screen.findByTestId('ErrorPanel')
+      expect(errorPanel.getElementsByTagName('h3')[0].innerHTML).toBe('errors.conference-wrong-pin.title')
     })
   })
 })

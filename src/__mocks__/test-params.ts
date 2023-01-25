@@ -12,7 +12,9 @@ Object.defineProperty(window, 'testParams', {
     // Simulate that the Infinity conference node isn't available
     infinityUnavailable: false,
     // Simulate that the conference doesn't exist
-    conferenceNotFound: false
+    conferenceNotFound: false,
+    // Simulate that a wrong PIN was introduced
+    conferenceWrongPIN: false
   }
 })
 
