@@ -748,7 +748,7 @@
             "title": "Video room not found",
             "message": "You are connected with audio, but the video room cannot be found.\nTry again later and contact the IT department if the problem persist."
         },
-        "conference-wrong-pin": {
+        "conference-authentication-failed": {
             "title": "Authentication failed",
             "message": "You are connected with audio, but the authentication to the video room failed.\nTry again later and contact the IT department if the problem persist."
         }

@@ -129,7 +129,7 @@ describe('App component', () => {
         await render(<App />)
       })
       const errorPanel = await screen.findByTestId('ErrorPanel')
-      expect(errorPanel.getElementsByTagName('h3')[0].innerHTML).toBe('errors.conference-wrong-pin.title')
+      expect(errorPanel.getElementsByTagName('h3')[0].innerHTML).toBe('errors.conference-authentication-failed.title')
     })
   })
 })

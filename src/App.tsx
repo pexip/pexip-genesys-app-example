@@ -194,7 +194,7 @@ class App extends React.Component<{}, AppState> {
       switch (response.status) {
         case 403: {
           this.setState({
-            errorId: ERROR_ID.CONFERENCE_WRONG_PIN,
+            errorId: ERROR_ID.CONFERENCE_AUTHENTICATION_FAILED,
             connectionState: CONNECTION_STATE.ERROR
           })
           break
