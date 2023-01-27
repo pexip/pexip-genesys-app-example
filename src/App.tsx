@@ -192,6 +192,13 @@ class App extends React.Component<{}, AppState> {
     })
     if (response != null) {
       switch (response.status) {
+        case 403: {
+          this.setState({
+            errorId: ERROR_ID.CONFERENCE_AUTHENTICATION_FAILED,
+            connectionState: CONNECTION_STATE.ERROR
+          })
+          break
+        }
         case 404: {
           this.setState({
             errorId: ERROR_ID.CONFERENCE_NOT_FOUND,
