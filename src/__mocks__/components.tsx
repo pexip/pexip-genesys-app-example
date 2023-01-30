@@ -4,6 +4,7 @@ const componentsMock = {
   Bar: (props: any) => <div {...props}>{props.children}</div>,
   Box: (props: any) => <div {...props}>{props.children}</div>,
   Button: (props: any) => <button {...props} />,
+  CenterLayout: (props: any) => <div>{props.children}</div>,
   FontVariant: jest.fn(),
   Icon: (props: any) => {
     const { colorScheme, ...newProps } = props
@@ -23,6 +24,7 @@ const componentsMock = {
       </select>
     )
   },
+  Spinner: (props: any) => <div></div>,
   Text: (props: any) => {
     // Remove htmlTag from the props
     const { htmlTag, ...newProps } = props

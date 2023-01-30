@@ -73,14 +73,14 @@ class App extends React.Component<{}, AppState> {
       localStream: new MediaStream(),
       remoteStream: new MediaStream(),
       presentationStream: new MediaStream(),
-      connectionState: CONNECTION_STATE.CONNECTING,
+      connectionState: CONNECTION_STATE.DISCONNECTED,
       secondaryVideo: 'presentation',
       displayName: 'Agent',
       isCameraMuted: false,
       errorId: ''
     }
     window.addEventListener('beforeunload', () => {
-      this.infinityClient.disconnect({}).catch(null)
+      this.infinityClient?.disconnect({}).catch(null)
     })
     this.handleLocalPresentationStream = this.handleLocalPresentationStream.bind(this)
     this.handleLocalStream = this.handleLocalStream.bind(this)
@@ -257,6 +257,7 @@ class App extends React.Component<{}, AppState> {
         pexipAgentPin
       )
     } else {
+      this.setState({ connectionState: CONNECTION_STATE.CONNECTING })
       const parsedUrl = new URL(window.location.href.replace(/#/g, '?'))
       const queryParams = new URLSearchParams(parsedUrl.search)
       const accessToken = queryParams.get('access_token') as string
@@ -367,6 +368,9 @@ class App extends React.Component<{}, AppState> {
   }
 
   render (): JSX.Element {
+    if (this.state.connectionState === CONNECTION_STATE.DISCONNECTED) {
+      return <></>
+    }
     return (
       <div className='App' data-testid='App' ref={this.appRef}>
         { this.state.errorId !== '' && this.state.connectionState === CONNECTION_STATE.ERROR &&

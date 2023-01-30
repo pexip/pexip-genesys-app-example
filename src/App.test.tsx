@@ -8,6 +8,10 @@ import { act } from 'react-dom/test-utils'
 // Create a mocks
 require('./__mocks__/mediaDevices')
 
+jest.mock('@pexip/components', () => {
+  return require('./__mocks__/components')
+})
+
 jest.mock('@pexip/media-components', () => {
   return {
     StreamQuality: jest.fn()
