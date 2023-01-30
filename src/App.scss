@@ -8,6 +8,14 @@
   height: calc(100% - 32px);
   gap: 16px;
 
+  .loading-spinner {
+    position: absolute;
+  }
+
+  .Video {
+    z-index: 1;
+  }
+
   .no-active-call{
     color: white;
   }
@@ -30,6 +38,7 @@
     position: absolute;
     bottom: 0;
     width: 100%;
+    z-index: 2;
   }
 
   .Toastify {

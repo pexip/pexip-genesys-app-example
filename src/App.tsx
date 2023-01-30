@@ -1,8 +1,7 @@
 import React, { createRef } from 'react'
 import config from './config.js'
-import { ToastContainer, toast, Slide } from 'react-toastify'
+import { ToastContainer, Slide } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import { Bars } from 'react-loader-spinner'
 
 import {
   createInfinityClient,
@@ -24,6 +23,7 @@ import {
   getLocalStream, stopStream
 } from './media/media'
 import { getCurrentEffect, getProcessedStream, stopProcessedStream } from './media/processor'
+import { CenterLayout, Spinner } from '@pexip/components'
 import { StreamQuality } from '@pexip/media-components'
 import { convertToBandwidth, setStreamQuality, getStreamQuality } from './media/quality'
 
@@ -73,14 +73,14 @@ class App extends React.Component<{}, AppState> {
       localStream: new MediaStream(),
       remoteStream: new MediaStream(),
       presentationStream: new MediaStream(),
-      connectionState: CONNECTION_STATE.CONNECTING,
+      connectionState: CONNECTION_STATE.DISCONNECTED,
       secondaryVideo: 'presentation',
       displayName: 'Agent',
       isCameraMuted: false,
       errorId: ''
     }
     window.addEventListener('beforeunload', () => {
-      this.infinityClient.disconnect({}).catch(null)
+      this.infinityClient?.disconnect({}).catch(null)
     })
     this.handleLocalPresentationStream = this.handleLocalPresentationStream.bind(this)
     this.handleLocalStream = this.handleLocalStream.bind(this)
@@ -215,7 +215,7 @@ class App extends React.Component<{}, AppState> {
         }
         default: {
           this.setState({ connectionState: CONNECTION_STATE.CONNECTED })
-          toast('Connected!')
+          // toast('Connected!')
           break
         }
       }
@@ -257,6 +257,7 @@ class App extends React.Component<{}, AppState> {
         pexipAgentPin
       )
     } else {
+      this.setState({ connectionState: CONNECTION_STATE.CONNECTING })
       const parsedUrl = new URL(window.location.href.replace(/#/g, '?'))
       const queryParams = new URLSearchParams(parsedUrl.search)
       const accessToken = queryParams.get('access_token') as string
@@ -367,6 +368,9 @@ class App extends React.Component<{}, AppState> {
   }
 
   render (): JSX.Element {
+    if (this.state.connectionState === CONNECTION_STATE.DISCONNECTED) {
+      return <></>
+    }
     return (
       <div className='App' data-testid='App' ref={this.appRef}>
         { this.state.errorId !== '' && this.state.connectionState === CONNECTION_STATE.ERROR &&
@@ -375,13 +379,18 @@ class App extends React.Component<{}, AppState> {
               this.setState({ errorId: '', connectionState: CONNECTION_STATE.CONNECTING })
               this.componentDidMount().catch((error) => console.error(error))
             }}></ErrorPanel>}
-        <Bars height="100" width="100" color="#FFFFFF" ariaLabel="app loading" wrapperStyle={{}} wrapperClass="wrapper-class" visible={this.state.connectionState === CONNECTION_STATE.CONNECTING} />
-         {this.state.connectionState === CONNECTION_STATE.NO_ACTIVE_CALL &&
+          { (this.state.connectionState === CONNECTION_STATE.CONNECTING ||
+            this.state.connectionState === CONNECTION_STATE.CONNECTED) &&
+            <CenterLayout className='loading-spinner'>
+              <Spinner colorScheme='light'/>
+            </CenterLayout>
+          }
+         { this.state.connectionState === CONNECTION_STATE.NO_ACTIVE_CALL &&
             <div className="no-active-call">
               <h1>No active call</h1>
             </div>
          }
-        {this.state.connectionState === CONNECTION_STATE.CONNECTED && (
+        { this.state.connectionState === CONNECTION_STATE.CONNECTED && (
           <>
             <Video
               mediaStream={this.state.remoteStream}
@@ -393,7 +402,7 @@ class App extends React.Component<{}, AppState> {
                   : undefined
               }
             />
-            {this.state.presentationStream.active && (
+            { this.state.presentationStream.active && (
               <Video
                 mediaStream={this.state.presentationStream}
                 objectFit='contain'
