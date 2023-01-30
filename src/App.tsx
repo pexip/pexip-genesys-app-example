@@ -65,6 +65,8 @@ class App extends React.Component<{}, AppState> {
   private infinityClient!: InfinityClient
   private infinityContext!: InfinityContext
 
+  private readonly appRef = createRef<HTMLDivElement>()
+
   constructor (props: {}) {
     super(props)
     this.state = {
@@ -116,7 +118,12 @@ class App extends React.Component<{}, AppState> {
 
   private async toggleCameraMute (value?: boolean): Promise<void> {
     let muted = this.state.isCameraMuted
-    if (value != null) muted = !value
+    if (value === muted) {
+      return
+    }
+    if (value != null) {
+      muted = !value
+    }
     const response = await this.infinityClient.muteVideo({ muteVideo: !muted })
     if (response?.status === 200) {
       if (this.state.localStream != null) {
@@ -308,7 +315,7 @@ class App extends React.Component<{}, AppState> {
         displayName,
         pexipAgentPin
       )
-      // Set inital context for hold and mute
+      // Set initial context for hold and mute
       const holdState = await GenesysUtil.isHold()
       const muteState = await GenesysUtil.isMuted()
       await this.onMuteCall(muteState)
@@ -323,19 +330,19 @@ class App extends React.Component<{}, AppState> {
   // Set the video to mute for all participants
   async onHoldVideo (onHold: boolean): Promise<void> {
     const participantList = this.infinityClient.participants
-    // Mute current user video and set mute adio indicator even if no audio layer is used by web rtc
-    await this.infinityClient.muteVideo({ muteVideo: onHold })
+    // Mute current user video and set mute audio indicator even if no audio layer is used by web rtc
+    await this.toggleCameraMute(onHold)
     await this.infinityClient.mute({ mute: await GenesysUtil.isMuted() || onHold })
     // Mute other participants video
-    // eslint-disable-next-line @typescript-eslint/no-misused-promises
-    participantList.forEach(async participant => await this.infinityClient.muteVideo({ muteVideo: onHold, participantUuid: participant.uuid }))
-    await this.toggleCameraMute(onHold)
+    participantList.forEach((participant) => {
+      this.infinityClient.muteVideo({ muteVideo: onHold, participantUuid: participant.uuid })
+        .catch((error) => console.error(error))
+    })
     if (onHold) {
       await this.toolbarRef?.current?.stopScreenShare()
     }
   }
 
-  //
   async onEndCall (): Promise<void> {
     await this.infinityClient.disconnectAll({})
     await this.infinityClient.disconnect({})
@@ -360,9 +367,8 @@ class App extends React.Component<{}, AppState> {
   }
 
   render (): JSX.Element {
-    const appRef = createRef<HTMLDivElement>()
     return (
-      <div className='App' data-testid='App' ref={appRef}>
+      <div className='App' data-testid='App' ref={this.appRef}>
         { this.state.errorId !== '' && this.state.connectionState === CONNECTION_STATE.ERROR &&
           <ErrorPanel errorId={this.state.errorId}
             onClick={() => {
@@ -401,7 +407,7 @@ class App extends React.Component<{}, AppState> {
             )}
             { this.state.localStream.active &&
               <Selfview
-                floatRoot={appRef}
+                floatRoot={this.appRef}
                 callSignals={this.callSignals}
                 username={this.state.displayName}
                 localStream={this.state.localStream}

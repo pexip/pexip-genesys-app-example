@@ -3,7 +3,7 @@ import React, { createRef } from 'react'
 import { render, screen } from '@testing-library/react'
 import { CallSignals } from '@pexip/infinity'
 
-import Selfview from './Selfview'
+import { Selfview } from './Selfview'
 
 const signalMock = {
   size: 0,
@@ -23,12 +23,6 @@ const callSignalsMock: CallSignals = {
   onCallQuality: signalMock,
   onSecureCheckCode: signalMock
 }
-
-// jest.mock('react-draggable', () => {
-//   const draggableMock = (props: PropsWithChildren): JSX.Element => <div data-testid='Draggable'>{props.children}</div>
-//   draggableMock.displayName = 'Draggable'
-//   return draggableMock
-// })
 
 jest.mock('@pexip/media-components', () => {
   return {
