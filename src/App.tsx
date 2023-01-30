@@ -2,7 +2,6 @@ import React, { createRef } from 'react'
 import config from './config.js'
 import { ToastContainer, toast, Slide } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import { Bars } from 'react-loader-spinner'
 
 import {
   createInfinityClient,
@@ -24,6 +23,7 @@ import {
   getLocalStream, stopStream
 } from './media/media'
 import { getCurrentEffect, getProcessedStream, stopProcessedStream } from './media/processor'
+import { CenterLayout, Spinner } from '@pexip/components'
 import { StreamQuality } from '@pexip/media-components'
 import { convertToBandwidth, setStreamQuality, getStreamQuality } from './media/quality'
 
@@ -375,13 +375,18 @@ class App extends React.Component<{}, AppState> {
               this.setState({ errorId: '', connectionState: CONNECTION_STATE.CONNECTING })
               this.componentDidMount().catch((error) => console.error(error))
             }}></ErrorPanel>}
-        <Bars height="100" width="100" color="#FFFFFF" ariaLabel="app loading" wrapperStyle={{}} wrapperClass="wrapper-class" visible={this.state.connectionState === CONNECTION_STATE.CONNECTING} />
-         {this.state.connectionState === CONNECTION_STATE.NO_ACTIVE_CALL &&
+          { (this.state.connectionState === CONNECTION_STATE.CONNECTING ||
+            this.state.connectionState === CONNECTION_STATE.CONNECTED) &&
+            <CenterLayout className='loading-spinner'>
+              <Spinner colorScheme='light'/>
+            </CenterLayout>
+          }
+         { this.state.connectionState === CONNECTION_STATE.NO_ACTIVE_CALL &&
             <div className="no-active-call">
               <h1>No active call</h1>
             </div>
          }
-        {this.state.connectionState === CONNECTION_STATE.CONNECTED && (
+        { this.state.connectionState === CONNECTION_STATE.CONNECTED && (
           <>
             <Video
               mediaStream={this.state.remoteStream}
@@ -393,7 +398,7 @@ class App extends React.Component<{}, AppState> {
                   : undefined
               }
             />
-            {this.state.presentationStream.active && (
+            { this.state.presentationStream.active && (
               <Video
                 mediaStream={this.state.presentationStream}
                 objectFit='contain'
