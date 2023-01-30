@@ -14,7 +14,7 @@ interface SelfViewProps {
   localStream: MediaStream
 }
 
-export function Selfview (props: SelfViewProps): JSX.Element {
+export const Selfview = React.memo((props: SelfViewProps): JSX.Element => {
   const [showStats, setShowStats] = useState(false)
   const [showTooltip, setShowTooltip] = useState(true)
   const [folded, setFolded] = useState(false)
@@ -66,6 +66,6 @@ export function Selfview (props: SelfViewProps): JSX.Element {
         /> }
     </div>
   )
-}
+})
 
-export default Selfview
+Selfview.displayName = 'Selfview'
