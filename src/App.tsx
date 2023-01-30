@@ -1,6 +1,6 @@
 import React, { createRef } from 'react'
 import config from './config.js'
-import { ToastContainer, toast, Slide } from 'react-toastify'
+import { ToastContainer, Slide } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 import {
@@ -215,7 +215,7 @@ class App extends React.Component<{}, AppState> {
         }
         default: {
           this.setState({ connectionState: CONNECTION_STATE.CONNECTED })
-          toast('Connected!')
+          // toast('Connected!')
           break
         }
       }
