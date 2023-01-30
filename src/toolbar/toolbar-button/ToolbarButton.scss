@@ -9,9 +9,17 @@
   display: flex;
   align-items: center;
 
+  >[data-id=tooltip] {
+    display: none;
+  }
+
   &:hover, &.selected {
-      background-color: #fffc;
-      color: #111;
+    background-color: #fffc;
+    color: #111;
+  }
+
+  &:hover > [data-id=tooltip] {
+    display: block;
   }
 
   &.danger {
