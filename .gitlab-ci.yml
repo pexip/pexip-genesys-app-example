@@ -1,5 +1,3 @@
-image: node:14.19.0 # change to match your node version
-
 cache:
   paths:
     - work/node_modules
@@ -25,19 +23,35 @@ before_script:
   - ls -a
   - ls -a public
 
+.base:
+  tags: # use the pexip CI k8s cluster to run the jobs
+    - pexip
+    - general
+
+.base-node:
+  image: node:14.19.0 # change to match your node version
+  extends:
+    - .base
+
 test:
   stage: test
+  extends:
+    - .base-node
   script:
    - CI=true npm test
 
 lint:
   stage: test
+  extends:
+    - .base-node
   script:
     - npm run lint
 
 pages:
-  environment: production
   stage: deploy
+  extends:
+    - .base-node
+  environment: production
   script:
     - DIR="$CI_COMMIT_BRANCH"
     - CI=false npm run build
