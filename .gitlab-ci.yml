@@ -14,23 +14,9 @@ cache:
   extends:
     - .base
   before_script:
-    - ls -a
-    - ls -a public
-    - mkdir -p work
-    - shopt -s extglob dotglob
-    - mv !(work|cache) work
-    - mkdir -p cache
-    - mkdir -p public
-    - cp -RT cache public
-    - ls
-    - ls -a cache
-    - ls -a public
-    - cd work
     - echo "//gitlab.com/api/v4/projects/24337530/packages/npm/:_authToken=${CI_JOB_TOKEN}" >> .npmrc
     - npm install
     - npm run postinstall
-    - ls -a
-    - ls -a public
 
 build:
   stage: build
@@ -43,7 +29,6 @@ build:
     paths:
       - work/build/
     expire_in: '900'
-
 
 test:
   stage: test
@@ -73,7 +58,6 @@ lint:
     - ls
     # Default caching is 1 hour
     - gcloud storage cp robots.txt gs://$BUCKET
-    - gcloud storage cp orange-circle-loader.gif gs://$BUCKET
     # Do the following need hashes/versioning? could break if relying on changes yet cached version of file used
     - gcloud storage cp -r locales gs://$BUCKET
     - gcloud storage cp -r media-processor gs://$BUCKET
