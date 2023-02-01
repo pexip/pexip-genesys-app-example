@@ -1,6 +1,6 @@
 cache:
   paths:
-    - work/node_modules
+    - node_modules
     - cache/dev
     - cache/main
 
@@ -27,7 +27,7 @@ build:
   artifacts:
     name: build
     paths:
-      - work/build/
+      - build/
     expire_in: '900'
 
 test:
@@ -54,7 +54,7 @@ lint:
     - build
   image: eu.gcr.io/px-service-ci-gcr/pexdeploy:latest
   script:
-    - cd work/build
+    - cd build
     - ls
     # Default caching is 1 hour
     - gcloud storage cp robots.txt gs://$BUCKET
