@@ -16,7 +16,7 @@ i18n
   // for all options read: https://www.i18next.com/overview/configuration-options
   .init({
     backend: {
-      loadPath: '/pexip-genesys-premium-app/locales/{{lng}}/{{ns}}.json'
+      loadPath: '/locales/{{lng}}/{{ns}}.json'
     },
     load: 'languageOnly',
     fallbackLng: 'en',
