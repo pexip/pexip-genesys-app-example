@@ -3,7 +3,7 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 
 import { Toolbar } from './Toolbar'
-import { CallSignals, InfinityClient } from '@pexip/infinity'
+import { CallSignals, InfinityClient, InfinitySignals } from '@pexip/infinity'
 import { InfinityContext } from '../App'
 
 // Create a mock for the ToolbarButton
@@ -15,7 +15,7 @@ jest.mock('./toolbar-button/ToolbarButton', () => {
   }
 })
 
-jest.mock('./settings-panel/SettingsPanel', () => {
+jest.mock('../settings-panel/SettingsPanel', () => {
   return {
     SettingsPanel: () => {
       return <div />
@@ -82,19 +82,71 @@ const callSignalsMock: CallSignals = {
   onSecureCheckCode: signalMock
 }
 
+const infinitySignalsMock: InfinitySignals = {
+  onError: signalMock,
+  onPinRequired: signalMock,
+  onAnswer: signalMock,
+  onApplicationMessage: signalMock,
+  onConferenceStatus: signalMock,
+  onConnected: signalMock,
+  onDisconnected: signalMock,
+  onExtension: signalMock,
+  onFailedRequest: signalMock,
+  onIceCandidate: signalMock,
+  onIdp: signalMock,
+  onLayoutUpdate: signalMock,
+  onLiveCaptions: signalMock,
+  onMe: signalMock,
+  onMessage: signalMock,
+  onMyselfMuted: signalMock,
+  onNewOffer: signalMock,
+  onParticipantJoined: signalMock,
+  onParticipantLeft: signalMock,
+  onParticipants: signalMock,
+  onPeerDisconnect: signalMock,
+  onPresentationAnswer: signalMock,
+  onRaiseHand: signalMock,
+  onRedirect: signalMock,
+  onRequestedLayout: signalMock,
+  onRetryQueueFlushed: signalMock,
+  onSplashScreen: signalMock,
+  onStage: signalMock,
+  onTransfer: signalMock,
+  onUpdateSdp: signalMock
+}
+
 const handleLocalPresentationStream = jest.fn()
 const handleLocalStream = jest.fn()
+const handleCameraMute = jest.fn()
+const handleChangeStreamQuality = jest.fn()
 
 test('renders the toolbar', () => {
-  render(<Toolbar infinityClient={ infinityClientMock } infinityContext={infinityContextMock} callSignals={ callSignalsMock }
-    onLocalPresentationStream={handleLocalPresentationStream} onLocalStream={handleLocalStream} />)
+  render(<Toolbar
+    infinityClient={ infinityClientMock }
+    infinityContext={infinityContextMock}
+    callSignals={ callSignalsMock }
+    infinitySignals= {infinitySignalsMock}
+    onLocalPresentationStream={handleLocalPresentationStream}
+    onLocalStream={handleLocalStream}
+    isCameraMuted={true}
+    onCameraMute={handleCameraMute}
+    onChangeStreamQuality={handleChangeStreamQuality}
+  />)
   const toolbar = screen.getByTestId('Toolbar')
   expect(toolbar).toBeInTheDocument()
 })
 
 test('it renders 6 buttons', () => {
-  render(<Toolbar infinityClient={ infinityClientMock } infinityContext={infinityContextMock} callSignals={ callSignalsMock }
-    onLocalPresentationStream={handleLocalPresentationStream} onLocalStream={handleLocalStream} />)
+  render(<Toolbar infinityClient={ infinityClientMock }
+    infinityContext={infinityContextMock}
+    callSignals={ callSignalsMock }
+    infinitySignals= {infinitySignalsMock}
+    onLocalPresentationStream={handleLocalPresentationStream}
+    onLocalStream={handleLocalStream}
+    isCameraMuted={true}
+    onCameraMute={handleCameraMute}
+    onChangeStreamQuality={handleChangeStreamQuality}
+  />)
   const buttons = screen.getAllByRole('button')
   expect(buttons.length).toBe(6)
 })

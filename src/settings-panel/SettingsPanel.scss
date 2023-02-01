@@ -1,0 +1,18 @@
+.SettingsPanel {
+  // Hide the close button
+  div[role=dialog] {
+    >button {
+      opacity: 0;
+    }
+  }
+
+  // Hide the audio selector
+  div[class*="_deviceListWrapper_"]>div:nth-child(2) {
+    display: none;
+  }
+  
+  .effect-list {
+    display: flex;
+    gap: 0.5em
+  }
+}

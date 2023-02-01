@@ -1,56 +1,139 @@
-import React, { PropsWithChildren } from 'react'
+import React from 'react'
 
-// import { render, screen } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 
-// import App from './App'
+import App from './App'
+import { act } from 'react-dom/test-utils'
 
 // Create a mocks
-jest.mock('./toolbar/Toolbar', () => {
+require('./__mocks__/mediaDevices')
+
+jest.mock('@pexip/components', () => {
+  return require('./__mocks__/components')
+})
+
+jest.mock('@pexip/media-components', () => {
   return {
-    Toolbar: () => {
-      return <div data-testid='Toolbar' />
+    StreamQuality: jest.fn()
+  }
+})
+
+jest.mock('@pexip/media-processor', () => {}, { virtual: true })
+
+jest.mock('@pexip/infinity', () => {
+  return require('./__mocks__/infinity')
+}, { virtual: true })
+
+jest.mock('./genesys/genesysService', () => {
+  return require('./__mocks__/genesys')
+})
+
+jest.mock('./error-panel/ErrorPanel', () => {
+  return {
+    ErrorPanel: (props: any) => {
+      const errorId: string = props.errorId
+      return (
+        <div data-testid='ErrorPanel' className='ErrorPanel'>
+          <h3>{`${errorId}.title`}</h3>
+          <p>{`${errorId}.message`}</p>
+        </div>
+      )
     }
   }
 })
 
-jest.mock('react-draggable', () => {
-  const draggableMock = (props: PropsWithChildren): JSX.Element => <div data-testid='Draggable'>{props.children}</div>
-  draggableMock.displayName = 'Draggable'
-  return draggableMock
+jest.mock('./toolbar/Toolbar', () => {
+  return require('./__mocks__/toolbar')
 })
 
 jest.mock('./video/Video', () => {
   return {
-    Video: () => {
-      return <div data-testid='Video' />
-    }
+    Video: () => <div data-testid='Video' />
   }
 })
 
-beforeAll(() => {
-  window.MediaStream = jest.fn().mockImplementation(() => ({
-    addTrack: jest.fn()
-    // Add any method you want to mock
-  }))
+jest.mock('./selfview/Selfview', () => {
+  return {
+    Selfview: () => <div data-testid='Selfview' />
+  }
 })
 
-beforeEach(() => {
-  Object.defineProperty(global.navigator, 'mediaDevices', {
-    value: {
-      getUserMedia: jest.fn(async () => await new Promise<void>(resolve => resolve()))
-    }
+Object.defineProperty(window, 'location', {
+  value: {
+    href: 'https://myurl/#access_token=secret&state=%7B%22pcEnvironment%22%3A%22usw2.pure.cloud%22%2C%22pcConversationId%22%3A%2262698915-ae56-4efc-b5d7-71d6ad487fae%22%2C%22pexipNode%22%3A%22pexipdemo.com%22%2C%22pexipAgentPin%22%3A%222021%22%7D'
+  }
+})
+
+describe('App component', () => {
+  it('should render', async () => {
+    await act(async () => {
+      await render(<App />)
+    })
+    const app = await screen.findByTestId('App')
+    expect(app).toBeInTheDocument()
+  })
+
+  describe('Error panel', () => {
+    beforeEach(() => {
+      (window as any).testParams.enumerateDevicesEmpty = false;
+      (window as any).testParams.rejectGetUserMedia = false;
+      (window as any).testParams.infinityUnavailable = false;
+      (window as any).testParams.conferenceNotFound = false;
+      (window as any).testParams.conferenceWrongPIN = false
+    })
+
+    it('shouldn\'t display the panel if there isn\'t an error', async () => {
+      await act(async () => {
+        await render(<App />)
+      })
+      const app = await screen.findByTestId('App')
+      expect(app.getElementsByClassName('ErrorPanel').length).toBe(0)
+    })
+
+    it('should display an error if the camera isn\'t connected', async () => {
+      await act(async () => {
+        (window as any).testParams.enumerateDevicesEmpty = true;
+        (window as any).testParams.rejectGetUserMedia = true
+        await render(<App />)
+      })
+      const errorPanel = await screen.findByTestId('ErrorPanel')
+      expect(errorPanel.getElementsByTagName('h3')[0].innerHTML).toBe('errors.camera-not-connected.title')
+    })
+
+    it('should display an error if the user didn\'t grant camera permission', async () => {
+      await act(async () => {
+        (window as any).testParams.rejectGetUserMedia = true
+        await render(<App />)
+      })
+      const errorPanel = await screen.findByTestId('ErrorPanel')
+      expect(errorPanel.getElementsByTagName('h3')[0].innerHTML).toBe('errors.camera-access-denied.title')
+    })
+
+    it('should display an error if there is not a connection with the Infinity server', async () => {
+      await act(async () => {
+        (window as any).testParams.infinityUnavailable = true
+        await render(<App />)
+      })
+      const errorPanel = await screen.findByTestId('ErrorPanel')
+      expect(errorPanel.getElementsByTagName('h3')[0].innerHTML).toBe('errors.infinity-server-unavailable.title')
+    })
+
+    it('should display an error if the conference cannot be found', async () => {
+      await act(async () => {
+        (window as any).testParams.conferenceNotFound = true
+        await render(<App />)
+      })
+      const errorPanel = await screen.findByTestId('ErrorPanel')
+      expect(errorPanel.getElementsByTagName('h3')[0].innerHTML).toBe('errors.conference-not-found.title')
+    })
+
+    it('should display an error if the conference PIN is wrong', async () => {
+      await act(async () => {
+        (window as any).testParams.conferenceWrongPIN = true
+        await render(<App />)
+      })
+      const errorPanel = await screen.findByTestId('ErrorPanel')
+      expect(errorPanel.getElementsByTagName('h3')[0].innerHTML).toBe('errors.conference-authentication-failed.title')
+    })
   })
 })
-
-/**
- * Empty test to bypass the problem linkin the @pexip/infinity library
- */
-test('empty test (to delete)', async () => {
-  expect(true).toBe(true)
-})
-
-// test('renders app', async () => {
-//   await render(<App />)
-//   const app = await screen.findByTestId('App')
-//   expect(app).toBeInTheDocument()
-// })

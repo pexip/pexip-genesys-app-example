@@ -11,14 +11,14 @@
         "do-you-see-yourself": "Czy widzisz siebie?"
     },
     "common": {
-        "[microphone]": "Mikrofon",
         "[camera]": "Kamera",
+        "[microphone]": "Mikrofon",
         "[speaker]": "Głośnik",
         "a-pexip-meeting": "<1></1>spotkanie",
         "and-then": "a następnie",
         "are-you-sure": "Na pewno?",
         "ask-for-permission": "Zażądaj dostępu",
-        "brand-name": "Usługa wideo Pexip",
+        "brand-name": "usłudze wideo Pexip",
         "cancel": "Anuluj",
         "change": "Zmień",
         "client-name[mobile-app]": "Aplikacja mobilna",
@@ -83,7 +83,7 @@
             "title": "Przyznano uprawnienia"
         },
         "initial-permissions-not-granted": {
-            "message": "Wybierz <1>\"Zezwól\"</1> w następnym kroku po wyświetleniu monitu w przeglądarce. Dostęp będzie umożliwiony tylko na czas trwania spotkania.",
+            "message": "Wybierz <1>Zezwól</1> w następnym kroku po wyświetleniu monitu w przeglądarce. Dostęp będzie umożliwiony tylko na czas trwania spotkania.",
             "title": "Potrzebujemy Twojej zgody na użycie kamery i mikrofonu"
         },
         "initial-permissions-video-input-denied": {
@@ -290,7 +290,7 @@
         "smth-went-wrong": "Coś poszło nie tak"
     },
     "free-dial": {
-        "how-to-find": "Identyfikator spotkania można znaleźć w zaproszeniu na spotkanie w kalendarzu lub wiadomości e-mail",
+        "how-to-find": "Identyfikator spotkania można znaleźć w zaproszeniu w kalendarzu lub w wiadomości e-mail",
         "join": "Dołącz do spotkania",
         "meeting-id": "Identyfikator spotkania",
         "placeholder": "np. spotkanie.jan"
@@ -305,7 +305,7 @@
             "header": "Proszę czekać, oczekiwanie na dołączenie innych osób"
         },
         "meeting": {
-            "body": "Czekamy na rozmowę z Tobą już dzisiaj",
+            "body": "Czekamy na spotkanie z Tobą już teraz",
             "header": "Witaj w {{brandName}}"
         }
     },
@@ -333,7 +333,7 @@
         },
         "background-effects-action": "Zmień efekt tła",
         "browser-privacy-settings-link": "ustawienia prywatności",
-        "camera-action": "Włącz kamerę {{videoInputAction}}",
+        "camera-action": "Kamera: {{videoInputAction}}",
         "camera-help-tip-desktop-1": "Czy z menu rozwijanego wybrano właściwą kamerę?",
         "camera-help-tip-desktop-2": "Sprawdź, czy obiektyw kamery nie jest zasłonięty.",
         "camera-help-tip-desktop-3": "Spróbuj zamknąć inne programy, które mogą używać kamery (np. Teams lub Slack).",
@@ -344,11 +344,11 @@
         "camera-help-tip-mobile-4": "Spróbuj uruchomić ponownie swoje urządzenie.",
         "check-everything-works": "Sprawdź, czy wszystko działa",
         "check-everything-works-description": "Upewnij się, że Twój sprzęt działa, aby inni mogli Cię słyszeć i widzieć po dołączeniu.",
-        "do you have headphones connected to-your-device": "Czy słuchawki są podłączone do urządzenia? Upewnij się, że mikrofon słuchawek znajduje się w pobliżu Twoich ust.",
+        "do you have headphones connected to-your-device": "Czy słuchawki są podłączone do urządzenia? Upewnij się, że mikrofon znajduje się w pobliżu Twoich ust.",
         "effect": {
             "blur": "Rozmycie",
             "none": "Brak",
-            "replace": "Zastąp"
+            "replace": "Tło"
         },
         "first-check-that-you-have-selected-microphone": "Najpierw sprawdź, czy wybrano właściwy mikrofon i czy głośność została zwiększona.",
         "flip-camera": "Obróć kamerę",
@@ -367,7 +367,7 @@
         "help-tip-3-header": "Wskazówka 3",
         "help-tip-4-header": "Wskazówka 4",
         "how-to-unblock-access": "Animacja z instrukcją nadawania uprawnienia dostępu do urządzeń multimedialnych.",
-        "if-you-dont-hear-yourself-try-this": "Jeśli nie słyszysz siebie, spróbuj tego",
+        "if-you-dont-hear-yourself-try-this": "Jeśli się nie słyszysz, zajrzyj tu",
         "learn-how-to-grant-permissions": "Dowiedz się, jak przyznać dostęp",
         "learn-how-to-manage-browser-privacy-settings": "Ustawienia prywatności przeglądarki",
         "learn-how-to-manage-browser-privacy-settings-label": "Jak zarządzać ustawieniami prywatności przeglądarki (otwiera się w nowej karcie)",
@@ -376,7 +376,7 @@
         "make-sure-the-volume-is-turned-up-on-your-device": "Upewnij się, że głośność na urządzeniu została zwiększona.",
         "make-sure-you-have-the-correct-microphone": "Upewnij się, że używasz właściwego mikrofonu",
         "make-sure-you-have-the-correct-speaker": "Upewnij się, że używasz właściwego głośnika",
-        "microphone-action": "Mikrofon {{audioInputAction}}",
+        "microphone-action": "Mikrofon: {{audioInputAction}}",
         "microphone-help-tip-desktop-1": "Upewnij się, że głośność na urządzeniu została zwiększona.",
         "microphone-help-tip-desktop-2": "Czy słuchawki są podłączone do urządzenia? Upewnij się, że mikrofon słuchawek znajduje się w pobliżu Twoich ust.",
         "microphone-help-tip-desktop-3": "Jeśli używasz komputera stacjonarnego, konieczne może być podłączenie głośników lub słuchawek.",
@@ -389,8 +389,8 @@
         "mute-participant": "Wycisz uczestnika",
         "muted": "Wyciszony",
         "of-your-browser": "Twojej przeglądarki",
-        "off": "wyłączone",
-        "on": "włączone",
+        "off": "wyłącz",
+        "on": "włącz",
         "or-go-to-the": "lub przejdź do ",
         "permission-info": {
             "[camera]": {
@@ -403,7 +403,7 @@
                 "title": "mikrofon"
             }
         },
-        "permissions-denied": "Odmowa uprawnień dla przeglądarki",
+        "permissions-denied": "Odmowa uprawnień dostępu dla przeglądarki",
         "permissions-try-this-label": "Jeśli to nie zadziała, spróbuj:",
         "permissions-unblock-help-step-[1]-[android]": "W przeglądarce, po prawej stronie paska adresu, dotknij opcji Więcej > Ustawienia",
         "permissions-unblock-help-step-[1]-[chrome]": "Wybierz ikonę kamery na górnym pasku przeglądarki",
@@ -505,7 +505,7 @@
         "test-your-microphone-title-[playing-back]": "Odtwórz",
         "test-your-microphone-title-[recording-success]": "Gotowe!",
         "test-your-microphone-title-[recording]": "Nagrywanie Twojego głosu...",
-        "testing-my-microphone": "Sprawdzanie 1, 2, 3",
+        "testing-my-microphone": "Próba mikrofonu: 1, 2, 3",
         "this-is-how-you-will-sound-to-others": "Tak będą Cię słyszeli inni",
         "through-browser-settings": "poprzez ustawienia przeglądarki",
         "tip-1-header": "Wskazówka 1",
@@ -516,7 +516,7 @@
         "unblock-permissions-video-link": "ten krótki film",
         "unmute": "Wyłącz wyciszenie",
         "unmute-all-guests": "Wyłącz wyciszenie wszystkich gości",
-        "unmute-camera": "Wyłącz wyciszenie kamery",
+        "unmute-camera": "Włącz kamerę",
         "unmute-microphone": "Wyłącz wyciszenie mikrofonu",
         "unmute-participant": "Wyłącz wyciszenie uczestnika",
         "waiting-for-permissions": "Oczekiwanie na uprawnienia...",
@@ -543,7 +543,7 @@
         "folded-selfview": {
             "drag": "Przesuń swój obraz"
         },
-        "hide-self-view": "Ukryj swój obraz",
+        "hide-self-view": "Ukryj podgląd kamery",
         "in-this-meeting": "Dla tego spotkania",
         "leave": "Opuść",
         "more-participants": "Liczba uczestników: {{inMeetingCount}}",
@@ -558,7 +558,7 @@
         "raised-hand": "Podniósł rękę",
         "remove-participant": "Usuń uczestnika",
         "remove-user-confirmation": "Czy na pewno chcesz usunąć uczestnika {{userName}} z tego spotkania?",
-        "show-self-view": "Wyświetl swój obraz",
+        "show-self-view": "Włącz podgląd kamery",
         "toggle-chat": "Przełącz panel czatu",
         "toggle-invite-modal": "Przełącz okno dialogowe zapraszania członków",
         "toggle-participants-panel": "Przełącz panel uczestników",
@@ -574,8 +574,8 @@
     },
     "pin": {
         "are-you-host": "Czy jesteś prowadzącym?",
-        "how-to-find": "Kod PIN można znaleźć w zaproszeniu na spotkanie w kalendarzu lub wiadomości e-mail",
-        "label": "PIN dla {{type}}",
+        "how-to-find": "Kod PIN można znaleźć w zaproszeniu na spotkanie w kalendarzu lub w wiadomości e-mail",
+        "label": "PIN dla: {{type}}",
         "placeholder": "np. 1234",
         "what-is-the-pin": "Jaki jest PIN do tego spotkania?"
     },
@@ -602,10 +602,10 @@
         "auto": "Automatyczna",
         "change-quality": "Zmień jakość",
         "high": "Wysoka",
-        "info": "To ustawienie wpływa na przepustowość, z której będziesz korzystać podczas tego spotkania. Ustaw niższą wartość, jeśli połączenie internetowe jest wolne lub spadnie wydajność komputera.",
+        "info": "To ustawienie wpływa na przepustowość, z której będziesz korzystać podczas spotkania. Ustaw niższą wartość, jeśli połączenie internetowe jest słabe lub spadnie wydajność komputera.",
         "low": "Niska",
         "medium": "Średnia",
-        "poor-connection-detected": "Wykryto słabe połączenie",
+        "poor-connection-detected": "Wykryto niską jakość połączenia",
         "quality": "Jakość połączenia",
         "select-quality": "Wybierz jakość spotkania",
         "very-high": "Bardzo wysoka"
@@ -659,11 +659,11 @@
         "[packets-transmitted]": "Przesłane pakiety",
         "[recent-packet-loss]": "Ostatnia utrata pakietów",
         "[resolution]": "Rozdzielczość",
-        "[roundtrip-time]": "Czas przesyłania w obie strony",
+        "[roundtrip-time]": "Opóźnienie transmisji",
         "[total-packet-loss]": "Łączna utrata pakietów",
         "audio": "Dźwięk",
         "in": "Przychodzące",
-        "nerd-stats": "Dokładne statystyki",
+        "nerd-stats": "Statystyki połączenia",
         "out": "Wychodzące",
         "video": "Wideo"
     },
@@ -680,7 +680,7 @@
     "username": {
         "hey-whats-your-name": "Witaj. <1></1> Jak się nazywasz?",
         "name-input-placeholder": "np. Jan",
-        "usage-purpose": "Wprowadź swoją nazwę, aby inni wiedzieli, kto jest w spotkaniu.",
+        "usage-purpose": "Wprowadź swoje imię, aby inni wiedzieli, kto jest w spotkaniu.",
         "your-name": "Twoje imię"
     }
 }

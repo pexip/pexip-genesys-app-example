@@ -1,9 +1,9 @@
-import React, { RefObject } from 'react'
+import React from 'react'
 
-import { CallSignals, InfinityClient, PresoConnectionChangeEvent } from '@pexip/infinity'
+import { CallSignals, InfinitySignals, InfinityClient, PresoConnectionChangeEvent, ConferenceStatus } from '@pexip/infinity'
 
 import { ToolbarButton } from './toolbar-button/ToolbarButton'
-import { SettingsPanel } from './settings-panel/SettingsPanel'
+import { SettingsPanel } from '../settings-panel/SettingsPanel'
 
 import { ReactComponent as shareScreenIcon } from './icons/share-screen.svg'
 import { ReactComponent as unlockIcon } from './icons/unlock.svg'
@@ -16,17 +16,22 @@ import { ReactComponent as mutedCameraIcon } from './icons/mutedCamera.svg'
 
 import copy from 'copy-to-clipboard'
 
-import './Toolbar.scss'
 import { toast } from 'react-toastify'
 import { InfinityContext } from '../App'
+import { StreamQuality } from '@pexip/media-components'
+
+import './Toolbar.scss'
 
 interface ToolbarProps {
   infinityClient: InfinityClient
   infinityContext: InfinityContext
   callSignals: CallSignals
+  infinitySignals: InfinitySignals
   onLocalPresentationStream: Function
   onLocalStream: Function
-  selfViewRef?: RefObject<HTMLDivElement>
+  isCameraMuted: boolean
+  onCameraMute: () => Promise<void>
+  onChangeStreamQuality: (streamQuality: StreamQuality) => void
 }
 
 interface ToolbarState {
@@ -34,7 +39,6 @@ interface ToolbarState {
   lockRoomEnabled: boolean
   popOutVideoEnabled: boolean
   settingsEnabled: boolean
-  cameraMuted: boolean
 }
 
 export class Toolbar extends React.Component<ToolbarProps, ToolbarState> {
@@ -44,12 +48,10 @@ export class Toolbar extends React.Component<ToolbarProps, ToolbarState> {
     super(props)
     this.state = {
       shareScreenEnabled: false,
-      lockRoomEnabled: !(this.props.infinityClient.conferenceStatus?.locked ?? false),
+      lockRoomEnabled: false,
       popOutVideoEnabled: false,
-      settingsEnabled: false,
-      cameraMuted: false
+      settingsEnabled: false
     }
-    this.toggleCameraMute = this.toggleCameraMute.bind(this)
     this.toggleShareScreen = this.toggleShareScreen.bind(this)
     this.toggleLockRoom = this.toggleLockRoom.bind(this)
     this.togglePopOutVideo = this.togglePopOutVideo.bind(this)
@@ -101,17 +103,6 @@ export class Toolbar extends React.Component<ToolbarProps, ToolbarState> {
     this.setState({ settingsEnabled: !this.state.settingsEnabled })
   }
 
-  private async toggleCameraMute (): Promise<void> {
-    const response = await this.props.infinityClient.muteVideo({ muteVideo: !this.state.cameraMuted })
-    if (response?.status === 200) {
-      this.setState({
-        cameraMuted: !this.state.cameraMuted
-      })
-      const selfViewWrapper = this.props.selfViewRef?.current
-      if (selfViewWrapper != null) { selfViewWrapper.hidden = !this.state.cameraMuted }
-    }
-  }
-
   private async copyInvitationLink (): Promise<void> {
     // Example: https://pexipdemo.com//webapp/#/?conference=mp555054c72bb44243bd0004b25d3ea45c&pin=2021
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions, @typescript-eslint/restrict-plus-operands
@@ -121,7 +112,7 @@ export class Toolbar extends React.Component<ToolbarProps, ToolbarState> {
     toast('Invitation link copied to clipboard!')
   }
 
-  public async stoppScreenShare (): Promise<void> {
+  public async stopScreenShare (): Promise<void> {
     if (this.state.shareScreenEnabled) {
       await this.toggleShareScreen()
     }
@@ -143,15 +134,20 @@ export class Toolbar extends React.Component<ToolbarProps, ToolbarState> {
         this.setState({ shareScreenEnabled: false })
       }
     })
+    // Handle lock room context
+    this.setState({ lockRoomEnabled: !(this.props.infinityClient.conferenceStatus?.locked ?? false) })
+    this.props.infinitySignals.onConferenceStatus.add((conferenceStatus: ConferenceStatus): void => {
+      this.setState({ lockRoomEnabled: !conferenceStatus.locked })
+    })
   }
 
   render (): JSX.Element {
     return (
       <>
         <div className="Toolbar" data-testid='Toolbar'>
-          <ToolbarButton icon={this.state.cameraMuted ? mutedCameraIcon : cameraIcon} toolTip={this.state.cameraMuted ? 'Unmute camera' : 'Mute camera'}
-            danger={this.state.cameraMuted}
-            onClick={this.toggleCameraMute}
+          <ToolbarButton icon={this.props.isCameraMuted ? mutedCameraIcon : cameraIcon} toolTip={this.props.isCameraMuted ? 'Unmute camera' : 'Mute camera'}
+            danger={this.props.isCameraMuted}
+            onClick={this.props.onCameraMute}
           />
           <ToolbarButton icon={shareScreenIcon} toolTip={this.state.shareScreenEnabled ? 'Stop sharing screen' : 'Share screen'}
             selected={this.state.shareScreenEnabled}
@@ -176,7 +172,15 @@ export class Toolbar extends React.Component<ToolbarProps, ToolbarState> {
         {this.state.settingsEnabled &&
           <SettingsPanel
             onClose={() => this.setState({ settingsEnabled: false })}
-            onSave={(localStream: MediaStream) => this.props.onLocalStream(localStream)}
+            onSave={(localStream?: MediaStream, streamQuality?: StreamQuality) => {
+              this.setState({ settingsEnabled: false })
+              if (localStream != null) {
+                this.props.onLocalStream(localStream)
+              }
+              if (streamQuality != null) {
+                this.props.onChangeStreamQuality(streamQuality)
+              }
+            }}
           />}
       </>
     )

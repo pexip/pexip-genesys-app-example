@@ -11,8 +11,8 @@
         "do-you-see-yourself": "Ziet u zichzelf?"
     },
     "common": {
-        "[microphone]": "Microfoon",
         "[camera]": "Camera",
+        "[microphone]": "Microfoon",
         "[speaker]": "Luidspreker",
         "a-pexip-meeting": "een<1></1>vergadering",
         "and-then": "en daarna",
@@ -83,7 +83,7 @@
             "title": "Verleende toestemmingen"
         },
         "initial-permissions-not-granted": {
-            "message": "Selecteer in de volgende stap <1>\"Toestaan\"</1> wanneer uw browser daarom vraagt. We hebben slechts toegang voor de duur van de vergadering.",
+            "message": "Selecteer in de volgende stap <1>Toestaan</1> wanneer uw browser daarom vraagt. We hebben slechts toegang voor de duur van de vergadering.",
             "title": "We hebben uw toestemming nodig om uw camera en microfoon te gebruiken"
         },
         "initial-permissions-video-input-denied": {

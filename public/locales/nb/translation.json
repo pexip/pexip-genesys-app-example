@@ -11,8 +11,8 @@
         "do-you-see-yourself": "Kan du se deg selv?"
     },
     "common": {
-        "[microphone]": "Mikrofon",
         "[camera]": "Kamera",
+        "[microphone]": "Mikrofon",
         "[speaker]": "Høyttaler",
         "a-pexip-meeting": "et<1></1>møte",
         "and-then": "og så",
@@ -83,7 +83,7 @@
             "title": "Tillatelser gitt"
         },
         "initial-permissions-not-granted": {
-            "message": "Velg <1>\"Tillat\"</1> i neste trinn når du får spørsmål i nettleseren. Vi vil kun ha tilgang så lenge møtet varer.",
+            "message": "Velg <1>Tillat</1> i neste trinn når du får spørsmål i nettleseren. Vi vil kun ha tilgang så lenge møtet varer.",
             "title": "Vi trenger din tillatelse for å bruke kameraet og mikrofonen"
         },
         "initial-permissions-video-input-denied": {
@@ -305,7 +305,7 @@
             "header": "Vent litt, venter på at andre skal bli med"
         },
         "meeting": {
-            "body": "Vi ser fra til å snakke med deg i dag",
+            "body": "Vi ser fram til å snakke med deg i dag",
             "header": "Velkommen til {{brandName}}"
         }
     },

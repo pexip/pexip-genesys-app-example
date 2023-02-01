@@ -16,7 +16,6 @@
         "[speaker]": "Speaker",
         "a-pexip-meeting": "a<1></1>meeting",
         "about-pexip": "About Pexip",
-        "and-then": "and then",
         "are-you-sure": "Are you sure?",
         "ask-for-permission": "Request permission",
         "brand-name": "your video service",
@@ -91,7 +90,7 @@
             "title": "Permissions granted"
         },
         "initial-permissions-not-granted": {
-            "message": "Please select <1>\"Allow\"</1> in the next step when prompted by your browser. We will only have access for the duration of the meeting.",
+            "message": "Please select <1>Allow</1> in the next step when prompted by your browser. We will only have access for the duration of the meeting.",
             "title": "We need your permission to use your camera and microphone"
         },
         "initial-permissions-video-input-denied": {
@@ -195,11 +194,11 @@
             "title": "Did you mean to block access to your camera or microphone?"
         },
         "permissions-rejected-audioinput": {
-            "message": "You have previously denied permission to use your microphone. To grant access follow the steps in this short video",
+            "message": "You have denied permission to use your microphone. It will not be available for this meeting",
             "title": "Microphone permission not granted"
         },
         "permissions-rejected-videoinput": {
-            "message": "You have previously denied permission to use your camera. To grant access follow the steps in this short video",
+            "message": "You have denied permission to use your camera. It will not be available for this meeting",
             "title": "Camera permission not granted"
         },
         "unknown-error": {
@@ -292,6 +291,8 @@
         "code[#pex202]": "Unable to open window for SSO authentication. This may have been prevented by a pop-up blocker.",
         "code[#pex203]": "SSO authentication failed. The system is in maintenance mode.",
         "code[#pex204]": "SSO authentication failed. SSO is not available from this domain.",
+        "code[#pex210]": "Failed to transfer into a multi-party conference.",
+        "code[#pex211]": "Failed to transfer into a one-to-one conference.",
         "code[generic]": "Something went wrong",
         "not-found": {
             "subtitle": "We can't seem to find the page you're looking for.",
@@ -374,10 +375,7 @@
         "help-step-[3]": "Step 3",
         "help-step-[4]": "Step 4",
         "help-step-[5]": "Step 5",
-        "help-tip-1-header": "Tip 1",
-        "help-tip-2-header": "Tip 2",
-        "help-tip-3-header": "Tip 3",
-        "help-tip-4-header": "Tip 4",
+        "help-tip-header": "Tip {{step}}",
         "host-muted-you": "Host muted you",
         "host-unmuted-you": "Host unmuted you",
         "how-to-unblock-access": "An animation with instructions for giving permission to access media devices.",
@@ -388,7 +386,7 @@
             "fallback-video": "We couldn't use {{originalDeviceName}} so we switched your {{deviceType}} to {{fallbackDeviceName}}",
             "video": "camera"
         },
-        "learn-how-to-grant-permissions": "Learn how to grant access",
+        "learn-how-to-grant-access": " or go to the <3>privacy settings</3> of your browser",
         "learn-how-to-manage-browser-privacy-settings": "Browser privacy settings",
         "learn-how-to-manage-browser-privacy-settings-label": "How to manage browser privacy settings (opens in a new tab)",
         "lets-check": "Let’s check that your video and sound are working properly",
@@ -425,7 +423,12 @@
                 "title": "microphone"
             }
         },
-        "permissions-denied": "Browser permissions denied",
+        "permissions-denied": {
+            "camera": "You blocked access to your camera. To grant access follow the steps in this short video:",
+            "camera-and-mic": "You blocked access to your camera & microphone. To grant access follow the steps in this short video:",
+            "mic": "You blocked access to your microphone. To grant access please follow the steps in this short video:"
+        },
+        "permissions-help-video-link": "To grant access please follow the steps in <2>this short video</2>",
         "permissions-try-this-label": "If that does not work try this:",
         "permissions-unblock-help-step-[1]-[android]": "In your browser, to the right of the address bar, tap More > Settings",
         "permissions-unblock-help-step-[1]-[chrome]": "Select the camera icon in the top bar of your browser",
@@ -501,7 +504,6 @@
             "the-current": "the current",
             "this-will-end": "This will end {{normalizedPresenterName}} presentation and start your own."
         },
-        "previously-permissions-denied": "You have previously denied permission to use your {{deniedDevice}}.",
         "proceed-anyway": "Proceed anyway",
         "proceed-without-[camera]": "Proceed without camera",
         "proceed-without-[microphone]": "Proceed without microphone",
@@ -530,7 +532,6 @@
         "test-your-microphone-title-[recording]": "Recording your voice...",
         "testing-my-microphone": "\"Testing 1, 2, 3\"",
         "this-is-how-you-will-sound-to-others": "This is how you will sound to others",
-        "through-browser-settings": "through your browser settings",
         "to-grant-access-follow-steps": "To grant access please follow the steps in ",
         "transfer": "Transfer",
         "trying-to-speak": "Trying to speak? Your microphone is muted",
@@ -598,6 +599,7 @@
         "toggle-participants-panel": "Toggle participants panel",
         "two-participants-joined-group-display-names": "{{newDisplayName}} and {{previousDisplayName}} joined the meeting",
         "two-participants-left-group-display-names": "{{newDisplayName}} and {{previousDisplayName}} left the meeting",
+        "user-raised-hand": "{{displayName}} raised a hand",
         "video-label": "Live video of the meeting",
         "video-label-presentation": "Live video of another participant’s presentation",
         "waiting-in-lobby": "Waiting in lobby",
@@ -610,9 +612,10 @@
     },
     "pin": {
         "are-you-host": "Are you a Host?",
-        "how-to-find": "You can find the PIN in the meeting invite in your calendar or email",
+        "how-to-find": "You can find the PIN in the meeting invite in your calendar or email.",
         "invalid": "Invalid PIN",
         "label": "{{type}} PIN",
+        "not-the-host": "<0>Not</0> the host? Please <3>click here</3> to join as a guest.",
         "placeholder": "e.g. '1234'",
         "what-is-the-pin": "What's the PIN for this meeting?"
     },
@@ -706,7 +709,7 @@
         "[total-packet-loss]": "Total packet loss",
         "audio": "Audio",
         "in": "In",
-        "nerd-stats": "Nerd stats",
+        "nerd-stats": "Network statistics",
         "out": "Out",
         "preso": "Presentation",
         "secure-check-code": "Secure check code",
@@ -727,5 +730,27 @@
         "name-input-placeholder": "e.g. 'David'",
         "usage-purpose": "Please enter a display name so other people know who's in the meeting",
         "your-name": "Your name"
+    },
+    "errors": {
+        "camera-not-connected": {
+            "title": "Camera not connected",
+            "message": "You are connected with audio, but a camera is not detected. Connect a camera and push \"Try again\".\nIf the issue persist, contact the IT department."
+        },
+        "camera-access-denied": {
+            "title": "Camera access denied",
+            "message": "You are connected with audio, but the permission to the camera wasn’t granted. Go to the browser configuration, grant the permission and push on \"Try again\".\nIf the issue persist, contact the IT department."
+        },
+        "infinity-server-unavailable": {
+            "title": "Video platform unavailable",
+            "message": "You are connected with audio, but we weren’t able to establish a video connection.\nTry again later and contact the IT department if the problem persist."
+        },
+        "conference-not-found": {
+            "title": "Video room not found",
+            "message": "You are connected with audio, but the video room cannot be found.\nTry again later and contact the IT department if the problem persist."
+        },
+        "conference-authentication-failed": {
+            "title": "Authentication failed",
+            "message": "You are connected with audio, but the authentication to the video room failed.\nTry again later and contact the IT department if the problem persist."
+        }
     }
 }

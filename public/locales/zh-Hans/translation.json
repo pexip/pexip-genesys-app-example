@@ -11,8 +11,8 @@
         "do-you-see-yourself": "您是否能看到自己？"
     },
     "common": {
-        "[microphone]": "麦克风",
         "[camera]": "摄像头",
+        "[microphone]": "麦克风",
         "[speaker]": "扬声器",
         "a-pexip-meeting": "<1></1> 会议",
         "and-then": "之后",
@@ -83,7 +83,7 @@
             "title": "已授权"
         },
         "initial-permissions-not-granted": {
-            "message": "请在下一步骤中，根据浏览器的提示选择 <1>\"允许\"</1> 。我们仅在会议期间有访问权限。",
+            "message": "请在下一步骤中，根据浏览器的提示选择 <1>允许</1> 。我们仅在会议期间有访问权限。",
             "title": "您授权后，我们才可以使用摄像头和麦克风"
         },
         "initial-permissions-video-input-denied": {
@@ -645,7 +645,7 @@
         "selfview-hidden": "已隐藏本端视频",
         "settings": "设置",
         "test-your-sound": "测试本人声音",
-        "unlock": "解锁会议 "
+        "unlock": "解锁会议"
     },
     "speaker": {
         "cant-hear": "我有听力障碍，因此无法听见声音",

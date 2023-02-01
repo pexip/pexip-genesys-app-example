@@ -11,8 +11,8 @@
         "do-you-see-yourself": "Kan du se dig selv?"
     },
     "common": {
-        "[microphone]": "Mikrofon",
         "[camera]": "Kamera",
+        "[microphone]": "Mikrofon",
         "[speaker]": "Højttaler",
         "a-pexip-meeting": "et<1></1>møde",
         "and-then": "og derefter",
@@ -83,7 +83,7 @@
             "title": "Tilladelse givet"
         },
         "initial-permissions-not-granted": {
-            "message": "Venligst vælg <1>\"Tillad\"<1> i næste trin når browseren beder dig om det. Vi har kun adgang under mødets varighed",
+            "message": "Venligst vælg <1>Tillad<1> i næste trin når browseren beder dig om det. Vi har kun adgang under mødets varighed",
             "title": "Vi har brug for tilladelse til at bruge dit kamera og din mikrofon"
         },
         "initial-permissions-video-input-denied": {
@@ -391,7 +391,7 @@
         "of-your-browser": "fra din browser",
         "off": "slukket",
         "on": "tændt",
-        "or-go-to-the": "eller gå til ",
+        "or-go-to-the": "eller gå til",
         "permission-info": {
             "[camera]": {
                 "title": "kamera"
