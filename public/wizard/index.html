@@ -21,6 +21,14 @@
   <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css"
     integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+
+  <!-- Import all Pexip styles -->
+  <link href="./styles/pexip/steps.css" rel="stylesheet">
+  <link href="./styles/pexip/panel.css" rel="stylesheet">
+  <link href="./styles/pexip/setup.css" rel="stylesheet">
+  <link href="./styles/pexip/install.css" rel="stylesheet">
+  <link href="./styles/pexip/summary.css" rel="stylesheet">
+  <link href="./styles/pexip/loading.css" rel="stylesheet">
 </head>
 
 <body>
@@ -31,7 +39,7 @@
       browser</a>.
   </noscript>
 
-  <header>
+  <header style="display: none">
     <p id="content-header-text"><span class="txt-premium-app-name">Premium App</span> /&nbsp; <span
         class="txt-premium-home">Home</span></p>
     <div id="language-container">
@@ -39,78 +47,71 @@
     </div>
   </header>
 
+  <div class="steps-container">
+    <ul class="steps">
+      <li id="marker-step-1" class="step step--incomplete step--active">
+        <span class="step__icon"></span>
+        <span class="step__label">Start</span>
+      </li>
+      <li id="marker-step-2" class="step step--incomplete step--inactive">
+        <span class="step__icon"></span>
+        <span class="step__label">Setup</span>
+      </li>
+      <li id="marker-step-3" class="step step--incomplete step--inactive">
+        <span class="step__icon"></span>
+        <span class="step__label">Install</span>
+      </li>
+      <li id="marker-step-4" class="step step--incomplete step--inactive">
+        <span class="step__icon"></span>
+        <span class="step__label">Summary</span>
+      </li>
+    </ul>
+  </div>
+
   <div class="content">
     <!-- MAIN CONTENT -->
     <main>
-      <img id="footer-logo" class="logo" src="./assets/img/pexip_logo.svg" w alt="Logo" width="30%">
+      <!-- <img id="footer-logo" class="logo" src="./assets/img/pexip_logo.svg" w alt="Logo" width="30%"> -->
       <!-- NAVIGATION INDICATORS -->
-      <div class="steps-container">
-        <ul class="steps">
-          <li id="marker-step-1" class="step step--incomplete step--active">
-            <span class="step__icon"></span>
-            <span class="step__label">Start</span>
-          </li>
-          <li id="marker-step-2" class="step step--incomplete step--inactive">
-            <span class="step__icon"></span>
-            <span class="step__label">Setup</span>
-          </li>
-          <li id="marker-step-3" class="step step--incomplete step--inactive">
-            <span class="step__icon"></span>
-            <span class="step__label">Install</span>
-          </li>
-          <li id="marker-step-4" class="step step--incomplete step--inactive">
-            <span class="step__icon"></span>
-            <span class="step__label">Summary</span>
-          </li>
-        </ul>
-      </div>
-      <div class="title">
-        <span class="txt-greeting">
-          Hi
-        </span>
-        <span id="username"></span>!
-        <br>
-        <div class="txt-greeting-2">
-          <p>Welcome to Pexip Video Connect for Genesys</p>
-        </div>
-      </div>
       <!-- ===========================   HOME PAGE   ======================================== -->
       <div id="index-page">
         <div class="reminder">
           <div class="reminder-list">
-            <p>Please make sure that you have all necessary</p>
-            <p>information about your dedicated Pexip</p>
-            <p>Infinity video plattform available in order to</p>
-            <p>complete the setup steps</p>
-            <br>
+            <h3>Hi</h3>
+            <h3><span id="username"></span>!</h3>
+            <p>Welcome to Pexip Video Connect for Genesys!</p>
+            <p>Please make sure that you have all necessary
+              information about your dedicated Pexip
+              Infinity video plattform available in order to
+              complete the setup steps.</p>
             <p>Need help? Contact <a href="mailto:support@pexip.com">support@pexip.com</a></p>
-            <br>
           </div>
-          <button class="btn-next" class="btn-info right">
-            <span class="txt-start">Start</span>
-          </button>
+          <div class="buttonset">
+            <button class="btn-next" class="btn-info right">
+              <span class="txt-start">Start</span>
+            </button>
+          </div>
         </div>
       </div>
       <!-- ===========================   CUSTOM SETUP PAGE   ======================================== -->
       <!-- This is where you can put custom fields or custom functionality for your wizard -->
       <div id="custom-setup-page">
         <div class="message-container">
-          <div class="message">
-            <h1>Infinity Configuration</h1>
-            <form action="/">
-              <label id="icon" for="node"><i class="fas fa-server"></i></label>
-              <input type="text" name="node" id="node" placeholder="Node" required />
-              <label id="icon" for="pin"><i class="fas fa-lock"></i></label>
-              <input type="text" name="pin" id="pin" placeholder="Access token
-            " required />
-              <div class="btn-block">
-                <p>Pexip.com <a href="https://pexip.com">Pexip.com</a>.</p>
-              </div>
-            </form>
-          </div>
+          <h3>Setup</h3>
+          <p>Please introduce the data that was provided to you:</p>
+          <form action="/">
+            <div class="control-container">
+              <label for="node">Pexip Infinity Domain</label>
+              <input type="text" name="node" id="node" placeholder="Introduce domain" required />
+            </div>
+            <div class="control-container">
+              <label for="pin">Genesys Access Token</label>
+              <input type="text" name="pin" id="pin" placeholder="Introduce access token" required />
+            </div>
+          </form>
         </div>
         <!-- Don't remove buttons below -->
-        <div>
+        <div class="buttonset">
           <button class="btn-prev">
             <span class="txt-back">Back</span>
           </button>
@@ -121,8 +122,9 @@
       </div>
       <!-- =================----====  INSTALLATION DETAILS PAGE   =========================== -->
       <div id="install-details-page">
+        <h3>Install</h3>
         <p>
-          <span class="txt-install-summary">These are the steps that will be automatically performed</span>
+          <span class="txt-install-summary">The steps below will be automatically performed</span>
         </p>
         <br>
         <div class="message-container">
@@ -173,16 +175,18 @@
             Please click the button to start the installation.
           </span>
         </p> -->
-
-        <button class="btn-prev">
-          <span class="txt-back">Back</span>
-        </button>
-        <button id="btn-install">
-          <span class="txt-install">Install</span>
-        </button>
+        <div class="buttonset">
+          <button class="btn-prev">
+            <span class="txt-back">Back</span>
+          </button>
+          <button id="btn-install">
+            <span class="txt-install">Install</span>
+          </button>
+        </div>
       </div>
       <!-- =======================  INSTALLATION FINISHED PAGE   ============================ -->
       <div id="installation-finished-page">
+        <h3>Summary</h3>
         <p class="success">
         <div class="txt-finish-install">
           Successfully installed
@@ -194,9 +198,11 @@
           <p class="txt-finish-install-2">Raw data here: </p>
           <textarea id="summary-raw-data" cols="70" rows="7"></textarea>
         </div>
-        <button id="btn-goto-app" class="btn-info">
-          <span class="txt-goto-app">Go To Application</span>
-        </button>
+        <div class="buttonset">
+          <button id="btn-goto-app" class="btn-info">
+            <span class="txt-goto-app">Go To Application</span>
+          </button>
+        </div>
         </p>
       </div>
       <!-- =============================  ERROR PAGE   ====================================== -->

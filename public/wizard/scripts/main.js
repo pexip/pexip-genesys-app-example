@@ -543,9 +543,7 @@ async function onInstallationSummaryEnter() {
     const template = `
       <div id="installation-summary-${dataKeys[i]}" class="install-summary-category">
         <h3>${beautifyModuleKey(category)}</h3>
-        <br>
         ${childElemsString}
-        <br>
       </div>
     `
 

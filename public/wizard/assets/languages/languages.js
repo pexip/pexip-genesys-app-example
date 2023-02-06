@@ -32,7 +32,7 @@ export default
             "txt-error-access-denied-msg": "It seems your Genesys Cloud organization is enforcing scopes, and this application (OAuth Client) has not been authorized.\n\nPlease contact your Administrator so that the \"Name of Wizard OAuth Client\" application is authorized (Genesys Cloud Admin - Integrations - Authorized Applications).",
             "txt-error-access-invalid": "Access Invalid",
             "txt-error-access-invalid-msg": "Access Invalid",
-            "txt-install-summary": "These are the steps that will be automatically performed for you! Click \"Install\" to start the installation.",
+            "txt-install-summary": "These steps will be automatically performed. Click \"Install\" to start the installation.",
             "txt-create-byoc-cloud-trunk": "Create BYOC Cloud Trunk",
             "txt-create-byoc-cloud-trunk-msg": "Create a BYOC Cloud Trunk specifically to provide access to the platform.",
             "txt-create-role": "Create Role",
@@ -69,7 +69,7 @@ export default
             "txt-installed": "Installed",
             "txt-still-installed-1": "Please wait while we're uninstalling. After installation, you'll be taken to the wizard start screen.",
             "txt-installation-error": "Installation Error",
-            "txt-goto-app": "Go to Pexip.com"
+            "txt-goto-app": "Close"
         },
         "es": {
             "txt-premium-app-name": "Premium App",
@@ -140,6 +140,6 @@ export default
             "txt-installed": "Instalado",
             "txt-still-installed-1": "Por favor espere mientras estamos desinstalando",
             "txt-installation-error": "Error de Instalacion",
-            "txt-goto-app": "Ir a la aplicación"
+            "txt-goto-app": "Cerrar"
         }
     }

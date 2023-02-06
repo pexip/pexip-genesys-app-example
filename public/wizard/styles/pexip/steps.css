@@ -1,0 +1,63 @@
+.steps-container {
+  display: flex;
+  margin-top: 3.5rem;
+}
+
+.steps-container .steps {
+  width: inherit;
+  margin-bottom: 0;
+  padding: 0;
+  gap: 1.3em;
+}
+
+.steps-container .steps .step {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5em;
+}
+
+.steps-container .steps .step.step--incomplete {
+  opacity: 0.6;
+}
+
+.steps-container .steps .step.step--active {
+  opacity: 1;
+}
+
+/* Hide the line that connect each step */
+.steps-container .steps .step::before,
+.steps-container .steps .step::after {
+  display: none;
+}
+
+.steps-container .steps .step .step__icon {
+  border: 1px solid #fff;
+  background: transparent;
+  width: 0.65em;
+  height: 0.65em;
+}
+
+.steps-container .steps .step .step__icon::before {
+  font-size: 0.4em;
+  font-weight: bold;
+  color: #fff;
+}
+
+.steps-container .steps .step.step--complete .step__icon {
+  background-color: #fff;
+}
+
+.steps-container .steps .step.step--complete .step__icon::before {
+  color: #0a2136;
+}
+
+.steps-container .steps .step .step__label {
+  position: inherit;
+  bottom: inherit;
+  left: inherit;
+  margin-top: inherit;
+  text-transform: inherit;
+  transform: inherit;
+  color: #fff;
+  font-weight: bold;
+}
