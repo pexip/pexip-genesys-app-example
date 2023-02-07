@@ -13,4 +13,5 @@ main form input[type=text] {
   color: #323232;
   border-radius: 4px;
   box-shadow: none;
+  font-size: 0.9em;
 }

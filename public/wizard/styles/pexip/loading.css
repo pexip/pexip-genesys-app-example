@@ -17,9 +17,9 @@
 }
 
 #loading-modal .modal .modal-message {
-  position: relative;
-  top: 3em;
+  position: absolute;
   color: #b9b9b9;
-  margin-top: 0;
-  line-height: 0;
+  margin-top: 3em;
+  width: 500px;
+  left: calc(50% - 250px);
 }

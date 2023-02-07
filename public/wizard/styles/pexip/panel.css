@@ -23,6 +23,12 @@ main p {
   color: #0A2136;
 }
 
+main a {
+  color: #032FFF !important;
+  text-decoration: underline !important;
+  border: 0 !important;
+}
+
 main form {
   width: 100%;
   margin: 0;

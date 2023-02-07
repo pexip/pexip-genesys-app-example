@@ -64,12 +64,12 @@ export default
             "txt-create-post-custom-setup": "Post Custom Setup",
             "txt-create-post-custom-setup-msg": "Invoke Backend for Post Custom Setup.",
             "txt-please-click": "Please click the button to start the installation.",
-            "txt-finish-install": "The integration was successfully installed. \n Here you can review the summary of all provisioned items.",
-            "txt-finish-install-2": "Below is the raw results of the installation in JSON format. \n You may want to store this somewhere as it won't be available anymore upon leaving the wizard. \n The data contains the id and names of the provisioned items.",
+            "txt-finish-install": "The integration was successfully installed!",
+            "txt-finish-install-2": "and save it. You will not be able to access it again after leaving this wizard.",
             "txt-installed": "Installed",
             "txt-still-installed-1": "Please wait while we're uninstalling. After installation, you'll be taken to the wizard start screen.",
             "txt-installation-error": "Installation Error",
-            "txt-goto-app": "Close"
+            "txt-goto-app": "Done"
         },
         "es": {
             "txt-premium-app-name": "Premium App",
@@ -135,11 +135,11 @@ export default
             "txt-create-post-custom-setup": "Post Custom Setup",
             "txt-create-post-custom-setup-msg": "Invoque el backend para Post Custom Setup.",
             "txt-please-click": "Haga clic en el botón para comenzar la instalación",
-            "txt-finish-install": "La integración se instaló correctamente. \n Por favor revise el resumen de elementos aprovisionados. \n Para continuar con su aplicación, presione el botón.",
-            "txt-finish-install-2": "A continuación se muestran los resultados sin procesar de la instalación en formato JSON. \n Es posible que desee almacenar esto en algún lugar, ya que ya no estará disponible al salir del asistente. \n Los datos contienen la identificación y los nombres de los elementos aprovisionados.",
+            "txt-finish-install": "La integración se instaló correctamente!",
+            "txt-finish-install-2": " y guárdalo. No podrás acceder a ellos una vez abandones el instalador.",
             "txt-installed": "Instalado",
             "txt-still-installed-1": "Por favor espere mientras estamos desinstalando",
             "txt-installation-error": "Error de Instalacion",
-            "txt-goto-app": "Cerrar"
+            "txt-goto-app": "Hecho"
         }
     }
