@@ -543,9 +543,7 @@ async function onInstallationSummaryEnter() {
     const template = `
       <div id="installation-summary-${dataKeys[i]}" class="install-summary-category">
         <h3>${beautifyModuleKey(category)}</h3>
-        <br>
         ${childElemsString}
-        <br>
       </div>
     `
 
@@ -561,7 +559,10 @@ async function onInstallationSummaryEnter() {
   const textAreaSummary = document.getElementById('summary-raw-data');
   if (!textAreaSummary) return;
   if (config.displaySummarySimplifiedData === true) {
-    textAreaSummary.value = JSON.stringify(simpleInstalledData);
+    const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(simpleInstalledData, null, '\t'));
+    textAreaSummary.setAttribute('href', dataStr);
+    textAreaSummary.setAttribute('download', 'genesys-pexip-summary.json');
+    // textAreaSummary.value = JSON.stringify(simpleInstalledData);
   } else {
     textAreaSummary.style.display = 'none';
   }
