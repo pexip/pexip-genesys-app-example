@@ -59,6 +59,7 @@ lint:
     # Default caching is 1 hour
     - gcloud storage cp robots.txt gs://$BUCKET
     # Do the following need hashes/versioning? could break if relying on changes yet cached version of file used
+    - gcloud storage cp -r integration-icons gs://$BUCKET
     - gcloud storage cp -r locales gs://$BUCKET
     - gcloud storage cp -r media-processor gs://$BUCKET
     - gcloud storage cp -r selfie_segmentation gs://$BUCKET
