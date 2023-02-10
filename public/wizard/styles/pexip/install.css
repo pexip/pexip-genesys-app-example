@@ -1,0 +1,31 @@
+main .message-container {
+  display: block;
+}
+
+main .message-container .messages {
+  width: inherit;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  padding-bottom: 1em;
+}
+
+main .message-container .messages .message {
+margin: 0;
+}
+
+main .message-container .messages .message .message-title {
+  color: #0EBEC7;
+  font-size: 0.9em;
+  padding-left: 0;
+  padding-top: 0;
+}
+
+main .message-container .messages .message .message-content {
+  padding: 0;
+}
+
+main .message-container .messages .message .message-content span {
+  font-size: 0.85em;
+  color: #323232;
+}
