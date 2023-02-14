@@ -321,10 +321,6 @@ class App extends React.Component<{}, AppState> {
       const muteState = await GenesysUtil.isMuted()
       await this.onMuteCall(muteState)
       await this.onHoldVideo(holdState)
-      const participantList = this.infinityClient.participants
-      // Set the role of all particpants to guest except agent and sip call
-      // eslint-disable-next-line @typescript-eslint/no-misused-promises
-      participantList.filter(participant => participant.uuid !== this.infinityClient.me?.uuid).filter(participant => participant.callType !== 'audio').forEach(async participant => await this.infinityClient.setRole({ role: 'guest', participantUuid: participant.uuid }))
     }
   }
 
