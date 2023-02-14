@@ -281,7 +281,7 @@ class App extends React.Component<{}, AppState> {
         async (mute) => await this.onHoldVideo(mute)
       )
       // Add end call listener
-      GenesysUtil.addEndCallListener(async () => await this.onEndCall())
+      GenesysUtil.addEndCallListener(async (disconnectAll: boolean) => await this.onEndCall(disconnectAll))
       const aniName = (await GenesysUtil.fetchAniName()) ?? ''
 
       // Add end call listener
@@ -340,8 +340,10 @@ class App extends React.Component<{}, AppState> {
     }
   }
 
-  async onEndCall (): Promise<void> {
-    await this.infinityClient.disconnectAll({})
+  async onEndCall (disconnectAll: boolean): Promise<void> {
+    if (disconnectAll) {
+      await this.infinityClient.disconnectAll({})
+    }
     await this.infinityClient.disconnect({})
     this.setState({ connectionState: CONNECTION_STATE.NO_ACTIVE_CALL })
   }
