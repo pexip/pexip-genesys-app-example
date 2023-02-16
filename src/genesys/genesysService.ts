@@ -34,7 +34,7 @@ let conversationApi: ConversationsApi
 
 let handleHold: (flag: boolean) => any
 
-let handleEndCall: (disconnectAll: boolean) => any
+let handleEndCall: (shouldDisconnectAll: boolean) => any
 
 let handleMuteCall: (flag: boolean) => any
 
@@ -97,11 +97,11 @@ export const initialize = async (
     controller.addSubscription(
       // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
       `v2.users.${userMe.id}.conversations.calls`,
-      (callEvent: { eventBody: { participants: any[] } }) => {
-        const agentParticipant: Models.QueueConversationCallEventTopicCallMediaParticipant =
+      (callEvent: { eventBody: { participants: Models.QueueConversationCallEventTopicCallMediaParticipant[] } }) => {
+        const agentParticipant =
           callEvent?.eventBody?.participants?.find(
-            (p: Models.QueueConversationCallEventTopicCallMediaParticipant) =>
-              p.purpose === GenesysRole.AGENT && p.state !== 'terminated' && (userMe.id === p.user?.id)
+            (participant) =>
+              participant.purpose === GenesysRole.AGENT && participant.state !== 'terminated' && (userMe.id === participant.user?.id)
           )
         // Disconnected event
         // Do not disconenct agent app from infinity if disconnectType is transfer
@@ -248,7 +248,7 @@ export function addHoldListener (holdListener: (flag: boolean) => any): void {
   handleHold = holdListener
 }
 
-export function addEndCallListener (endCallListener: (disconnectAll: boolean) => any): void {
+export function addEndCallListener (endCallListener: (shouldDisconnectAll: boolean) => any): void {
   handleEndCall = endCallListener
 }
 
