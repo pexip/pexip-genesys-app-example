@@ -1,5 +1,3 @@
-import './test-params'
-
 Object.defineProperty(global.navigator, 'mediaDevices', {
   value: {
     enumerateDevices: async () => {

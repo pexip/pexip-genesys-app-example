@@ -18,7 +18,7 @@ import { Toolbar } from './toolbar/Toolbar'
 import { Video } from './video/Video'
 import { Selfview } from './selfview/Selfview'
 
-import * as GenesysUtil from './genesys/genesysService'
+import * as GenesysService from './genesys/genesysService'
 import {
   getLocalStream, stopStream
 } from './media/media'
@@ -215,7 +215,6 @@ class App extends React.Component<{}, AppState> {
         }
         default: {
           this.setState({ connectionState: CONNECTION_STATE.CONNECTED })
-          // toast('Connected!')
           break
         }
       }
@@ -250,7 +249,7 @@ class App extends React.Component<{}, AppState> {
     ) {
       // throw Error('Some of the parameters are not defined in the URL in the query string.\n' +
       //   'You have to define "pcEnvironment", "pcConversationId", "pexipNode" and "pexipAgentPin"')
-      await GenesysUtil.loginPureCloud(
+      await GenesysService.loginPureCloud(
         pcEnvironment,
         pcConversationId,
         pexipNode,
@@ -265,27 +264,27 @@ class App extends React.Component<{}, AppState> {
         decodeURIComponent(queryParams.get('state') as string)
       )
       // Initiate Genesys enviroment
-      await GenesysUtil.initialize(state, accessToken)
+      await GenesysService.initialize(state, accessToken)
 
       // Stop the initialization if no call is active
-      const callstate = await GenesysUtil.isCallActive() || false
+      const callstate = await GenesysService.isCallActive() || false
       if (!callstate) {
         this.setState({ connectionState: CONNECTION_STATE.NO_ACTIVE_CALL })
         return
       }
       const pexipNode = state.pexipNode
       const pexipAgentPin = state.pexipAgentPin
-      await GenesysUtil.initialize(state, accessToken)
+
       // Add on hold listener
-      GenesysUtil.addHoldListener(
+      GenesysService.addHoldListener(
         async (mute) => await this.onHoldVideo(mute)
       )
       // Add end call listener
-      GenesysUtil.addEndCallListener(async (shouldDisconnectAll: boolean) => await this.onEndCall(shouldDisconnectAll))
-      const aniName = (await GenesysUtil.fetchAniName()) ?? ''
+      GenesysService.addEndCallListener(async (shouldDisconnectAll: boolean) => await this.onEndCall(shouldDisconnectAll))
+      const aniName = (await GenesysService.fetchAniName()) ?? ''
 
       // Add end call listener
-      GenesysUtil.addMuteListener(
+      GenesysService.addMuteListener(
         async (mute) => await this.onMuteCall(mute)
       )
       const prefixedConfAlias = config.pexip.conferencePrefix + aniName
@@ -302,7 +301,7 @@ class App extends React.Component<{}, AppState> {
         return
       }
       localStream = await getProcessedStream(localStream)
-      const displayName = await GenesysUtil.fetchAgentName()
+      const displayName = await GenesysService.getAgentName()
 
       this.setState({
         localStream,
@@ -317,8 +316,8 @@ class App extends React.Component<{}, AppState> {
         pexipAgentPin
       )
       // Set initial context for hold and mute
-      const holdState = await GenesysUtil.isHold()
-      const muteState = await GenesysUtil.isMuted()
+      const holdState = await GenesysService.isHeld()
+      const muteState = await GenesysService.isMuted()
       await this.onMuteCall(muteState)
       await this.onHoldVideo(holdState)
     }
@@ -329,7 +328,7 @@ class App extends React.Component<{}, AppState> {
     const participantList = this.infinityClient.participants
     // Mute current user video and set mute audio indicator even if no audio layer is used by web rtc
     await this.toggleCameraMute(onHold)
-    await this.infinityClient.mute({ mute: await GenesysUtil.isMuted() || onHold })
+    await this.infinityClient.mute({ mute: await GenesysService.isMuted() || onHold })
     // Mute other participants video
     participantList.forEach((participant) => {
       this.infinityClient.muteVideo({ muteVideo: onHold, participantUuid: participant.uuid })
