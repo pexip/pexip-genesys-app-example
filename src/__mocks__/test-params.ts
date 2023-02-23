@@ -14,7 +14,13 @@ Object.defineProperty(window, 'testParams', {
     // Simulate that the conference doesn't exist
     conferenceNotFound: false,
     // Simulate that a wrong PIN was introduced
-    conferenceWrongPIN: false
+    conferenceWrongPIN: false,
+    // Simulate that the call is on hold in Genesys
+    genesysHold: false,
+    // Simulate that the call is muted in Genesys
+    genesysMute: false,
+    // Simulate that the call is inactive in Genesys
+    genesysInactive: false
   }
 })
 

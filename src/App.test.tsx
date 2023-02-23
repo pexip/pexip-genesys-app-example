@@ -1,9 +1,13 @@
 import React from 'react'
 
+import './__mocks__/test-params'
+
 import { render, screen } from '@testing-library/react'
 
 import App from './App'
 import { act } from 'react-dom/test-utils'
+
+import * as GenesysService from './genesys/genesysService'
 
 // Create a mocks
 require('./__mocks__/mediaDevices')
@@ -25,7 +29,7 @@ jest.mock('@pexip/infinity', () => {
 }, { virtual: true })
 
 jest.mock('./genesys/genesysService', () => {
-  return require('./__mocks__/genesys')
+  return require('./__mocks__/genesys-service')
 })
 
 jest.mock('./error-panel/ErrorPanel', () => {
@@ -134,6 +138,37 @@ describe('App component', () => {
       })
       const errorPanel = await screen.findByTestId('ErrorPanel')
       expect(errorPanel.getElementsByTagName('h3')[0].innerHTML).toBe('errors.conference-authentication-failed.title')
+    })
+  })
+
+  describe('Genesys service', () => {
+    it('should call to initialize once', async () => {
+      await act(async () => {
+        await render(<App />)
+      })
+      expect(GenesysService.initialize).toBeCalledTimes(1)
+    })
+
+    describe('Blind transfer', () => {
+      it('should disconnect the current agent', async () => {
+        await act(async () => {
+          // (window as any).testParams.conferenceWrongPIN = true
+          await render(<App />)
+        })
+      })
+
+      it('shouldn\'t disconnect the rest of the participants', () => {
+
+      })
+    })
+    describe('Disconnect', () => {
+      it('should disconnect the current agent', () => {
+
+      })
+
+      it('should disconnect the rest of the participants', () => {
+
+      })
     })
   })
 })
