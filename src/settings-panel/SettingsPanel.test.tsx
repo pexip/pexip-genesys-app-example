@@ -1,5 +1,7 @@
 import React from 'react'
 
+import '../__mocks__/test-params'
+
 import { screen, render, act } from '@testing-library/react'
 
 import { SettingsPanel } from './SettingsPanel'
