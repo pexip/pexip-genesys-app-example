@@ -104,10 +104,10 @@ export class Toolbar extends React.Component<ToolbarProps, ToolbarState> {
   }
 
   private async copyInvitationLink (): Promise<void> {
-    // Example: https://pexipdemo.com//webapp/#/?conference=mp555054c72bb44243bd0004b25d3ea45c&pin=2021
+    // Example: https://pexipdemo.com/webapp/m/=mp7b6f680324ee40df8d762fdc24b54849/step-by-step?role=guest
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions, @typescript-eslint/restrict-plus-operands
     const infinityContext = this.props.infinityContext
-    const invitationlink: string = 'https://' + infinityContext.infinityHost + '/webapp/#/?conference=mp' + infinityContext.conferenceAlias + '&pin=' + infinityContext.conferencePin
+    const invitationlink: string = `https://${infinityContext.infinityHost}/webapp/m/mp${infinityContext.conferenceAlias}/step-by-step?role=guest`
     this.copy(invitationlink)
     toast('Invitation link copied to clipboard!')
   }
