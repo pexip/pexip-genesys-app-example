@@ -37,7 +37,7 @@ export default {
   premiumAppViewPermission: 'integration:examplePremiumApp:view',
   // Permissions required for running the Wizard App
   // all, premium, wizard, none (default)
-  checkInstallPermissions: 'none',
+  checkInstallPermissions: 'all',
   checkProductBYOC: false,
 
   // Default Values for fail-safe/testing. Shouldn't have to be changed since the app
