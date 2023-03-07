@@ -1,12 +1,14 @@
-export default {
-  // Production
-  cientID: '2cb43533-5471-4e1d-a2eb-bc8d82aacf34',
-  wizardUriBase: 'https://genesys.pexip.io/setup/',
+const development = {
+  clientID: 'fa593b6d-c2f1-40a7-8a8f-a26fe7575f16',
+  wizardUriBase: 'https://localhost:3000/setup/'
+}
 
-  // Developement
-  // clientID: 'fa593b6d-c2f1-40a7-8a8f-a26fe7575f16',
-  // wizardUriBase: 'https://localhost:3000/setup/',
+const production = {
+  clientID: '2cb43533-5471-4e1d-a2eb-bc8d82aacf34',
+  wizardUriBase: 'https://genesys.pexip.io/setup/'
+}
 
+const config = {
   // The actual URL of the landing page of your web app or your web site (when wizard has been run).
   // previously - defined as premiumAppURL
   redirectURLOnWizardCompleted: 'https://www.pexip.com',
@@ -225,3 +227,10 @@ export default {
     // 'event-bridge': ['integrations']
   }
 }
+
+if (location.origin + location.pathname === development.wizardUriBase) {
+  Object.assign(config, development)
+} else {
+  Object.assign(config, production)
+}
+export default config
