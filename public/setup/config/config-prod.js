@@ -33,7 +33,7 @@ export default {
   premiumAppViewPermission: 'integration:examplePremiumApp:view',
   // Permissions required for running the Wizard App
   // all, premium, wizard, none (default)
-  checkInstallPermissions: 'all',
+  checkInstallPermissions: 'wizard',
   checkProductBYOC: false,
 
   // Default Values for fail-safe/testing. Shouldn't have to be changed since the app
@@ -141,11 +141,11 @@ export default {
   // These are the necessary permissions that the user running the wizard must have to install or uninstall
   // Add your permissions to one of the modules, to post custom setup, or custom
   installPermissions: {
-    // custom: [],
+    custom: [],
     wizard: ['integrations:integration:view', 'integrations:integration:edit'],
     // postCustomSetup: [],
     // role: ['authorization:role:view', 'authorization:role:add', 'authorization:grant:add'],
-    // group: ['directory:group:add'],
+    group: ['directory:group:add'],
     // 'app-instance': ['integrations:integration:view', 'integrations:integration:add', 'integrations:integration:edit'],
     // 'widget-instance': ['integrations:integration:view', 'integrations:integration:add', 'integrations:integration:edit'],
     'interaction-widget': ['integrations:integration:view', 'integrations:integration:add', 'integrations:integration:edit']
@@ -165,7 +165,7 @@ export default {
     wizard: [],
     // 'postCustomSetup': [],
     // 'role': ['authorization:role:delete'],
-    // group: ['directory:group:delete'],
+     group: ['directory:group:delete'],
     // 'app-instance': ['integrations:integration:delete'],
     // 'widget-instance': ['integrations:integration:delete'],
     'interaction-widget': ['integrations:integration:delete']
@@ -187,7 +187,7 @@ export default {
     wizard: ['user-basic-info', 'integrations'],
     // postCustomSetup: [],
     // role: ['authorization'],
-    // group: ['groups'],
+     group: ['groups'],
     // 'app-instance': ['integrations'],
     // 'widget-instance': ['integrations'],
     'interaction-widget': ['integrations']
@@ -202,7 +202,7 @@ export default {
     // 'event-bridge': ['integrations']
   },
   uninstallScopes: {
-    // custom: [],
+    custom: [],
     wizard: [],
     // postCustomSetup: [],
     // role: ['authorization'],
