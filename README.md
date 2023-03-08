@@ -79,3 +79,25 @@ The build is minified and the filenames include the hashes.\
 Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+
+
+## Validate the setup process
+
+We have a setup process (aka wizard) that is located in the folder `public/setup`. This
+is a bundle of HTML, CSS and JS files provided by Genesys with some customizations.
+
+This setup is launched one the customer launch the integration for the first time
+and it creates the necessary group and interaction widget.
+
+Genesys also provides a validator that is located in `setup-validator`. For launching
+the validator the first step is to go to the validator folder:
+
+      $ cd setup-validator
+
+Then we will install all its dependencies:
+
+      $ npm install
+
+The final step is to launch the validator that will print a report:
+
+      $ npm start

@@ -664,7 +664,7 @@ function processCustomInput() {
   nodeValue = nodeInput.value;
   pinValue = pinInput.value;
 
- config.provisioningInfo['interaction-widget'][0].url =  config.provisioningInfo['interaction-widget'][0].url  + "&pin=" + pinValue + "&node=" + nodeValue ; 
+ config.provisioningInfo['interaction-widget'][0].url =  config.provisioningInfo['interaction-widget'][0].url  + "&pexipAgentPin=" + pinValue + "&pexipNode=" + nodeValue ; 
 
 }
 

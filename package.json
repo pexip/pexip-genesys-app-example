@@ -10,6 +10,7 @@
     "i18next": "22.0.1",
     "i18next-browser-languagedetector": "^7.0.1",
     "i18next-http-backend": "^2.1.1",
+    "node-html-parser": "^6.1.5",
     "patch-package": "^6.5.0",
     "purecloud-platform-client-v2": "^155.0.1",
     "react": "^18.2.0",

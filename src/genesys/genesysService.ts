@@ -1,8 +1,26 @@
-import { ConversationsApi, Models, UsersApi } from 'purecloud-platform-client-v2'
+import {
+  ConversationsApi,
+  Models,
+  UsersApi
+} from 'purecloud-platform-client-v2'
 import { GenesysRole } from '../constants/GenesysRole'
 import { GenesysConnectionsState } from '../constants/GenesysConnectionState'
 import config from '../config.js'
 import controller from './notificationsController.js'
+import { GenesysDisconnectType } from '../constants/GenesysDisconnectType'
+
+export interface CallEvent {
+  version: string
+  topicName: string
+  metadata: {
+    CorrelationId: string
+  }
+  eventBody: {
+    id: string
+    participants: Models.ConversationCallEventTopicCallMediaParticipant[]
+    recordingState: string // e.g. "active"
+  }
+}
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const platformClient = require('purecloud-platform-client-v2/dist/node/purecloud-platform-client-v2.js')
@@ -18,32 +36,28 @@ if (process.env.NODE_ENV === 'development') {
 
 const client = platformClient.ApiClient.instance
 
-let state: genesysState
+let state: GenesysState
 
 let userMe: Models.UserMe
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 let usersApi: UsersApi
-
-let conversationApi: ConversationsApi
+let conversationsApi: ConversationsApi
 
 let handleHold: (flag: boolean) => any
-
-let handleEndCall: () => any
-
+let handleEndCall: (shouldDisconnectAll: boolean) => any
 let handleMuteCall: (flag: boolean) => any
 
 let onHoldState: boolean = false
-
 let muteState: boolean = false
 
 /**
- * @param pcEnvironment The enviroment context of the current Genesys session
+ * @param pcEnvironment The environment context of the current Genesys session
  * @param conversationId The current conversation id for the running interaction
  */
-interface genesysState {
-  'pcEnvironment': string
-  'pcConversationId': string
+interface GenesysState {
+  pcEnvironment: string
+  pcConversationId: string
 }
 
 /**
@@ -57,7 +71,8 @@ export const loginPureCloud = async (
   pcEnvironment: string,
   pcConversationId: string,
   pexipNode: string,
-  pexipAgentPin: string): Promise<void> => {
+  pexipAgentPin: string
+): Promise<void> => {
   client.setEnvironment(pcEnvironment)
   await client.loginImplicitGrant(clientId, redirectUri, {
     state: JSON.stringify({
@@ -74,58 +89,22 @@ export const loginPureCloud = async (
  * @param genesysState The necessary context information for the genesys util
  * @param accessToken The access token provided by Genesys after successful login
  */
-export const initialize = async (genesysState: genesysState, accessToken: string): Promise<void> => {
+export const initialize = async (
+  genesysState: GenesysState,
+  accessToken: string
+): Promise<void> => {
   const client = platformClient.ApiClient.instance
   state = genesysState
   client.setEnvironment(state.pcEnvironment)
   client.setAccessToken(accessToken)
   usersApi = new platformClient.UsersApi(client)
-  conversationApi = new platformClient.ConversationsApi(client)
+  conversationsApi = new platformClient.ConversationsApi(client)
   userMe = await usersApi.getUsersMe()
-  controller.createChannel().then(() => {
-    controller.addSubscription(
-      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-      `v2.users.${userMe.id}.conversations.calls`,
-      (callEvent: { eventBody: { participants: any[] } }) => {
-        const agentParticipant = callEvent?.eventBody?.participants?.find((p: { purpose: string, state: string }) => p.purpose === GenesysRole.AGENT && p.state !== 'terminated')
-        // Disconnected event
-        if (agentParticipant?.state === GenesysConnectionsState.DISCONNECTED) {
-          console.log('Agent has ended the call')
-          handleEndCall()
-        }
-        // Mute event
-        if (muteState !== agentParticipant?.muted) {
-          muteState = agentParticipant?.muted
-          processMute(muteState)
-        }
-        // On hold event
-        if (onHoldState !== agentParticipant?.held) {
-          onHoldState = agentParticipant?.held
-          processHold(onHoldState)
-        }
-      })
-  })
-  console.info('Genesys client layer initated')
-}
-
-function processHold (flag: boolean): void {
-  if (flag) {
-    console.log('Agent has set the call on hold')
+  await controller.createChannel()
+  if (userMe.id != null) {
+    controller.addSubscription(`v2.users.${userMe.id}.conversations.calls`, callsCallback)
   } else {
-    console.log('Agent has continued the call')
-  }
-  handleHold(flag)
-}
-
-function processMute (flag: boolean): void {
-  if (flag) {
-    console.log('Agent has muted the call')
-  } else {
-    console.log('Agent has unmuted the call')
-  }
-  // Only process mute if onhold is not active
-  if (!onHoldState) {
-    handleMuteCall(flag)
+    throw Error('Cannot get the user ID')
   }
 }
 
@@ -134,28 +113,31 @@ function processMute (flag: boolean): void {
  * @returns The ani name which will be used as alias for the meeting
  */
 export const fetchAniName = async (): Promise<string | undefined> => {
-  const aniName = await conversationApi.getConversation(state.pcConversationId).then((conversation) => {
-    return conversation.participants?.filter((p) => p.purpose === GenesysRole.CUSTOMER)[0]?.aniName
-  })
-  return aniName
+  const conversation = await conversationsApi.getConversation(state.pcConversationId)
+  const participant = conversation.participants?.find(
+    (participant) => participant.purpose === GenesysRole.CUSTOMER
+  )
+  return participant?.aniName
 }
 
 /**
  * Reads agents displayname via Genesys API
  * @returns The agents displayname (returns "Agent" if name is undefined)
  */
-export const fetchAgentName = async (): Promise<string> => {
-  return userMe.name ?? 'Agent'
+export const getAgentName = (): string => {
+  return userMe?.name ?? 'Agent'
 }
 
 /**
  * Reads agents hold state
  * @returns Returns the hold state of the active call
  */
-export const isHold = async (): Promise<boolean> => {
+export const isHeld = async (): Promise<boolean> => {
   const agentParticipant = await getActiveAgent()
-  const connectedCAll = agentParticipant?.calls?.find((call) => call.state === 'connected')
-  return connectedCAll?.held ?? false
+  const connectedCall = agentParticipant?.calls?.find(
+    (call) => call.state === 'connected'
+  )
+  return connectedCall?.held ?? false
 }
 
 /**
@@ -164,37 +146,84 @@ export const isHold = async (): Promise<boolean> => {
  */
 export const isMuted = async (): Promise<boolean> => {
   const agentParticipant = await getActiveAgent()
-  const connectedCAll = agentParticipant?.calls?.find((call) => call.state === 'connected')
-  return connectedCAll?.muted ?? false
-}
-
-export const isCallActive = async (): Promise<boolean> => {
-  const calls = await conversationApi.getConversation(state.pcConversationId).then((conversation) => {
-    return conversation.participants?.filter((p) => p.purpose === GenesysRole.AGENT).map(participant =>
-      participant.calls).flatMap(calls => calls)
-  }
+  const connectedCall = agentParticipant?.calls?.find(
+    (call) => call.state === 'connected'
   )
-  return calls?.find((call) => call?.state === GenesysConnectionsState.CONNECTED) != null
+  return connectedCall?.muted ?? false
 }
 
 /**
- * Returns the active agent (endtime === undefined && purpose === 'agent')
- * @returns The active agent
+ * Get if the is a active call or not.
+ * @returns Boolean that indicates that a call is active.
  */
-const getActiveAgent = async (): Promise<Models.Participant | undefined> => {
-  const conversation = await conversationApi.getConversation(state.pcConversationId)
-  const agentParticipant = conversation?.participants.find((p) => p.purpose === GenesysRole.AGENT && p.endTime === undefined)
-  return agentParticipant
+export const isCallActive = async (): Promise<boolean> => {
+  const conversation = await conversationsApi.getConversation(state.pcConversationId)
+  const agentParticipants = conversation.participants?.filter(
+    (participant) => participant.purpose === GenesysRole.AGENT
+  )
+  const calls = agentParticipants.map((participant) => participant.calls).flatMap((calls) => calls)
+  const active = calls.some((call) => call?.state === GenesysConnectionsState.CONNECTED)
+  return active
 }
 
 export function addHoldListener (holdListener: (flag: boolean) => any): void {
   handleHold = holdListener
 }
 
-export function addEndCallListener (endCallListener: () => any): void {
+export function addEndCallListener (endCallListener: (shouldDisconnectAll: boolean) => any): void {
   handleEndCall = endCallListener
 }
 
 export function addMuteListener (muteCallListener: (flag: boolean) => any): void {
   handleMuteCall = muteCallListener
+}
+
+/**
+ * Returns the active agent (endtime === undefined && purpose === 'agent')
+ * @returns The active agent.
+ */
+const getActiveAgent = async (): Promise<Models.Participant | undefined> => {
+  const conversation = await conversationsApi.getConversation(state.pcConversationId)
+  const agentParticipant = conversation?.participants.find(
+    (participant) => participant.purpose === GenesysRole.AGENT && participant.endTime === undefined
+  )
+  return agentParticipant
+}
+
+const callsCallback = (callEvent: CallEvent): void => {
+  const agentParticipant = callEvent?.eventBody?.participants?.find((participant) =>
+    participant.purpose === GenesysRole.AGENT &&
+    participant.state !== 'terminated' &&
+    userMe.id === participant.user?.id
+  )
+
+  // Disconnect event
+  if (agentParticipant?.state === GenesysConnectionsState.DISCONNECTED) {
+    if (agentParticipant?.disconnectType === GenesysDisconnectType.CLIENT) {
+      // Disconnect all the user when agent disconnect
+      handleEndCall(true)
+    }
+    if (agentParticipant?.disconnectType === GenesysDisconnectType.TRANSFER) {
+      // Only disconnect the transfer iniitiating agent
+      handleEndCall(false)
+    }
+    if (agentParticipant?.disconnectType === GenesysDisconnectType.PEER) {
+      // Disconnect the sip call associated agent if the call sip call was terminated by Infinity
+      handleEndCall(false)
+    }
+  }
+
+  // Mute event
+  if (muteState !== agentParticipant?.muted) {
+    muteState = agentParticipant?.muted ?? false
+    if (!onHoldState) {
+      handleMuteCall(muteState)
+    }
+  }
+
+  // On hold event
+  if (onHoldState !== agentParticipant?.held) {
+    onHoldState = agentParticipant?.held ?? false
+    handleHold(onHoldState)
+  }
 }
