@@ -63,7 +63,7 @@ lint:
     - gcloud storage cp -r locales gs://$BUCKET
     - gcloud storage cp -r media-processor gs://$BUCKET
     - gcloud storage cp -r selfie_segmentation gs://$BUCKET
-    - gcloud storage cp -r wizard gs://$BUCKET
+    - gcloud storage cp -r setup gs://$BUCKET
     # Each file in static contains hash so give a year caching
     - gcloud storage cp --cache-control="public, max-age=31536000" -r static gs://$BUCKET
     # Copy main last to ensure all required files already uploaded
