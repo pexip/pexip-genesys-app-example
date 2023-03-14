@@ -102,7 +102,7 @@ export default {
     // }],
 
     'interaction-widget': [{
-      name: 'Pexip Video Connect for Genesys',
+      name: 'Pexip Video Connect',
       url: 'https://genesys.pexip.io/?pcEnvironment={{pcEnvironment}}&pcConversationId={{pcConversationId}}&pcLangTag={{pcLangTag}}',
       sandbox: 'allow-scripts,allow-same-origin,allow-forms,allow-modals',
       permissions: 'camera,display-capture',
