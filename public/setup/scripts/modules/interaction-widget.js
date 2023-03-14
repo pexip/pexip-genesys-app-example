@@ -74,7 +74,8 @@ async function create(logFunc, data) {
     data.forEach((instance) => {
         let integrationBody = {
             body: {
-                name: config.prefix + instance.name,
+                //name: config.prefix + instance.name,
+                name: instance.name,
                 integrationType: {
                     id: 'embedded-client-app-interaction-widget'
                 }
