@@ -21,7 +21,8 @@ async function getExisting() {
         data.entities
             .filter(entity => {
                 return entity.integrationType.id == 'embedded-client-app-interaction-widget' &&
-                    entity.name.startsWith(config.prefix);
+                   // entity.name.startsWith(config.prefix);
+                    entity.name === config.provisioningInfo['interaction-widget'][0].name;
             }).forEach(integration =>
                 integrations.push(integration));
 
