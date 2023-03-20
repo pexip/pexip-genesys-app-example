@@ -88,10 +88,10 @@ export default {
     //     allowConditions: false
     //   }]
     // }],
-    group: [{
-      name: 'PexipAgents',
-      description: 'Group for Pexip Video Connect'
-    }],
+    // group: [{
+    //  name: 'PexipAgents',
+    //  description: 'Group for Pexip Video Connect'
+    //} ],
 
     // 'app-instance': [{
     //   name: 'Pexip Premium Example App',
@@ -102,11 +102,11 @@ export default {
     // }],
 
     'interaction-widget': [{
-      name: 'Pexip Video Connect for Genesys',
+      name: 'Pexip Video Connect',
       url: 'https://genesys.pexip.io/?pcEnvironment={{pcEnvironment}}&pcConversationId={{pcConversationId}}&pcLangTag={{pcLangTag}}',
       sandbox: 'allow-scripts,allow-same-origin,allow-forms,allow-modals',
       permissions: 'camera,display-capture',
-      groups: ['PexipAgents'],
+      groups: [],
       communicationTypeFilter: 'call',
       advanced: {
         lifecycle: {
@@ -145,7 +145,7 @@ export default {
     wizard: ['integrations:integration:view', 'integrations:integration:edit'],
     // postCustomSetup: [],
     // role: ['authorization:role:view', 'authorization:role:add', 'authorization:grant:add'],
-    group: ['directory:group:add'],
+    // group: ['directory:group:add'],
     // 'app-instance': ['integrations:integration:view', 'integrations:integration:add', 'integrations:integration:edit'],
     // 'widget-instance': ['integrations:integration:view', 'integrations:integration:add', 'integrations:integration:edit'],
     'interaction-widget': ['integrations:integration:view', 'integrations:integration:add', 'integrations:integration:edit']
@@ -165,7 +165,7 @@ export default {
     wizard: [],
     // 'postCustomSetup': [],
     // 'role': ['authorization:role:delete'],
-     group: ['directory:group:delete'],
+     // group: [],
     // 'app-instance': ['integrations:integration:delete'],
     // 'widget-instance': ['integrations:integration:delete'],
     'interaction-widget': ['integrations:integration:delete']
@@ -187,7 +187,7 @@ export default {
     wizard: ['user-basic-info', 'integrations'],
     // postCustomSetup: [],
     // role: ['authorization'],
-     group: ['groups'],
+    // group: [],
     // 'app-instance': ['integrations'],
     // 'widget-instance': ['integrations'],
     'interaction-widget': ['integrations']
@@ -206,7 +206,7 @@ export default {
     wizard: [],
     // postCustomSetup: [],
     // role: ['authorization'],
-    group: ['groups'],
+    // group: [],
     // 'app-instance': ['integrations'],
     // 'widget-instance': ['integrations'],
     'interaction-widget': ['integrations']
