@@ -64,6 +64,9 @@ class App extends React.Component<{}, AppState> {
   private callSignals!: CallSignals
   private infinityClient!: InfinityClient
   private infinityContext!: InfinityContext
+  private pexipNode!: string
+  private pexipAgentPin!: string
+  private aniName!: string
 
   private readonly appRef = createRef<HTMLDivElement>()
 
@@ -239,21 +242,21 @@ class App extends React.Component<{}, AppState> {
     const queryParams = new URLSearchParams(window.location.search)
     const pcEnvironment = queryParams.get('pcEnvironment')
     const pcConversationId = queryParams.get('pcConversationId') ?? ''
-    const pexipNode = queryParams.get('pexipNode') ?? ''
-    const pexipAgentPin = queryParams.get('pexipAgentPin') ?? ''
+    this.pexipNode = queryParams.get('pexipNode') ?? ''
+    this.pexipAgentPin = queryParams.get('pexipAgentPin') ?? ''
     if (
       pcEnvironment != null &&
       pcConversationId != null &&
-      pexipNode != null &&
-      pexipAgentPin != null
+      this.pexipNode != null &&
+      this.pexipAgentPin != null
     ) {
       // throw Error('Some of the parameters are not defined in the URL in the query string.\n' +
       //   'You have to define "pcEnvironment", "pcConversationId", "pexipNode" and "pexipAgentPin"')
       await GenesysService.loginPureCloud(
         pcEnvironment,
         pcConversationId,
-        pexipNode,
-        pexipAgentPin
+        this.pexipNode,
+        this.pexipAgentPin
       )
     } else {
       this.setState({ connectionState: CONNECTION_STATE.CONNECTING })
@@ -272,8 +275,9 @@ class App extends React.Component<{}, AppState> {
         this.setState({ connectionState: CONNECTION_STATE.NO_ACTIVE_CALL })
         return
       }
-      const pexipNode = state.pexipNode
-      const pexipAgentPin = state.pexipAgentPin
+      this.pexipNode = state.pexipNode
+      this.pexipAgentPin = state.pexipAgentPin
+      this.aniName = (await GenesysService.fetchAniName()) ?? ''
 
       // Add on hold listener
       GenesysService.addHoldListener(
@@ -281,46 +285,64 @@ class App extends React.Component<{}, AppState> {
       )
       // Add end call listener
       GenesysService.addEndCallListener(async (shouldDisconnectAll: boolean) => await this.onEndCall(shouldDisconnectAll))
-      const aniName = (await GenesysService.fetchAniName()) ?? ''
 
-      // Add end call listener
+      // Add connect call listener
+      GenesysService.addConnectCallListener(
+        async () => {
+          if (this.state.connectionState === CONNECTION_STATE.NO_ACTIVE_CALL) {
+            this.setState({ connectionState: CONNECTION_STATE.CONNECTING })
+            await this.initConference()
+          }
+        }
+      )
+
+      // Add connect call listener
       GenesysService.addMuteListener(
         async (mute) => await this.onMuteCall(mute)
       )
-      const prefixedConfAlias = config.pexip.conferencePrefix + aniName
-      this.infinityContext = { conferencePin: pexipAgentPin, conferenceAlias: aniName, infinityHost: pexipNode }
 
-      let localStream: MediaStream = new MediaStream()
-      try {
-        localStream = await getLocalStream()
-      } catch (err) {
-        this.setState({
-          errorId: ERROR_ID.CAMERA_ACCESS_DENIED,
-          connectionState: CONNECTION_STATE.ERROR
-        })
-        return
-      }
-      localStream = await getProcessedStream(localStream)
-      const displayName = await GenesysService.getAgentName()
-
-      this.setState({
-        localStream,
-        displayName
-      })
-
-      await this.joinConference(
-        pexipNode,
-        prefixedConfAlias,
-        localStream,
-        displayName,
-        pexipAgentPin
-      )
-      // Set initial context for hold and mute
-      const holdState = await GenesysService.isHeld()
-      const muteState = await GenesysService.isMuted()
-      await this.onMuteCall(muteState)
-      await this.onHoldVideo(holdState)
+      this.infinityContext = { conferencePin: this.pexipAgentPin, conferenceAlias: this.aniName, infinityHost: this.pexipNode }
+      await this.initConference()
     }
+  }
+
+  /**
+   * Initiates a conference based on the global fields pexipNode and pexipAgentPin.
+   * The local media stream will be initiated in this method.
+   * The method relies on GenesysService to get the conference alias and the agents display name
+   */
+  private async initConference (): Promise<void> {
+    const prefixedConfAlias = config.pexip.conferencePrefix + this.aniName
+    let localStream: MediaStream = new MediaStream()
+    try {
+      localStream = await getLocalStream()
+    } catch (err) {
+      this.setState({
+        errorId: ERROR_ID.CAMERA_ACCESS_DENIED,
+        connectionState: CONNECTION_STATE.ERROR
+      })
+      return
+    }
+    localStream = await getProcessedStream(localStream)
+    const displayName = GenesysService.getAgentName()
+
+    this.setState({
+      localStream,
+      displayName
+    })
+
+    await this.joinConference(
+      this.pexipNode,
+      prefixedConfAlias,
+      localStream,
+      displayName,
+      this.pexipAgentPin
+    )
+    // Set initial context for hold and mute
+    const holdState = await GenesysService.isHeld()
+    const muteState = await GenesysService.isMuted()
+    await this.onMuteCall(muteState)
+    await this.onHoldVideo(holdState)
   }
 
   // Set the video to mute for all participants

@@ -47,6 +47,7 @@ let conversationsApi: ConversationsApi
 let handleHold: (flag: boolean) => any
 let handleEndCall: (shouldDisconnectAll: boolean) => any
 let handleMuteCall: (flag: boolean) => any
+let handleConnectCall: () => any
 
 let onHoldState: boolean = false
 let muteState: boolean = false
@@ -102,7 +103,10 @@ export const initialize = async (
   userMe = await usersApi.getUsersMe()
   await controller.createChannel()
   if (userMe.id != null) {
-    controller.addSubscription(`v2.users.${userMe.id}.conversations.calls`, callsCallback)
+    controller.addSubscription(
+      `v2.users.${userMe.id}.conversations.calls`,
+      callsCallback
+    )
   } else {
     throw Error('Cannot get the user ID')
   }
@@ -113,7 +117,9 @@ export const initialize = async (
  * @returns The ani name which will be used as alias for the meeting
  */
 export const fetchAniName = async (): Promise<string | undefined> => {
-  const conversation = await conversationsApi.getConversation(state.pcConversationId)
+  const conversation = await conversationsApi.getConversation(
+    state.pcConversationId
+  )
   const participant = conversation.participants?.find(
     (participant) => participant.purpose === GenesysRole.CUSTOMER
   )
@@ -157,12 +163,18 @@ export const isMuted = async (): Promise<boolean> => {
  * @returns Boolean that indicates that a call is active.
  */
 export const isCallActive = async (): Promise<boolean> => {
-  const conversation = await conversationsApi.getConversation(state.pcConversationId)
+  const conversation = await conversationsApi.getConversation(
+    state.pcConversationId
+  )
   const agentParticipants = conversation.participants?.filter(
     (participant) => participant.purpose === GenesysRole.AGENT
   )
-  const calls = agentParticipants.map((participant) => participant.calls).flatMap((calls) => calls)
-  const active = calls.some((call) => call?.state === GenesysConnectionsState.CONNECTED)
+  const calls = agentParticipants
+    .map((participant) => participant.calls)
+    .flatMap((calls) => calls)
+  const active = calls.some(
+    (call) => call?.state === GenesysConnectionsState.CONNECTED
+  )
   return active
 }
 
@@ -170,12 +182,22 @@ export function addHoldListener (holdListener: (flag: boolean) => any): void {
   handleHold = holdListener
 }
 
-export function addEndCallListener (endCallListener: (shouldDisconnectAll: boolean) => any): void {
+export function addEndCallListener (
+  endCallListener: (shouldDisconnectAll: boolean) => any
+): void {
   handleEndCall = endCallListener
 }
 
-export function addMuteListener (muteCallListener: (flag: boolean) => any): void {
+export function addMuteListener (
+  muteCallListener: (flag: boolean) => any
+): void {
   handleMuteCall = muteCallListener
+}
+
+export function addConnectCallListener (
+  handleConnectCallListener: () => any
+): void {
+  handleConnectCall = handleConnectCallListener
 }
 
 /**
@@ -183,18 +205,23 @@ export function addMuteListener (muteCallListener: (flag: boolean) => any): void
  * @returns The active agent.
  */
 const getActiveAgent = async (): Promise<Models.Participant | undefined> => {
-  const conversation = await conversationsApi.getConversation(state.pcConversationId)
+  const conversation = await conversationsApi.getConversation(
+    state.pcConversationId
+  )
   const agentParticipant = conversation?.participants.find(
-    (participant) => participant.purpose === GenesysRole.AGENT && participant.endTime === undefined
+    (participant) =>
+      participant.purpose === GenesysRole.AGENT &&
+      participant.endTime === undefined
   )
   return agentParticipant
 }
 
 const callsCallback = (callEvent: CallEvent): void => {
-  const agentParticipant = callEvent?.eventBody?.participants?.find((participant) =>
-    participant.purpose === GenesysRole.AGENT &&
-    participant.state !== 'terminated' &&
-    userMe.id === participant.user?.id
+  const agentParticipant = callEvent?.eventBody?.participants?.find(
+    (participant) =>
+      participant.purpose === GenesysRole.AGENT &&
+      participant.state !== 'terminated' &&
+      userMe.id === participant.user?.id
   )
 
   // Disconnect event
@@ -211,6 +238,11 @@ const callsCallback = (callEvent: CallEvent): void => {
       // Disconnect the sip call associated agent if the call sip call was terminated by Infinity
       handleEndCall(false)
     }
+  }
+
+  // Connect event
+  if (agentParticipant?.state === GenesysConnectionsState.CONNECTED) {
+    handleConnectCall()
   }
 
   // Mute event
