@@ -1,3 +1,4 @@
+import { GenesysConnectionsState } from '../constants/GenesysConnectionState'
 import '../__mocks__/test-params'
 
 import { CallEvent } from './genesysService'
@@ -235,6 +236,17 @@ describe('Genesys service', () => {
       callEvent.eventBody.participants[0].muted = true
       triggerEvent(callEvent)
       expect(mockMute).toBeCalledTimes(1)
+    })
+  })
+
+  describe('addConnectCallListener', () => {
+    it('should trigger \'handleConnectCallListener\' when a call is connected', async () => {
+      await GenesysService.initialize(state, accessToken)
+      const mockCallConnect = jest.fn()
+      GenesysService.addConnectCallListener(mockCallConnect)
+      callEvent.eventBody.participants[0].state = GenesysConnectionsState.CONNECTED
+      triggerEvent(callEvent)
+      expect(mockCallConnect).toBeCalledTimes(1)
     })
   })
 })

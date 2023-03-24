@@ -4,6 +4,7 @@ const genesysMock = {
   addMuteListener: jest.fn(),
   addHoldListener: jest.fn(),
   addEndCallListener: jest.fn(),
+  addConnectCallListener: jest.fn(),
   fetchAniName: jest.fn(),
   getAgentName: jest.fn(),
   isHeld: jest.fn(),
