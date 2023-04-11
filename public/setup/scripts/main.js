@@ -667,7 +667,7 @@ function processCustomInput() {
   pinValue = pinInput.value;
   prefixValue = prefixInput.value
 
- config.provisioningInfo['interaction-widget'][0].url =  config.provisioningInfo['interaction-widget'][0].url  + "&pexipAgentPin=" + pinValue + "&pexipNode=" + nodeValue + "&pexipAgentPrefix=" + prefixValue; 
+ config.provisioningInfo['interaction-widget'][0].url =  config.provisioningInfo['interaction-widget'][0].url  + "&pexipAgentPin=" + pinValue + "&pexipNode=" + nodeValue + "&pexipAppPrefix=" + prefixValue; 
 
 }
 
