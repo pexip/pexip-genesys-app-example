@@ -1,5 +1,4 @@
 import React, { createRef } from 'react'
-import config from './config.js'
 import { ToastContainer, Slide } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
@@ -55,6 +54,7 @@ export interface InfinityContext {
   conferencePin: string
   conferenceAlias: string
   infinityHost: string
+  pexipAppPrefix: string
 }
 
 class App extends React.Component<{}, AppState> {
@@ -66,6 +66,7 @@ class App extends React.Component<{}, AppState> {
   private infinityContext!: InfinityContext
   private pexipNode!: string
   private pexipAgentPin!: string
+  private pexipAppPrefix!: string
   private aniName!: string
 
   private readonly appRef = createRef<HTMLDivElement>()
@@ -244,11 +245,13 @@ class App extends React.Component<{}, AppState> {
     const pcConversationId = queryParams.get('pcConversationId') ?? ''
     this.pexipNode = queryParams.get('pexipNode') ?? ''
     this.pexipAgentPin = queryParams.get('pexipAgentPin') ?? ''
+    this.pexipAppPrefix = queryParams.get('pexipAppPrefix') ?? ''
     if (
       pcEnvironment != null &&
       pcConversationId != null &&
       this.pexipNode != null &&
-      this.pexipAgentPin != null
+      this.pexipAgentPin != null &&
+      this.pexipAppPrefix != null
     ) {
       // throw Error('Some of the parameters are not defined in the URL in the query string.\n' +
       //   'You have to define "pcEnvironment", "pcConversationId", "pexipNode" and "pexipAgentPin"')
@@ -256,7 +259,8 @@ class App extends React.Component<{}, AppState> {
         pcEnvironment,
         pcConversationId,
         this.pexipNode,
-        this.pexipAgentPin
+        this.pexipAgentPin,
+        this.pexipAppPrefix
       )
     } else {
       this.setState({ connectionState: CONNECTION_STATE.CONNECTING })
@@ -301,7 +305,7 @@ class App extends React.Component<{}, AppState> {
         async (mute) => await this.onMuteCall(mute)
       )
 
-      this.infinityContext = { conferencePin: this.pexipAgentPin, conferenceAlias: this.aniName, infinityHost: this.pexipNode }
+      this.infinityContext = { conferencePin: this.pexipAgentPin, conferenceAlias: this.aniName, infinityHost: this.pexipNode, pexipAppPrefix: this.pexipAppPrefix }
       await this.initConference()
     }
   }
@@ -312,7 +316,7 @@ class App extends React.Component<{}, AppState> {
    * The method relies on GenesysService to get the conference alias and the agents display name
    */
   private async initConference (): Promise<void> {
-    const prefixedConfAlias = config.pexip.conferencePrefix + this.aniName
+    const prefixedConfAlias = GenesysService.getAgentPrefix() + this.aniName
     let localStream: MediaStream = new MediaStream()
     try {
       localStream = await getLocalStream()

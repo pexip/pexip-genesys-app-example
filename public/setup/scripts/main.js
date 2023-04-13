@@ -26,6 +26,7 @@ let userMe = null;
 // Custom install
 var nodeValue;
 var pinValue;
+var prefixValue;
 
 /**
  * Redirect to the actual premium app
@@ -660,11 +661,13 @@ async function setup() {
 function processCustomInput() {
   let nodeInput = document.getElementById("node");
   let pinInput = document.getElementById("pin");
+  let prefixInput = document.getElementById("prefix");
 
   nodeValue = nodeInput.value;
   pinValue = pinInput.value;
+  prefixValue = prefixInput.value
 
- config.provisioningInfo['interaction-widget'][0].url =  config.provisioningInfo['interaction-widget'][0].url  + "&pexipAgentPin=" + pinValue + "&pexipNode=" + nodeValue ; 
+ config.provisioningInfo['interaction-widget'][0].url =  config.provisioningInfo['interaction-widget'][0].url  + "&pexipAgentPin=" + pinValue + "&pexipNode=" + nodeValue + "&pexipAppPrefix=" + prefixValue; 
 
 }
 
