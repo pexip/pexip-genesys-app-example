@@ -465,7 +465,7 @@ async function onInstallDetailsEnter() {
 
       let messageTitle = document.createElement("div");
       messageTitle.className = "message-title";
-      messageTitle.innerHTML = "<span>" + moduleIndex.toString() + ". </span><span class='txt-create-" + modKey + "'></span>";
+      messageTitle.innerHTML = "<span class='txt-create-" + modKey + "'></span>";
       messageDiv.appendChild(messageTitle);
 
       let messageContent = document.createElement("div");
