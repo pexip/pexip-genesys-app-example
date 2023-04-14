@@ -1,0 +1,105 @@
+@font-face {
+  font-family: 'Whyte';
+  src: url('../fonts/Whyte-Bold.woff2');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Whyte';
+  src: url('../fonts/Whyte-BoldItalic.woff2');
+  font-weight: bold;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Whyte';
+  src: url('../fonts/Whyte-Book.woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Whyte';
+  src: url('../fonts/Whyte-BookItalic.woff2');
+  font-weight: normal;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Whyte';
+  src: url('../fonts/Whyte-Light.woff2');
+  font-weight: 200;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Whyte';
+  src: url('../fonts/Whyte-Medium.woff2');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: Whyte;
+  src: url('../fonts/Whyte-MediumItalic.woff2');
+  font-weight: 500;
+  font-style: italic;
+}
+
+body {
+  font-family: Whyte;
+  margin: auto;
+  max-width: 62.5em;
+  padding: 3em 1em;
+  line-height: 2em;
+  color: #354860;
+}
+
+h1, h2, h3, h4, h5 , h6 {
+  color: #0b2036;
+}
+
+img.genesys-laptop {
+  display: block;
+  margin: auto;
+  width: 30em;
+}
+
+a.button {
+  width: fit-content;
+  text-decoration: none;
+  background-color: #0b2036;
+  color: #fff;
+  font-weight: 500;
+  font-size: 1rem;
+  line-height: 1;
+  letter-spacing: .0125em;
+  display: inline-flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 1.2rem 1.5rem;
+  margin: 1em 2em;
+  border-radius: 0.4rem;
+  height: auto;
+  font-family: Whyte;
+  border: 0;
+  cursor: pointer;
+  transition: .15s linear;
+  transition-property: color,background-color;
+}
+
+a.button:hover {
+  background-color: #354860;
+}
+
+.buttonset {
+  display: flex;
+  justify-content: center;
+}
+
+.configuration-steps {
+  display: flex;
+  width: 100%;;
+}

@@ -5,7 +5,7 @@ export default {
 
   // The actual URL of the landing page of your web app or your web site (when wizard has been run).
   // previously - defined as premiumAppURL
-  redirectURLOnWizardCompleted: 'https://www.pexip.com',
+  redirectURLOnWizardCompleted: '/landing-page/',
   // redirectURLOnWizardCompleted: 'https://mypurecloud.github.io/purecloud-premium-app/premium-app-sample/index.html',
   redirectURLWithParams: false,
 
