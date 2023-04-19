@@ -239,6 +239,12 @@ const callsCallback = (callEvent: CallEvent): void => {
       userMe.id === participant.user?.id
   )
 
+  const customerParticipant = callEvent?.eventBody?.participants?.find(
+    (participant) =>
+      participant.purpose === GenesysRole.CUSTOMER &&
+      participant.state !== 'terminated'
+  )
+
   // Disconnect event
   if (agentParticipant?.state === GenesysConnectionsState.DISCONNECTED) {
     if (agentParticipant?.disconnectType === GenesysDisconnectType.CLIENT) {
@@ -246,7 +252,7 @@ const callsCallback = (callEvent: CallEvent): void => {
       handleEndCall(true)
     }
     if (agentParticipant?.disconnectType === GenesysDisconnectType.TRANSFER) {
-      // Only disconnect the transfer iniitiating agent
+      // Only disconnect the agent that initiated the transfer
       handleEndCall(false)
     }
     if (agentParticipant?.disconnectType === GenesysDisconnectType.PEER) {
@@ -256,7 +262,12 @@ const callsCallback = (callEvent: CallEvent): void => {
   }
 
   // Connect event
-  if (agentParticipant?.state === GenesysConnectionsState.CONNECTED) {
+  // This will happen if we transfer the call to another participant and he
+  // transfer the call back to us
+  if (
+    agentParticipant?.state === GenesysConnectionsState.CONNECTED &&
+    customerParticipant?.state === GenesysConnectionsState.CONNECTED
+  ) {
     handleConnectCall()
   }
 
