@@ -156,7 +156,7 @@ export const getAgentPrefix = (): string => {
 export const isHeld = async (): Promise<boolean> => {
   const agentParticipant = await getActiveAgent()
   const connectedCall = agentParticipant?.calls?.find(
-    (call) => call.state === 'connected'
+    (call) => call.state === GenesysConnectionsState.Connected
   )
   return connectedCall?.held ?? false
 }
@@ -168,7 +168,7 @@ export const isHeld = async (): Promise<boolean> => {
 export const isMuted = async (): Promise<boolean> => {
   const agentParticipant = await getActiveAgent()
   const connectedCall = agentParticipant?.calls?.find(
-    (call) => call.state === 'connected'
+    (call) => call.state === GenesysConnectionsState.Connected
   )
   return connectedCall?.muted ?? false
 }
@@ -188,7 +188,7 @@ export const isCallActive = async (): Promise<boolean> => {
     .map((participant) => participant.calls)
     .flatMap((calls) => calls)
   const active = calls.some(
-    (call) => call?.state === GenesysConnectionsState.CONNECTED
+    (call) => call?.state === GenesysConnectionsState.Connected
   )
   return active
 }
@@ -235,18 +235,18 @@ const callsCallback = (callEvent: CallEvent): void => {
   const agentParticipant = callEvent?.eventBody?.participants?.find(
     (participant) =>
       participant.purpose === GenesysRole.AGENT &&
-      participant.state !== 'terminated' &&
+      participant.state !== GenesysConnectionsState.Terminated &&
       userMe.id === participant.user?.id
   )
 
   const customerParticipant = callEvent?.eventBody?.participants?.find(
     (participant) =>
       participant.purpose === GenesysRole.CUSTOMER &&
-      participant.state !== 'terminated'
+      participant.state !== GenesysConnectionsState.Terminated
   )
 
   // Disconnect event
-  if (agentParticipant?.state === GenesysConnectionsState.DISCONNECTED) {
+  if (agentParticipant?.state === GenesysConnectionsState.Disconnected) {
     if (agentParticipant?.disconnectType === GenesysDisconnectType.CLIENT) {
       // Disconnect all the user when agent disconnect
       handleEndCall(true)
@@ -265,8 +265,8 @@ const callsCallback = (callEvent: CallEvent): void => {
   // This will happen if we transfer the call to another participant and he
   // transfer the call back to us
   if (
-    agentParticipant?.state === GenesysConnectionsState.CONNECTED &&
-    customerParticipant?.state === GenesysConnectionsState.CONNECTED
+    agentParticipant?.state === GenesysConnectionsState.Connected &&
+    customerParticipant?.state === GenesysConnectionsState.Connected
   ) {
     handleConnectCall()
   }

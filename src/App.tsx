@@ -10,7 +10,8 @@ import {
   InfinitySignals,
   CallSignals,
   PresoConnectionChangeEvent,
-  Participant
+  Participant,
+  CallType
 } from '@pexip/infinity'
 
 import { Toolbar } from './toolbar/Toolbar'
@@ -182,7 +183,7 @@ class App extends React.Component<{}, AppState> {
 
     const checkIfDisconnect = async (): Promise<void> => {
       const videoParticipants = this.infinityClient.participants.filter(
-        (participant) => participant.callType === 'video'
+        (participant) => participant.callType === CallType.video
       )
       if (videoParticipants.length === 1) await this.onEndCall(true)
     }

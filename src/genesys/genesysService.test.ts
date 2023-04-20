@@ -257,8 +257,8 @@ describe('Genesys service', () => {
       await GenesysService.initialize(state, accessToken)
       const mockCallConnect = jest.fn()
       GenesysService.addConnectCallListener(mockCallConnect)
-      callEvent.eventBody.participants[0].state = GenesysConnectionsState.CONNECTED
-      callEvent.eventBody.participants[1].state = GenesysConnectionsState.CONNECTED
+      callEvent.eventBody.participants[0].state = GenesysConnectionsState.Connected
+      callEvent.eventBody.participants[1].state = GenesysConnectionsState.Connected
       triggerEvent(callEvent)
       expect(mockCallConnect).toBeCalledTimes(1)
     })
@@ -267,8 +267,8 @@ describe('Genesys service', () => {
       await GenesysService.initialize(state, accessToken)
       const mockCallConnect = jest.fn()
       GenesysService.addConnectCallListener(mockCallConnect)
-      callEvent.eventBody.participants[0].state = GenesysConnectionsState.CONNECTED
-      callEvent.eventBody.participants[1].state = GenesysConnectionsState.DISCONNECTED
+      callEvent.eventBody.participants[0].state = GenesysConnectionsState.Connected
+      callEvent.eventBody.participants[1].state = GenesysConnectionsState.Disconnected
       triggerEvent(callEvent)
       expect(mockCallConnect).toBeCalledTimes(0)
     })
