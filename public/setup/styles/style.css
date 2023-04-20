@@ -334,6 +334,12 @@ input[type='password'] {
   margin-bottom: 15px;
 }
 
+.required-label::after {
+  content: '*';
+  color: red;
+  margin-left: 0.5em;
+}
+
 #icon {
   display: inline-block;
   padding: 9.3px 15px;

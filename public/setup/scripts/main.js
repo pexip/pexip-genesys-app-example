@@ -175,24 +175,29 @@ function setEventListeners() {
   const prevButtons = Array.from(document.getElementsByClassName('btn-prev'));
   const installButton = document.getElementById('btn-install');
   const goToAppButton = document.getElementById('btn-goto-app');
+  const infoForm = document.getElementById('info-form');
 
   // Buttons
-  nextButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      switch (currentPage) {
-        case PAGES.INDEX_PAGE:
-          if (config.enableCustomSetupPageBeforeInstall) {
-            switchPage(PAGES.CUSTOM_SETUP);
-          } else {
-            switchPage(PAGES.INSTALL_DETAILS);
-          }
-          break;
-        case PAGES.CUSTOM_SETUP:
+  const nextButtonFunction = (event) => {
+    console.log(event)
+    event?.preventDefault()
+    switch (currentPage) {
+      case PAGES.INDEX_PAGE:
+        if (config.enableCustomSetupPageBeforeInstall) {
+          switchPage(PAGES.CUSTOM_SETUP);
+        } else {
           switchPage(PAGES.INSTALL_DETAILS);
-          break;
-      }
-    })
+        }
+        break;
+      case PAGES.CUSTOM_SETUP:
+        switchPage(PAGES.INSTALL_DETAILS);
+        break;
+    }
+  }
+  nextButtons.forEach(btn => {
+    btn.addEventListener('click', nextButtonFunction)
   });
+  infoForm.onsubmit = nextButtonFunction
 
   prevButtons.forEach(btn => {
     btn.addEventListener('click', () => {
