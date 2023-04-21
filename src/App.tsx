@@ -10,7 +10,8 @@ import {
   InfinitySignals,
   CallSignals,
   PresoConnectionChangeEvent,
-  Participant
+  Participant,
+  CallType
 } from '@pexip/infinity'
 
 import { Toolbar } from './toolbar/Toolbar'
@@ -35,7 +36,6 @@ enum CONNECTION_STATE {
   CONNECTING,
   CONNECTED,
   DISCONNECTED,
-  NO_ACTIVE_CALL,
   ERROR,
 }
 
@@ -77,7 +77,7 @@ class App extends React.Component<{}, AppState> {
       localStream: new MediaStream(),
       remoteStream: new MediaStream(),
       presentationStream: new MediaStream(),
-      connectionState: CONNECTION_STATE.DISCONNECTED,
+      connectionState: CONNECTION_STATE.CONNECTING,
       secondaryVideo: 'presentation',
       displayName: 'Agent',
       isCameraMuted: false,
@@ -180,6 +180,14 @@ class App extends React.Component<{}, AppState> {
       }
     }
     this.infinitySignals.onParticipantJoined.add(checkPlaybackDisconnection)
+
+    const checkIfDisconnect = async (): Promise<void> => {
+      const videoParticipants = this.infinityClient.participants.filter(
+        (participant) => participant.callType === CallType.video
+      )
+      if (videoParticipants.length === 1) await this.onEndCall(true)
+    }
+    this.infinitySignals.onParticipantLeft.add(checkIfDisconnect)
   }
 
   private async joinConference (
@@ -276,7 +284,7 @@ class App extends React.Component<{}, AppState> {
       // Stop the initialization if no call is active
       const callstate = await GenesysService.isCallActive() || false
       if (!callstate) {
-        this.setState({ connectionState: CONNECTION_STATE.NO_ACTIVE_CALL })
+        this.setState({ connectionState: CONNECTION_STATE.DISCONNECTED })
         return
       }
       this.pexipNode = state.pexipNode
@@ -293,7 +301,7 @@ class App extends React.Component<{}, AppState> {
       // Add connect call listener
       GenesysService.addConnectCallListener(
         async () => {
-          if (this.state.connectionState === CONNECTION_STATE.NO_ACTIVE_CALL) {
+          if (this.state.connectionState === CONNECTION_STATE.DISCONNECTED) {
             this.setState({ connectionState: CONNECTION_STATE.CONNECTING })
             await this.initConference()
           }
@@ -366,11 +374,15 @@ class App extends React.Component<{}, AppState> {
   }
 
   async onEndCall (shouldDisconnectAll: boolean): Promise<void> {
+    if (this.state.localStream != null) {
+      stopProcessedStream(this.state.localStream.id)
+      stopStream(this.state.localStream)
+    }
     if (shouldDisconnectAll) {
       await this.infinityClient.disconnectAll({})
     }
-    await this.infinityClient.disconnect({})
-    this.setState({ connectionState: CONNECTION_STATE.NO_ACTIVE_CALL })
+    await this.infinityClient?.disconnect({})
+    this.setState({ connectionState: CONNECTION_STATE.DISCONNECTED })
   }
 
   async onMuteCall (muted: boolean): Promise<void> {
@@ -383,17 +395,10 @@ class App extends React.Component<{}, AppState> {
   }
 
   async componentWillUnmount (): Promise<void> {
-    if (this.state.localStream != null) {
-      stopProcessedStream(this.state.localStream.id)
-      stopStream(this.state.localStream)
-    }
-    await this.infinityClient?.disconnect({})
+    await this.onEndCall(false)
   }
 
   render (): JSX.Element {
-    if (this.state.connectionState === CONNECTION_STATE.DISCONNECTED) {
-      return <></>
-    }
     return (
       <div className='App' data-testid='App' ref={this.appRef}>
         { this.state.errorId !== '' && this.state.connectionState === CONNECTION_STATE.ERROR &&
@@ -408,7 +413,7 @@ class App extends React.Component<{}, AppState> {
               <Spinner colorScheme='light'/>
             </CenterLayout>
           }
-         { this.state.connectionState === CONNECTION_STATE.NO_ACTIVE_CALL &&
+         { this.state.connectionState === CONNECTION_STATE.DISCONNECTED &&
             <div className="no-active-call">
               <h1>No active call</h1>
             </div>

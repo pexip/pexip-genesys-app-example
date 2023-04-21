@@ -18,11 +18,24 @@ jest.mock('./notificationsController', () => ({
   }
 }))
 
-const mockParticipant = {
+const customerMock = {
+  purpose: 'customer',
+  held: false,
+  muted: false,
+  state: 'terminated',
+  disconnectType: undefined,
+  user: {
+    id: 'f02618ce-1ae8-4429-bdb0-2d55f701a546'
+  }
+}
+
+const agentMock = {
   // In a call we will have 4 participants with different purpose: agent, customer, ivr and acd
   purpose: 'agent',
   held: false,
   muted: false,
+  state: 'connected',
+  disconnectType: undefined,
   user: {
     id: 'e02618ce-1ae8-4429-bdb0-2d55f701a545'
   }
@@ -56,7 +69,7 @@ describe('Genesys service', () => {
       },
       eventBody: {
         id: '4a4a33a5-52ca-4698-8dce-f93ff21dc404',
-        participants: [Object.assign({}, mockParticipant)],
+        participants: [Object.assign({}, agentMock), Object.assign({}, customerMock)],
         recordingState: 'active'
       }
     };
@@ -244,9 +257,20 @@ describe('Genesys service', () => {
       await GenesysService.initialize(state, accessToken)
       const mockCallConnect = jest.fn()
       GenesysService.addConnectCallListener(mockCallConnect)
-      callEvent.eventBody.participants[0].state = GenesysConnectionsState.CONNECTED
+      callEvent.eventBody.participants[0].state = GenesysConnectionsState.Connected
+      callEvent.eventBody.participants[1].state = GenesysConnectionsState.Connected
       triggerEvent(callEvent)
       expect(mockCallConnect).toBeCalledTimes(1)
+    })
+
+    it('shouldn\'t trigger \'handleConnectCallListener\' when the customer is disconnected', async () => {
+      await GenesysService.initialize(state, accessToken)
+      const mockCallConnect = jest.fn()
+      GenesysService.addConnectCallListener(mockCallConnect)
+      callEvent.eventBody.participants[0].state = GenesysConnectionsState.Connected
+      callEvent.eventBody.participants[1].state = GenesysConnectionsState.Disconnected
+      triggerEvent(callEvent)
+      expect(mockCallConnect).toBeCalledTimes(0)
     })
   })
 })

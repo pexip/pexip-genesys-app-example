@@ -148,27 +148,5 @@ describe('App component', () => {
       })
       expect(GenesysService.initialize).toBeCalledTimes(1)
     })
-
-    describe('Blind transfer', () => {
-      it('should disconnect the current agent', async () => {
-        await act(async () => {
-          // (window as any).testParams.conferenceWrongPIN = true
-          await render(<App />)
-        })
-      })
-
-      it('shouldn\'t disconnect the rest of the participants', () => {
-
-      })
-    })
-    describe('Disconnect', () => {
-      it('should disconnect the current agent', () => {
-
-      })
-
-      it('should disconnect the rest of the participants', () => {
-
-      })
-    })
   })
 })

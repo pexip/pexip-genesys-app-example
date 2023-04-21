@@ -15,6 +15,9 @@ const infinityMock = {
   createInfinityClientSignals: () => ({
     onParticipantJoined: {
       add: jest.fn()
+    },
+    onParticipantLeft: {
+      add: jest.fn()
     }
   }),
   createInfinityClient: () => ({
