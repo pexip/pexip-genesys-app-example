@@ -1,6 +1,7 @@
 import React, { createRef } from 'react'
 import { ToastContainer, Slide } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import { v4 as uuidv4 } from 'uuid'
 
 import {
   createInfinityClient,
@@ -57,6 +58,8 @@ export interface InfinityContext {
   pexipAppPrefix: string
 }
 
+const pexipCallPrefix = 'pexcall'
+
 class App extends React.Component<{}, AppState> {
   private readonly toolbarRef = React.createRef<Toolbar>()
 
@@ -68,6 +71,7 @@ class App extends React.Component<{}, AppState> {
   private pexipAgentPin!: string
   private pexipAppPrefix!: string
   private aniName!: string
+  private conferenceAlias!: string
 
   private readonly appRef = createRef<HTMLDivElement>()
 
@@ -282,7 +286,8 @@ class App extends React.Component<{}, AppState> {
       this.pexipNode = state.pexipNode
       this.pexipAgentPin = state.pexipAgentPin
       this.aniName = (await GenesysService.fetchAniName()) ?? ''
-
+      this.pexipAppPrefix = state.pexipAppPrefix
+      this.conferenceAlias = this.aniName.startsWith(`${pexipCallPrefix}`) ? this.aniName.replace(`/${pexipCallPrefix}/`, '') : uuidv4()
       // Add on hold listener
       GenesysService.addHoldListener(
         async (mute) => await this.onHoldVideo(mute)
@@ -305,7 +310,7 @@ class App extends React.Component<{}, AppState> {
         async (mute) => await this.onMuteCall(mute)
       )
 
-      this.infinityContext = { conferencePin: this.pexipAgentPin, conferenceAlias: this.aniName, infinityHost: this.pexipNode, pexipAppPrefix: this.pexipAppPrefix }
+      this.infinityContext = { conferencePin: this.pexipAgentPin, conferenceAlias: this.conferenceAlias, infinityHost: this.pexipNode, pexipAppPrefix: this.pexipAppPrefix }
       await this.initConference()
     }
   }
@@ -316,7 +321,7 @@ class App extends React.Component<{}, AppState> {
    * The method relies on GenesysService to get the conference alias and the agents display name
    */
   private async initConference (): Promise<void> {
-    const prefixedConfAlias = GenesysService.getAgentPrefix() + this.aniName
+    const prefixedConfAlias = GenesysService.getAppPrefix().concat(this.conferenceAlias)
     let localStream: MediaStream = new MediaStream()
     try {
       localStream = await getLocalStream()

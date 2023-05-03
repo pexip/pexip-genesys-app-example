@@ -40,7 +40,7 @@ let state: GenesysState
 
 let userMe: Models.UserMe
 
-let pexipAgentPrefix: string
+let pexipAppPrefix: string
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 let usersApi: UsersApi
@@ -61,7 +61,7 @@ let muteState: boolean = false
 interface GenesysState {
   pcEnvironment: string
   pcConversationId: string
-  pexipAgentPrefix: string
+  pexipAppPrefix: string
 }
 
 /**
@@ -70,14 +70,14 @@ interface GenesysState {
  * @param pcConversationId ToDo
  * @param pexipNode ToDo
  * @param pexipAgentPin ToDo
- * @param pexipAgentPrefix ToDo
+ * @param pexipAppPrefix ToDo
  */
 export const loginPureCloud = async (
   pcEnvironment: string,
   pcConversationId: string,
   pexipNode: string,
   pexipAgentPin: string,
-  pexipAgentPrefix: string
+  pexipAppPrefix: string
 ): Promise<void> => {
   client.setEnvironment(pcEnvironment)
   await client.loginImplicitGrant(clientId, redirectUri, {
@@ -86,7 +86,7 @@ export const loginPureCloud = async (
       pcConversationId,
       pexipNode,
       pexipAgentPin,
-      pexipAgentPrefix
+      pexipAppPrefix
     })
   })
 }
@@ -107,7 +107,7 @@ export const initialize = async (
   usersApi = new platformClient.UsersApi(client)
   conversationsApi = new platformClient.ConversationsApi(client)
   userMe = await usersApi.getUsersMe()
-  pexipAgentPrefix = state.pexipAgentPrefix
+  pexipAppPrefix = state.pexipAppPrefix
   await controller.createChannel()
   if (userMe.id != null) {
     controller.addSubscription(
@@ -145,8 +145,8 @@ export const getAgentName = (): string => {
  * Provides the agent prefix that is part of the integration URL
  * @returns The agents prefix (returns "agent" if name is undefined)
  */
-export const getAgentPrefix = (): string => {
-  return pexipAgentPrefix ?? 'agent'
+export const getAppPrefix = (): string => {
+  return pexipAppPrefix ?? 'agent'
 }
 
 /**
