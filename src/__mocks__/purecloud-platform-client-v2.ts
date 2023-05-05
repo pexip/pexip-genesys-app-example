@@ -16,7 +16,12 @@ const mockGenesys = {
             participants: [
               {
                 purpose: 'customer',
-                aniName: '1234'
+                aniName: '1234',
+                calls: [{
+                  self: {
+                    addressRaw: 'fake-node'
+                  }
+                }]
               },
               {
                 purpose: 'agent',

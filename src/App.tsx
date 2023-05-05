@@ -149,6 +149,14 @@ class App extends React.Component<{}, AppState> {
     }
   }
 
+  /**
+   * Provides the agent prefix that is part of the integration URL
+   * @returns The agents prefix (returns "agent" if name is undefined)
+  */
+  private getAppPrefix (): string {
+    return this.pexipAppPrefix ?? 'agent'
+  }
+
   private configureSignals (): void {
     this.infinitySignals = createInfinityClientSignals([])
     this.callSignals = createCallSignals([])
@@ -319,7 +327,7 @@ class App extends React.Component<{}, AppState> {
    * The method relies on GenesysService to get the conference alias and the agents display name
    */
   private async initConference (): Promise<void> {
-    const prefixedConfAlias = GenesysService.getAppPrefix().concat(this.conferenceAlias)
+    const prefixedConfAlias = this.getAppPrefix().concat(this.conferenceAlias)
     let localStream: MediaStream = new MediaStream()
     try {
       localStream = await getLocalStream()
