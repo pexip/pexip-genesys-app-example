@@ -58,8 +58,6 @@ export interface InfinityContext {
   pexipAppPrefix: string
 }
 
-const pexipCallPrefix = 'pexcall'
-
 class App extends React.Component<{}, AppState> {
   private readonly toolbarRef = React.createRef<Toolbar>()
 
@@ -287,7 +285,7 @@ class App extends React.Component<{}, AppState> {
       this.pexipAgentPin = state.pexipAgentPin
       this.aniName = (await GenesysService.fetchAniName()) ?? ''
       this.pexipAppPrefix = state.pexipAppPrefix
-      this.conferenceAlias = this.aniName.startsWith(`${pexipCallPrefix}`) ? this.aniName.replace(`/${pexipCallPrefix}/`, '') : uuidv4()
+      this.conferenceAlias = await GenesysService.isDialOut(this.pexipNode) ? this.aniName : uuidv4()
       // Add on hold listener
       GenesysService.addHoldListener(
         async (mute) => await this.onHoldVideo(mute)

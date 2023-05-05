@@ -174,6 +174,21 @@ export const isMuted = async (): Promise<boolean> => {
 }
 
 /**
+ * Checks if ANI reflects a PSTN call. Whitespaces will be trimmed out.
+ * @param sipSource The source domain or ip of the sip call
+ * @returns true if ANI is a phone number / false if ANI is not a phone number
+ */
+export const isDialOut = async (sipSource: string): Promise<boolean> => {
+  const conversation = await conversationsApi.getConversation(
+    state.pcConversationId
+  )
+  const participant = conversation.participants?.find(
+    (participant) => participant.purpose === GenesysRole.CUSTOMER
+  )
+  return participant?.calls?.find(() => true)?.self?.addressRaw?.endsWith(sipSource) ?? false
+}
+
+/**
  * Get if the is a active call or not.
  * @returns Boolean that indicates that a call is active.
  */
