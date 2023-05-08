@@ -36,6 +36,8 @@ if (process.env.NODE_ENV === 'development') {
 
 const client = platformClient.ApiClient.instance
 
+const billablePermission = 'integration:pexipVideo:agent'
+
 let state: GenesysState
 
 let userMe: Models.UserMe
@@ -89,8 +91,8 @@ export const loginPureCloud = async (
 }
 
 /**
- * Initiates the Genesys util objectpexipAppPrefix
- * @param genesysState The necessary context information for the genesys util
+ * Initiates the Genesys util object
+ * @param genesysState The necessary context information for the Genesys util
  * @param accessToken The access token provided by Genesys after successful login
  */
 export const initialize = async (
@@ -103,7 +105,7 @@ export const initialize = async (
   client.setAccessToken(accessToken)
   usersApi = new platformClient.UsersApi(client)
   conversationsApi = new platformClient.ConversationsApi(client)
-  userMe = await usersApi.getUsersMe()
+  userMe = await usersApi.getUsersMe({ expand: ['authorization'] })
   await controller.createChannel()
   if (userMe.id != null) {
     controller.addSubscription(
@@ -135,6 +137,15 @@ export const fetchAniName = async (): Promise<string | undefined> => {
  */
 export const getAgentName = (): string => {
   return userMe?.name ?? 'Agent'
+}
+
+/**
+ * Reads agents displayname via Genesys API
+ * @returns The agents displayname (returns "Agent" if name is undefined)
+ */
+export const hasBillingPermission = (): boolean => {
+  const foundPermission = userMe.authorization?.permissions?.find((permission: string) => permission === billablePermission)
+  return foundPermission !== undefined ?? false
 }
 
 /**

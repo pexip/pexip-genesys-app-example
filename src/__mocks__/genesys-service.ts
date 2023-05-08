@@ -10,7 +10,8 @@ const genesysMock = {
   g: jest.fn(),
   getAgentName: jest.fn(),
   isHeld: jest.fn(),
-  isMuted: jest.fn()
+  isMuted: jest.fn(),
+  hasBillingPermission: () => true
 }
 
 module.exports = genesysMock

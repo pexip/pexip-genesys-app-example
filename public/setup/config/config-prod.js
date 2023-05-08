@@ -19,7 +19,7 @@ export default {
   //            by the Genesys Cloud product team and you can update the name at that time.
   // previously - defined as appName
 
-  premiumAppIntegrationTypeId: 'premium-app-example',
+  premiumAppIntegrationTypeId: 'premium-app-pexip',
   // premiumAppIntegrationTypeId: 'embedded-client-app-interaction-widget',
 
   // Optional - Some Premium Applications leverage both a premium app and a premium widget
@@ -30,7 +30,7 @@ export default {
   //      'integration:examplePremiumApp:view'. Once your premium app is approved,
   //      the unique integration domain will be generated and this must be updated.
   // previously - defined as viewPermission
-  premiumAppViewPermission: 'integration:examplePremiumApp:view',
+  premiumAppViewPermission: 'integration:pexipVideo:view',
   // Permissions required for running the Wizard App
   // all, premium, wizard, none (default)
   checkInstallPermissions: 'wizard',

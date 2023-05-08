@@ -291,6 +291,15 @@ class App extends React.Component<{}, AppState> {
       // Initiate Genesys enviroment
       await GenesysService.initialize(state, accessToken)
 
+      // Check for billing permission
+      if (!GenesysService.hasBillingPermission()) {
+        this.setState({
+          errorId: ERROR_ID.NO_BILLING_PERMISSION,
+          connectionState: CONNECTION_STATE.ERROR
+        })
+        throw new Error('No billing permission')
+      }
+
       // Stop the initialization if no call is active
       const callstate = await GenesysService.isCallActive() || false
       if (!callstate) {
