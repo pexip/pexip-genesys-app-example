@@ -19,7 +19,7 @@ const mockGenesys = {
                 aniName: '1234',
                 calls: [{
                   self: {
-                    addressRaw: 'fake-node'
+                    addressRaw: '123123132@fake-node'
                   }
                 }]
               },

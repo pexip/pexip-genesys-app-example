@@ -40,7 +40,6 @@ describe('Genesys service', () => {
     // Reset modules for every test
     GenesysService = await import ('./genesysService')
     PlatformClient = await import('../__mocks__/purecloud-platform-client-v2')
-    PlatformClient = await import('../__mocks__/purecloud-platform-client-v2')
     jest.resetModules()
     // Reset variables
     state = {

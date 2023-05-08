@@ -173,7 +173,13 @@ export const isDialOut = async (sipSource: string): Promise<boolean> => {
   const participant = conversation.participants?.find(
     (participant) => participant.purpose === GenesysRole.CUSTOMER
   )
-  return participant?.calls?.find(() => true)?.self?.addressRaw?.endsWith(sipSource) ?? false
+
+  /**  Create a the regexp dynamically.
+  The regex will check the part after the @ of addressRaw (e.g. sip:165049338@pexipdemo.com)
+  */
+  const regExp = new RegExp(`@(${sipSource}$)`)
+  const result = participant?.calls?.some((call) => regExp.test(call?.self?.addressRaw ?? ''))
+  return result ?? false
 }
 
 /**
