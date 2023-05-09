@@ -84,13 +84,15 @@ describe('Genesys service', () => {
     const pcConversationId = 'fake-conversation-id'
     const pexipNode = 'fake-node'
     const pexipAgentPin = 'fake-pin'
+    const pexipAppPrefix = 'fake-prefix'
 
     it('should set the client environment', async () => {
       await GenesysService.loginPureCloud(
         pcEnvironment,
         pcConversationId,
         pexipNode,
-        pexipAgentPin
+        pexipAgentPin,
+        pexipAppPrefix
       )
       expect(PlatformClient.ApiClient.instance.setEnvironment).toBeCalledTimes(1)
       expect(PlatformClient.ApiClient.instance.setEnvironment).toBeCalledWith(pcEnvironment)
@@ -101,7 +103,8 @@ describe('Genesys service', () => {
         pcEnvironment,
         pcConversationId,
         pexipNode,
-        pexipAgentPin
+        pexipAgentPin,
+        pexipAppPrefix
       )
       expect(PlatformClient.ApiClient.instance.loginImplicitGrant).toBeCalledTimes(1)
     })
@@ -176,6 +179,20 @@ describe('Genesys service', () => {
       (window as any).testParams.genesysMuted = true
       const muted = await GenesysService.isMuted()
       expect(muted).toBeTruthy()
+    })
+  })
+
+  describe('isDialout', () => {
+    it('should return \'true\' when the call addressRaw does end with pexip node', async () => {
+      await GenesysService.initialize(state, accessToken)
+      const isDialOut = await GenesysService.isDialOut('fake-node')
+      expect(isDialOut).toBeTruthy()
+    })
+
+    it('should return \'false\' when the call addressRaw does not end with pexip node', async () => {
+      await GenesysService.initialize(state, accessToken)
+      const isDialOut = await GenesysService.isDialOut('anything-else')
+      expect(isDialOut).toBeFalsy()
     })
   })
 

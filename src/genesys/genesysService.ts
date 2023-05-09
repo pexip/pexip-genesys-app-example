@@ -40,8 +40,6 @@ let state: GenesysState
 
 let userMe: Models.UserMe
 
-let pexipAgentPrefix: string
-
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 let usersApi: UsersApi
 let conversationsApi: ConversationsApi
@@ -61,7 +59,6 @@ let muteState: boolean = false
 interface GenesysState {
   pcEnvironment: string
   pcConversationId: string
-  pexipAgentPrefix: string
 }
 
 /**
@@ -70,14 +67,14 @@ interface GenesysState {
  * @param pcConversationId ToDo
  * @param pexipNode ToDo
  * @param pexipAgentPin ToDo
- * @param pexipAgentPrefix ToDo
+ * @param pexipAppPrefix ToDo
  */
 export const loginPureCloud = async (
   pcEnvironment: string,
   pcConversationId: string,
   pexipNode: string,
   pexipAgentPin: string,
-  pexipAgentPrefix: string
+  pexipAppPrefix: string
 ): Promise<void> => {
   client.setEnvironment(pcEnvironment)
   await client.loginImplicitGrant(clientId, redirectUri, {
@@ -86,13 +83,13 @@ export const loginPureCloud = async (
       pcConversationId,
       pexipNode,
       pexipAgentPin,
-      pexipAgentPrefix
+      pexipAppPrefix
     })
   })
 }
 
 /**
- * Initiates the Genesys util object
+ * Initiates the Genesys util objectpexipAppPrefix
  * @param genesysState The necessary context information for the genesys util
  * @param accessToken The access token provided by Genesys after successful login
  */
@@ -107,7 +104,6 @@ export const initialize = async (
   usersApi = new platformClient.UsersApi(client)
   conversationsApi = new platformClient.ConversationsApi(client)
   userMe = await usersApi.getUsersMe()
-  pexipAgentPrefix = state.pexipAgentPrefix
   await controller.createChannel()
   if (userMe.id != null) {
     controller.addSubscription(
@@ -142,14 +138,6 @@ export const getAgentName = (): string => {
 }
 
 /**
- * Provides the agent prefix that is part of the integration URL
- * @returns The agents prefix (returns "agent" if name is undefined)
- */
-export const getAgentPrefix = (): string => {
-  return pexipAgentPrefix ?? 'agent'
-}
-
-/**
  * Reads agents hold state
  * @returns Returns the hold state of the active call
  */
@@ -171,6 +159,27 @@ export const isMuted = async (): Promise<boolean> => {
     (call) => call.state === GenesysConnectionsState.Connected
   )
   return connectedCall?.muted ?? false
+}
+
+/**
+ * Checks if ANI reflects a PSTN call. Whitespaces will be trimmed out.
+ * @param sipSource The source domain or ip of the sip call
+ * @returns true if ANI is a phone number / false if ANI is not a phone number
+ */
+export const isDialOut = async (sipSource: string): Promise<boolean> => {
+  const conversation = await conversationsApi.getConversation(
+    state.pcConversationId
+  )
+  const participant = conversation.participants?.find(
+    (participant) => participant.purpose === GenesysRole.CUSTOMER
+  )
+
+  /**  Create a the regexp dynamically.
+  The regex will check the part after the @ of addressRaw (e.g. sip:165049338@pexipdemo.com)
+  */
+  const regExp = new RegExp(`@(${sipSource}$)`)
+  const result = participant?.calls?.some((call) => regExp.test(call?.self?.addressRaw ?? ''))
+  return result ?? false
 }
 
 /**
