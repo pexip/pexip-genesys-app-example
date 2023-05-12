@@ -293,11 +293,15 @@ class App extends React.Component<{}, AppState> {
 
       // Check for billing permission
       if (!GenesysService.hasBillingPermission()) {
-        this.setState({
-          errorId: ERROR_ID.NO_BILLING_PERMISSION,
-          connectionState: CONNECTION_STATE.ERROR
-        })
-        throw new Error('No billing permission')
+        console.error('No billing permission')
+        // TODO: Display an error in case we don't have the permissions
+        //   this is disabled until we talk how the license work with Genesys
+
+        // this.setState({
+        //   errorId: ERROR_ID.NO_BILLING_PERMISSION,
+        //   connectionState: CONNECTION_STATE.ERROR
+        // })
+        // throw new Error('No billing permission')
       }
 
       // Stop the initialization if no call is active
