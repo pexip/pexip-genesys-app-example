@@ -5,7 +5,7 @@ export default {
 
   // The actual URL of the landing page of your web app or your web site (when wizard has been run).
   // previously - defined as premiumAppURL
-  redirectURLOnWizardCompleted: 'https://www.pexip.com',
+  redirectURLOnWizardCompleted: '/landing-page/',
   // redirectURLOnWizardCompleted: 'https://mypurecloud.github.io/purecloud-premium-app/premium-app-sample/index.html',
   redirectURLWithParams: false,
 
@@ -19,7 +19,7 @@ export default {
   //            by the Genesys Cloud product team and you can update the name at that time.
   // previously - defined as appName
 
-  premiumAppIntegrationTypeId: 'premium-app-example',
+  premiumAppIntegrationTypeId: 'premium-app-pexip',
   // premiumAppIntegrationTypeId: 'embedded-client-app-interaction-widget',
 
   // Optional - Some Premium Applications leverage both a premium app and a premium widget
@@ -30,7 +30,7 @@ export default {
   //      'integration:examplePremiumApp:view'. Once your premium app is approved,
   //      the unique integration domain will be generated and this must be updated.
   // previously - defined as viewPermission
-  premiumAppViewPermission: 'integration:examplePremiumApp:view',
+  premiumAppViewPermission: 'integration:pexipVideo:view',
   // Permissions required for running the Wizard App
   // all, premium, wizard, none (default)
   checkInstallPermissions: 'wizard',
@@ -88,10 +88,10 @@ export default {
     //     allowConditions: false
     //   }]
     // }],
-    group: [{
-      name: 'PexipAgents',
-      description: 'Group for Pexip Video Connect'
-    }],
+    // group: [{
+    //  name: 'PexipAgents',
+    //  description: 'Group for Pexip Video Connect'
+    //} ],
 
     // 'app-instance': [{
     //   name: 'Pexip Premium Example App',
@@ -102,11 +102,11 @@ export default {
     // }],
 
     'interaction-widget': [{
-      name: 'Pexip Video Connect for Genesys',
+      name: 'Pexip Video Connect',
       url: 'https://genesys.pexip.io/?pcEnvironment={{pcEnvironment}}&pcConversationId={{pcConversationId}}&pcLangTag={{pcLangTag}}',
       sandbox: 'allow-scripts,allow-same-origin,allow-forms,allow-modals',
       permissions: 'camera,display-capture',
-      groups: ['PexipAgents'],
+      groups: [],
       communicationTypeFilter: 'call',
       advanced: {
         lifecycle: {
@@ -145,7 +145,7 @@ export default {
     wizard: ['integrations:integration:view', 'integrations:integration:edit'],
     // postCustomSetup: [],
     // role: ['authorization:role:view', 'authorization:role:add', 'authorization:grant:add'],
-    group: ['directory:group:add'],
+    // group: ['directory:group:add'],
     // 'app-instance': ['integrations:integration:view', 'integrations:integration:add', 'integrations:integration:edit'],
     // 'widget-instance': ['integrations:integration:view', 'integrations:integration:add', 'integrations:integration:edit'],
     'interaction-widget': ['integrations:integration:view', 'integrations:integration:add', 'integrations:integration:edit']
@@ -165,7 +165,7 @@ export default {
     wizard: [],
     // 'postCustomSetup': [],
     // 'role': ['authorization:role:delete'],
-     group: ['directory:group:delete'],
+     // group: [],
     // 'app-instance': ['integrations:integration:delete'],
     // 'widget-instance': ['integrations:integration:delete'],
     'interaction-widget': ['integrations:integration:delete']
@@ -187,7 +187,7 @@ export default {
     wizard: ['user-basic-info', 'integrations'],
     // postCustomSetup: [],
     // role: ['authorization'],
-     group: ['groups'],
+    // group: [],
     // 'app-instance': ['integrations'],
     // 'widget-instance': ['integrations'],
     'interaction-widget': ['integrations']
@@ -206,7 +206,7 @@ export default {
     wizard: [],
     // postCustomSetup: [],
     // role: ['authorization'],
-    group: ['groups'],
+    // group: [],
     // 'app-instance': ['integrations'],
     // 'widget-instance': ['integrations'],
     'interaction-widget': ['integrations']

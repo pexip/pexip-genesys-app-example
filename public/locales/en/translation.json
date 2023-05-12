@@ -751,6 +751,10 @@
         "conference-authentication-failed": {
             "title": "Authentication failed",
             "message": "You are connected with audio, but the authentication to the video room failed.\nTry again later and contact the IT department if the problem persist."
+        },
+        "no-billing-permission": {
+            "title": "No Billing Permission",
+            "message": "You are missing the 'integration:pexipVideo:agent' permission that allows access to Pexip Video Connect.  Please contact your administrator."
         }
     }
 }

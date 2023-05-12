@@ -1,3 +1,4 @@
+import { GenesysConnectionsState } from '../constants/GenesysConnectionState'
 import '../__mocks__/test-params'
 
 import { CallEvent } from './genesysService'
@@ -17,11 +18,24 @@ jest.mock('./notificationsController', () => ({
   }
 }))
 
-const mockParticipant = {
+const customerMock = {
+  purpose: 'customer',
+  held: false,
+  muted: false,
+  state: 'terminated',
+  disconnectType: undefined,
+  user: {
+    id: 'f02618ce-1ae8-4429-bdb0-2d55f701a546'
+  }
+}
+
+const agentMock = {
   // In a call we will have 4 participants with different purpose: agent, customer, ivr and acd
   purpose: 'agent',
   held: false,
   muted: false,
+  state: 'connected',
+  disconnectType: undefined,
   user: {
     id: 'e02618ce-1ae8-4429-bdb0-2d55f701a545'
   }
@@ -55,7 +69,7 @@ describe('Genesys service', () => {
       },
       eventBody: {
         id: '4a4a33a5-52ca-4698-8dce-f93ff21dc404',
-        participants: [Object.assign({}, mockParticipant)],
+        participants: [Object.assign({}, agentMock), Object.assign({}, customerMock)],
         recordingState: 'active'
       }
     };
@@ -70,13 +84,15 @@ describe('Genesys service', () => {
     const pcConversationId = 'fake-conversation-id'
     const pexipNode = 'fake-node'
     const pexipAgentPin = 'fake-pin'
+    const pexipAppPrefix = 'fake-prefix'
 
     it('should set the client environment', async () => {
       await GenesysService.loginPureCloud(
         pcEnvironment,
         pcConversationId,
         pexipNode,
-        pexipAgentPin
+        pexipAgentPin,
+        pexipAppPrefix
       )
       expect(PlatformClient.ApiClient.instance.setEnvironment).toBeCalledTimes(1)
       expect(PlatformClient.ApiClient.instance.setEnvironment).toBeCalledWith(pcEnvironment)
@@ -87,7 +103,8 @@ describe('Genesys service', () => {
         pcEnvironment,
         pcConversationId,
         pexipNode,
-        pexipAgentPin
+        pexipAgentPin,
+        pexipAppPrefix
       )
       expect(PlatformClient.ApiClient.instance.loginImplicitGrant).toBeCalledTimes(1)
     })
@@ -165,6 +182,20 @@ describe('Genesys service', () => {
     })
   })
 
+  describe('isDialout', () => {
+    it('should return \'true\' when the call addressRaw does end with pexip node', async () => {
+      await GenesysService.initialize(state, accessToken)
+      const isDialOut = await GenesysService.isDialOut('fake-node')
+      expect(isDialOut).toBeTruthy()
+    })
+
+    it('should return \'false\' when the call addressRaw does not end with pexip node', async () => {
+      await GenesysService.initialize(state, accessToken)
+      const isDialOut = await GenesysService.isDialOut('anything-else')
+      expect(isDialOut).toBeFalsy()
+    })
+  })
+
   describe('isCallActive', () => {
     it('should return \'false\' when the call is not inactive', async () => {
       await GenesysService.initialize(state, accessToken);
@@ -235,6 +266,28 @@ describe('Genesys service', () => {
       callEvent.eventBody.participants[0].muted = true
       triggerEvent(callEvent)
       expect(mockMute).toBeCalledTimes(1)
+    })
+  })
+
+  describe('addConnectCallListener', () => {
+    it('should trigger \'handleConnectCallListener\' when a call is connected', async () => {
+      await GenesysService.initialize(state, accessToken)
+      const mockCallConnect = jest.fn()
+      GenesysService.addConnectCallListener(mockCallConnect)
+      callEvent.eventBody.participants[0].state = GenesysConnectionsState.Connected
+      callEvent.eventBody.participants[1].state = GenesysConnectionsState.Connected
+      triggerEvent(callEvent)
+      expect(mockCallConnect).toBeCalledTimes(1)
+    })
+
+    it('shouldn\'t trigger \'handleConnectCallListener\' when the customer is disconnected', async () => {
+      await GenesysService.initialize(state, accessToken)
+      const mockCallConnect = jest.fn()
+      GenesysService.addConnectCallListener(mockCallConnect)
+      callEvent.eventBody.participants[0].state = GenesysConnectionsState.Connected
+      callEvent.eventBody.participants[1].state = GenesysConnectionsState.Disconnected
+      triggerEvent(callEvent)
+      expect(mockCallConnect).toBeCalledTimes(0)
     })
   })
 })

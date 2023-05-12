@@ -100,15 +100,19 @@
       <div id="custom-setup-page">
         <div class="message-container">
           <h3>Setup</h3>
-          <p>Please introduce the data that was provided to you:</p>
-          <form action="/">
+          <p>Please enter the data that was provided to you:</p>
+          <form id="info-form">
             <div class="control-container">
-              <label for="node">Pexip Infinity Domain</label>
-              <input type="text" name="node" id="node" placeholder="Introduce domain" required />
+              <label for="node" class="required-label">Pexip Infinity Domain</label>
+              <input type="text" name="node" id="node" placeholder="Enter domain" required />
             </div>
             <div class="control-container">
-              <label for="pin">Genesys Access Token</label>
-              <input type="text" name="pin" id="pin" placeholder="Introduce access token" required />
+              <label for="pin" class="required-label">Pexip Agent PIN</label>
+              <input type="text" name="pin" id="pin" placeholder="Enter PIN" required />
+            </div>
+            <div class="control-container">
+              <label for="prefix" class="required-label">Pexip App Prefix</label>
+              <input type="text" name="prefix" id="prefix" placeholder="Enter prefix (e.g. app)" required />
             </div>
           </form>
         </div>
@@ -117,7 +121,7 @@
           <button class="btn-prev">
             <span class="txt-back">Back</span>
           </button>
-          <button class="btn-next" class="btn-info right">
+          <button class="btn-info right" form="info-form" type="submit">
             <span class="txt-next">Next</span>
           </button>
         </div>
@@ -189,23 +193,21 @@
       <!-- =======================  INSTALLATION FINISHED PAGE   ============================ -->
       <div id="installation-finished-page">
         <h3>Summary</h3>
-        <p class="success">
-          <p class="txt-finish-install">
-            Successfully installed
-          </p>
-          <p>
-            <a id="summary-raw-data">Please open the JSON format</a>
-            <span class="txt-finish-install-2">Raw data here: </span>
-          </p>
-          <div id="summary-container">
-            <!-- Dynamically filled. Don't add anything manually here -->
-          </div>
-          <div class="buttonset">
-            <button id="btn-goto-app" class="btn-info">
-              <span class="txt-goto-app">Go To Application</span>
-            </button>
-          </div>
+        <p class="txt-finish-install">
+          Successfully installed
         </p>
+  <!--       <p>
+          <a id="summary-raw-data">Please open the JSON format</a>
+          <span class="txt-finish-install-2">Raw data here: </span>
+        </p> -->
+        <div id="summary-container">
+          <!-- Dynamically filled. Don't add anything manually here -->
+        </div>
+        <div class="buttonset">
+          <button id="btn-goto-app" class="btn-info">
+            <span class="txt-goto-app">Go To Application</span>
+          </button>
+        </div>
       </div>
       <!-- =============================  ERROR PAGE   ====================================== -->
       <div id="error-page">

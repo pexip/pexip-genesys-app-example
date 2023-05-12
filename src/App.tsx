@@ -1,7 +1,7 @@
 import React, { createRef } from 'react'
-import config from './config.js'
 import { ToastContainer, Slide } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import { v4 as uuidv4 } from 'uuid'
 
 import {
   createInfinityClient,
@@ -11,7 +11,8 @@ import {
   InfinitySignals,
   CallSignals,
   PresoConnectionChangeEvent,
-  Participant
+  Participant,
+  CallType
 } from '@pexip/infinity'
 
 import { Toolbar } from './toolbar/Toolbar'
@@ -36,7 +37,6 @@ enum CONNECTION_STATE {
   CONNECTING,
   CONNECTED,
   DISCONNECTED,
-  NO_ACTIVE_CALL,
   ERROR,
 }
 
@@ -55,6 +55,7 @@ export interface InfinityContext {
   conferencePin: string
   conferenceAlias: string
   infinityHost: string
+  pexipAppPrefix: string
 }
 
 class App extends React.Component<{}, AppState> {
@@ -64,6 +65,11 @@ class App extends React.Component<{}, AppState> {
   private callSignals!: CallSignals
   private infinityClient!: InfinityClient
   private infinityContext!: InfinityContext
+  private pexipNode!: string
+  private pexipAgentPin!: string
+  private pexipAppPrefix!: string
+  private aniName!: string
+  private conferenceAlias!: string
 
   private readonly appRef = createRef<HTMLDivElement>()
 
@@ -73,7 +79,7 @@ class App extends React.Component<{}, AppState> {
       localStream: new MediaStream(),
       remoteStream: new MediaStream(),
       presentationStream: new MediaStream(),
-      connectionState: CONNECTION_STATE.DISCONNECTED,
+      connectionState: CONNECTION_STATE.CONNECTING,
       secondaryVideo: 'presentation',
       displayName: 'Agent',
       isCameraMuted: false,
@@ -143,6 +149,14 @@ class App extends React.Component<{}, AppState> {
     }
   }
 
+  /**
+   * Provides the agent prefix that is part of the integration URL
+   * @returns The agents prefix (returns "agent" if name is undefined)
+  */
+  private getAppPrefix (): string {
+    return this.pexipAppPrefix ?? 'agent'
+  }
+
   private configureSignals (): void {
     this.infinitySignals = createInfinityClientSignals([])
     this.callSignals = createCallSignals([])
@@ -176,6 +190,14 @@ class App extends React.Component<{}, AppState> {
       }
     }
     this.infinitySignals.onParticipantJoined.add(checkPlaybackDisconnection)
+
+    const checkIfDisconnect = async (): Promise<void> => {
+      const videoParticipants = this.infinityClient.participants.filter(
+        (participant) => participant.callType === CallType.video
+      )
+      if (videoParticipants.length === 1) await this.onEndCall(true)
+    }
+    this.infinitySignals.onParticipantLeft.add(checkIfDisconnect)
   }
 
   private async joinConference (
@@ -239,21 +261,24 @@ class App extends React.Component<{}, AppState> {
     const queryParams = new URLSearchParams(window.location.search)
     const pcEnvironment = queryParams.get('pcEnvironment')
     const pcConversationId = queryParams.get('pcConversationId') ?? ''
-    const pexipNode = queryParams.get('pexipNode') ?? ''
-    const pexipAgentPin = queryParams.get('pexipAgentPin') ?? ''
+    this.pexipNode = queryParams.get('pexipNode') ?? ''
+    this.pexipAgentPin = queryParams.get('pexipAgentPin') ?? ''
+    this.pexipAppPrefix = queryParams.get('pexipAppPrefix') ?? ''
     if (
       pcEnvironment != null &&
       pcConversationId != null &&
-      pexipNode != null &&
-      pexipAgentPin != null
+      this.pexipNode != null &&
+      this.pexipAgentPin != null &&
+      this.pexipAppPrefix != null
     ) {
       // throw Error('Some of the parameters are not defined in the URL in the query string.\n' +
       //   'You have to define "pcEnvironment", "pcConversationId", "pexipNode" and "pexipAgentPin"')
       await GenesysService.loginPureCloud(
         pcEnvironment,
         pcConversationId,
-        pexipNode,
-        pexipAgentPin
+        this.pexipNode,
+        this.pexipAgentPin,
+        this.pexipAppPrefix
       )
     } else {
       this.setState({ connectionState: CONNECTION_STATE.CONNECTING })
@@ -266,61 +291,90 @@ class App extends React.Component<{}, AppState> {
       // Initiate Genesys enviroment
       await GenesysService.initialize(state, accessToken)
 
+      // Check for billing permission
+      if (!GenesysService.hasBillingPermission()) {
+        this.setState({
+          errorId: ERROR_ID.NO_BILLING_PERMISSION,
+          connectionState: CONNECTION_STATE.ERROR
+        })
+        throw new Error('No billing permission')
+      }
+
       // Stop the initialization if no call is active
       const callstate = await GenesysService.isCallActive() || false
       if (!callstate) {
-        this.setState({ connectionState: CONNECTION_STATE.NO_ACTIVE_CALL })
+        this.setState({ connectionState: CONNECTION_STATE.DISCONNECTED })
         return
       }
-      const pexipNode = state.pexipNode
-      const pexipAgentPin = state.pexipAgentPin
-
+      this.pexipNode = state.pexipNode
+      this.pexipAgentPin = state.pexipAgentPin
+      this.aniName = (await GenesysService.fetchAniName()) ?? ''
+      this.pexipAppPrefix = state.pexipAppPrefix
+      this.conferenceAlias = await GenesysService.isDialOut(this.pexipNode) ? this.aniName : uuidv4()
       // Add on hold listener
       GenesysService.addHoldListener(
         async (mute) => await this.onHoldVideo(mute)
       )
       // Add end call listener
       GenesysService.addEndCallListener(async (shouldDisconnectAll: boolean) => await this.onEndCall(shouldDisconnectAll))
-      const aniName = (await GenesysService.fetchAniName()) ?? ''
 
-      // Add end call listener
+      // Add connect call listener
+      GenesysService.addConnectCallListener(
+        async () => {
+          if (this.state.connectionState === CONNECTION_STATE.DISCONNECTED) {
+            this.setState({ connectionState: CONNECTION_STATE.CONNECTING })
+            await this.initConference()
+          }
+        }
+      )
+
+      // Add connect call listener
       GenesysService.addMuteListener(
         async (mute) => await this.onMuteCall(mute)
       )
-      const prefixedConfAlias = config.pexip.conferencePrefix + aniName
-      this.infinityContext = { conferencePin: pexipAgentPin, conferenceAlias: aniName, infinityHost: pexipNode }
 
-      let localStream: MediaStream = new MediaStream()
-      try {
-        localStream = await getLocalStream()
-      } catch (err) {
-        this.setState({
-          errorId: ERROR_ID.CAMERA_ACCESS_DENIED,
-          connectionState: CONNECTION_STATE.ERROR
-        })
-        return
-      }
-      localStream = await getProcessedStream(localStream)
-      const displayName = await GenesysService.getAgentName()
-
-      this.setState({
-        localStream,
-        displayName
-      })
-
-      await this.joinConference(
-        pexipNode,
-        prefixedConfAlias,
-        localStream,
-        displayName,
-        pexipAgentPin
-      )
-      // Set initial context for hold and mute
-      const holdState = await GenesysService.isHeld()
-      const muteState = await GenesysService.isMuted()
-      await this.onMuteCall(muteState)
-      await this.onHoldVideo(holdState)
+      this.infinityContext = { conferencePin: this.pexipAgentPin, conferenceAlias: this.conferenceAlias, infinityHost: this.pexipNode, pexipAppPrefix: this.pexipAppPrefix }
+      await this.initConference()
     }
+  }
+
+  /**
+   * Initiates a conference based on the global fields pexipNode and pexipAgentPin.
+   * The local media stream will be initiated in this method.
+   * The method relies on GenesysService to get the conference alias and the agents display name
+   */
+  private async initConference (): Promise<void> {
+    const prefixedConfAlias = this.getAppPrefix().concat(this.conferenceAlias)
+    let localStream: MediaStream = new MediaStream()
+    try {
+      localStream = await getLocalStream()
+    } catch (err) {
+      this.setState({
+        errorId: ERROR_ID.CAMERA_ACCESS_DENIED,
+        connectionState: CONNECTION_STATE.ERROR
+      })
+      return
+    }
+    localStream = await getProcessedStream(localStream)
+    const displayName = GenesysService.getAgentName()
+
+    this.setState({
+      localStream,
+      displayName
+    })
+
+    await this.joinConference(
+      this.pexipNode,
+      prefixedConfAlias,
+      localStream,
+      displayName,
+      this.pexipAgentPin
+    )
+    // Set initial context for hold and mute
+    const holdState = await GenesysService.isHeld()
+    const muteState = await GenesysService.isMuted()
+    await this.onMuteCall(muteState)
+    await this.onHoldVideo(holdState)
   }
 
   // Set the video to mute for all participants
@@ -340,11 +394,15 @@ class App extends React.Component<{}, AppState> {
   }
 
   async onEndCall (shouldDisconnectAll: boolean): Promise<void> {
+    if (this.state.localStream != null) {
+      stopProcessedStream(this.state.localStream.id)
+      stopStream(this.state.localStream)
+    }
     if (shouldDisconnectAll) {
       await this.infinityClient.disconnectAll({})
     }
-    await this.infinityClient.disconnect({})
-    this.setState({ connectionState: CONNECTION_STATE.NO_ACTIVE_CALL })
+    await this.infinityClient?.disconnect({})
+    this.setState({ connectionState: CONNECTION_STATE.DISCONNECTED })
   }
 
   async onMuteCall (muted: boolean): Promise<void> {
@@ -357,17 +415,10 @@ class App extends React.Component<{}, AppState> {
   }
 
   async componentWillUnmount (): Promise<void> {
-    if (this.state.localStream != null) {
-      stopProcessedStream(this.state.localStream.id)
-      stopStream(this.state.localStream)
-    }
-    await this.infinityClient?.disconnect({})
+    await this.onEndCall(false)
   }
 
   render (): JSX.Element {
-    if (this.state.connectionState === CONNECTION_STATE.DISCONNECTED) {
-      return <></>
-    }
     return (
       <div className='App' data-testid='App' ref={this.appRef}>
         { this.state.errorId !== '' && this.state.connectionState === CONNECTION_STATE.ERROR &&
@@ -382,7 +433,7 @@ class App extends React.Component<{}, AppState> {
               <Spinner colorScheme='light'/>
             </CenterLayout>
           }
-         { this.state.connectionState === CONNECTION_STATE.NO_ACTIVE_CALL &&
+         { this.state.connectionState === CONNECTION_STATE.DISCONNECTED &&
             <div className="no-active-call">
               <h1>No active call</h1>
             </div>

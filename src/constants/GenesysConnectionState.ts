@@ -1,4 +1,5 @@
 export enum GenesysConnectionsState {
-  DISCONNECTED = 'disconnected',
-  CONNECTED = 'connected'
+  Disconnected = 'disconnected',
+  Connected = 'connected',
+  Terminated = 'terminated'
 }

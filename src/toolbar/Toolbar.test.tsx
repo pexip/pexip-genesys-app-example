@@ -68,7 +68,8 @@ const signalMock = {
 const infinityContextMock: InfinityContext = {
   conferenceAlias: 'Mock_Alias',
   conferencePin: '1234',
-  infinityHost: 'Host'
+  infinityHost: 'Host',
+  pexipAppPrefix: 'app'
 }
 
 const callSignalsMock: CallSignals = {

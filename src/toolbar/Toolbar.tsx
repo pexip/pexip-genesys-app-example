@@ -107,7 +107,7 @@ export class Toolbar extends React.Component<ToolbarProps, ToolbarState> {
     // Example: https://pexipdemo.com/webapp/m/=mp7b6f680324ee40df8d762fdc24b54849/step-by-step?role=guest
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions, @typescript-eslint/restrict-plus-operands
     const infinityContext = this.props.infinityContext
-    const invitationlink: string = `https://${infinityContext.infinityHost}/webapp/m/mp${infinityContext.conferenceAlias}/step-by-step?role=guest`
+    const invitationlink: string = `https://${infinityContext.infinityHost}/webapp/m/${infinityContext.pexipAppPrefix}${infinityContext.conferenceAlias}/step-by-step?role=guest`
     this.copy(invitationlink)
     toast('Invitation link copied to clipboard!')
   }

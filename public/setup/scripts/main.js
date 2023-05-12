@@ -26,6 +26,7 @@ let userMe = null;
 // Custom install
 var nodeValue;
 var pinValue;
+var prefixValue;
 
 /**
  * Redirect to the actual premium app
@@ -174,24 +175,29 @@ function setEventListeners() {
   const prevButtons = Array.from(document.getElementsByClassName('btn-prev'));
   const installButton = document.getElementById('btn-install');
   const goToAppButton = document.getElementById('btn-goto-app');
+  const infoForm = document.getElementById('info-form');
 
   // Buttons
-  nextButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      switch (currentPage) {
-        case PAGES.INDEX_PAGE:
-          if (config.enableCustomSetupPageBeforeInstall) {
-            switchPage(PAGES.CUSTOM_SETUP);
-          } else {
-            switchPage(PAGES.INSTALL_DETAILS);
-          }
-          break;
-        case PAGES.CUSTOM_SETUP:
+  const nextButtonFunction = (event) => {
+    console.log(event)
+    event?.preventDefault()
+    switch (currentPage) {
+      case PAGES.INDEX_PAGE:
+        if (config.enableCustomSetupPageBeforeInstall) {
+          switchPage(PAGES.CUSTOM_SETUP);
+        } else {
           switchPage(PAGES.INSTALL_DETAILS);
-          break;
-      }
-    })
+        }
+        break;
+      case PAGES.CUSTOM_SETUP:
+        switchPage(PAGES.INSTALL_DETAILS);
+        break;
+    }
+  }
+  nextButtons.forEach(btn => {
+    btn.addEventListener('click', nextButtonFunction)
   });
+  infoForm.onsubmit = nextButtonFunction
 
   prevButtons.forEach(btn => {
     btn.addEventListener('click', () => {
@@ -464,7 +470,7 @@ async function onInstallDetailsEnter() {
 
       let messageTitle = document.createElement("div");
       messageTitle.className = "message-title";
-      messageTitle.innerHTML = "<span>" + moduleIndex.toString() + ". </span><span class='txt-create-" + modKey + "'></span>";
+      messageTitle.innerHTML = "<span class='txt-create-" + modKey + "'></span>";
       messageDiv.appendChild(messageTitle);
 
       let messageContent = document.createElement("div");
@@ -506,7 +512,7 @@ async function onInstallationSummaryEnter() {
 
       if (resourcePath) {
         childElemsString += `
-          <p><a class="provisioned-link" href="${resourcePath}" target="_blank">${config.prefix}${objKey}</a></p>
+          <p><a class="provisioned-link" href="${resourcePath}" target="_blank">${objKey}</a></p>
         `;
       } else {
         childElemsString += `
@@ -660,11 +666,13 @@ async function setup() {
 function processCustomInput() {
   let nodeInput = document.getElementById("node");
   let pinInput = document.getElementById("pin");
+  let prefixInput = document.getElementById("prefix");
 
   nodeValue = nodeInput.value;
   pinValue = pinInput.value;
+  prefixValue = prefixInput.value
 
- config.provisioningInfo['interaction-widget'][0].url =  config.provisioningInfo['interaction-widget'][0].url  + "&pexipAgentPin=" + pinValue + "&pexipNode=" + nodeValue ; 
+ config.provisioningInfo['interaction-widget'][0].url =  config.provisioningInfo['interaction-widget'][0].url  + "&pexipAgentPin=" + pinValue + "&pexipNode=" + nodeValue + "&pexipAppPrefix=" + prefixValue; 
 
 }
 
