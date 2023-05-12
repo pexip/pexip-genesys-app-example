@@ -10,7 +10,7 @@ cache:
     - readonly
 
 .base-node:
-  image: node:14.19.0 # change to match your node version
+  image: node:18.16.0 # change to match your node version
   extends:
     - .base
   before_script:
