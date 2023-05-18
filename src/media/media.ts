@@ -29,7 +29,7 @@ const getLocalStream = async (deviceId?: string | null, save: boolean = false): 
  * @param {MediaStream} stream MediaStream to stop.
  */
 const stopStream = (stream: MediaStream): void => {
-  stream.getTracks().forEach((track) => track.stop())
+  stream.getTracks()?.forEach((track) => track.stop())
 }
 
 /**
