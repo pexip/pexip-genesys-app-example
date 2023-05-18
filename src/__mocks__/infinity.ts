@@ -1,5 +1,14 @@
 import './test-params'
 
+enum CallType {
+  audio = 'audio',
+  video = 'video',
+  api = 'api'
+}
+
+let mockParticipants: any[] = []
+let participantLeftCallback: () => void
+
 const infinityMock = {
   createCallSignals: () => ({
     onRemoteStream: {
@@ -17,7 +26,7 @@ const infinityMock = {
       add: jest.fn()
     },
     onParticipantLeft: {
-      add: jest.fn()
+      add: (callback: () => void) => { participantLeftCallback = callback }
     }
   }),
   createInfinityClient: () => ({
@@ -54,10 +63,16 @@ const infinityMock = {
       }
     },
     mute: jest.fn(),
-    muteVideo: jest.fn(),
-    disconnect: jest.fn(),
-    participants: []
-  })
+    muteVideo: jest.fn().mockResolvedValue(null),
+    disconnect: infinityMock.mockDisconnect,
+    disconnectAll: infinityMock.mockDisconnectAll,
+    participants: mockParticipants
+  }),
+  CallType,
+  setMockParticipants: (participants: any[]) => { mockParticipants = participants },
+  mockDisconnect: jest.fn(),
+  mockDisconnectAll: jest.fn(),
+  triggerParticipantLeft: () => participantLeftCallback()
 }
 
 module.exports = infinityMock
