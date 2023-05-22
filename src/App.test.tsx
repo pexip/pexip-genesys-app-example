@@ -9,6 +9,15 @@ import { act } from 'react-dom/test-utils'
 
 import * as GenesysService from './genesys/genesysService'
 
+// eslint-disable-next-line no-var
+var setMockParticipants: (participants: any[]) => void
+// eslint-disable-next-line no-var
+var mockDisconnect: jest.Mock
+// eslint-disable-next-line no-var
+var mockDisconnectAll: jest.Mock
+// eslint-disable-next-line no-var
+var triggerParticipantLeft: () => void
+
 // Create a mocks
 require('./__mocks__/mediaDevices')
 
@@ -25,7 +34,12 @@ jest.mock('@pexip/media-components', () => {
 jest.mock('@pexip/media-processor', () => {}, { virtual: true })
 
 jest.mock('@pexip/infinity', () => {
-  return require('./__mocks__/infinity')
+  const mockInfinity = { ...require('./__mocks__/infinity') }
+  setMockParticipants = mockInfinity.setMockParticipants
+  mockDisconnect = mockInfinity.mockDisconnect
+  mockDisconnectAll = mockInfinity.mockDisconnectAll
+  triggerParticipantLeft = mockInfinity.triggerParticipantLeft
+  return mockInfinity
 }, { virtual: true })
 
 jest.mock('./genesys/genesysService', () => {
@@ -67,6 +81,34 @@ Object.defineProperty(window, 'location', {
     href: 'https://myurl/#access_token=secret&state=%7B%22pcEnvironment%22%3A%22usw2.pure.cloud%22%2C%22pcConversationId%22%3A%2262698915-ae56-4efc-b5d7-71d6ad487fae%22%2C%22pexipNode%22%3A%22pexipdemo.com%22%2C%22pexipAgentPin%22%3A%222021%22%7D'
   }
 })
+
+const participantSipTrunk = {
+  uuid: '1',
+  callType: 'audio',
+  role: 'chair',
+  displayName: 'sipTrunk'
+}
+
+const participantCustomer = {
+  uuid: '2',
+  callType: 'video',
+  role: 'guest',
+  displayName: 'customer'
+}
+
+const participantAgentApi = {
+  uuid: '3',
+  callType: 'api',
+  role: 'chair',
+  displayName: 'agent'
+}
+
+const participantAgentVideo = {
+  uuid: '4',
+  callType: 'video',
+  role: 'chair',
+  displayName: 'agent'
+}
 
 describe('App component', () => {
   it('should render', async () => {
@@ -147,6 +189,52 @@ describe('App component', () => {
         await render(<App />)
       })
       expect(GenesysService.initialize).toBeCalledTimes(1)
+    })
+  })
+
+  describe('Agent disconnect behavior', () => {
+    beforeEach(() => {
+      setMockParticipants([])
+    })
+    it('should stay when participants >= 1 with callType == api or video (agent.callType == \'api\')', async () => {
+      setMockParticipants([participantSipTrunk, participantCustomer, participantAgentApi])
+      await act(async () => {
+        await render(<App />)
+      })
+      triggerParticipantLeft()
+      expect(mockDisconnect).not.toBeCalled()
+      expect(mockDisconnectAll).not.toBeCalled()
+    })
+    it('should stay when participants >= 1 with callType == api or video (agent.callType == \'video\')', async () => {
+      setMockParticipants([participantSipTrunk, participantCustomer, participantAgentVideo])
+      await act(async () => {
+        await render(<App />)
+      })
+      triggerParticipantLeft()
+      expect(mockDisconnect).not.toBeCalled()
+      expect(mockDisconnectAll).not.toBeCalled()
+    })
+    it('should leave when callType == api and it\'s only one with callType == api or video', async () => {
+      setMockParticipants([participantSipTrunk, participantAgentApi])
+      await act(async () => {
+        await render(<App />)
+      })
+      triggerParticipantLeft()
+      const noActiveCallPanel = await screen.findAllByTestId('no-active-call')
+      expect(noActiveCallPanel.length).toBe(1)
+      expect(mockDisconnect).toBeCalledTimes(1)
+      expect(mockDisconnectAll).toBeCalledTimes(1)
+    })
+    it('should leave when callType == video and it\'s only one with callType == api or video', async () => {
+      setMockParticipants([participantSipTrunk, participantAgentVideo])
+      await act(async () => {
+        await render(<App />)
+      })
+      triggerParticipantLeft()
+      const noActiveCallPanel = await screen.findAllByTestId('no-active-call')
+      expect(noActiveCallPanel.length).toBe(1)
+      expect(mockDisconnect).toBeCalledTimes(1)
+      expect(mockDisconnectAll).toBeCalledTimes(1)
     })
   })
 })

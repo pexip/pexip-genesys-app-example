@@ -191,9 +191,19 @@ class App extends React.Component<{}, AppState> {
     }
     this.infinitySignals.onParticipantJoined.add(checkPlaybackDisconnection)
 
+    /**
+     * Check if the agent should be disconnected. This should happen after the last
+     * customer participant leaves. We check if the callType is api, because the
+     * agent is connected first as api and later it changes to video.
+     */
     const checkIfDisconnect = async (): Promise<void> => {
       const videoParticipants = this.infinityClient.participants.filter(
-        (participant) => participant.callType === CallType.video
+        (participant) => {
+          return (
+            participant.callType === CallType.video ||
+            participant.callType === CallType.api
+          )
+        }
       )
       if (videoParticipants.length === 1) await this.onEndCall(true)
     }
@@ -438,7 +448,7 @@ class App extends React.Component<{}, AppState> {
             </CenterLayout>
           }
          { this.state.connectionState === CONNECTION_STATE.DISCONNECTED &&
-            <div className="no-active-call">
+            <div className="no-active-call" data-testid='no-active-call'>
               <h1>No active call</h1>
             </div>
          }
