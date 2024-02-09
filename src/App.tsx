@@ -1,3 +1,9 @@
+{/*
+Copyright 2024 Pexip AS
+
+SPDX-License-Identifier: Apache-2.0
+*/}
+
 import React, { createRef } from 'react'
 import { ToastContainer, Slide } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'

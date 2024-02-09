@@ -1,3 +1,7 @@
+// Copyright 2024 Pexip AS
+//
+// SPDX-License-Identifier: Apache-2.0
+
 /**
  * Get a local video stream with the provided device id. If a device id is not provided
  * it will take the first video device.

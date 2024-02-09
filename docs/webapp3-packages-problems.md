@@ -1,3 +1,9 @@
+<!--
+Copyright 2024 Pexip AS
+
+SPDX-License-Identifier: Apache-2.0
+-->
+
 # Webapp3 packages problems
 
 No problems using the package `@pexip/infinity`. The problems started when trying to use the `@pexip/media-components` package. We are trying to use the component: `MediaControlSettings`.

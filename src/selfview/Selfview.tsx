@@ -1,3 +1,9 @@
+{/*
+Copyright 2024 Pexip AS
+
+SPDX-License-Identifier: Apache-2.0
+*/}
+
 import React, { RefObject, useState } from 'react'
 
 import { DraggableFoldableInMeetingSelfview, Stats, useCallQuality, useNetworkState } from '@pexip/media-components'

@@ -1,3 +1,7 @@
+// Copyright 2024 Pexip AS
+//
+// SPDX-License-Identifier: Apache-2.0
+
 /**
  * In this file we define some variables that will help to change the behavior
  * of the application. This way, we will be able to provoke some errors and

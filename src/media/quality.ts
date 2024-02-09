@@ -1,3 +1,7 @@
+// Copyright 2024 Pexip AS
+//
+// SPDX-License-Identifier: Apache-2.0
+
 import { StreamQuality } from '@pexip/media-components'
 
 const [auto, low, medium, high, veryHigh] = [0, 64, 1024, 2048, 6144]

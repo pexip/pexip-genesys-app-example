@@ -1,3 +1,7 @@
+// Copyright 2024 Pexip AS
+//
+// SPDX-License-Identifier: Apache-2.0
+
 import { ReportHandler } from 'web-vitals'
 
 const reportWebVitals = (onPerfEntry?: ReportHandler): void => {

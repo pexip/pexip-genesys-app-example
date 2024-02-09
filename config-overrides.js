@@ -1,3 +1,7 @@
+// Copyright 2024 Pexip AS
+//
+// SPDX-License-Identifier: Apache-2.0
+
 module.exports = function override (config, env) {
   const loaders = config.resolve
   loaders.fallback = {

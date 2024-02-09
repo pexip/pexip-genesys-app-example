@@ -1,3 +1,7 @@
+// Copyright 2024 Pexip AS
+//
+// SPDX-License-Identifier: Apache-2.0
+
 enum ERROR_ID {
   CAMERA_NOT_CONNECTED = 'errors.camera-not-connected',
   CAMERA_ACCESS_DENIED = 'errors.camera-access-denied',
