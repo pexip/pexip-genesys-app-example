@@ -1,8 +1,7 @@
 /**
  * This file manages the channel that listens to chat events.
  */
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const platformClient = require('purecloud-platform-client-v2/dist/node/purecloud-platform-client-v2.js')
+import platformClient from 'purecloud-platform-client-v2'
 const notificationsApi = new platformClient.NotificationsApi()
 
 let channel = {}

@@ -3,6 +3,7 @@ import {
   Models,
   UsersApi
 } from 'purecloud-platform-client-v2'
+import platformClient from 'purecloud-platform-client-v2'
 import { GenesysRole } from '../constants/GenesysRole'
 import { GenesysConnectionsState } from '../constants/GenesysConnectionState'
 import config from '../config.js'
@@ -21,9 +22,6 @@ export interface CallEvent {
     recordingState: string // e.g. "active"
   }
 }
-
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const platformClient = require('purecloud-platform-client-v2/dist/node/purecloud-platform-client-v2.js')
 
 const redirectUri = window.location.href.split('?')[0]
 
@@ -103,8 +101,8 @@ export const initialize = async (
   state = genesysState
   client.setEnvironment(state.pcEnvironment)
   client.setAccessToken(accessToken)
-  usersApi = new platformClient.UsersApi(client)
-  conversationsApi = new platformClient.ConversationsApi(client)
+  usersApi = new platformClient.UsersApi()
+  conversationsApi = new platformClient.ConversationsApi()
   userMe = await usersApi.getUsersMe({ expand: ['authorization'] })
   await controller.createChannel()
   if (userMe.id != null) {
@@ -144,7 +142,9 @@ export const getAgentName = (): string => {
  * @returns The agents displayname (returns "Agent" if name is undefined)
  */
 export const hasBillingPermission = (): boolean => {
-  const foundPermission = userMe.authorization?.permissions?.find((permission: string) => permission === billablePermission)
+  const foundPermission = userMe.authorization?.permissions?.find(
+    (permission: string) => permission === billablePermission
+  )
   return foundPermission !== undefined ?? false
 }
 
@@ -189,7 +189,9 @@ export const isDialOut = async (sipSource: string): Promise<boolean> => {
   The regex will check the part after the @ of addressRaw (e.g. sip:165049338@pexipdemo.com)
   */
   const regExp = new RegExp(`@(${sipSource}$)`)
-  const result = participant?.calls?.some((call) => regExp.test(call?.self?.addressRaw ?? ''))
+  const result = participant?.calls?.some((call) =>
+    regExp.test(call?.self?.addressRaw ?? '')
+  )
   return result ?? false
 }
 
@@ -213,25 +215,25 @@ export const isCallActive = async (): Promise<boolean> => {
   return active
 }
 
-export function addHoldListener (holdListener: (flag: boolean) => any): void {
+export const addHoldListener = (holdListener: (flag: boolean) => any): void => {
   handleHold = holdListener
 }
 
-export function addEndCallListener (
+export const addEndCallListener = (
   endCallListener: (shouldDisconnectAll: boolean) => any
-): void {
+): void => {
   handleEndCall = endCallListener
 }
 
-export function addMuteListener (
+export const addMuteListener = (
   muteCallListener: (flag: boolean) => any
-): void {
+): void => {
   handleMuteCall = muteCallListener
 }
 
-export function addConnectCallListener (
+export const addConnectCallListener = (
   handleConnectCallListener: () => any
-): void {
+): void => {
   handleConnectCall = handleConnectCallListener
 }
 

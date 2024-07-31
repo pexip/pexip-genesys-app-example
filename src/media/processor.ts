@@ -1,6 +1,5 @@
 import {
   createCanvasTransform,
-  createMediapipeSegmenter,
   createVideoTrackProcessor,
   createVideoTrackProcessorWithFallback,
   createVideoProcessor,
@@ -21,10 +20,7 @@ const selfieJs = new URL(
   document.baseURI
 )
 
-const bgImageUrl = new URL(
-  './media-processor/background.jpg',
-  document.baseURI
-)
+const bgImageUrl = new URL('./media-processor/background.jpg', document.baseURI)
 
 const processors: any = []
 
@@ -36,8 +32,13 @@ const getTrackProcessor = (): ProcessVideoTrack => {
   return createVideoTrackProcessorWithFallback() // Using the fallback implementation
 }
 
-const getProcessedStream = async (stream: MediaStream, effect?: RenderEffects, preview: boolean = false, save: boolean = false): Promise<MediaStream> => {
-  effect = effect ?? localStorage.getItem('pexipEffect') as RenderEffects
+const getProcessedStream = async (
+  stream: MediaStream,
+  effect?: RenderEffects,
+  preview: boolean = false,
+  save: boolean = false
+): Promise<MediaStream> => {
+  effect = effect ?? (localStorage.getItem('pexipEffect') as RenderEffects)
   effect = effect ?? 'none'
 
   if (save) setCurrentEffect(effect)
@@ -67,7 +68,10 @@ const getProcessedStream = async (stream: MediaStream, effect?: RenderEffects, p
     bgImageUrl: bgImageUrl.href
   })
 
-  const videoProcessor = createVideoProcessor([transformer], getTrackProcessor())
+  const videoProcessor = createVideoProcessor(
+    [transformer],
+    getTrackProcessor()
+  )
 
   await videoProcessor.open()
 
@@ -90,7 +94,9 @@ const getProcessedStream = async (stream: MediaStream, effect?: RenderEffects, p
 const stopProcessedStream = (streamId: string): void => {
   const index = processors.findIndex((node: any) => node.streamId === streamId)
   if (processors[index] != null) {
-    processors[index].originalStream.getTracks().forEach((track: MediaStreamTrack) => track.stop())
+    processors[index].originalStream
+      .getTracks()
+      .forEach((track: MediaStreamTrack) => track.stop())
     processors[index].videoProcessor.close()
     processors[index].videoProcessor.destroy()
     processors[index].transformer.close()
@@ -102,7 +108,7 @@ const stopProcessedStream = (streamId: string): void => {
 }
 
 const getCurrentEffect = (): RenderEffects => {
-  return localStorage.getItem('pexipEffect') as RenderEffects ?? 'none'
+  return (localStorage.getItem('pexipEffect') as RenderEffects) ?? 'none'
 }
 
 const setCurrentEffect = (effect: RenderEffects): void => {

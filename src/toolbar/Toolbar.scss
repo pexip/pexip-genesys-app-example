@@ -1,13 +1,6 @@
 .Toolbar {
   display: flex;
   justify-content: center;
-  
-  .ToolbarButton {
-    margin: 8px 4px;
-    
-    &>.__react_component_tooltip::before {
-      // Avoid overlap with the bottom arrow
-      z-index: -1;
-    }
-  }
+  margin-bottom: 1em;
+  gap: 1em;
 }

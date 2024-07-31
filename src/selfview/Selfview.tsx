@@ -1,7 +1,12 @@
 import React, { RefObject, useState } from 'react'
 
-import { DraggableFoldableInMeetingSelfview, Stats, useCallQuality, useNetworkState } from '@pexip/media-components'
-import { callLivenessSignals, CallSignals } from '@pexip/infinity'
+import {
+  DraggableFoldableInMeetingSelfview,
+  Stats,
+  useCallQuality,
+  useNetworkState
+} from '@pexip/media-components'
+import { CallSignals } from '@pexip/infinity'
 
 import { getStreamQuality } from '../media/quality'
 
@@ -19,19 +24,18 @@ export const Selfview = React.memo((props: SelfViewProps): JSX.Element => {
   const [showTooltip, setShowTooltip] = useState(true)
   const [folded, setFolded] = useState(false)
 
-  const networkState = useNetworkState(
-    callLivenessSignals.onReconnecting,
-    callLivenessSignals.onReconnected
-  )
+  // const networkState = useNetworkState(
+  //   callLivenessSignals.onReconnecting,
+  //   callLivenessSignals.onReconnected
+  // )
 
   const callQuality = useCallQuality({
     getStreamQuality,
-    callQualitySignal: props.callSignals.onCallQuality,
-    networkState
+    callQualitySignal: props.callSignals.onCallQuality
   })
 
   return (
-    <div className='Selfview' data-testid='Selfview'>
+    <div className="Selfview" data-testid="Selfview">
       <DraggableFoldableInMeetingSelfview
         floatRoot={props.floatRoot}
         shouldShowUserAvatar={false}
@@ -42,8 +46,10 @@ export const Selfview = React.memo((props: SelfViewProps): JSX.Element => {
         onExpandSelfview={() => setFolded(false)}
         isFolded={folded}
         showSelfviewTooltip={showTooltip}
-        setShowSelfviewTooltip={(showTooltip: boolean) => setShowTooltip(showTooltip)}
-        onCallQualityClick={() => setShowStats(true)}
+        setShowSelfviewTooltip={(showTooltip: boolean) =>
+          setShowTooltip(showTooltip)
+        }
+        // onCallQualityClick={() => setShowStats(true)}
         // Unused parameters
         callQualityPosition={'bottomRight'}
         isAudioInputMuted={true}
@@ -57,13 +63,22 @@ export const Selfview = React.memo((props: SelfViewProps): JSX.Element => {
           onMouseLeave: () => {},
           onBlur: () => {}
         }}
+        areEffectsEnabled={false}
+        areEffectsApplied={false}
+        openEffectsModal={function (): void {
+          throw new Error('Function not implemented.')
+        }}
+        draggableAriaLabel={''}
       />
-      { showStats &&
-        <Stats data-testid='Stats'
+      {showStats && (
+        <Stats
+          data-testid="Stats"
           onClose={() => setShowStats(false)}
           statsSignal={props.callSignals.onRtcStats}
-          callQualityStatsSignal={(props.callSignals.onCallQualityStats)}
-        /> }
+          callQualityStatsSignal={props.callSignals.onCallQualityStats}
+          cachedStats={undefined}
+        />
+      )}
     </div>
   )
 })
