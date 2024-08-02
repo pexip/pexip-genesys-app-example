@@ -12,8 +12,26 @@
     position: absolute;
   }
 
-  .Video {
-    z-index: 1;
+  video.primary {
+    position: absolute;
+    margin: auto;
+    max-width: calc(100% - 2em);
+    max-height: calc(100% - 2em);
+    border-radius: 4px;
+  }
+
+  video.secondary {
+    position: absolute;
+    top: 1em;
+    left: 1em;
+    width: 20em;
+    border-radius: 4px;
+    z-index: 2;
+    cursor: pointer;
+
+    &:hover {
+      filter: brightness(0.8);
+    }
   }
 
   .no-active-call{

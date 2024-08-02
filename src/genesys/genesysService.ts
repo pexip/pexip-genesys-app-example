@@ -6,9 +6,9 @@ import {
 import platformClient from 'purecloud-platform-client-v2'
 import { GenesysRole } from '../constants/GenesysRole'
 import { GenesysConnectionsState } from '../constants/GenesysConnectionState'
-import config from '../config.js'
-import controller from './notificationsController.js'
+import { createChannel, addSubscription } from './notificationsController.ts'
 import { GenesysDisconnectType } from '../constants/GenesysDisconnectType'
+import config from '../config.ts'
 
 export interface CallEvent {
   version: string
@@ -104,12 +104,9 @@ export const initialize = async (
   usersApi = new platformClient.UsersApi()
   conversationsApi = new platformClient.ConversationsApi()
   userMe = await usersApi.getUsersMe({ expand: ['authorization'] })
-  await controller.createChannel()
+  await createChannel()
   if (userMe.id != null) {
-    controller.addSubscription(
-      `v2.users.${userMe.id}.conversations.calls`,
-      callsCallback
-    )
+    addSubscription(`v2.users.${userMe.id}.conversations.calls`, callsCallback)
   } else {
     throw Error('Cannot get the user ID')
   }

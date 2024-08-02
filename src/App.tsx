@@ -1,6 +1,5 @@
-import React, { createRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { ToastContainer, Slide } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
 import { v4 as uuidv4 } from 'uuid'
 import {
   createInfinityClient,
@@ -10,193 +9,124 @@ import {
   type InfinitySignals,
   type CallSignals,
   type PresoConnectionChangeEvent,
-  type Participant,
-  CallType,
   ClientCallType
 } from '@pexip/infinity'
-import { Toolbar } from './toolbar/Toolbar'
-import { Video } from './video/Video'
-import { Selfview } from './selfview/Selfview'
-import * as GenesysService from './genesys/genesysService'
-import { getLocalStream, stopStream } from './media/media'
-import {
-  getCurrentEffect,
-  getProcessedStream,
-  stopProcessedStream
-} from './media/processor'
-import { CenterLayout, Spinner } from '@pexip/components'
+import { CenterLayout, Spinner, Video } from '@pexip/components'
 import { type StreamQuality } from '@pexip/media-components'
 import {
   convertToBandwidth,
   setStreamQuality,
   getStreamQuality
 } from './media/quality'
+import { getLocalStream, stopStream } from './media/media'
+import * as GenesysService from './genesys/genesysService'
 import { ErrorPanel } from './error-panel/ErrorPanel'
 import ERROR_ID from './constants/error-ids'
+import { ConnectionState } from './types/ConnectionState'
+import { Toolbar } from './toolbar/Toolbar'
+import { Selfview } from './selfview/Selfview'
 
 import './App.scss'
 
-enum CONNECTION_STATE {
-  CONNECTING,
-  CONNECTED,
-  DISCONNECTED,
-  ERROR
-}
+let infinitySignals: InfinitySignals
+let callSignals: CallSignals
+let infinityClient: InfinityClient
 
-interface AppState {
-  localStream: MediaStream
-  remoteStream: MediaStream
-  presentationStream: MediaStream
-  connectionState: CONNECTION_STATE
-  secondaryVideo: 'remote' | 'presentation'
-  displayName: string
-  isCameraMuted: boolean
-  errorId: string
-}
+let pexipNode: string
+let pexipAgentPin: string
+let pexipAppPrefix: string = 'agent'
+let aniName: string
+let conferenceAlias: string
 
-export interface InfinityContext {
-  conferencePin: string
-  conferenceAlias: string
-  infinityHost: string
-  pexipAppPrefix: string
-}
+export const App = (): JSX.Element => {
+  const [localStream, setLocalStream] = useState<MediaStream>()
+  const [remoteStream, setRemoteStream] = useState<MediaStream>()
+  const [presentationStream, setPresentationStream] = useState<MediaStream>()
 
-export class App extends React.Component<{}, AppState> {
-  private readonly toolbarRef = React.createRef<Toolbar>()
+  const [connectionState, setConnectionState] = useState<ConnectionState>(
+    ConnectionState.Connecting
+  )
+  const [secondaryVideo, setSecondaryVideo] = useState<
+    'remote' | 'presentation'
+  >('presentation')
 
-  private infinitySignals!: InfinitySignals
-  private callSignals!: CallSignals
-  private infinityClient!: InfinityClient
-  private infinityContext!: InfinityContext
-  private pexipNode!: string
-  private pexipAgentPin!: string
-  private pexipAppPrefix!: string
-  private aniName!: string
-  private conferenceAlias!: string
+  const [displayName, setDisplayName] = useState<string>('Agent')
 
-  private readonly appRef = createRef<HTMLDivElement>()
+  const [errorId, setErrorId] = useState<string>('')
 
-  constructor(props: {}) {
-    super(props)
-    this.state = {
-      localStream: new MediaStream(),
-      remoteStream: new MediaStream(),
-      presentationStream: new MediaStream(),
-      connectionState: CONNECTION_STATE.CONNECTING,
-      secondaryVideo: 'presentation',
-      displayName: 'Agent',
-      isCameraMuted: false,
-      errorId: ''
-    }
-    window.addEventListener('beforeunload', () => {
-      this.infinityClient?.disconnect({}).catch(null)
-    })
-    this.handleLocalPresentationStream =
-      this.handleLocalPresentationStream.bind(this)
-    this.handleLocalStream = this.handleLocalStream.bind(this)
-    this.toggleCameraMute = this.toggleCameraMute.bind(this)
-    this.handleChangeStreamQuality = this.handleChangeStreamQuality.bind(this)
-  }
+  const appRef = useRef<HTMLDivElement>(null)
 
-  private async checkCameraAccess(): Promise<void> {
+  const checkCameraAccess = async (): Promise<void> => {
     const devices = await navigator.mediaDevices.enumerateDevices()
     if (devices.filter((device) => device.kind === 'videoinput').length === 0) {
-      this.setState({
-        errorId: ERROR_ID.CAMERA_NOT_CONNECTED,
-        connectionState: CONNECTION_STATE.ERROR
-      })
+      setErrorId(ERROR_ID.CAMERA_NOT_CONNECTED)
+      setConnectionState(ConnectionState.Error)
       throw new Error('Camera not connected')
     }
   }
 
-  private handleLocalPresentationStream(presentationStream: MediaStream): void {
-    this.setState({
-      presentationStream,
-      secondaryVideo: 'presentation'
-    })
+  const handleLocalPresentationStream = (
+    presentationStream: MediaStream
+  ): void => {
+    setPresentationStream(presentationStream)
+    setSecondaryVideo('presentation')
   }
 
-  private handleLocalStream(localStream: MediaStream): void {
-    if (this.state.localStream != null) {
-      stopProcessedStream(this.state.localStream.id)
-      stopStream(this.state.localStream)
+  const handleLocalStream = (stream: MediaStream): void => {
+    if (localStream != null) {
+      stopStream(localStream)
     }
-    this.state.localStream.getTracks().forEach((track) => track.stop())
-    this.infinityClient.setStream(localStream)
-    this.setState({ localStream })
+    infinityClient.setStream(stream)
+    setLocalStream(stream)
   }
 
-  private async toggleCameraMute(value?: boolean): Promise<void> {
-    let muted = this.state.isCameraMuted
-    if (value === muted) {
-      return
-    }
-    if (value != null) {
-      muted = !value
-    }
-    const response = await this.infinityClient.muteVideo({ muteVideo: !muted })
+  const toggleCameraMute = async (muted: boolean): Promise<void> => {
+    const response = await infinityClient.muteVideo({ muteVideo: !muted })
     if (response?.status === 200) {
-      if (this.state.localStream != null) {
-        stopProcessedStream(this.state.localStream.id)
-        stopStream(this.state.localStream)
+      if (localStream != null) {
+        stopStream(localStream)
       }
       if (muted) {
         let localStream = await getLocalStream()
-        localStream = await getProcessedStream(localStream, getCurrentEffect())
-        this.setState({
-          localStream
-        })
-        this.infinityClient.setStream(localStream)
+        infinityClient.setStream(localStream)
+      } else {
+        infinityClient.setStream(new MediaStream())
       }
-      this.infinityClient.setStream(new MediaStream())
-      this.setState({ isCameraMuted: !muted })
     }
   }
 
-  /**
-   * Provides the agent prefix that is part of the integration URL
-   * @returns The agents prefix (returns "agent" if name is undefined)
-   */
-  private getAppPrefix(): string {
-    return this.pexipAppPrefix ?? 'agent'
-  }
-
-  private configureSignals(): void {
-    this.infinitySignals = createInfinityClientSignals([])
-    this.callSignals = createCallSignals([])
-    this.callSignals.onRemoteStream.add((remoteStream) => {
-      this.setState({ remoteStream })
+  const configureSignals = () => {
+    infinitySignals = createInfinityClientSignals([])
+    callSignals = createCallSignals([])
+    callSignals.onRemoteStream.add((remoteStream) => {
+      setRemoteStream(remoteStream)
     })
-    this.callSignals.onRemotePresentationStream.add((presentationStream) => {
-      this.setState({
-        presentationStream,
-        secondaryVideo: 'remote'
-      })
+    callSignals.onRemotePresentationStream.add((presentationStream) => {
+      setPresentationStream(presentationStream)
+      setSecondaryVideo('remote')
     })
-    this.callSignals.onPresentationConnectionChange.add(
+    callSignals.onPresentationConnectionChange.add(
       (changeEvent: PresoConnectionChangeEvent) => {
         if (
           changeEvent.recv !== 'connected' &&
           changeEvent.send !== 'connected'
         ) {
-          this.setState({
-            presentationStream: new MediaStream(),
-            secondaryVideo: 'presentation'
-          })
+          setPresentationStream(new MediaStream())
+          setSecondaryVideo('presentation')
         }
       }
     )
     // Disconnect the playback service when connected
-    const checkPlaybackDisconnection = async (
-      participant: Participant
-    ): Promise<void> => {
-      if (participant.uri.match(/^sip:.*\.playback@/) != null) {
-        await this.infinityClient.kick({ participantUuid: participant.uuid })
-        // this.infinitySignals.onParticipantJoined.remove(
-        //   checkPlaybackDisconnection
-        // )
-      }
-    }
+    // const checkPlaybackDisconnection = async (
+    //   participant: Participant
+    // ): Promise<void> => {
+    //   if (participant.uri.match(/^sip:.*\.playback@/) != null) {
+    //     await this.infinityClient.kick({ participantUuid: participant.uuid })
+    //     // this.infinitySignals.onParticipantJoined.remove(
+    //     //   checkPlaybackDisconnection
+    //     // )
+    //   }
+    // }
     // this.infinitySignals.onParticipantJoined.add(checkPlaybackDisconnection)
 
     /**
@@ -204,35 +134,32 @@ export class App extends React.Component<{}, AppState> {
      * customer participant leaves. We check if the callType is api, because the
      * agent is connected first as api and later it changes to video.
      */
-    const checkIfDisconnect = async (): Promise<void> => {
-      // const videoParticipants = this.infinityClient.participants.filter(
-      //   (participant) => {
-      //     return (
-      //       participant.callType === CallType.video ||
-      //       participant.callType === CallType.api
-      //     )
-      //   }
-      // )
-      // if (videoParticipants.length === 1) await this.onEndCall(true)
-    }
-    this.infinitySignals.onParticipantLeft.add(checkIfDisconnect)
+    // const checkIfDisconnect = async (): Promise<void> => {
+    //   // const videoParticipants = this.infinityClient.participants.filter(
+    //   //   (participant) => {
+    //   //     return (
+    //   //       participant.callType === CallType.video ||
+    //   //       participant.callType === CallType.api
+    //   //     )
+    //   //   }
+    //   // )
+    //   // if (videoParticipants.length === 1) await this.onEndCall(true)
+    // }
+    // this.infinitySignals.onParticipantLeft.add(checkIfDisconnect)
   }
 
-  private async joinConference(
+  const joinConference = async (
     node: string,
     conferenceAlias: string,
     mediaStream: MediaStream,
     displayName: string,
     pin: string
-  ): Promise<void> {
-    this.configureSignals()
-    this.infinityClient = createInfinityClient(
-      this.infinitySignals,
-      this.callSignals
-    )
+  ): Promise<void> => {
+    configureSignals()
+    infinityClient = createInfinityClient(infinitySignals, callSignals)
     const streamQuality = getStreamQuality()
     const bandwidth = convertToBandwidth(streamQuality)
-    const response = await this.infinityClient.call({
+    const response = await infinityClient.call({
       node,
       conferenceAlias,
       mediaStream,
@@ -244,135 +171,31 @@ export class App extends React.Component<{}, AppState> {
     if (response != null) {
       switch (response.status) {
         case 403: {
-          this.setState({
-            errorId: ERROR_ID.CONFERENCE_AUTHENTICATION_FAILED,
-            connectionState: CONNECTION_STATE.ERROR
-          })
+          setErrorId(ERROR_ID.CONFERENCE_AUTHENTICATION_FAILED)
+          setConnectionState(ConnectionState.Error)
           break
         }
         case 404: {
-          this.setState({
-            errorId: ERROR_ID.CONFERENCE_NOT_FOUND,
-            connectionState: CONNECTION_STATE.ERROR
-          })
+          setErrorId(ERROR_ID.CONFERENCE_NOT_FOUND)
+          setConnectionState(ConnectionState.Error)
           break
         }
         default: {
-          this.setState({ connectionState: CONNECTION_STATE.CONNECTED })
+          setConnectionState(ConnectionState.Connected)
           break
         }
       }
     } else {
-      this.setState({
-        errorId: ERROR_ID.INFINITY_SERVER_UNAVAILABLE,
-        connectionState: CONNECTION_STATE.ERROR
-      })
+      setErrorId(ERROR_ID.INFINITY_SERVER_UNAVAILABLE)
+      setConnectionState(ConnectionState.Error)
     }
   }
 
-  private exchangeVideos(): void {
-    if (this.state.secondaryVideo === 'presentation') {
-      this.setState({ secondaryVideo: 'remote' })
+  const exchangeVideos = () => {
+    if (secondaryVideo === 'presentation') {
+      setSecondaryVideo('remote')
     } else {
-      this.setState({ secondaryVideo: 'presentation' })
-    }
-  }
-
-  async componentDidMount(): Promise<void> {
-    try {
-      await this.checkCameraAccess()
-    } catch (error) {
-      return
-    }
-    const queryParams = new URLSearchParams(window.location.search)
-    const pcEnvironment = queryParams.get('pcEnvironment')
-    const pcConversationId = queryParams.get('pcConversationId') ?? ''
-    this.pexipNode = queryParams.get('pexipNode') ?? ''
-    this.pexipAgentPin = queryParams.get('pexipAgentPin') ?? ''
-    this.pexipAppPrefix = queryParams.get('pexipAppPrefix') ?? ''
-    if (
-      pcEnvironment != null &&
-      pcConversationId != null &&
-      this.pexipNode != null &&
-      this.pexipAgentPin != null &&
-      this.pexipAppPrefix != null
-    ) {
-      // throw Error('Some of the parameters are not defined in the URL in the query string.\n' +
-      //   'You have to define "pcEnvironment", "pcConversationId", "pexipNode" and "pexipAgentPin"')
-      await GenesysService.loginPureCloud(
-        pcEnvironment,
-        pcConversationId,
-        this.pexipNode,
-        this.pexipAgentPin,
-        this.pexipAppPrefix
-      )
-    } else {
-      this.setState({ connectionState: CONNECTION_STATE.CONNECTING })
-      const parsedUrl = new URL(window.location.href.replace(/#/g, '?'))
-      const queryParams = new URLSearchParams(parsedUrl.search)
-      const accessToken = queryParams.get('access_token') as string
-      const state = JSON.parse(
-        decodeURIComponent(queryParams.get('state') as string)
-      )
-      // Initiate Genesys enviroment
-      await GenesysService.initialize(state, accessToken)
-
-      // Check for billing permission
-      if (!GenesysService.hasBillingPermission()) {
-        console.error('No billing permission')
-        // TODO: Display an error in case we don't have the permissions
-        //   this is disabled until we talk how the license work with Genesys
-
-        // this.setState({
-        //   errorId: ERROR_ID.NO_BILLING_PERMISSION,
-        //   connectionState: CONNECTION_STATE.ERROR
-        // })
-        // throw new Error('No billing permission')
-      }
-
-      // Stop the initialization if no call is active
-      const callstate = (await GenesysService.isCallActive()) || false
-      if (!callstate) {
-        this.setState({ connectionState: CONNECTION_STATE.DISCONNECTED })
-        return
-      }
-      this.pexipNode = state.pexipNode
-      this.pexipAgentPin = state.pexipAgentPin
-      this.aniName = (await GenesysService.fetchAniName()) ?? ''
-      this.pexipAppPrefix = state.pexipAppPrefix
-      this.conferenceAlias = (await GenesysService.isDialOut(this.pexipNode))
-        ? this.aniName
-        : uuidv4()
-      // Add on hold listener
-      GenesysService.addHoldListener(
-        async (mute) => await this.onHoldVideo(mute)
-      )
-      // Add end call listener
-      GenesysService.addEndCallListener(
-        async (shouldDisconnectAll: boolean) =>
-          await this.onEndCall(shouldDisconnectAll)
-      )
-
-      // Add connect call listener
-      GenesysService.addConnectCallListener(async () => {
-        if (this.state.connectionState === CONNECTION_STATE.DISCONNECTED) {
-          this.setState({ connectionState: CONNECTION_STATE.CONNECTING })
-          await this.initConference()
-        }
-      })
-
-      // Add connect call listener
-      GenesysService.addMuteListener(
-        async (mute) => await this.onMuteCall(mute)
-      )
-
-      this.infinityContext = {
-        conferencePin: this.pexipAgentPin,
-        conferenceAlias: this.conferenceAlias,
-        infinityHost: this.pexipNode,
-        pexipAppPrefix: this.pexipAppPrefix
-      }
-      await this.initConference()
+      setSecondaryVideo('presentation')
     }
   }
 
@@ -381,172 +204,260 @@ export class App extends React.Component<{}, AppState> {
    * The local media stream will be initiated in this method.
    * The method relies on GenesysService to get the conference alias and the agents display name
    */
-  private async initConference(): Promise<void> {
-    const prefixedConfAlias = this.getAppPrefix().concat(this.conferenceAlias)
+  const initConference = async (): Promise<void> => {
+    const prefixedConfAlias = pexipAppPrefix + conferenceAlias
     let localStream: MediaStream = new MediaStream()
     try {
       localStream = await getLocalStream()
     } catch (err) {
-      this.setState({
-        errorId: ERROR_ID.CAMERA_ACCESS_DENIED,
-        connectionState: CONNECTION_STATE.ERROR
-      })
+      setErrorId(ERROR_ID.CAMERA_ACCESS_DENIED)
+      setConnectionState(ConnectionState.Error)
       return
     }
-    localStream = await getProcessedStream(localStream)
     const displayName = GenesysService.getAgentName()
 
-    this.setState({
-      localStream,
-      displayName
-    })
+    setLocalStream(localStream)
+    setDisplayName(displayName)
 
-    await this.joinConference(
-      this.pexipNode,
+    await joinConference(
+      pexipNode,
       prefixedConfAlias,
       localStream,
       displayName,
-      this.pexipAgentPin
+      pexipAgentPin
     )
+
     // Set initial context for hold and mute
     const holdState = await GenesysService.isHeld()
     const muteState = await GenesysService.isMuted()
-    await this.onMuteCall(muteState)
-    await this.onHoldVideo(holdState)
+    await onMuteCall(muteState)
+    await onHoldVideo(holdState)
   }
 
   // Set the video to mute for all participants
-  async onHoldVideo(onHold: boolean): Promise<void> {
+  const onHoldVideo = async (onHold: boolean): Promise<void> => {
     const participantList: any[] = []
     // const participantList = this.infinityClient.participants
     // Mute current user video and set mute audio indicator even if no audio layer is used by web rtc
-    await this.toggleCameraMute(onHold)
-    await this.infinityClient.mute({
+    await toggleCameraMute(onHold)
+    await infinityClient.mute({
       mute: (await GenesysService.isMuted()) || onHold
     })
     // Mute other participants video
     participantList.forEach((participant) => {
-      this.infinityClient
+      infinityClient
         .muteVideo({ muteVideo: onHold, participantUuid: participant.uuid })
-        .catch((error) => console.error(error))
+        .catch(console.error)
     })
-    if (onHold) {
-      await this.toolbarRef?.current?.stopScreenShare()
-    }
+    // if (onHold) {
+    //   await this.toolbarRef?.current?.stopScreenShare()
+    // }
   }
 
-  async onEndCall(shouldDisconnectAll: boolean): Promise<void> {
-    if (this.state.localStream != null) {
-      stopProcessedStream(this.state.localStream.id)
-      stopStream(this.state.localStream)
+  const onEndCall = async (shouldDisconnectAll: boolean): Promise<void> => {
+    if (localStream != null) {
+      stopStream(localStream)
     }
     if (shouldDisconnectAll) {
-      await this.infinityClient.disconnectAll({})
+      await infinityClient.disconnectAll({})
     }
-    await this.infinityClient?.disconnect({})
-    this.setState({ connectionState: CONNECTION_STATE.DISCONNECTED })
+    await infinityClient?.disconnect({})
+    setConnectionState(ConnectionState.Disconnected)
   }
 
-  async onMuteCall(muted: boolean): Promise<void> {
-    await this.infinityClient.mute({ mute: muted })
+  const onMuteCall = async (muted: boolean): Promise<void> => {
+    await infinityClient.mute({ mute: muted })
   }
 
-  handleChangeStreamQuality(streamQuality: StreamQuality): void {
-    this.infinityClient.setBandwidth(convertToBandwidth(streamQuality))
+  const handleChangeStreamQuality = (streamQuality: StreamQuality) => {
+    infinityClient.setBandwidth(convertToBandwidth(streamQuality))
     setStreamQuality(streamQuality)
   }
 
-  async componentWillUnmount(): Promise<void> {
-    await this.onEndCall(false)
+  const initializeGenesys = async (state: any, accessToken: string) => {
+    // Initiate Genesys environment
+    await GenesysService.initialize(state, accessToken)
+
+    // Stop the initialization if no call is active
+    const callActive = (await GenesysService.isCallActive()) || false
+    if (!callActive) {
+      setConnectionState(ConnectionState.Disconnected)
+      return
+    }
+
+    pexipNode = state.pexipNode
+    pexipAgentPin = state.pexipAgentPin
+    aniName = (await GenesysService.fetchAniName()) ?? ''
+    pexipAppPrefix = state.pexipAppPrefix
+    conferenceAlias = (await GenesysService.isDialOut(pexipNode))
+      ? aniName
+      : uuidv4()
+
+    // Add on hold listener
+    GenesysService.addHoldListener(async (mute) => await onHoldVideo(mute))
+
+    // Add end call listener
+    GenesysService.addEndCallListener(
+      async (shouldDisconnectAll: boolean) =>
+        await onEndCall(shouldDisconnectAll)
+    )
+
+    // Add connect call listener
+    GenesysService.addConnectCallListener(async () => {
+      if (connectionState === ConnectionState.Disconnected) {
+        setConnectionState(ConnectionState.Connecting)
+        await initConference()
+      }
+    })
+
+    // Add connect call listener
+    GenesysService.addMuteListener(async (mute) => await onMuteCall(mute))
   }
 
-  render(): JSX.Element {
-    return (
-      <div className="App" data-testid="App" ref={this.appRef}>
-        {this.state.errorId !== '' &&
-          this.state.connectionState === CONNECTION_STATE.ERROR && (
-            <ErrorPanel
-              errorId={this.state.errorId}
-              onClick={() => {
-                this.setState({
-                  errorId: '',
-                  connectionState: CONNECTION_STATE.CONNECTING
-                })
-                this.componentDidMount().catch((error) => console.error(error))
-              }}
-            ></ErrorPanel>
-          )}
-        {(this.state.connectionState === CONNECTION_STATE.CONNECTING ||
-          this.state.connectionState === CONNECTION_STATE.CONNECTED) && (
-          <CenterLayout className="loading-spinner">
-            <Spinner colorScheme="light" />
-          </CenterLayout>
-        )}
-        {this.state.connectionState === CONNECTION_STATE.DISCONNECTED && (
-          <div className="no-active-call" data-testid="no-active-call">
-            <h1>No active call</h1>
-          </div>
-        )}
-        {this.state.connectionState === CONNECTION_STATE.CONNECTED && (
-          <>
+  useEffect(() => {
+    try {
+      checkCameraAccess().catch(console.error)
+    } catch (error) {
+      return
+    }
+    const queryParams = new URLSearchParams(window.location.search)
+
+    const pcEnvironment = queryParams.get('pcEnvironment') ?? ''
+    const pcConversationId = queryParams.get('pcConversationId') ?? ''
+
+    pexipNode = queryParams.get('pexipNode') ?? ''
+    pexipAgentPin = queryParams.get('pexipAgentPin') ?? ''
+    pexipAppPrefix = queryParams.get('pexipAppPrefix') ?? ''
+
+    if (
+      pcEnvironment != '' &&
+      pcConversationId != '' &&
+      pexipNode != '' &&
+      pexipAgentPin != '' &&
+      pexipAppPrefix != ''
+    ) {
+      GenesysService.loginPureCloud(
+        pcEnvironment,
+        pcConversationId,
+        pexipNode,
+        pexipAgentPin,
+        pexipAppPrefix
+      )
+    } else {
+      // Logged into Genesys
+      setConnectionState(ConnectionState.Connecting)
+
+      const parsedUrl = new URL(window.location.href.replace(/#/g, '?'))
+      const queryParams = new URLSearchParams(parsedUrl.search)
+
+      const accessToken = queryParams.get('access_token') as string
+      const state = JSON.parse(
+        decodeURIComponent(queryParams.get('state') as string)
+      )
+
+      initializeGenesys(state, accessToken)
+        .then(() => {
+          initConference().catch(console.error)
+        })
+        .catch(console.error)
+    }
+
+    const handleDisconnect = () => {
+      infinityClient?.disconnect({})
+    }
+
+    window.addEventListener('beforeunload', handleDisconnect)
+    return () => {
+      window.removeEventListener('beforeunload', handleDisconnect)
+      onEndCall(false)
+    }
+  }, [])
+
+  return (
+    <div className="App" data-testid="App" ref={appRef}>
+      {errorId !== '' && connectionState === ConnectionState.Error && (
+        <ErrorPanel
+          errorId={errorId}
+          onClick={() => {
+            setErrorId('')
+            setConnectionState(ConnectionState.Connecting)
+            // this.componentDidMount().catch((error) => console.error(error))
+          }}
+        ></ErrorPanel>
+      )}
+
+      {(connectionState === ConnectionState.Connecting ||
+        connectionState === ConnectionState.Connected) && (
+        <CenterLayout className="loading-spinner">
+          <Spinner colorScheme="light" />
+        </CenterLayout>
+      )}
+
+      {connectionState === ConnectionState.Disconnected && (
+        <div className="no-active-call" data-testid="no-active-call">
+          <h1>No active call</h1>
+        </div>
+      )}
+
+      {connectionState === ConnectionState.Connected && (
+        <>
+          <Video
+            id="remoteVideo"
+            srcObject={remoteStream}
+            className={secondaryVideo === 'remote' ? 'secondary' : 'primary'}
+            onClick={secondaryVideo === 'remote' ? exchangeVideos : undefined}
+          />
+
+          {presentationStream != null && (
             <Video
-              mediaStream={this.state.remoteStream}
-              id="remoteVideo"
-              secondary={this.state.secondaryVideo === 'remote'}
+              srcObject={presentationStream}
+              style={{ objectFit: 'contain' }}
+              className={
+                secondaryVideo === 'presentation' ? 'secondary' : 'primary'
+              }
               onClick={
-                this.state.secondaryVideo === 'remote'
-                  ? this.exchangeVideos.bind(this)
-                  : undefined
+                secondaryVideo === 'presentation' ? exchangeVideos : undefined
               }
             />
-            {this.state.presentationStream.active && (
-              <Video
-                mediaStream={this.state.presentationStream}
-                objectFit="contain"
-                secondary={this.state.secondaryVideo === 'presentation'}
-                onClick={
-                  this.state.secondaryVideo === 'presentation'
-                    ? this.exchangeVideos.bind(this)
-                    : undefined
-                }
-              />
-            )}
-            {this.state.localStream.active && (
-              <Selfview
-                floatRoot={this.appRef}
-                callSignals={this.callSignals}
-                username={this.state.displayName}
-                localStream={this.state.localStream}
-              />
-            )}
-            <Toolbar
-              ref={this.toolbarRef}
-              infinityClient={this.infinityClient}
-              infinityContext={this.infinityContext}
-              callSignals={this.callSignals}
-              infinitySignals={this.infinitySignals}
-              onLocalPresentationStream={this.handleLocalPresentationStream}
-              onLocalStream={this.handleLocalStream}
-              isCameraMuted={this.state.isCameraMuted}
-              onCameraMute={this.toggleCameraMute}
-              onChangeStreamQuality={this.handleChangeStreamQuality}
+          )}
+
+          {localStream != null && (
+            <Selfview
+              floatRoot={appRef}
+              callSignals={callSignals}
+              username={displayName}
+              localStream={localStream}
             />
-          </>
-        )}
-        <ToastContainer
-          position="top-center"
-          autoClose={3000}
-          hideProgressBar={true}
-          newestOnTop={false}
-          closeOnClick={true}
-          rtl={false}
-          pauseOnFocusLoss={false}
-          draggable={false}
-          pauseOnHover
-          theme="light"
-          transition={Slide}
-        />
-      </div>
-    )
-  }
+          )}
+
+          <Toolbar
+            infinityClient={infinityClient}
+            callSignals={callSignals}
+            infinitySignals={infinitySignals}
+            pexipNode={pexipNode}
+            pexipAppPrefix={pexipAppPrefix}
+            conferenceAlias={conferenceAlias}
+            onCameraMute={toggleCameraMute}
+            onLocalPresentationStream={handleLocalPresentationStream}
+            onLocalStream={handleLocalStream}
+            onChangeStreamQuality={handleChangeStreamQuality}
+          />
+        </>
+      )}
+
+      <ToastContainer
+        position="top-center"
+        autoClose={3000}
+        hideProgressBar={true}
+        newestOnTop={false}
+        closeOnClick={true}
+        rtl={false}
+        pauseOnFocusLoss={false}
+        draggable={false}
+        pauseOnHover
+        theme="light"
+        transition={Slide}
+      />
+    </div>
+  )
 }
