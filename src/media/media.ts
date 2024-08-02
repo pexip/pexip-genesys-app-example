@@ -5,13 +5,20 @@
  * @param {boolean} [save=false] Indicates if the selected deviceID should be saved in the local storage.
  * @returns Local media stream.
  */
-const getLocalStream = async (deviceId?: string | null, save: boolean = false): Promise<MediaStream> => {
+const getLocalStream = async (
+  deviceId?: string | null,
+  save: boolean = false
+): Promise<MediaStream> => {
   deviceId = deviceId ?? getCurrentDeviceId()
   let localStream: MediaStream
   if (deviceId !== null) {
-    const device = (await navigator.mediaDevices.enumerateDevices()).find((device) => device.deviceId === deviceId)
+    const device = (await navigator.mediaDevices.enumerateDevices()).find(
+      (device) => device.deviceId === deviceId
+    )
     if (device !== null) {
-      localStream = await navigator.mediaDevices.getUserMedia({ video: { deviceId, height: 720 } })
+      localStream = await navigator.mediaDevices.getUserMedia({
+        video: { deviceId, height: 720 }
+      })
     } else {
       localStream = await navigator.mediaDevices.getUserMedia({ video: true })
     }
@@ -28,8 +35,8 @@ const getLocalStream = async (deviceId?: string | null, save: boolean = false): 
  * Release any MediaStream in use.
  * @param {MediaStream} stream MediaStream to stop.
  */
-const stopStream = (stream: MediaStream): void => {
-  stream.getTracks()?.forEach((track) => track.stop())
+const stopStream = (stream: MediaStream | undefined): void => {
+  stream?.getTracks()?.forEach((track) => track.stop())
 }
 
 /**
@@ -48,9 +55,4 @@ const setCurrentDeviceId = (deviceId: string): void => {
   return localStorage.setItem('pexipVideoInputId', deviceId)
 }
 
-export {
-  getLocalStream,
-  stopStream,
-  getCurrentDeviceId,
-  setCurrentDeviceId
-}
+export { getLocalStream, stopStream, getCurrentDeviceId, setCurrentDeviceId }

@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react'
-import { ToastContainer, Slide } from 'react-toastify'
 import { v4 as uuidv4 } from 'uuid'
 import {
   createInfinityClient,
@@ -11,7 +10,13 @@ import {
   type PresoConnectionChangeEvent,
   ClientCallType
 } from '@pexip/infinity'
-import { CenterLayout, Spinner, Video } from '@pexip/components'
+import {
+  CenterLayout,
+  NotificationToast,
+  notificationToastSignal,
+  Spinner,
+  Video
+} from '@pexip/components'
 import { type StreamQuality } from '@pexip/media-components'
 import {
   convertToBandwidth,
@@ -62,36 +67,6 @@ export const App = (): JSX.Element => {
       setErrorId(ERROR_ID.CAMERA_NOT_CONNECTED)
       setConnectionState(ConnectionState.Error)
       throw new Error('Camera not connected')
-    }
-  }
-
-  const handleLocalPresentationStream = (
-    presentationStream: MediaStream
-  ): void => {
-    setPresentationStream(presentationStream)
-    setSecondaryVideo('presentation')
-  }
-
-  const handleLocalStream = (stream: MediaStream): void => {
-    if (localStream != null) {
-      stopStream(localStream)
-    }
-    infinityClient.setStream(stream)
-    setLocalStream(stream)
-  }
-
-  const toggleCameraMute = async (muted: boolean): Promise<void> => {
-    const response = await infinityClient.muteVideo({ muteVideo: !muted })
-    if (response?.status === 200) {
-      if (localStream != null) {
-        stopStream(localStream)
-      }
-      if (muted) {
-        let localStream = await getLocalStream()
-        infinityClient.setStream(localStream)
-      } else {
-        infinityClient.setStream(new MediaStream())
-      }
     }
   }
 
@@ -239,7 +214,7 @@ export const App = (): JSX.Element => {
     const participantList: any[] = []
     // const participantList = this.infinityClient.participants
     // Mute current user video and set mute audio indicator even if no audio layer is used by web rtc
-    await toggleCameraMute(onHold)
+    await handleCameraMuteChanged(onHold)
     await infinityClient.mute({
       mute: (await GenesysService.isMuted()) || onHold
     })
@@ -267,11 +242,6 @@ export const App = (): JSX.Element => {
 
   const onMuteCall = async (muted: boolean): Promise<void> => {
     await infinityClient.mute({ mute: muted })
-  }
-
-  const handleChangeStreamQuality = (streamQuality: StreamQuality) => {
-    infinityClient.setBandwidth(convertToBandwidth(streamQuality))
-    setStreamQuality(streamQuality)
   }
 
   const initializeGenesys = async (state: any, accessToken: string) => {
@@ -312,6 +282,54 @@ export const App = (): JSX.Element => {
 
     // Add connect call listener
     GenesysService.addMuteListener(async (mute) => await onMuteCall(mute))
+  }
+
+  const handleCameraMuteChanged = async (muted: boolean) => {
+    const response = await infinityClient.muteVideo({ muteVideo: muted })
+    let newStream: MediaStream | undefined
+    if (response?.status === 200) {
+      stopStream(localStream)
+      if (!muted) {
+        newStream = await getLocalStream()
+        infinityClient.setStream(newStream)
+      }
+    }
+    setLocalStream(newStream)
+  }
+
+  const handleCopyInvitationLink = () => {
+    const invitationLink = `https://${pexipNode}/webapp/m/${pexipAppPrefix}${conferenceAlias}/step-by-step?role=guest`
+    const link = document.createElement('input')
+    link.value = invitationLink
+    document.body.appendChild(link)
+    link.select()
+    document.execCommand('copy')
+    link.remove()
+    notificationToastSignal.emit([
+      {
+        message: 'Invitation link copied to clipboard!'
+      }
+    ])
+  }
+
+  const handleChangeStreamQuality = (streamQuality: StreamQuality) => {
+    infinityClient.setBandwidth(convertToBandwidth(streamQuality))
+    setStreamQuality(streamQuality)
+  }
+
+  const handleLocalPresentationStream = (
+    presentationStream: MediaStream | undefined
+  ) => {
+    setPresentationStream(presentationStream)
+    setSecondaryVideo('presentation')
+  }
+
+  const handleLocalStream = (stream: MediaStream) => {
+    if (localStream != null) {
+      stopStream(localStream)
+    }
+    infinityClient.setStream(stream)
+    setLocalStream(stream)
   }
 
   useEffect(() => {
@@ -421,43 +439,29 @@ export const App = (): JSX.Element => {
             />
           )}
 
-          {localStream != null && (
-            <Selfview
-              floatRoot={appRef}
-              callSignals={callSignals}
-              username={displayName}
-              localStream={localStream}
-            />
-          )}
+          <Selfview
+            floatRoot={appRef}
+            callSignals={callSignals}
+            username={displayName}
+            localStream={localStream}
+            onCameraMuteChanged={handleCameraMuteChanged}
+          />
 
           <Toolbar
             infinityClient={infinityClient}
             callSignals={callSignals}
             infinitySignals={infinitySignals}
-            pexipNode={pexipNode}
-            pexipAppPrefix={pexipAppPrefix}
-            conferenceAlias={conferenceAlias}
-            onCameraMute={toggleCameraMute}
+            cameraMuted={localStream == null}
+            onCameraMuteChanged={handleCameraMuteChanged}
+            onCopyInvitationLink={handleCopyInvitationLink}
+            onChangeStreamQuality={handleChangeStreamQuality}
             onLocalPresentationStream={handleLocalPresentationStream}
             onLocalStream={handleLocalStream}
-            onChangeStreamQuality={handleChangeStreamQuality}
           />
         </>
       )}
 
-      <ToastContainer
-        position="top-center"
-        autoClose={3000}
-        hideProgressBar={true}
-        newestOnTop={false}
-        closeOnClick={true}
-        rtl={false}
-        pauseOnFocusLoss={false}
-        draggable={false}
-        pauseOnHover
-        theme="light"
-        transition={Slide}
-      />
+      <NotificationToast />
     </div>
   )
 }

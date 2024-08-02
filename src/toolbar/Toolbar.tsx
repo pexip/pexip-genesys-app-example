@@ -6,10 +6,14 @@ import {
   PresoConnectionChangeEvent
 } from '@pexip/infinity'
 import { SettingsPanel } from '../settings-panel/SettingsPanel'
-import copy from 'copy-to-clipboard'
-import { toast } from 'react-toastify'
 import { StreamQuality } from '@pexip/media-components'
-import { Button, Icon, IconTypes, Tooltip } from '@pexip/components'
+import {
+  Button,
+  Icon,
+  IconTypes,
+  notificationToastSignal,
+  Tooltip
+} from '@pexip/components'
 
 import './Toolbar.scss'
 
@@ -17,17 +21,15 @@ interface ToolbarProps {
   infinityClient: InfinityClient
   callSignals: CallSignals
   infinitySignals: InfinitySignals
-  pexipNode: string
-  pexipAppPrefix: string
-  conferenceAlias: string
-  onCameraMute: (muted: boolean) => Promise<void>
-  onLocalPresentationStream: Function
-  onLocalStream: Function
+  cameraMuted: boolean
+  onCameraMuteChanged: (muted: boolean) => Promise<void>
+  onCopyInvitationLink: () => void
   onChangeStreamQuality: (streamQuality: StreamQuality) => void
+  onLocalPresentationStream: (stream: MediaStream | undefined) => void
+  onLocalStream: (stream: MediaStream) => void
 }
 
 export const Toolbar = (props: ToolbarProps): JSX.Element => {
-  const [cameraMutedEnabled, setCameraMutedEnabled] = useState(false)
   const [shareScreenEnabled, setShareScreenEnabled] = useState(false)
   const [lockRoomEnabled, setLockRoomEnabled] = useState(false)
   const [popOutVideoEnabled, setPopOutVideoEnabled] = useState(false)
@@ -61,6 +63,8 @@ export const Toolbar = (props: ToolbarProps): JSX.Element => {
     })
     if (response?.status === 200) {
       setLockRoomEnabled(!lockRoomEnabled)
+      const message = lockRoomEnabled ? 'Room unlocked' : 'Room locked'
+      notificationToastSignal.emit([{ message }])
     }
   }
 
@@ -83,25 +87,21 @@ export const Toolbar = (props: ToolbarProps): JSX.Element => {
     setSettingsEnabled(!settingsEnabled)
   }
 
-  const copyInvitationLink = async (): Promise<void> => {
-    // Example: https://pexipdemo.com/webapp/m/=mp7b6f680324ee40df8d762fdc24b54849/step-by-step?role=guest
-    const invitationLink = `https://${props.pexipNode}/webapp/m/${props.pexipAppPrefix}${props.conferenceAlias}/step-by-step?role=guest`
-    copy(invitationLink)
-    toast('Invitation link copied to clipboard!')
-  }
-
   useEffect(() => {
     const videoElement = document.getElementById(
       'remoteVideo'
     ) as HTMLVideoElement
+
     if (videoElement) {
       videoElement.addEventListener('enterpictureinpicture', () =>
         setPopOutVideoEnabled(true)
       )
+
       videoElement.addEventListener('leavepictureinpicture', () =>
         setPopOutVideoEnabled(false)
       )
     }
+
     props.callSignals.onPresentationConnectionChange.add(
       (changeEvent: PresoConnectionChangeEvent): void => {
         if (changeEvent.send === 'connected') {
@@ -126,19 +126,18 @@ export const Toolbar = (props: ToolbarProps): JSX.Element => {
   return (
     <>
       <div className="Toolbar" data-testid="Toolbar">
-        <Tooltip text={cameraMutedEnabled ? 'Unmute camera' : 'Mute camera'}>
+        <Tooltip text={props.cameraMuted ? 'Unmute camera' : 'Mute camera'}>
           <Button
             onClick={() => {
-              setCameraMutedEnabled(!cameraMutedEnabled)
-              props.onCameraMute(!cameraMutedEnabled)
+              props.onCameraMuteChanged(!props.cameraMuted)
             }}
             modifier="square"
             variant="translucent"
-            isActive={cameraMutedEnabled}
+            isActive={props.cameraMuted}
           >
             <Icon
               source={
-                cameraMutedEnabled
+                props.cameraMuted
                   ? IconTypes.IconVideoOff
                   : IconTypes.IconVideoOn
               }
@@ -193,7 +192,7 @@ export const Toolbar = (props: ToolbarProps): JSX.Element => {
 
         <Tooltip text="Copy invitation link">
           <Button
-            onClick={copyInvitationLink}
+            onClick={props.onCopyInvitationLink}
             modifier="square"
             variant="translucent"
           >
@@ -212,6 +211,7 @@ export const Toolbar = (props: ToolbarProps): JSX.Element => {
           </Button>
         </Tooltip>
       </div>
+
       {settingsEnabled && (
         <SettingsPanel
           onClose={() => setSettingsEnabled(false)}

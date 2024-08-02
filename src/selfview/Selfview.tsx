@@ -16,7 +16,8 @@ interface SelfViewProps {
   floatRoot: RefObject<HTMLDivElement>
   callSignals: CallSignals
   username: string
-  localStream: MediaStream
+  localStream: MediaStream | undefined
+  onCameraMuteChanged: (muted: boolean) => Promise<void>
 }
 
 export const Selfview = React.memo((props: SelfViewProps): JSX.Element => {
@@ -42,9 +43,13 @@ export const Selfview = React.memo((props: SelfViewProps): JSX.Element => {
         username={props.username}
         localMediaStream={props.localStream}
         quality={callQuality}
-        onCollapseSelfview={() => setFolded(true)}
-        onExpandSelfview={() => setFolded(false)}
-        isFolded={folded}
+        onCollapseSelfview={() => {
+          setFolded(true)
+        }}
+        onExpandSelfview={() => {
+          setFolded(false)
+        }}
+        isFolded={props.localStream == null || folded}
         showSelfviewTooltip={showTooltip}
         setShowSelfviewTooltip={(showTooltip: boolean) =>
           setShowTooltip(showTooltip)
@@ -53,9 +58,11 @@ export const Selfview = React.memo((props: SelfViewProps): JSX.Element => {
         // Unused parameters
         callQualityPosition={'bottomRight'}
         isAudioInputMuted={true}
-        isVideoInputMuted={false}
+        isVideoInputMuted={props.localStream == null}
         onToggleAudioClick={() => {}}
-        onToggleVideoClick={() => {}}
+        onToggleVideoClick={() => {
+          props.onCameraMuteChanged(false)
+        }}
         isSidePanelVisible={false}
         autoHideProps={{
           onMouseEnter: () => {},
@@ -69,6 +76,7 @@ export const Selfview = React.memo((props: SelfViewProps): JSX.Element => {
           throw new Error('Function not implemented.')
         }}
         draggableAriaLabel={''}
+        isMirrored={true}
       />
       {showStats && (
         <Stats
