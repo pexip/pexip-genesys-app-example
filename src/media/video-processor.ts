@@ -47,7 +47,7 @@ export const getVideoProcessor = async (
 
   const transformer = createCanvasTransform(segmenter, {
     effects: effect,
-    backgroundImageUrl: '/backgrounds/background.png'
+    backgroundImageUrl: '/media-processor/background.jpg'
   })
 
   const getTrackProcessor = (): ProcessVideoTrack => {

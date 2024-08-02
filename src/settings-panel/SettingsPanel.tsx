@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import {
-  DevicesList,
+  DeviceSelect,
   SelfViewSettings,
   StreamQuality
 } from '@pexip/media-components'
@@ -10,16 +10,19 @@ import {
   Button,
   Modal,
   TextHeading,
-  FontVariant,
   Select,
   IconTypes
 } from '@pexip/components'
-import { RenderEffects } from '@pexip/media-processor'
+import { VideoProcessor } from '@pexip/media-processor'
 import { getCurrentDeviceId, getLocalStream, stopStream } from '../media/media'
-import { Effect } from './effect/Effect'
+import { EffectButton } from './effect-button/EffectButton'
 import { getStreamQuality } from '../media/quality'
+import { Effect } from '../types/Effect'
 
 import './SettingsPanel.scss'
+import { getVideoProcessor } from '../media/video-processor'
+
+let videoProcessor: VideoProcessor
 
 interface SettingsPanelProps {
   onClose: () => void
@@ -29,63 +32,30 @@ interface SettingsPanelProps {
   ) => void
 }
 
-interface HeaderProps {
-  text: string
-  i18key: string
-}
-
 export const SettingsPanel = (props: SettingsPanelProps): JSX.Element => {
   const [devices, setDevices] = useState<MediaDeviceInfoLike[]>([])
   const [videoInput, setVideoInput] = useState<MediaDeviceInfoLike>()
-  const [localMediaStream, setLocalMediaStream] = useState<MediaStream>()
+  const [localStream, setLocalStream] = useState<MediaStream>()
+  const [processedStream, setProcessedStream] = useState<MediaStream>()
+  const [effect, setEffect] = useState<Effect>(Effect.None)
   const [streamQuality, setStreamQuality] = useState<StreamQuality>(
     getStreamQuality()
   )
-  // const [effect, setEffect] = useState<RenderEffects>(getCurrentEffect())
 
   const bgImageUrl = './media-processor/background.jpg'
 
-  const deviceList = (
-    <DevicesList
-      data-testid="devices-list"
+  const deviceSelect = (
+    <DeviceSelect
       devices={devices}
-      audioInputError={{
-        title: '',
-        description: undefined,
-        deniedDevice: undefined
-      }}
-      videoInputError={{
-        title: '',
-        description: undefined,
-        deniedDevice: undefined
-      }}
-      onAudioInputChange={(device: MediaDeviceInfoLike): void => {
-        throw new Error('Function not implemented.')
-      }}
-      onAudioOutputChange={(device: MediaDeviceInfoLike): void => {
-        throw new Error('Function not implemented.')
-      }}
-      onVideoInputChange={(device: MediaDeviceInfoLike): void => {
+      isDisabled={false}
+      label={''}
+      onDeviceChange={(device) => {
         setVideoInput(device)
       }}
-      videoInput={videoInput}
-      setShowHelpVideo={() => {}}
+      mediaDeviceInfoLike={videoInput}
+      iconType={IconTypes.IconVideoOn}
     />
   )
-
-  // const Header = (props: HeaderProps): JSX.Element => {
-  //   return (
-  //     <TextHeading
-  //       htmlTag="h3"
-  //       fontVariant={FontVariant.H5}
-  //       className="mb-1 mt-4"
-  //     >
-  //       <Trans t={t} i18nKey={props.i18key}>
-  //         {props.text}
-  //       </Trans>
-  //     </TextHeading>
-  //   )
-  // }
 
   const QualityList = (): JSX.Element => {
     return (
@@ -96,30 +66,28 @@ export const SettingsPanel = (props: SettingsPanelProps): JSX.Element => {
         label="Select meeting quality"
         // label={t('quality.select-quality', 'Select meeting quality')}
         labelModifier="hidden"
-        options={
-          [
-            // {
-            //   id: StreamQuality.Low,
-            //   label: t('quality.low', 'Low')
-            // },
-            // {
-            //   id: StreamQuality.Medium,
-            //   label: t('quality.medium', 'Medium')
-            // },
-            // {
-            //   id: StreamQuality.High,
-            //   label: t('quality.high', 'High')
-            // },
-            // {
-            //   id: StreamQuality.VeryHigh,
-            //   label: t('quality.very-high', 'Very High')
-            // },
-            // {
-            //   id: StreamQuality.Auto,
-            //   label: t('quality.auto', 'Auto')
-            // }
-          ]
-        }
+        options={[
+          {
+            id: StreamQuality.Low,
+            label: 'Low'
+          },
+          {
+            id: StreamQuality.Medium,
+            label: 'Medium'
+          },
+          {
+            id: StreamQuality.High,
+            label: 'High'
+          },
+          {
+            id: StreamQuality.VeryHigh,
+            label: 'Very High'
+          },
+          {
+            id: StreamQuality.Auto,
+            label: 'Auto'
+          }
+        ]}
         onValueChange={(id: string) => {
           setStreamQuality(id as StreamQuality)
         }}
@@ -129,11 +97,27 @@ export const SettingsPanel = (props: SettingsPanelProps): JSX.Element => {
     )
   }
 
+  const handleChangeEffect = async (effect: Effect): Promise<void> => {
+    setEffect(effect)
+    if (localStream == null) {
+      console.error('Local stream is null')
+      return
+    }
+    if (videoProcessor != null) {
+      videoProcessor.close()
+      videoProcessor.destroy()
+    }
+    videoProcessor = await getVideoProcessor(effect)
+    await videoProcessor.open()
+    const processedStream = await videoProcessor.process(localStream)
+    setProcessedStream(processedStream)
+  }
+
   useEffect(() => {
     let mediaStream: MediaStream
     const asyncBootstrap = async (): Promise<void> => {
-      if (localMediaStream != null) {
-        stopStream(localMediaStream)
+      if (localStream != null) {
+        stopStream(localStream)
       }
       const devices = await navigator.mediaDevices.enumerateDevices()
       const videoDevices = devices.filter(
@@ -146,20 +130,16 @@ export const SettingsPanel = (props: SettingsPanelProps): JSX.Element => {
       if (videoInput == null) {
         setVideoInput(currentDevice)
       }
-      // Only get the localStream if we have already obtained the devices
-      // If we don't do this, we will obtain the localStream twice
       if (devices.length > 0) {
         mediaStream = await getLocalStream(videoInput?.deviceId)
-        const preview = true
-        // mediaStream = await getProcessedStream(mediaStream, effect, preview)
-        setLocalMediaStream(mediaStream)
+        setLocalStream(mediaStream)
       }
       setDevices(videoDevices)
+      handleChangeEffect(effect).catch(console.error)
     }
     asyncBootstrap().catch((error) => console.error(error))
     return () => {
       if (mediaStream != null) {
-        // stopProcessedStream(mediaStream.id)
         stopStream(mediaStream)
       }
     }
@@ -168,26 +148,14 @@ export const SettingsPanel = (props: SettingsPanelProps): JSX.Element => {
   const handleSave = async (): Promise<void> => {
     let newMediaStream
     let newStreamQuality
-    // if (videoInput != null || effect !== getCurrentEffect()) {
     let deviceId = videoInput?.deviceId
     if (deviceId == null) deviceId = devices[0].deviceId
     newMediaStream = await getLocalStream(deviceId, true)
-    const preview = false
-    const save = true
-    // newMediaStream = await getProcessedStream(
-    //   newMediaStream,
-    //   effect,
-    //   preview,
-    //   save
-    // )
-    // }
     if (streamQuality !== getStreamQuality()) {
       newStreamQuality = streamQuality
     }
     props.onSave(newMediaStream, newStreamQuality)
   }
-
-  // const { t } = useTranslation()
 
   return (
     <Modal
@@ -196,33 +164,40 @@ export const SettingsPanel = (props: SettingsPanelProps): JSX.Element => {
       className="SettingsPanel"
       data-testid="SettingsPanel"
     >
-      <SelfViewSettings mediaStream={localMediaStream} data-testid="selfview" />
+      <SelfViewSettings mediaStream={processedStream} data-testid="selfview" />
 
-      {/* <Header text="Devices" i18key="settings.devices" /> */}
-      {deviceList}
+      <TextHeading htmlTag={'h5'}>Devices</TextHeading>
 
-      {/* <Header text='Effects' i18key='settings.effects' /> */}
-      <Bar className="effect-list" style={{ display: 'none' }}>
-        {/* <Effect
-          name={t('media.effect.none', 'None')}
-          onClick={() => setEffect('none')}
-          active={effect === 'none'}
+      {deviceSelect}
+
+      <TextHeading htmlTag={'h5'}>Effects</TextHeading>
+      <Bar className="effect-list">
+        <EffectButton
+          name="None"
+          onClick={() => {
+            handleChangeEffect(Effect.None).catch(console.error)
+          }}
+          active={effect === Effect.None}
           iconSource={IconTypes.IconBlock}
         />
-        <Effect
-          name={t('media.effect.blur', 'Blur')}
-          onClick={() => setEffect('blur')}
-          active={effect === 'blur'}
+        <EffectButton
+          name="Blur"
+          onClick={() => {
+            handleChangeEffect(Effect.Blur).catch(console.error)
+          }}
+          active={effect === Effect.Blur}
           iconSource={IconTypes.IconBackgroundBlur}
         />
-        <Effect
-          name={t('media.effect.replace', 'Replace')}
-          onClick={() => setEffect('overlay')}
-          active={effect === 'overlay'}
+        <EffectButton
+          name="Background"
+          onClick={() => {
+            handleChangeEffect(Effect.Overlay).catch(console.error)
+          }}
+          active={effect === Effect.Overlay}
           bgImageUrl={bgImageUrl}
-        /> */}
+        />
       </Bar>
-      {/* <Header text="Connection quality" i18key="quality.quality" /> */}
+      <TextHeading htmlTag="h5">Connection quality</TextHeading>
       <QualityList />
 
       <Bar>
@@ -232,9 +207,7 @@ export const SettingsPanel = (props: SettingsPanelProps): JSX.Element => {
           size="medium"
           modifier="fullWidth"
         >
-          {/* <Trans t={t} i18nKey="settings.cancel-changes">
-            Cancel changes
-          </Trans> */}
+          Cancel
         </Button>
 
         <Button
@@ -245,9 +218,7 @@ export const SettingsPanel = (props: SettingsPanelProps): JSX.Element => {
           modifier="fullWidth"
           className="ml-2"
         >
-          {/* <Trans t={t} i18nKey="settings.save-changes">
-            Save changes
-          </Trans> */}
+          Save
         </Button>
       </Bar>
     </Modal>

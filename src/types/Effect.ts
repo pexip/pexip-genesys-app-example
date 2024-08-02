@@ -1,1 +1,5 @@
-export type Effect = 'none' | 'blur' | 'overlay'
+export enum Effect {
+  None = 'none',
+  Blur = 'blur',
+  Overlay = 'overlay'
+}
