@@ -14,27 +14,27 @@ import {
   IconTypes
 } from '@pexip/components'
 import { VideoProcessor } from '@pexip/media-processor'
-import { getCurrentDeviceId, getLocalStream, stopStream } from '../media/media'
 import { EffectButton } from './effect-button/EffectButton'
 import { getStreamQuality } from '../media/quality'
 import { Effect } from '../types/Effect'
+import { getVideoProcessor } from '../media/video-processor'
+import { LocalStorageKey } from '../types/LocalStorageKey'
+import { Settings } from '../types/Settings'
 
 import './SettingsPanel.scss'
-import { getVideoProcessor } from '../media/video-processor'
+
+const bgImageUrl = './media-processor/background.jpg'
 
 let videoProcessor: VideoProcessor
 
 interface SettingsPanelProps {
   onClose: () => void
-  onSave: (
-    localMediaStream?: MediaStream,
-    streamQuality?: StreamQuality
-  ) => void
+  onSave: (settings: Settings) => void
 }
 
 export const SettingsPanel = (props: SettingsPanelProps): JSX.Element => {
   const [devices, setDevices] = useState<MediaDeviceInfoLike[]>([])
-  const [videoInput, setVideoInput] = useState<MediaDeviceInfoLike>()
+  const [device, setDevice] = useState<MediaDeviceInfoLike>()
   const [localStream, setLocalStream] = useState<MediaStream>()
   const [processedStream, setProcessedStream] = useState<MediaStream>()
   const [effect, setEffect] = useState<Effect>(Effect.None)
@@ -42,65 +42,18 @@ export const SettingsPanel = (props: SettingsPanelProps): JSX.Element => {
     getStreamQuality()
   )
 
-  const bgImageUrl = './media-processor/background.jpg'
-
-  const deviceSelect = (
-    <DeviceSelect
-      devices={devices}
-      isDisabled={false}
-      label={''}
-      onDeviceChange={(device) => {
-        setVideoInput(device)
-      }}
-      mediaDeviceInfoLike={videoInput}
-      iconType={IconTypes.IconVideoOn}
-    />
-  )
-
-  const QualityList = (): JSX.Element => {
-    return (
-      <Select
-        className="QualityList mb-5 mt-4"
-        iconType={IconTypes.IconBandwidth}
-        isFullWidth
-        label="Select meeting quality"
-        // label={t('quality.select-quality', 'Select meeting quality')}
-        labelModifier="hidden"
-        options={[
-          {
-            id: StreamQuality.Low,
-            label: 'Low'
-          },
-          {
-            id: StreamQuality.Medium,
-            label: 'Medium'
-          },
-          {
-            id: StreamQuality.High,
-            label: 'High'
-          },
-          {
-            id: StreamQuality.VeryHigh,
-            label: 'Very High'
-          },
-          {
-            id: StreamQuality.Auto,
-            label: 'Auto'
-          }
-        ]}
-        onValueChange={(id: string) => {
-          setStreamQuality(id as StreamQuality)
-        }}
-        sizeModifier="small"
-        value={streamQuality}
-      />
-    )
+  const handleChangeDevice = (device: MediaDeviceInfoLike) => {
+    setDevice(device)
+    // TODO: Change local stream device
   }
 
-  const handleChangeEffect = async (effect: Effect): Promise<void> => {
+  const handleChangeEffect = async (
+    effect: Effect,
+    stream: MediaStream | undefined = localStream
+  ): Promise<void> => {
     setEffect(effect)
-    if (localStream == null) {
-      console.error('Local stream is null')
+    if (stream == null) {
+      console.error('Stream is null')
       return
     }
     if (videoProcessor != null) {
@@ -109,52 +62,60 @@ export const SettingsPanel = (props: SettingsPanelProps): JSX.Element => {
     }
     videoProcessor = await getVideoProcessor(effect)
     await videoProcessor.open()
-    const processedStream = await videoProcessor.process(localStream)
+    const processedStream = await videoProcessor.process(stream)
     setProcessedStream(processedStream)
   }
 
+  const handleChangeStreamQuality = (id: string) => {
+    setStreamQuality(id as StreamQuality)
+  }
+
   useEffect(() => {
-    let mediaStream: MediaStream
     const asyncBootstrap = async (): Promise<void> => {
-      if (localStream != null) {
-        stopStream(localStream)
-      }
       const devices = await navigator.mediaDevices.enumerateDevices()
       const videoDevices = devices.filter(
         (device) => device.kind === 'videoinput'
       )
-      const currentDeviceId = getCurrentDeviceId()
-      const currentDevice =
-        videoDevices.find((device) => device.deviceId === currentDeviceId) ??
-        videoDevices[0]
-      if (videoInput == null) {
-        setVideoInput(currentDevice)
-      }
-      if (devices.length > 0) {
-        mediaStream = await getLocalStream(videoInput?.deviceId)
-        setLocalStream(mediaStream)
-      }
       setDevices(videoDevices)
-      handleChangeEffect(effect).catch(console.error)
-    }
-    asyncBootstrap().catch((error) => console.error(error))
-    return () => {
-      if (mediaStream != null) {
-        stopStream(mediaStream)
+
+      const videoDeviceInfoString =
+        localStorage.getItem(LocalStorageKey.VideoDeviceInfo) ?? '{}'
+      const videoDeviceInfo: MediaDeviceInfoLike = JSON.parse(
+        videoDeviceInfoString
+      )
+
+      const device =
+        videoDevices.find(
+          (device) => device.deviceId === videoDeviceInfo.deviceId
+        ) ?? videoDevices[0]
+
+      if (device != null) {
+        setDevice(device)
+        const localStream = await navigator.mediaDevices.getUserMedia({
+          video: { deviceId: device.deviceId }
+        })
+        handleChangeEffect(effect, localStream).catch(console.error)
+        setLocalStream(localStream)
       }
     }
-  }, [videoInput])
+
+    asyncBootstrap().catch((error) => console.error(error))
+
+    return () => {
+      localStream?.getTracks().forEach((track) => track.stop())
+    }
+  }, [])
 
   const handleSave = async (): Promise<void> => {
-    let newMediaStream
-    let newStreamQuality
-    let deviceId = videoInput?.deviceId
-    if (deviceId == null) deviceId = devices[0].deviceId
-    newMediaStream = await getLocalStream(deviceId, true)
-    if (streamQuality !== getStreamQuality()) {
-      newStreamQuality = streamQuality
-    }
-    props.onSave(newMediaStream, newStreamQuality)
+    // let newMediaStream
+    // let newStreamQuality
+    // let deviceId = videoInput?.deviceId
+    // if (deviceId == null) deviceId = devices[0].deviceId
+    // newMediaStream = await getLocalStream(deviceId, true)
+    // if (streamQuality !== getStreamQuality()) {
+    //   newStreamQuality = streamQuality
+    // }
+    // props.onSave(newMediaStream, newStreamQuality)
   }
 
   return (
@@ -168,7 +129,14 @@ export const SettingsPanel = (props: SettingsPanelProps): JSX.Element => {
 
       <TextHeading htmlTag={'h5'}>Devices</TextHeading>
 
-      {deviceSelect}
+      <DeviceSelect
+        devices={devices}
+        isDisabled={false}
+        label={''}
+        onDeviceChange={handleChangeDevice}
+        mediaDeviceInfoLike={device}
+        iconType={IconTypes.IconVideoOn}
+      />
 
       <TextHeading htmlTag={'h5'}>Effects</TextHeading>
       <Bar className="effect-list">
@@ -198,7 +166,39 @@ export const SettingsPanel = (props: SettingsPanelProps): JSX.Element => {
         />
       </Bar>
       <TextHeading htmlTag="h5">Connection quality</TextHeading>
-      <QualityList />
+
+      <Select
+        className="QualityList mb-5 mt-4"
+        iconType={IconTypes.IconBandwidth}
+        isFullWidth
+        label="Select meeting quality"
+        labelModifier="hidden"
+        options={[
+          {
+            id: StreamQuality.Low,
+            label: 'Low'
+          },
+          {
+            id: StreamQuality.Medium,
+            label: 'Medium'
+          },
+          {
+            id: StreamQuality.High,
+            label: 'High'
+          },
+          {
+            id: StreamQuality.VeryHigh,
+            label: 'Very High'
+          },
+          {
+            id: StreamQuality.Auto,
+            label: 'Auto'
+          }
+        ]}
+        onValueChange={handleChangeStreamQuality}
+        sizeModifier="small"
+        value={streamQuality}
+      />
 
       <Bar>
         <Button

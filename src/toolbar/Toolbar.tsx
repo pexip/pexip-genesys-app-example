@@ -14,6 +14,7 @@ import {
   notificationToastSignal,
   Tooltip
 } from '@pexip/components'
+import { Settings } from '../types/Settings'
 
 import './Toolbar.scss'
 
@@ -26,7 +27,8 @@ interface ToolbarProps {
   onCopyInvitationLink: () => void
   onChangeStreamQuality: (streamQuality: StreamQuality) => void
   onLocalPresentationStream: (stream: MediaStream | undefined) => void
-  onLocalStream: (stream: MediaStream) => void
+  // onLocalStream: (stream: MediaStream) => void
+  onSettingsChanged: (settings: Settings) => void
 }
 
 export const Toolbar = (props: ToolbarProps): JSX.Element => {
@@ -215,17 +217,21 @@ export const Toolbar = (props: ToolbarProps): JSX.Element => {
       {settingsEnabled && (
         <SettingsPanel
           onClose={() => setSettingsEnabled(false)}
-          onSave={(
-            localStream?: MediaStream,
-            streamQuality?: StreamQuality
-          ) => {
+          // onSave={(
+          //   localStream?: MediaStream,
+          //   streamQuality?: StreamQuality
+          // ) => {
+          //   setSettingsEnabled(false)
+          //   if (localStream != null) {
+          //     props.onLocalStream(localStream)
+          //   }
+          //   if (streamQuality != null) {
+          //     props.onChangeStreamQuality(streamQuality)
+          //   }
+          // }}
+          onSave={(settings: Settings) => {
             setSettingsEnabled(false)
-            if (localStream != null) {
-              props.onLocalStream(localStream)
-            }
-            if (streamQuality != null) {
-              props.onChangeStreamQuality(streamQuality)
-            }
+            props.onSettingsChanged(settings)
           }}
         />
       )}

@@ -23,15 +23,20 @@ import {
   setStreamQuality,
   getStreamQuality
 } from './media/quality'
-import { getLocalStream, stopStream } from './media/media'
 import * as GenesysService from './genesys/genesysService'
 import { ErrorPanel } from './error-panel/ErrorPanel'
 import ERROR_ID from './constants/error-ids'
 import { ConnectionState } from './types/ConnectionState'
 import { Toolbar } from './toolbar/Toolbar'
 import { Selfview } from './selfview/Selfview'
+import { Settings } from './types/Settings'
+import { type MediaDeviceInfoLike } from '@pexip/media-control'
+import { Effect } from './types/Effect'
+import { VideoProcessor } from '@pexip/media-processor'
+import { getVideoProcessor } from './media/video-processor'
 
 import './App.scss'
+import { LocalStorageKey } from './types/LocalStorageKey'
 
 let infinitySignals: InfinitySignals
 let callSignals: CallSignals
@@ -43,8 +48,15 @@ let pexipAppPrefix: string = 'agent'
 let aniName: string
 let conferenceAlias: string
 
+let videoProcessor: VideoProcessor
+
 export const App = (): JSX.Element => {
+  const [device, setDevice] = useState<MediaDeviceInfoLike>()
+  const [effect, setEffect] = useState<Effect>(
+    (localStorage.getItem('effect') as Effect) ?? Effect.None
+  )
   const [localStream, setLocalStream] = useState<MediaStream>()
+  const [processedStream, setProcessedStream] = useState<MediaStream>()
   const [remoteStream, setRemoteStream] = useState<MediaStream>()
   const [presentationStream, setPresentationStream] = useState<MediaStream>()
 
@@ -181,23 +193,29 @@ export const App = (): JSX.Element => {
    */
   const initConference = async (): Promise<void> => {
     const prefixedConfAlias = pexipAppPrefix + conferenceAlias
-    let localStream: MediaStream = new MediaStream()
+    let processedStream: MediaStream
     try {
-      localStream = await getLocalStream()
+      const device = await getInitialDevice()
+      const localStream = await navigator.mediaDevices.getUserMedia({
+        video: { deviceId: device?.deviceId }
+      })
+      processedStream = await getProcessedStream(localStream, effect)
+      setDevice(device)
+      setLocalStream(localStream)
+      setProcessedStream(processedStream)
     } catch (err) {
       setErrorId(ERROR_ID.CAMERA_ACCESS_DENIED)
       setConnectionState(ConnectionState.Error)
       return
     }
-    const displayName = GenesysService.getAgentName()
 
-    setLocalStream(localStream)
+    const displayName = GenesysService.getAgentName()
     setDisplayName(displayName)
 
     await joinConference(
       pexipNode,
       prefixedConfAlias,
-      localStream,
+      processedStream,
       displayName,
       pexipAgentPin
     )
@@ -230,9 +248,9 @@ export const App = (): JSX.Element => {
   }
 
   const onEndCall = async (shouldDisconnectAll: boolean): Promise<void> => {
-    if (localStream != null) {
-      stopStream(localStream)
-    }
+    localStream?.getTracks().forEach((track) => {
+      track.stop()
+    })
     if (shouldDisconnectAll) {
       await infinityClient.disconnectAll({})
     }
@@ -286,15 +304,20 @@ export const App = (): JSX.Element => {
 
   const handleCameraMuteChanged = async (muted: boolean) => {
     const response = await infinityClient.muteVideo({ muteVideo: muted })
-    let newStream: MediaStream | undefined
     if (response?.status === 200) {
-      stopStream(localStream)
+      localStream?.getTracks().forEach((track) => {
+        track.stop()
+      })
       if (!muted) {
-        newStream = await getLocalStream()
-        infinityClient.setStream(newStream)
+        const localStream = await navigator.mediaDevices.getUserMedia({
+          video: { deviceId: device?.deviceId }
+        })
+        setLocalStream(localStream)
+        infinityClient.setStream(localStream)
+      } else {
+        setLocalStream(undefined)
       }
     }
-    setLocalStream(newStream)
   }
 
   const handleCopyInvitationLink = () => {
@@ -324,61 +347,119 @@ export const App = (): JSX.Element => {
     setSecondaryVideo('presentation')
   }
 
-  const handleLocalStream = (stream: MediaStream) => {
-    if (localStream != null) {
-      stopStream(localStream)
+  const handleSettingsChanged = async (settings: Settings) => {
+    let newLocalStream = localStream
+    if (settings.device.deviceId !== device?.deviceId) {
+      setDevice(settings.device)
+      localStream?.getTracks().forEach((track) => {
+        track.stop()
+      })
+      newLocalStream = await navigator.mediaDevices.getUserMedia({
+        video: { deviceId: device?.deviceId }
+      })
+      setLocalStream(newLocalStream)
     }
-    infinityClient.setStream(stream)
-    setLocalStream(stream)
+
+    if (
+      settings.effect != effect ||
+      settings.device.deviceId !== device?.deviceId
+    ) {
+      setEffect(settings.effect)
+      if (newLocalStream != null) {
+        const processedStream = await getProcessedStream(
+          newLocalStream,
+          settings.effect
+        )
+        setProcessedStream(processedStream)
+        if (processedStream != null) {
+          infinityClient.setStream(processedStream)
+        }
+      }
+    }
+  }
+
+  const getInitialDevice = async (): Promise<MediaDeviceInfoLike> => {
+    const devices = await navigator.mediaDevices.enumerateDevices()
+    const videoDevices = devices.filter(
+      (device) => device.kind === 'videoinput'
+    )
+
+    const videoDeviceInfoString =
+      localStorage.getItem(LocalStorageKey.VideoDeviceInfo) ?? '{}'
+    const videoDeviceInfo: MediaDeviceInfoLike = JSON.parse(
+      videoDeviceInfoString
+    )
+
+    const device =
+      videoDevices.find(
+        (device) => device.deviceId === videoDeviceInfo.deviceId
+      ) ?? videoDevices[0]
+
+    return device
+  }
+
+  const getProcessedStream = async (
+    stream: MediaStream,
+    effect: Effect
+  ): Promise<MediaStream> => {
+    if (videoProcessor != null) {
+      videoProcessor.close()
+      videoProcessor.destroy()
+    }
+    videoProcessor = await getVideoProcessor(effect)
+    await videoProcessor.open()
+    const processedStream = await videoProcessor.process(stream)
+    return processedStream
   }
 
   useEffect(() => {
-    try {
-      checkCameraAccess().catch(console.error)
-    } catch (error) {
-      return
+    const bootstrap = async () => {
+      try {
+        await checkCameraAccess()
+      } catch (error) {
+        return
+      }
+      const queryParams = new URLSearchParams(window.location.search)
+
+      const pcEnvironment = queryParams.get('pcEnvironment') ?? ''
+      const pcConversationId = queryParams.get('pcConversationId') ?? ''
+
+      pexipNode = queryParams.get('pexipNode') ?? ''
+      pexipAgentPin = queryParams.get('pexipAgentPin') ?? ''
+      pexipAppPrefix = queryParams.get('pexipAppPrefix') ?? ''
+
+      if (
+        pcEnvironment != '' &&
+        pcConversationId != '' &&
+        pexipNode != '' &&
+        pexipAgentPin != '' &&
+        pexipAppPrefix != ''
+      ) {
+        GenesysService.loginPureCloud(
+          pcEnvironment,
+          pcConversationId,
+          pexipNode,
+          pexipAgentPin,
+          pexipAppPrefix
+        )
+      } else {
+        // Logged into Genesys
+        setConnectionState(ConnectionState.Connecting)
+
+        const parsedUrl = new URL(window.location.href.replace(/#/g, '?'))
+        const queryParams = new URLSearchParams(parsedUrl.search)
+
+        const accessToken = queryParams.get('access_token') as string
+        const state = JSON.parse(
+          decodeURIComponent(queryParams.get('state') as string)
+        )
+
+        await initializeGenesys(state, accessToken)
+        await initConference().catch(console.error)
+      }
     }
-    const queryParams = new URLSearchParams(window.location.search)
 
-    const pcEnvironment = queryParams.get('pcEnvironment') ?? ''
-    const pcConversationId = queryParams.get('pcConversationId') ?? ''
-
-    pexipNode = queryParams.get('pexipNode') ?? ''
-    pexipAgentPin = queryParams.get('pexipAgentPin') ?? ''
-    pexipAppPrefix = queryParams.get('pexipAppPrefix') ?? ''
-
-    if (
-      pcEnvironment != '' &&
-      pcConversationId != '' &&
-      pexipNode != '' &&
-      pexipAgentPin != '' &&
-      pexipAppPrefix != ''
-    ) {
-      GenesysService.loginPureCloud(
-        pcEnvironment,
-        pcConversationId,
-        pexipNode,
-        pexipAgentPin,
-        pexipAppPrefix
-      )
-    } else {
-      // Logged into Genesys
-      setConnectionState(ConnectionState.Connecting)
-
-      const parsedUrl = new URL(window.location.href.replace(/#/g, '?'))
-      const queryParams = new URLSearchParams(parsedUrl.search)
-
-      const accessToken = queryParams.get('access_token') as string
-      const state = JSON.parse(
-        decodeURIComponent(queryParams.get('state') as string)
-      )
-
-      initializeGenesys(state, accessToken)
-        .then(() => {
-          initConference().catch(console.error)
-        })
-        .catch(console.error)
-    }
+    bootstrap().catch(console.error)
 
     const handleDisconnect = () => {
       infinityClient?.disconnect({})
@@ -456,7 +537,7 @@ export const App = (): JSX.Element => {
             onCopyInvitationLink={handleCopyInvitationLink}
             onChangeStreamQuality={handleChangeStreamQuality}
             onLocalPresentationStream={handleLocalPresentationStream}
-            onLocalStream={handleLocalStream}
+            onSettingsChanged={handleSettingsChanged}
           />
         </>
       )}
