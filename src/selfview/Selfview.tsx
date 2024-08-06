@@ -3,14 +3,14 @@ import React, { RefObject, useState } from 'react'
 import {
   DraggableFoldableInMeetingSelfview,
   Stats,
+  StreamQuality,
   useCallQuality,
   useNetworkState
 } from '@pexip/media-components'
 import { CallSignals } from '@pexip/infinity'
 
-import { getStreamQuality } from '../media/quality'
-
 import './Selfview.scss'
+import { LocalStorageKey } from '../types/LocalStorageKey'
 
 interface SelfViewProps {
   floatRoot: RefObject<HTMLDivElement>
@@ -31,7 +31,8 @@ export const Selfview = React.memo((props: SelfViewProps): JSX.Element => {
   // )
 
   const callQuality = useCallQuality({
-    getStreamQuality,
+    getStreamQuality: () =>
+      localStorage.getItem(LocalStorageKey.StreamQuality) as StreamQuality,
     callQualitySignal: props.callSignals.onCallQuality
   })
 

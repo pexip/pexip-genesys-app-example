@@ -18,11 +18,7 @@ import {
   Video
 } from '@pexip/components'
 import { type StreamQuality } from '@pexip/media-components'
-import {
-  convertToBandwidth,
-  setStreamQuality,
-  getStreamQuality
-} from './media/quality'
+import { convertToBandwidth } from './media/quality'
 import * as GenesysService from './genesys/genesysService'
 import { ErrorPanel } from './error-panel/ErrorPanel'
 import ERROR_ID from './constants/error-ids'
@@ -54,6 +50,9 @@ export const App = (): JSX.Element => {
   const [device, setDevice] = useState<MediaDeviceInfoLike>()
   const [effect, setEffect] = useState<Effect>(
     (localStorage.getItem('effect') as Effect) ?? Effect.None
+  )
+  const [streamQuality, setStreamQuality] = useState<StreamQuality>(
+    localStorage.getItem(LocalStorageKey.StreamQuality) as StreamQuality
   )
   const [localStream, setLocalStream] = useState<MediaStream>()
   const [processedStream, setProcessedStream] = useState<MediaStream>()
@@ -144,7 +143,6 @@ export const App = (): JSX.Element => {
   ): Promise<void> => {
     configureSignals()
     infinityClient = createInfinityClient(infinitySignals, callSignals)
-    const streamQuality = getStreamQuality()
     const bandwidth = convertToBandwidth(streamQuality)
     const response = await infinityClient.call({
       node,
@@ -193,10 +191,11 @@ export const App = (): JSX.Element => {
    */
   const initConference = async (): Promise<void> => {
     const prefixedConfAlias = pexipAppPrefix + conferenceAlias
+    let localStream: MediaStream
     let processedStream: MediaStream
     try {
       const device = await getInitialDevice()
-      const localStream = await navigator.mediaDevices.getUserMedia({
+      localStream = await navigator.mediaDevices.getUserMedia({
         video: { deviceId: device?.deviceId }
       })
       processedStream = await getProcessedStream(localStream, effect)
@@ -220,28 +219,29 @@ export const App = (): JSX.Element => {
       pexipAgentPin
     )
 
-    // Set initial context for hold and mute
+    // // Set initial context for hold and mute
     const holdState = await GenesysService.isHeld()
     const muteState = await GenesysService.isMuted()
     await onMuteCall(muteState)
-    await onHoldVideo(holdState)
+    if (holdState) {
+      localStream?.getTracks().forEach((track) => {
+        track.stop()
+      })
+      await onHoldVideo(holdState)
+    }
   }
 
   // Set the video to mute for all participants
   const onHoldVideo = async (onHold: boolean): Promise<void> => {
-    const participantList: any[] = []
     // const participantList = this.infinityClient.participants
     // Mute current user video and set mute audio indicator even if no audio layer is used by web rtc
     await handleCameraMuteChanged(onHold)
-    await infinityClient.mute({
-      mute: (await GenesysService.isMuted()) || onHold
-    })
     // Mute other participants video
-    participantList.forEach((participant) => {
-      infinityClient
-        .muteVideo({ muteVideo: onHold, participantUuid: participant.uuid })
-        .catch(console.error)
-    })
+    // participantList.forEach((participant) => {
+    //   infinityClient
+    //     .muteVideo({ muteVideo: onHold, participantUuid: participant.uuid })
+    //     .catch(console.error)
+    // })
     // if (onHold) {
     //   await this.toolbarRef?.current?.stopScreenShare()
     // }
@@ -302,20 +302,22 @@ export const App = (): JSX.Element => {
     GenesysService.addMuteListener(async (mute) => await onMuteCall(mute))
   }
 
-  const handleCameraMuteChanged = async (muted: boolean) => {
-    const response = await infinityClient.muteVideo({ muteVideo: muted })
+  const handleCameraMuteChanged = async (mute: boolean) => {
+    const response = await infinityClient.muteVideo({ muteVideo: mute })
     if (response?.status === 200) {
       localStream?.getTracks().forEach((track) => {
         track.stop()
       })
-      if (!muted) {
+      if (mute) {
+        setLocalStream(undefined)
+      } else {
         const localStream = await navigator.mediaDevices.getUserMedia({
-          video: { deviceId: device?.deviceId }
+          video: {
+            deviceId: device?.deviceId
+          }
         })
         setLocalStream(localStream)
         infinityClient.setStream(localStream)
-      } else {
-        setLocalStream(undefined)
       }
     }
   }
@@ -335,11 +337,6 @@ export const App = (): JSX.Element => {
     ])
   }
 
-  const handleChangeStreamQuality = (streamQuality: StreamQuality) => {
-    infinityClient.setBandwidth(convertToBandwidth(streamQuality))
-    setStreamQuality(streamQuality)
-  }
-
   const handleLocalPresentationStream = (
     presentationStream: MediaStream | undefined
   ) => {
@@ -351,6 +348,10 @@ export const App = (): JSX.Element => {
     let newLocalStream = localStream
     if (settings.device.deviceId !== device?.deviceId) {
       setDevice(settings.device)
+      localStorage.setItem(
+        LocalStorageKey.VideoDeviceInfo,
+        JSON.stringify(settings.device)
+      )
       localStream?.getTracks().forEach((track) => {
         track.stop()
       })
@@ -365,6 +366,7 @@ export const App = (): JSX.Element => {
       settings.device.deviceId !== device?.deviceId
     ) {
       setEffect(settings.effect)
+      localStorage.setItem(LocalStorageKey.Effect, settings.effect)
       if (newLocalStream != null) {
         const processedStream = await getProcessedStream(
           newLocalStream,
@@ -375,6 +377,15 @@ export const App = (): JSX.Element => {
           infinityClient.setStream(processedStream)
         }
       }
+    }
+
+    if (settings.streamQuality !== streamQuality) {
+      setStreamQuality(settings.streamQuality)
+      localStorage.setItem(
+        LocalStorageKey.StreamQuality,
+        settings.streamQuality
+      )
+      infinityClient.setBandwidth(convertToBandwidth(settings.streamQuality))
     }
   }
 
@@ -467,6 +478,9 @@ export const App = (): JSX.Element => {
 
     window.addEventListener('beforeunload', handleDisconnect)
     return () => {
+      // localStream?.getTracks().forEach((track) => {
+      //   track.stop()
+      // })
       window.removeEventListener('beforeunload', handleDisconnect)
       onEndCall(false)
     }
@@ -524,7 +538,7 @@ export const App = (): JSX.Element => {
             floatRoot={appRef}
             callSignals={callSignals}
             username={displayName}
-            localStream={localStream}
+            localStream={processedStream}
             onCameraMuteChanged={handleCameraMuteChanged}
           />
 
@@ -535,7 +549,6 @@ export const App = (): JSX.Element => {
             cameraMuted={localStream == null}
             onCameraMuteChanged={handleCameraMuteChanged}
             onCopyInvitationLink={handleCopyInvitationLink}
-            onChangeStreamQuality={handleChangeStreamQuality}
             onLocalPresentationStream={handleLocalPresentationStream}
             onSettingsChanged={handleSettingsChanged}
           />

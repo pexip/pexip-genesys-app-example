@@ -6,7 +6,6 @@ import {
   PresoConnectionChangeEvent
 } from '@pexip/infinity'
 import { SettingsPanel } from '../settings-panel/SettingsPanel'
-import { StreamQuality } from '@pexip/media-components'
 import {
   Button,
   Icon,
@@ -25,7 +24,7 @@ interface ToolbarProps {
   cameraMuted: boolean
   onCameraMuteChanged: (muted: boolean) => Promise<void>
   onCopyInvitationLink: () => void
-  onChangeStreamQuality: (streamQuality: StreamQuality) => void
+  // onChangeStreamQuality: (streamQuality: StreamQuality) => void
   onLocalPresentationStream: (stream: MediaStream | undefined) => void
   // onLocalStream: (stream: MediaStream) => void
   onSettingsChanged: (settings: Settings) => void
@@ -217,18 +216,6 @@ export const Toolbar = (props: ToolbarProps): JSX.Element => {
       {settingsEnabled && (
         <SettingsPanel
           onClose={() => setSettingsEnabled(false)}
-          // onSave={(
-          //   localStream?: MediaStream,
-          //   streamQuality?: StreamQuality
-          // ) => {
-          //   setSettingsEnabled(false)
-          //   if (localStream != null) {
-          //     props.onLocalStream(localStream)
-          //   }
-          //   if (streamQuality != null) {
-          //     props.onChangeStreamQuality(streamQuality)
-          //   }
-          // }}
           onSave={(settings: Settings) => {
             setSettingsEnabled(false)
             props.onSettingsChanged(settings)
