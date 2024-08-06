@@ -49,7 +49,7 @@ let videoProcessor: VideoProcessor
 export const App = (): JSX.Element => {
   const [device, setDevice] = useState<MediaDeviceInfoLike>()
   const [effect, setEffect] = useState<Effect>(
-    (localStorage.getItem('effect') as Effect) ?? Effect.None
+    (localStorage.getItem(LocalStorageKey.Effect) as Effect) ?? Effect.None
   )
   const [streamQuality, setStreamQuality] = useState<StreamQuality>(
     localStorage.getItem(LocalStorageKey.StreamQuality) as StreamQuality
@@ -310,13 +310,16 @@ export const App = (): JSX.Element => {
       })
       if (mute) {
         setLocalStream(undefined)
+        setProcessedStream(undefined)
       } else {
         const localStream = await navigator.mediaDevices.getUserMedia({
           video: {
             deviceId: device?.deviceId
           }
         })
+        const processedStream = await getProcessedStream(localStream, effect)
         setLocalStream(localStream)
+        setProcessedStream(processedStream)
         infinityClient.setStream(localStream)
       }
     }
