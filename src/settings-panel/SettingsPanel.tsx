@@ -33,11 +33,13 @@ interface SettingsPanelProps {
 
 export const SettingsPanel = (props: SettingsPanelProps): JSX.Element => {
   const [devices, setDevices] = useState<MediaDeviceInfoLike[]>([])
-  const [device, setDevice] = useState<MediaDeviceInfoLike>() // TODO: Get from localStorage
+  const [device, setDevice] = useState<MediaDeviceInfoLike>()
   const [localStream, setLocalStream] = useState<MediaStream>()
   const [processedStream, setProcessedStream] = useState<MediaStream>()
   const [effect, setEffect] = useState<Effect>(Effect.None) // TODO: Get from localStorage
-  const [streamQuality, setStreamQuality] = useState<StreamQuality>() // TODO: Get from localStorage
+  const [streamQuality, setStreamQuality] = useState<StreamQuality>(
+    StreamQuality.Auto
+  ) // TODO: Get from localStorage
 
   const handleChangeDevice = (device: MediaDeviceInfoLike) => {
     setDevice(device)
@@ -95,6 +97,14 @@ export const SettingsPanel = (props: SettingsPanelProps): JSX.Element => {
         setLocalStream(localStream)
       }
     }
+
+    const effect =
+      (localStorage.getItem(LocalStorageKey.Effect) as Effect) ?? Effect.None
+    const streamQuality =
+      (localStorage.getItem(LocalStorageKey.StreamQuality) as StreamQuality) ??
+      StreamQuality.Auto
+    setEffect(effect)
+    setStreamQuality(streamQuality)
 
     asyncBootstrap().catch((error) => console.error(error))
   }, [])
@@ -186,7 +196,7 @@ export const SettingsPanel = (props: SettingsPanelProps): JSX.Element => {
         ]}
         onValueChange={handleChangeStreamQuality}
         sizeModifier="small"
-        value={streamQuality as StreamQuality}
+        value={streamQuality}
       />
 
       <Bar>

@@ -17,7 +17,7 @@ import {
   Spinner,
   Video
 } from '@pexip/components'
-import { type StreamQuality } from '@pexip/media-components'
+import { StreamQuality } from '@pexip/media-components'
 import { convertToBandwidth } from './media/quality'
 import * as GenesysService from './genesys/genesysService'
 import { ErrorPanel } from './error-panel/ErrorPanel'
@@ -30,9 +30,9 @@ import { type MediaDeviceInfoLike } from '@pexip/media-control'
 import { Effect } from './types/Effect'
 import { VideoProcessor } from '@pexip/media-processor'
 import { getVideoProcessor } from './media/video-processor'
+import { LocalStorageKey } from './types/LocalStorageKey'
 
 import './App.scss'
-import { LocalStorageKey } from './types/LocalStorageKey'
 
 let infinitySignals: InfinitySignals
 let callSignals: CallSignals
@@ -52,7 +52,8 @@ export const App = (): JSX.Element => {
     (localStorage.getItem(LocalStorageKey.Effect) as Effect) ?? Effect.None
   )
   const [streamQuality, setStreamQuality] = useState<StreamQuality>(
-    localStorage.getItem(LocalStorageKey.StreamQuality) as StreamQuality
+    (localStorage.getItem(LocalStorageKey.StreamQuality) as StreamQuality) ??
+      StreamQuality.High
   )
   const [localStream, setLocalStream] = useState<MediaStream>()
   const [processedStream, setProcessedStream] = useState<MediaStream>()
@@ -320,7 +321,7 @@ export const App = (): JSX.Element => {
         const processedStream = await getProcessedStream(localStream, effect)
         setLocalStream(localStream)
         setProcessedStream(processedStream)
-        infinityClient.setStream(localStream)
+        infinityClient.setStream(processedStream)
       }
     }
   }
@@ -349,7 +350,7 @@ export const App = (): JSX.Element => {
 
   const handleSettingsChanged = async (settings: Settings) => {
     let newLocalStream = localStream
-    if (settings.device.deviceId !== device?.deviceId) {
+    if (settings.device?.deviceId !== device?.deviceId) {
       setDevice(settings.device)
       localStorage.setItem(
         LocalStorageKey.VideoDeviceInfo,
@@ -366,7 +367,7 @@ export const App = (): JSX.Element => {
 
     if (
       settings.effect != effect ||
-      settings.device.deviceId !== device?.deviceId
+      settings.device?.deviceId !== device?.deviceId
     ) {
       setEffect(settings.effect)
       localStorage.setItem(LocalStorageKey.Effect, settings.effect)
@@ -481,9 +482,6 @@ export const App = (): JSX.Element => {
 
     window.addEventListener('beforeunload', handleDisconnect)
     return () => {
-      // localStream?.getTracks().forEach((track) => {
-      //   track.stop()
-      // })
       window.removeEventListener('beforeunload', handleDisconnect)
       onEndCall(false)
     }
@@ -549,7 +547,7 @@ export const App = (): JSX.Element => {
             infinityClient={infinityClient}
             callSignals={callSignals}
             infinitySignals={infinitySignals}
-            cameraMuted={localStream == null}
+            cameraMuted={processedStream == null}
             onCameraMuteChanged={handleCameraMuteChanged}
             onCopyInvitationLink={handleCopyInvitationLink}
             onLocalPresentationStream={handleLocalPresentationStream}
