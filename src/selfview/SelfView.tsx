@@ -1,16 +1,16 @@
-import React, { RefObject, useState } from 'react'
+import React, { type RefObject, useState } from 'react'
 
 import {
   DraggableFoldableInMeetingSelfview,
   Stats,
-  StreamQuality,
-  useCallQuality,
-  useNetworkState
+  type StreamQuality,
+  useCallQuality
+  // useNetworkState
 } from '@pexip/media-components'
-import { CallSignals } from '@pexip/infinity'
-
-import './Selfview.scss'
+import { type CallSignals } from '@pexip/infinity'
 import { LocalStorageKey } from '../types/LocalStorageKey'
+
+import './SelfView.scss'
 
 interface SelfViewProps {
   floatRoot: RefObject<HTMLDivElement>
@@ -20,7 +20,7 @@ interface SelfViewProps {
   onCameraMuteChanged: (muted: boolean) => Promise<void>
 }
 
-export const Selfview = React.memo((props: SelfViewProps): JSX.Element => {
+export const SelfView = React.memo((props: SelfViewProps): JSX.Element => {
   const [showStats, setShowStats] = useState(false)
   const [showTooltip, setShowTooltip] = useState(true)
   const [folded, setFolded] = useState(false)
@@ -37,7 +37,7 @@ export const Selfview = React.memo((props: SelfViewProps): JSX.Element => {
   })
 
   return (
-    <div className="Selfview" data-testid="Selfview">
+    <div className="SelfView" data-testid="SelfView">
       <DraggableFoldableInMeetingSelfview
         floatRoot={props.floatRoot}
         shouldShowUserAvatar={false}
@@ -52,9 +52,9 @@ export const Selfview = React.memo((props: SelfViewProps): JSX.Element => {
         }}
         isFolded={props.localStream == null || folded}
         showSelfviewTooltip={showTooltip}
-        setShowSelfviewTooltip={(showTooltip: boolean) =>
+        setShowSelfviewTooltip={(showTooltip: boolean) => {
           setShowTooltip(showTooltip)
-        }
+        }}
         // onCallQualityClick={() => setShowStats(true)}
         // Unused parameters
         callQualityPosition={'bottomRight'}
@@ -62,7 +62,7 @@ export const Selfview = React.memo((props: SelfViewProps): JSX.Element => {
         isVideoInputMuted={props.localStream == null}
         onToggleAudioClick={() => {}}
         onToggleVideoClick={() => {
-          props.onCameraMuteChanged(false)
+          props.onCameraMuteChanged(false).catch(console.error)
         }}
         isSidePanelVisible={false}
         autoHideProps={{
@@ -82,7 +82,9 @@ export const Selfview = React.memo((props: SelfViewProps): JSX.Element => {
       {showStats && (
         <Stats
           data-testid="Stats"
-          onClose={() => setShowStats(false)}
+          onClose={() => {
+            setShowStats(false)
+          }}
           statsSignal={props.callSignals.onRtcStats}
           callQualityStatsSignal={props.callSignals.onCallQualityStats}
           cachedStats={undefined}
@@ -92,4 +94,4 @@ export const Selfview = React.memo((props: SelfViewProps): JSX.Element => {
   )
 })
 
-Selfview.displayName = 'Selfview'
+SelfView.displayName = 'Selfview'

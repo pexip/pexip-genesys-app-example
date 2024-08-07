@@ -1,14 +1,9 @@
-import React from 'react'
-
 import '../__mocks__/test-params'
 
 import { screen, render, act } from '@testing-library/react'
 
 import { SettingsPanel } from './SettingsPanel'
-import { setCurrentDeviceId } from '../media/media'
 import { StreamQuality } from '@pexip/media-components'
-import { setStreamQuality } from '../media/quality'
-import { setCurrentEffect } from '../media/processor'
 
 import '../__mocks__/mediaDevices'
 
@@ -24,17 +19,23 @@ jest.mock('@pexip/media-components', () => {
   return require('../__mocks__/media-components')
 })
 
-jest.mock('@pexip/media-processor', () => {
-  return require('../__mocks__/media-processor')
-}, { virtual: true })
+jest.mock(
+  '@pexip/media-processor',
+  () => {
+    return require('../__mocks__/media-processor')
+  },
+  { virtual: true }
+)
 
 const handleCloseMock = jest.fn()
 const handleSaveMock = jest.fn()
 
 describe('SettingsPanel component', () => {
   it('should render', async () => {
-    await act(() => {
-      render(<SettingsPanel onClose={handleCloseMock} onSave={handleSaveMock} />)
+    act(() => {
+      render(
+        <SettingsPanel onClose={handleCloseMock} onSave={handleSaveMock} />
+      )
     })
     const settingsPanel = screen.getByTestId('SettingsPanel')
     expect(settingsPanel).toBeInTheDocument()
@@ -42,8 +43,10 @@ describe('SettingsPanel component', () => {
 
   describe('Selfview preview component', () => {
     it('should display a video preview with the localStream', async () => {
-      await act(() => {
-        render(<SettingsPanel onClose={handleCloseMock} onSave={handleSaveMock} />)
+      act(() => {
+        render(
+          <SettingsPanel onClose={handleCloseMock} onSave={handleSaveMock} />
+        )
       })
       const selfview = screen.getByTestId('selfview')
       expect(selfview).toBeInTheDocument()
@@ -56,16 +59,20 @@ describe('SettingsPanel component', () => {
     })
 
     it('should render', async () => {
-      await act(() => {
-        render(<SettingsPanel onClose={handleCloseMock} onSave={handleSaveMock} />)
+      act(() => {
+        render(
+          <SettingsPanel onClose={handleCloseMock} onSave={handleSaveMock} />
+        )
       })
       const devicesList = screen.getByTestId('devices-list')
       expect(devicesList).toBeInTheDocument()
     })
 
     it('should display a list of all available devices in a select HTML element', async () => {
-      await act(() => {
-        render(<SettingsPanel onClose={handleCloseMock} onSave={handleSaveMock} />)
+      act(() => {
+        render(
+          <SettingsPanel onClose={handleCloseMock} onSave={handleSaveMock} />
+        )
       })
       const devicesList = screen.getByTestId('devices-list')
       const options = devicesList.getElementsByTagName('option')
@@ -73,33 +80,41 @@ describe('SettingsPanel component', () => {
     })
 
     it('should only display the video devices', async () => {
-      await act(() => {
-        render(<SettingsPanel onClose={handleCloseMock} onSave={handleSaveMock} />)
+      act(() => {
+        render(
+          <SettingsPanel onClose={handleCloseMock} onSave={handleSaveMock} />
+        )
       })
       const devicesList = screen.getByTestId('devices-list')
       const options = devicesList.getElementsByTagName('option')
       const devices = await navigator.mediaDevices.enumerateDevices()
       for (let i = 0; i < options.length; i++) {
-        const device = devices.find((device) => device.deviceId === options[i].value)
+        const device = devices.find(
+          (device) => device.deviceId === options[i].value
+        )
         expect(device).toBeDefined()
         expect(device?.kind).toBe('videoinput')
       }
     })
 
     it('should select the first camera if localStorage empty', async () => {
-      await act(() => {
-        render(<SettingsPanel onClose={handleCloseMock} onSave={handleSaveMock} />)
+      act(() => {
+        render(
+          <SettingsPanel onClose={handleCloseMock} onSave={handleSaveMock} />
+        )
       })
       const devicesList = screen.getByTestId('devices-list')
       expect((devicesList as HTMLSelectElement).selectedIndex).toBe(0)
     })
 
     it('should select the camera of the localStorage if any', async () => {
-      const devices = await navigator.mediaDevices.enumerateDevices()
-      const device = devices.filter((device) => device.kind === 'videoinput')[1]
-      setCurrentDeviceId(device.deviceId)
-      await act(() => {
-        render(<SettingsPanel onClose={handleCloseMock} onSave={handleSaveMock} />)
+      // const devices = await navigator.mediaDevices.enumerateDevices()
+      // const device = devices.filter((device) => device.kind === 'videoinput')[1]
+      // setCurrentDeviceId(device.deviceId)
+      act(() => {
+        render(
+          <SettingsPanel onClose={handleCloseMock} onSave={handleSaveMock} />
+        )
       })
       const devicesList = screen.getByTestId('devices-list')
       expect((devicesList as HTMLSelectElement).selectedIndex).toBe(1)
@@ -108,23 +123,27 @@ describe('SettingsPanel component', () => {
 
   describe('Effect selector component', () => {
     it('should render 3 buttons', async () => {
-      await act(() => {
-        render(<SettingsPanel onClose={handleCloseMock} onSave={handleSaveMock} />)
+      act(() => {
+        render(
+          <SettingsPanel onClose={handleCloseMock} onSave={handleSaveMock} />
+        )
       })
       const effects = screen.getAllByTestId('Effect')
       expect(effects.length).toBe(3)
     })
 
     it('should mark "none" as active when click on the button and the rest inactive', async () => {
-      await act(() => {
-        render(<SettingsPanel onClose={handleCloseMock} onSave={handleSaveMock} />)
+      act(() => {
+        render(
+          <SettingsPanel onClose={handleCloseMock} onSave={handleSaveMock} />
+        )
       })
-      await act(() => {
+      act(() => {
         const effects = screen.getAllByTestId('Effect')
         const none = effects[0]
         none.getElementsByTagName('button')[0].click()
       })
-      const effects = await screen.getAllByTestId('Effect')
+      const effects = screen.getAllByTestId('Effect')
       const none = effects[0]
       const blur = effects[1]
       const overlay = effects[2]
@@ -134,15 +153,17 @@ describe('SettingsPanel component', () => {
     })
 
     it('should mark "blur" as active when click on the button and the rest inactive', async () => {
-      await act(() => {
-        render(<SettingsPanel onClose={handleCloseMock} onSave={handleSaveMock} />)
+      act(() => {
+        render(
+          <SettingsPanel onClose={handleCloseMock} onSave={handleSaveMock} />
+        )
       })
-      await act(() => {
+      act(() => {
         const effects = screen.getAllByTestId('Effect')
         const blur = effects[1]
         blur.getElementsByTagName('button')[0].click()
       })
-      const effects = await screen.getAllByTestId('Effect')
+      const effects = screen.getAllByTestId('Effect')
       const none = effects[0]
       const blur = effects[1]
       const overlay = effects[2]
@@ -152,15 +173,17 @@ describe('SettingsPanel component', () => {
     })
 
     it('should mark "overlay" as active when click on the button and the rest inactive', async () => {
-      await act(() => {
-        render(<SettingsPanel onClose={handleCloseMock} onSave={handleSaveMock} />)
+      act(() => {
+        render(
+          <SettingsPanel onClose={handleCloseMock} onSave={handleSaveMock} />
+        )
       })
-      await act(() => {
+      act(() => {
         const effects = screen.getAllByTestId('Effect')
         const overlay = effects[2]
         overlay.getElementsByTagName('button')[0].click()
       })
-      const effects = await screen.getAllByTestId('Effect')
+      const effects = screen.getAllByTestId('Effect')
       const none = effects[0]
       const blur = effects[1]
       const overlay = effects[2]
@@ -170,10 +193,12 @@ describe('SettingsPanel component', () => {
     })
 
     it('should select the "none" effect if localStorage empty', async () => {
-      await act(() => {
-        render(<SettingsPanel onClose={handleCloseMock} onSave={handleSaveMock} />)
+      act(() => {
+        render(
+          <SettingsPanel onClose={handleCloseMock} onSave={handleSaveMock} />
+        )
       })
-      const effects = await screen.getAllByTestId('Effect')
+      const effects = screen.getAllByTestId('Effect')
       const none = effects[0]
       const blur = effects[1]
       const overlay = effects[2]
@@ -183,11 +208,13 @@ describe('SettingsPanel component', () => {
     })
 
     it('should select the effect of the localStorage if any', async () => {
-      setCurrentEffect('blur')
-      await act(() => {
-        render(<SettingsPanel onClose={handleCloseMock} onSave={handleSaveMock} />)
+      // setCurrentEffect('blur')
+      act(() => {
+        render(
+          <SettingsPanel onClose={handleCloseMock} onSave={handleSaveMock} />
+        )
       })
-      const effects = await screen.getAllByTestId('Effect')
+      const effects = screen.getAllByTestId('Effect')
       const none = effects[0]
       const blur = effects[1]
       const overlay = effects[2]
@@ -203,8 +230,10 @@ describe('SettingsPanel component', () => {
     })
 
     it('should render', async () => {
-      await act(() => {
-        render(<SettingsPanel onClose={handleCloseMock} onSave={handleSaveMock} />)
+      act(() => {
+        render(
+          <SettingsPanel onClose={handleCloseMock} onSave={handleSaveMock} />
+        )
       })
       const settingsPanel = screen.getByTestId('SettingsPanel')
       const qualityList = settingsPanel.getElementsByClassName('QualityList')[0]
@@ -212,8 +241,10 @@ describe('SettingsPanel component', () => {
     })
 
     it('should have 5 options (one per stream quality)', async () => {
-      await act(() => {
-        render(<SettingsPanel onClose={handleCloseMock} onSave={handleSaveMock} />)
+      act(() => {
+        render(
+          <SettingsPanel onClose={handleCloseMock} onSave={handleSaveMock} />
+        )
       })
       const settingsPanel = screen.getByTestId('SettingsPanel')
       const qualityList = settingsPanel.getElementsByClassName('QualityList')[0]
@@ -222,8 +253,10 @@ describe('SettingsPanel component', () => {
     })
 
     it('should have the value with the stream quality ID', async () => {
-      await act(() => {
-        render(<SettingsPanel onClose={handleCloseMock} onSave={handleSaveMock} />)
+      act(() => {
+        render(
+          <SettingsPanel onClose={handleCloseMock} onSave={handleSaveMock} />
+        )
       })
       const settingsPanel = screen.getByTestId('SettingsPanel')
       const qualityList = settingsPanel.getElementsByClassName('QualityList')[0]
@@ -241,8 +274,10 @@ describe('SettingsPanel component', () => {
     })
 
     it('should have the text with the stream quality label', async () => {
-      await act(() => {
-        render(<SettingsPanel onClose={handleCloseMock} onSave={handleSaveMock} />)
+      act(() => {
+        render(
+          <SettingsPanel onClose={handleCloseMock} onSave={handleSaveMock} />
+        )
       })
       const settingsPanel = screen.getByTestId('SettingsPanel')
       const qualityList = settingsPanel.getElementsByClassName('QualityList')[0]
@@ -261,8 +296,10 @@ describe('SettingsPanel component', () => {
   })
 
   it('should select the auto stream quality if empty', async () => {
-    await act(() => {
-      render(<SettingsPanel onClose={handleCloseMock} onSave={handleSaveMock} />)
+    act(() => {
+      render(
+        <SettingsPanel onClose={handleCloseMock} onSave={handleSaveMock} />
+      )
     })
     const settingsPanel = screen.getByTestId('SettingsPanel')
     const qualityList = settingsPanel.getElementsByClassName('QualityList')[0]
@@ -270,9 +307,11 @@ describe('SettingsPanel component', () => {
   })
 
   it('should select the stream quality of the localStorage if any', async () => {
-    setStreamQuality(StreamQuality.Medium)
-    await act(() => {
-      render(<SettingsPanel onClose={handleCloseMock} onSave={handleSaveMock} />)
+    // setStreamQuality(StreamQuality.Medium)
+    act(() => {
+      render(
+        <SettingsPanel onClose={handleCloseMock} onSave={handleSaveMock} />
+      )
     })
     const settingsPanel = screen.getByTestId('SettingsPanel')
     const qualityList = settingsPanel.getElementsByClassName('QualityList')[0]

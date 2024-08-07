@@ -1,6 +1,6 @@
-import { MediaDeviceInfoLike } from '@pexip/media-control'
-import { Effect } from './Effect'
-import { StreamQuality } from '@pexip/media-components'
+import { type MediaDeviceInfoLike } from '@pexip/media-control'
+import { type Effect } from './Effect'
+import { type StreamQuality } from '@pexip/media-components'
 
 export interface Settings {
   device: MediaDeviceInfoLike

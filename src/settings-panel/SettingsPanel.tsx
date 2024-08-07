@@ -4,7 +4,7 @@ import {
   SelfViewSettings,
   StreamQuality
 } from '@pexip/media-components'
-import { MediaDeviceInfoLike } from '@pexip/media-control'
+import { type MediaDeviceInfoLike } from '@pexip/media-control'
 import {
   Bar,
   Button,
@@ -13,12 +13,12 @@ import {
   Select,
   IconTypes
 } from '@pexip/components'
-import { VideoProcessor } from '@pexip/media-processor'
+import { type VideoProcessor } from '@pexip/media-processor'
 import { EffectButton } from './effect-button/EffectButton'
 import { Effect } from '../types/Effect'
 import { getVideoProcessor } from '../media/video-processor'
 import { LocalStorageKey } from '../types/LocalStorageKey'
-import { Settings } from '../types/Settings'
+import { type Settings } from '../types/Settings'
 
 import './SettingsPanel.scss'
 
@@ -36,12 +36,12 @@ export const SettingsPanel = (props: SettingsPanelProps): JSX.Element => {
   const [device, setDevice] = useState<MediaDeviceInfoLike>()
   const [localStream, setLocalStream] = useState<MediaStream>()
   const [processedStream, setProcessedStream] = useState<MediaStream>()
-  const [effect, setEffect] = useState<Effect>(Effect.None) // TODO: Get from localStorage
+  const [effect, setEffect] = useState<Effect>(Effect.None)
   const [streamQuality, setStreamQuality] = useState<StreamQuality>(
     StreamQuality.Auto
-  ) // TODO: Get from localStorage
+  )
 
-  const handleChangeDevice = (device: MediaDeviceInfoLike) => {
+  const handleChangeDevice = (device: MediaDeviceInfoLike): void => {
     setDevice(device)
     // TODO: Change local stream device
   }
@@ -57,7 +57,7 @@ export const SettingsPanel = (props: SettingsPanelProps): JSX.Element => {
     }
     if (videoProcessor != null) {
       videoProcessor.close()
-      videoProcessor.destroy()
+      await videoProcessor.destroy()
     }
     videoProcessor = await getVideoProcessor(effect)
     await videoProcessor.open()
@@ -65,7 +65,7 @@ export const SettingsPanel = (props: SettingsPanelProps): JSX.Element => {
     setProcessedStream(processedStream)
   }
 
-  const handleChangeStreamQuality = (id: string) => {
+  const handleChangeStreamQuality = (id: string): void => {
     setStreamQuality(id as StreamQuality)
   }
 
@@ -106,15 +106,17 @@ export const SettingsPanel = (props: SettingsPanelProps): JSX.Element => {
     setEffect(effect)
     setStreamQuality(streamQuality)
 
-    asyncBootstrap().catch((error) => console.error(error))
+    asyncBootstrap().catch(console.error)
   }, [])
 
   const handleSave = async (): Promise<void> => {
-    props.onSave({
-      device: device as MediaDeviceInfoLike,
-      effect,
-      streamQuality: streamQuality as StreamQuality
-    })
+    if (device != null) {
+      props.onSave({
+        device,
+        effect,
+        streamQuality
+      })
+    }
   }
 
   return (
@@ -202,7 +204,9 @@ export const SettingsPanel = (props: SettingsPanelProps): JSX.Element => {
       <Bar>
         <Button
           onClick={() => {
-            localStream?.getTracks().forEach((track) => track.stop())
+            localStream?.getTracks().forEach((track) => {
+              track.stop()
+            })
             props.onClose()
           }}
           variant="tertiary"
@@ -214,7 +218,9 @@ export const SettingsPanel = (props: SettingsPanelProps): JSX.Element => {
 
         <Button
           onClick={() => {
-            localStream?.getTracks().forEach((track) => track.stop())
+            localStream?.getTracks().forEach((track) => {
+              track.stop()
+            })
             handleSave().catch(console.error)
           }}
           type="submit"

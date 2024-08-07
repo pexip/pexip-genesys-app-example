@@ -1,7 +1,7 @@
 import {
   Box,
   Icon,
-  IconSource,
+  type IconSource,
   InteractiveElement,
   Text,
   FontVariant
@@ -20,7 +20,12 @@ interface EffectButtonProps {
 export function EffectButton(props: EffectButtonProps): JSX.Element {
   return (
     <div className="Effect" data-testid="Effect">
-      <InteractiveElement className="button" onClick={() => props.onClick()}>
+      <InteractiveElement
+        className="button"
+        onClick={() => {
+          props.onClick()
+        }}
+      >
         <Box
           padding="compact"
           className={'box' + (props.active ? ' active ' : '')}

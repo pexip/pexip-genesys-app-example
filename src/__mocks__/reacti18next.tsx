@@ -1,5 +1,3 @@
-import React from 'react'
-
 const t = (str: string, defaultStr: string): string => defaultStr ?? str
 
 const reactI18Next = {

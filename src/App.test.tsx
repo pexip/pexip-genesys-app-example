@@ -1,10 +1,8 @@
-import React from 'react'
-
 import './__mocks__/test-params'
 
 import { render, screen } from '@testing-library/react'
 
-import App from './App'
+import { App } from './App'
 import { act } from 'react-dom/test-utils'
 
 import * as GenesysService from './genesys/genesysService'
@@ -33,14 +31,18 @@ jest.mock('@pexip/media-components', () => {
 
 jest.mock('@pexip/media-processor', () => {}, { virtual: true })
 
-jest.mock('@pexip/infinity', () => {
-  const mockInfinity = { ...require('./__mocks__/infinity') }
-  setMockParticipants = mockInfinity.setMockParticipants
-  mockDisconnect = mockInfinity.mockDisconnect
-  mockDisconnectAll = mockInfinity.mockDisconnectAll
-  triggerParticipantLeft = mockInfinity.triggerParticipantLeft
-  return mockInfinity
-}, { virtual: true })
+jest.mock(
+  '@pexip/infinity',
+  () => {
+    const mockInfinity = { ...require('./__mocks__/infinity') }
+    setMockParticipants = mockInfinity.setMockParticipants
+    mockDisconnect = mockInfinity.mockDisconnect
+    mockDisconnectAll = mockInfinity.mockDisconnectAll
+    triggerParticipantLeft = mockInfinity.triggerParticipantLeft
+    return mockInfinity
+  },
+  { virtual: true }
+)
 
 jest.mock('./genesys/genesysService', () => {
   return require('./__mocks__/genesys-service')
@@ -51,7 +53,7 @@ jest.mock('./error-panel/ErrorPanel', () => {
     ErrorPanel: (props: any) => {
       const errorId: string = props.errorId
       return (
-        <div data-testid='ErrorPanel' className='ErrorPanel'>
+        <div data-testid="ErrorPanel" className="ErrorPanel">
           <h3>{`${errorId}.title`}</h3>
           <p>{`${errorId}.message`}</p>
         </div>
@@ -66,13 +68,13 @@ jest.mock('./toolbar/Toolbar', () => {
 
 jest.mock('./video/Video', () => {
   return {
-    Video: () => <div data-testid='Video' />
+    Video: () => <div data-testid="Video" />
   }
 })
 
-jest.mock('./selfview/Selfview', () => {
+jest.mock('./selfview/SelfView', () => {
   return {
-    Selfview: () => <div data-testid='Selfview' />
+    SelfView: () => <div data-testid="SelfView" />
   }
 })
 
@@ -113,7 +115,7 @@ const participantAgentVideo = {
 describe('App component', () => {
   it('should render', async () => {
     await act(async () => {
-      await render(<App />)
+      render(<App />)
     })
     const app = await screen.findByTestId('App')
     expect(app).toBeInTheDocument()
@@ -121,74 +123,84 @@ describe('App component', () => {
 
   describe('Error panel', () => {
     beforeEach(() => {
-      (window as any).testParams.enumerateDevicesEmpty = false;
-      (window as any).testParams.rejectGetUserMedia = false;
-      (window as any).testParams.infinityUnavailable = false;
-      (window as any).testParams.conferenceNotFound = false;
-      (window as any).testParams.conferenceWrongPIN = false
+      ;(window as any).testParams.enumerateDevicesEmpty = false
+      ;(window as any).testParams.rejectGetUserMedia = false
+      ;(window as any).testParams.infinityUnavailable = false
+      ;(window as any).testParams.conferenceNotFound = false
+      ;(window as any).testParams.conferenceWrongPIN = false
     })
 
-    it('shouldn\'t display the panel if there isn\'t an error', async () => {
+    it("shouldn't display the panel if there isn't an error", async () => {
       await act(async () => {
-        await render(<App />)
+        render(<App />)
       })
       const app = await screen.findByTestId('App')
       expect(app.getElementsByClassName('ErrorPanel').length).toBe(0)
     })
 
-    it('should display an error if the camera isn\'t connected', async () => {
+    it("should display an error if the camera isn't connected", async () => {
       await act(async () => {
-        (window as any).testParams.enumerateDevicesEmpty = true;
-        (window as any).testParams.rejectGetUserMedia = true
-        await render(<App />)
+        ;(window as any).testParams.enumerateDevicesEmpty = true
+        ;(window as any).testParams.rejectGetUserMedia = true
+        render(<App />)
       })
       const errorPanel = await screen.findByTestId('ErrorPanel')
-      expect(errorPanel.getElementsByTagName('h3')[0].innerHTML).toBe('errors.camera-not-connected.title')
+      expect(errorPanel.getElementsByTagName('h3')[0].innerHTML).toBe(
+        'errors.camera-not-connected.title'
+      )
     })
 
-    it('should display an error if the user didn\'t grant camera permission', async () => {
+    it("should display an error if the user didn't grant camera permission", async () => {
       await act(async () => {
-        (window as any).testParams.rejectGetUserMedia = true
-        await render(<App />)
+        ;(window as any).testParams.rejectGetUserMedia = true
+        render(<App />)
       })
       const errorPanel = await screen.findByTestId('ErrorPanel')
-      expect(errorPanel.getElementsByTagName('h3')[0].innerHTML).toBe('errors.camera-access-denied.title')
+      expect(errorPanel.getElementsByTagName('h3')[0].innerHTML).toBe(
+        'errors.camera-access-denied.title'
+      )
     })
 
     it('should display an error if there is not a connection with the Infinity server', async () => {
       await act(async () => {
-        (window as any).testParams.infinityUnavailable = true
-        await render(<App />)
+        ;(window as any).testParams.infinityUnavailable = true
+        render(<App />)
       })
       const errorPanel = await screen.findByTestId('ErrorPanel')
-      expect(errorPanel.getElementsByTagName('h3')[0].innerHTML).toBe('errors.infinity-server-unavailable.title')
+      expect(errorPanel.getElementsByTagName('h3')[0].innerHTML).toBe(
+        'errors.infinity-server-unavailable.title'
+      )
     })
 
     it('should display an error if the conference cannot be found', async () => {
       await act(async () => {
-        (window as any).testParams.conferenceNotFound = true
-        await render(<App />)
+        ;(window as any).testParams.conferenceNotFound = true
+        render(<App />)
       })
       const errorPanel = await screen.findByTestId('ErrorPanel')
-      expect(errorPanel.getElementsByTagName('h3')[0].innerHTML).toBe('errors.conference-not-found.title')
+      expect(errorPanel.getElementsByTagName('h3')[0].innerHTML).toBe(
+        'errors.conference-not-found.title'
+      )
     })
 
     it('should display an error if the conference PIN is wrong', async () => {
       await act(async () => {
-        (window as any).testParams.conferenceWrongPIN = true
-        await render(<App />)
+        ;(window as any).testParams.conferenceWrongPIN = true
+        render(<App />)
       })
       const errorPanel = await screen.findByTestId('ErrorPanel')
-      expect(errorPanel.getElementsByTagName('h3')[0].innerHTML).toBe('errors.conference-authentication-failed.title')
+      expect(errorPanel.getElementsByTagName('h3')[0].innerHTML).toBe(
+        'errors.conference-authentication-failed.title'
+      )
     })
   })
 
   describe('Genesys service', () => {
     it('should call to initialize once', async () => {
       await act(async () => {
-        await render(<App />)
+        render(<App />)
       })
-      expect(GenesysService.initialize).toBeCalledTimes(1)
+      expect(GenesysService.initialize).toHaveBeenCalledTimes(1)
     })
   })
 
@@ -196,45 +208,53 @@ describe('App component', () => {
     beforeEach(() => {
       setMockParticipants([])
     })
-    it('should stay when participants >= 1 with callType == api or video (agent.callType == \'api\')', async () => {
-      setMockParticipants([participantSipTrunk, participantCustomer, participantAgentApi])
+    it("should stay when participants >= 1 with callType == api or video (agent.callType == 'api')", async () => {
+      setMockParticipants([
+        participantSipTrunk,
+        participantCustomer,
+        participantAgentApi
+      ])
       await act(async () => {
-        await render(<App />)
+        render(<App />)
       })
       triggerParticipantLeft()
-      expect(mockDisconnect).not.toBeCalled()
-      expect(mockDisconnectAll).not.toBeCalled()
+      expect(mockDisconnect).not.toHaveBeenCalled()
+      expect(mockDisconnectAll).not.toHaveBeenCalled()
     })
-    it('should stay when participants >= 1 with callType == api or video (agent.callType == \'video\')', async () => {
-      setMockParticipants([participantSipTrunk, participantCustomer, participantAgentVideo])
+    it("should stay when participants >= 1 with callType == api or video (agent.callType == 'video')", async () => {
+      setMockParticipants([
+        participantSipTrunk,
+        participantCustomer,
+        participantAgentVideo
+      ])
       await act(async () => {
-        await render(<App />)
+        render(<App />)
       })
       triggerParticipantLeft()
-      expect(mockDisconnect).not.toBeCalled()
-      expect(mockDisconnectAll).not.toBeCalled()
+      expect(mockDisconnect).not.toHaveBeenCalled()
+      expect(mockDisconnectAll).not.toHaveBeenCalled()
     })
-    it('should leave when callType == api and it\'s only one with callType == api or video', async () => {
+    it("should leave when callType == api and it's only one with callType == api or video", async () => {
       setMockParticipants([participantSipTrunk, participantAgentApi])
       await act(async () => {
-        await render(<App />)
+        render(<App />)
       })
       triggerParticipantLeft()
       const noActiveCallPanel = await screen.findAllByTestId('no-active-call')
       expect(noActiveCallPanel.length).toBe(1)
-      expect(mockDisconnect).toBeCalledTimes(1)
-      expect(mockDisconnectAll).toBeCalledTimes(1)
+      expect(mockDisconnect).toHaveBeenCalledTimes(1)
+      expect(mockDisconnectAll).toHaveBeenCalledTimes(1)
     })
-    it('should leave when callType == video and it\'s only one with callType == api or video', async () => {
+    it("should leave when callType == video and it's only one with callType == api or video", async () => {
       setMockParticipants([participantSipTrunk, participantAgentVideo])
       await act(async () => {
-        await render(<App />)
+        render(<App />)
       })
       triggerParticipantLeft()
       const noActiveCallPanel = await screen.findAllByTestId('no-active-call')
       expect(noActiveCallPanel.length).toBe(1)
-      expect(mockDisconnect).toBeCalledTimes(1)
-      expect(mockDisconnectAll).toBeCalledTimes(1)
+      expect(mockDisconnect).toHaveBeenCalledTimes(1)
+      expect(mockDisconnectAll).toHaveBeenCalledTimes(1)
     })
   })
 })

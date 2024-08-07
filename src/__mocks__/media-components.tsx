@@ -1,5 +1,3 @@
-import React from 'react'
-
 const mediaComponentsMock = {
   DevicesList: (props: any) => {
     const {
@@ -15,10 +13,7 @@ const mediaComponentsMock = {
     return (
       <select {...newProps} value={videoInput?.deviceId}>
         {props.devices.map((device: any) => (
-          <option
-            key={device.deviceId}
-            value={device.deviceId}
-          >
+          <option key={device.deviceId} value={device.deviceId}>
             {device.label}
           </option>
         ))}
@@ -27,7 +22,7 @@ const mediaComponentsMock = {
   },
   SelfViewSettings: (props: any) => {
     const { mediaStream, ...newProps } = props
-    return <div {...newProps} className='selfview' />
+    return <div {...newProps} className="selfview" />
   },
   StreamQuality: {
     Low: 'low',

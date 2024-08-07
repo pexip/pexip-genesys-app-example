@@ -1,5 +1,3 @@
-import React from 'react'
-
 const componentsMock = {
   Bar: (props: any) => <div {...props}>{props.children}</div>,
   Box: (props: any) => <div {...props}>{props.children}</div>,
@@ -8,19 +6,37 @@ const componentsMock = {
   FontVariant: jest.fn(),
   Icon: (props: any) => {
     const { colorScheme, ...newProps } = props
-    return <div {...newProps}/>
+    return <div {...newProps} />
   },
   IconTypes: { IconBlock: 'Icon' },
-  InteractiveElement: (props: any) => <button {...props}>{props.children}</button>,
+  InteractiveElement: (props: any) => (
+    <button {...props}>{props.children}</button>
+  ),
   Modal: (props: any) => {
     const { isOpen, withCloseButton, ...newProps } = props
     return <div {...newProps}>{props.children}</div>
   },
   Select: (props: any) => {
-    const { labelModifier, sizeModifier, onValueChange, isFullWidth, iconType, value, ...newProps } = props
+    const {
+      labelModifier,
+      sizeModifier,
+      onValueChange,
+      isFullWidth,
+      iconType,
+      value,
+      ...newProps
+    } = props
     return (
-      <select {...newProps} value={value ?? ''} onChange={(ev) => onValueChange(ev)}>
-        {props.options.map((option: any) => <option key={option.id} value={option.id}>{option.label}</option>)}
+      <select
+        {...newProps}
+        value={value ?? ''}
+        onChange={(ev) => onValueChange(ev)}
+      >
+        {props.options.map((option: any) => (
+          <option key={option.id} value={option.id}>
+            {option.label}
+          </option>
+        ))}
       </select>
     )
   },

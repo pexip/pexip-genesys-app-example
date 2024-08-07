@@ -20,15 +20,15 @@ const subscriptionMap: any = {
  * Creation of the channel. If called multiple times,
  * the last one will be the active one.
  */
-export const createChannel = () => {
-  return notificationsApi.postNotificationsChannels().then((data) => {
-    console.log('---- Created Notifications Channel ----')
-    console.log(data)
+export const createChannel = async (): Promise<void> => {
+  const data = await notificationsApi.postNotificationsChannels()
 
-    channel = data
-    ws = new WebSocket(channel.connectUri)
-    ws.onmessage = onSocketMessage
-  })
+  console.log('---- Created Notifications Channel ----')
+  console.log(data)
+
+  channel = data
+  ws = new WebSocket(channel.connectUri as string)
+  ws.onmessage = onSocketMessage
 }
 
 /**
@@ -36,15 +36,19 @@ export const createChannel = () => {
  * @param {String} topic PureCloud notification topic string
  * @param {Function} callback callback function to fire when the event occurs
  */
-export const addSubscription = (topic: string, callback: Function) => {
+export const addSubscription = async (
+  topic: string,
+  callback: () => void
+): Promise<void> => {
   const body = [{ id: topic }]
 
-  return notificationsApi
-    .postNotificationsChannelSubscriptions(channel.id, body)
-    .then((data) => {
-      subscriptionMap[topic] = callback
-      console.log(`Added subscription to ${topic}`)
-    })
+  await notificationsApi.postNotificationsChannelSubscriptions(
+    channel.id as string,
+    body
+  )
+
+  subscriptionMap[topic] = callback
+  console.log(`Added subscription to ${topic}`)
 }
 
 /**
@@ -52,8 +56,8 @@ export const addSubscription = (topic: string, callback: Function) => {
  * It will reference the subscriptionMap to determine what function to run
  * @param {Object} event
  */
-const onSocketMessage = (event: any) => {
-  const data = JSON.parse(event.data)
+const onSocketMessage = (event: any): void => {
+  const data = JSON.parse(event.data as string)
 
   subscriptionMap[data.topicName](data)
 }

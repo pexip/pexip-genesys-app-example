@@ -26,7 +26,9 @@ const infinityMock = {
       add: jest.fn()
     },
     onParticipantLeft: {
-      add: (callback: () => void) => { participantLeftCallback = callback }
+      add: (callback: () => void) => {
+        participantLeftCallback = callback
+      }
     }
   }),
   createInfinityClient: () => ({
@@ -69,10 +71,14 @@ const infinityMock = {
     participants: mockParticipants
   }),
   CallType,
-  setMockParticipants: (participants: any[]) => { mockParticipants = participants },
+  setMockParticipants: (participants: any[]) => {
+    mockParticipants = participants
+  },
   mockDisconnect: jest.fn(),
   mockDisconnectAll: jest.fn(),
-  triggerParticipantLeft: () => participantLeftCallback()
+  triggerParticipantLeft: () => {
+    participantLeftCallback()
+  }
 }
 
 module.exports = infinityMock

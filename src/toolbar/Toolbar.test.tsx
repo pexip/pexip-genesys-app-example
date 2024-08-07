@@ -1,10 +1,11 @@
-import React from 'react'
-
 import { render, screen } from '@testing-library/react'
 
 import { Toolbar } from './Toolbar'
-import { CallSignals, InfinityClient, InfinitySignals } from '@pexip/infinity'
-import { InfinityContext } from '../App'
+import type {
+  CallSignals,
+  InfinityClient,
+  InfinitySignals
+} from '@pexip/infinity'
 
 // Create a mock for the ToolbarButton
 jest.mock('./toolbar-button/ToolbarButton', () => {
@@ -122,32 +123,37 @@ const handleCameraMute = jest.fn()
 const handleChangeStreamQuality = jest.fn()
 
 test('renders the toolbar', () => {
-  render(<Toolbar
-    infinityClient={ infinityClientMock }
-    infinityContext={infinityContextMock}
-    callSignals={ callSignalsMock }
-    infinitySignals= {infinitySignalsMock}
-    onLocalPresentationStream={handleLocalPresentationStream}
-    onLocalStream={handleLocalStream}
-    isCameraMuted={true}
-    onCameraMute={handleCameraMute}
-    onChangeStreamQuality={handleChangeStreamQuality}
-  />)
+  render(
+    <Toolbar
+      infinityClient={infinityClientMock}
+      infinityContext={infinityContextMock}
+      callSignals={callSignalsMock}
+      infinitySignals={infinitySignalsMock}
+      onLocalPresentationStream={handleLocalPresentationStream}
+      onLocalStream={handleLocalStream}
+      isCameraMuted={true}
+      onCameraMute={handleCameraMute}
+      onChangeStreamQuality={handleChangeStreamQuality}
+    />
+  )
   const toolbar = screen.getByTestId('Toolbar')
   expect(toolbar).toBeInTheDocument()
 })
 
 test('it renders 6 buttons', () => {
-  render(<Toolbar infinityClient={ infinityClientMock }
-    infinityContext={infinityContextMock}
-    callSignals={ callSignalsMock }
-    infinitySignals= {infinitySignalsMock}
-    onLocalPresentationStream={handleLocalPresentationStream}
-    onLocalStream={handleLocalStream}
-    isCameraMuted={true}
-    onCameraMute={handleCameraMute}
-    onChangeStreamQuality={handleChangeStreamQuality}
-  />)
+  render(
+    <Toolbar
+      infinityClient={infinityClientMock}
+      infinityContext={infinityContextMock}
+      callSignals={callSignalsMock}
+      infinitySignals={infinitySignalsMock}
+      onLocalPresentationStream={handleLocalPresentationStream}
+      onLocalStream={handleLocalStream}
+      isCameraMuted={true}
+      onCameraMute={handleCameraMute}
+      onChangeStreamQuality={handleChangeStreamQuality}
+    />
+  )
   const buttons = screen.getAllByRole('button')
   expect(buttons.length).toBe(6)
 })

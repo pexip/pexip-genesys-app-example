@@ -1,4 +1,4 @@
-import {
+import type {
   ConversationsApi,
   Models,
   UsersApi
@@ -36,11 +36,10 @@ const client = platformClient.ApiClient.instance
 
 const billablePermission = 'integration:pexipVideo:agent'
 
-let state: GenesysState
+let conversationId: string
 
 let userMe: Models.UserMe
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 let usersApi: UsersApi
 let conversationsApi: ConversationsApi
 
@@ -51,15 +50,6 @@ let handleConnectCall: () => any
 
 let onHoldState: boolean = false
 let muteState: boolean = false
-
-/**
- * @param pcEnvironment The environment context of the current Genesys session
- * @param conversationId The current conversation id for the running interaction
- */
-interface GenesysState {
-  pcEnvironment: string
-  pcConversationId: string
-}
 
 /**
  * Triggers the login process for Genesys
@@ -94,19 +84,23 @@ export const loginPureCloud = async (
  * @param accessToken The access token provided by Genesys after successful login
  */
 export const initialize = async (
-  genesysState: GenesysState,
+  pcEnvironment: string,
+  pcConversationId: string,
   accessToken: string
 ): Promise<void> => {
+  conversationId = pcConversationId
   const client = platformClient.ApiClient.instance
-  state = genesysState
-  client.setEnvironment(state.pcEnvironment)
+  client.setEnvironment(pcEnvironment)
   client.setAccessToken(accessToken)
   usersApi = new platformClient.UsersApi()
   conversationsApi = new platformClient.ConversationsApi()
   userMe = await usersApi.getUsersMe({ expand: ['authorization'] })
   await createChannel()
   if (userMe.id != null) {
-    addSubscription(`v2.users.${userMe.id}.conversations.calls`, callsCallback)
+    await addSubscription(
+      `v2.users.${userMe.id}.conversations.calls`,
+      callsCallback
+    )
   } else {
     throw Error('Cannot get the user ID')
   }
@@ -117,9 +111,7 @@ export const initialize = async (
  * @returns The ani name which will be used as alias for the meeting
  */
 export const fetchAniName = async (): Promise<string | undefined> => {
-  const conversation = await conversationsApi.getConversation(
-    state.pcConversationId
-  )
+  const conversation = await conversationsApi.getConversation(conversationId)
   const participant = conversation.participants?.find(
     (participant) => participant.purpose === GenesysRole.CUSTOMER
   )
@@ -175,9 +167,7 @@ export const isMuted = async (): Promise<boolean> => {
  * @returns true if ANI is a phone number / false if ANI is not a phone number
  */
 export const isDialOut = async (sipSource: string): Promise<boolean> => {
-  const conversation = await conversationsApi.getConversation(
-    state.pcConversationId
-  )
+  const conversation = await conversationsApi.getConversation(conversationId)
   const participant = conversation.participants?.find(
     (participant) => participant.purpose === GenesysRole.CUSTOMER
   )
@@ -197,9 +187,7 @@ export const isDialOut = async (sipSource: string): Promise<boolean> => {
  * @returns Boolean that indicates that a call is active.
  */
 export const isCallActive = async (): Promise<boolean> => {
-  const conversation = await conversationsApi.getConversation(
-    state.pcConversationId
-  )
+  const conversation = await conversationsApi.getConversation(conversationId)
   const agentParticipants = conversation.participants?.filter(
     (participant) => participant.purpose === GenesysRole.AGENT
   )
@@ -239,9 +227,7 @@ export const addConnectCallListener = (
  * @returns The active agent.
  */
 const getActiveAgent = async (): Promise<Models.Participant | undefined> => {
-  const conversation = await conversationsApi.getConversation(
-    state.pcConversationId
-  )
+  const conversation = await conversationsApi.getConversation(conversationId)
   const agentParticipant = conversation?.participants.find(
     (participant) =>
       participant.purpose === GenesysRole.AGENT &&

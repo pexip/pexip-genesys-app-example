@@ -1,9 +1,7 @@
-import React from 'react'
-
 import { screen, render } from '@testing-library/react'
 import { IconTypes } from '@pexip/components'
 
-import { Effect } from './EffectButton'
+import { EffectButton } from './EffectButton'
 
 jest.mock('@pexip/components', () => {
   return require('../../__mocks__/components')
@@ -17,13 +15,13 @@ describe('SettingsPanel component', () => {
   })
 
   it('should render', () => {
-    render(<Effect name="label" onClick={handleClick} active={false} />)
+    render(<EffectButton name="label" onClick={handleClick} active={false} />)
     const effect = screen.getByTestId('Effect')
     expect(effect).toBeInTheDocument()
   })
 
   it('should not display an icon or background if no "iconSource" or "bgImageUrl" provided', () => {
-    render(<Effect name="label" onClick={handleClick} active={false} />)
+    render(<EffectButton name="label" onClick={handleClick} active={false} />)
     const effect = screen.getByTestId('Effect')
     const icon = effect.getElementsByClassName('icon')[0]
     const background = effect.getElementsByClassName('background')[0]
@@ -33,7 +31,7 @@ describe('SettingsPanel component', () => {
 
   it('should display an icon if "iconSource" provided, but not background', () => {
     render(
-      <Effect
+      <EffectButton
         name="label"
         onClick={handleClick}
         active={false}
@@ -49,7 +47,7 @@ describe('SettingsPanel component', () => {
 
   it('should display background if "bgImageUrl" provided, but not an icon', () => {
     render(
-      <Effect
+      <EffectButton
         name="label"
         onClick={handleClick}
         active={false}
@@ -64,14 +62,14 @@ describe('SettingsPanel component', () => {
   })
 
   it('should have the "name" in the Text element', () => {
-    render(<Effect name="label" onClick={handleClick} active={false} />)
+    render(<EffectButton name="label" onClick={handleClick} active={false} />)
     const effect = screen.getByTestId('Effect')
     const label = effect.getElementsByClassName('label')[0]
     expect(label).toHaveTextContent('label')
   })
 
   it('should trigger "onClick" when the effect is pressed', () => {
-    render(<Effect name="label" onClick={handleClick} active={false} />)
+    render(<EffectButton name="label" onClick={handleClick} active={false} />)
     const effect = screen.getByTestId('Effect')
     const button = effect.getElementsByClassName('button')[0] as HTMLElement
     button.click()
@@ -79,14 +77,14 @@ describe('SettingsPanel component', () => {
   })
 
   it('should remove the class "active" in the "Box" element when "active" is false', () => {
-    render(<Effect name="label" onClick={handleClick} active={false} />)
+    render(<EffectButton name="label" onClick={handleClick} active={false} />)
     const effect = screen.getByTestId('Effect')
     const box = effect.getElementsByClassName('box')[0]
     expect(box).not.toHaveClass('active')
   })
 
   it('should add the class "active" in the "Box" element when "active" is true', () => {
-    render(<Effect name="label" onClick={handleClick} active={true} />)
+    render(<EffectButton name="label" onClick={handleClick} active={true} />)
     const effect = screen.getByTestId('Effect')
     const box = effect.getElementsByClassName('box')[0]
     expect(box).toHaveClass('active')

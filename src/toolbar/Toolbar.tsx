@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import {
+import type {
   CallSignals,
   InfinitySignals,
   InfinityClient,
@@ -13,7 +13,7 @@ import {
   notificationToastSignal,
   Tooltip
 } from '@pexip/components'
-import { Settings } from '../types/Settings'
+import { type Settings } from '../types/Settings'
 
 import './Toolbar.scss'
 
@@ -27,7 +27,7 @@ interface ToolbarProps {
   // onChangeStreamQuality: (streamQuality: StreamQuality) => void
   onLocalPresentationStream: (stream: MediaStream | undefined) => void
   // onLocalStream: (stream: MediaStream) => void
-  onSettingsChanged: (settings: Settings) => void
+  onSettingsChanged: (settings: Settings) => Promise<void>
 }
 
 export const Toolbar = (props: ToolbarProps): JSX.Element => {
@@ -84,7 +84,7 @@ export const Toolbar = (props: ToolbarProps): JSX.Element => {
     }
   }
 
-  const toggleSettings = () => {
+  const toggleSettings = (): void => {
     setSettingsEnabled(!settingsEnabled)
   }
 
@@ -93,14 +93,14 @@ export const Toolbar = (props: ToolbarProps): JSX.Element => {
       'remoteVideo'
     ) as HTMLVideoElement
 
-    if (videoElement) {
-      videoElement.addEventListener('enterpictureinpicture', () =>
+    if (videoElement != null) {
+      videoElement.addEventListener('enterpictureinpicture', () => {
         setPopOutVideoEnabled(true)
-      )
+      })
 
-      videoElement.addEventListener('leavepictureinpicture', () =>
+      videoElement.addEventListener('leavepictureinpicture', () => {
         setPopOutVideoEnabled(false)
-      )
+      })
     }
 
     props.callSignals.onPresentationConnectionChange.add(
@@ -130,7 +130,7 @@ export const Toolbar = (props: ToolbarProps): JSX.Element => {
         <Tooltip text={props.cameraMuted ? 'Unmute camera' : 'Mute camera'}>
           <Button
             onClick={() => {
-              props.onCameraMuteChanged(!props.cameraMuted)
+              props.onCameraMuteChanged(!props.cameraMuted).catch(console.error)
             }}
             modifier="square"
             variant="translucent"
@@ -150,7 +150,9 @@ export const Toolbar = (props: ToolbarProps): JSX.Element => {
           text={shareScreenEnabled ? 'Stop sharing screen' : 'Share screen'}
         >
           <Button
-            onClick={toggleShareScreen}
+            onClick={() => {
+              toggleShareScreen().catch(console.error)
+            }}
             modifier="square"
             variant="translucent"
             isActive={shareScreenEnabled}
@@ -167,7 +169,9 @@ export const Toolbar = (props: ToolbarProps): JSX.Element => {
 
         <Tooltip text={lockRoomEnabled ? 'Unlock room' : 'Lock room'}>
           <Button
-            onClick={toggleLockRoom}
+            onClick={() => {
+              toggleLockRoom().catch(console.error)
+            }}
             modifier="square"
             variant="translucent"
             isActive={lockRoomEnabled}
@@ -182,7 +186,9 @@ export const Toolbar = (props: ToolbarProps): JSX.Element => {
 
         <Tooltip text={popOutVideoEnabled ? 'Return video' : 'Pop out video'}>
           <Button
-            onClick={togglePopOutVideo}
+            onClick={() => {
+              togglePopOutVideo().catch(console.error)
+            }}
             modifier="square"
             variant="translucent"
             isActive={popOutVideoEnabled}
@@ -215,10 +221,12 @@ export const Toolbar = (props: ToolbarProps): JSX.Element => {
 
       {settingsEnabled && (
         <SettingsPanel
-          onClose={() => setSettingsEnabled(false)}
+          onClose={() => {
+            setSettingsEnabled(false)
+          }}
           onSave={(settings: Settings) => {
             setSettingsEnabled(false)
-            props.onSettingsChanged(settings)
+            props.onSettingsChanged(settings).catch(console.error)
           }}
         />
       )}

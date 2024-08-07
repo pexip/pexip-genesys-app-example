@@ -24,11 +24,11 @@ import { ErrorPanel } from './error-panel/ErrorPanel'
 import ERROR_ID from './constants/error-ids'
 import { ConnectionState } from './types/ConnectionState'
 import { Toolbar } from './toolbar/Toolbar'
-import { Selfview } from './selfview/Selfview'
-import { Settings } from './types/Settings'
+import { SelfView } from './selfview/SelfView'
+import { type Settings } from './types/Settings'
 import { type MediaDeviceInfoLike } from '@pexip/media-control'
 import { Effect } from './types/Effect'
-import { VideoProcessor } from '@pexip/media-processor'
+import { type VideoProcessor } from '@pexip/media-processor'
 import { getVideoProcessor } from './media/video-processor'
 import { LocalStorageKey } from './types/LocalStorageKey'
 
@@ -45,6 +45,14 @@ let aniName: string
 let conferenceAlias: string
 
 let videoProcessor: VideoProcessor
+
+interface GenesysState {
+  pcEnvironment: string
+  pcConversationId: string
+  pexipNode: string
+  pexipAgentPin: string
+  pexipAppPrefix: string
+}
 
 export const App = (): JSX.Element => {
   const [device, setDevice] = useState<MediaDeviceInfoLike>()
@@ -82,7 +90,7 @@ export const App = (): JSX.Element => {
     }
   }
 
-  const configureSignals = () => {
+  const configureSignals = (): void => {
     infinitySignals = createInfinityClientSignals([])
     callSignals = createCallSignals([])
     callSignals.onRemoteStream.add((remoteStream) => {
@@ -177,7 +185,7 @@ export const App = (): JSX.Element => {
     }
   }
 
-  const exchangeVideos = () => {
+  const exchangeVideos = (): void => {
     if (secondaryVideo === 'presentation') {
       setSecondaryVideo('remote')
     } else {
@@ -263,9 +271,16 @@ export const App = (): JSX.Element => {
     await infinityClient.mute({ mute: muted })
   }
 
-  const initializeGenesys = async (state: any, accessToken: string) => {
+  const initializeGenesys = async (
+    state: GenesysState,
+    accessToken: string
+  ): Promise<void> => {
     // Initiate Genesys environment
-    await GenesysService.initialize(state, accessToken)
+    await GenesysService.initialize(
+      state.pcEnvironment,
+      state.pcConversationId,
+      accessToken
+    )
 
     // Stop the initialization if no call is active
     const callActive = (await GenesysService.isCallActive()) || false
@@ -283,13 +298,14 @@ export const App = (): JSX.Element => {
       : uuidv4()
 
     // Add on hold listener
-    GenesysService.addHoldListener(async (mute) => await onHoldVideo(mute))
+    GenesysService.addHoldListener(async (mute) => {
+      await onHoldVideo(mute)
+    })
 
     // Add end call listener
-    GenesysService.addEndCallListener(
-      async (shouldDisconnectAll: boolean) =>
-        await onEndCall(shouldDisconnectAll)
-    )
+    GenesysService.addEndCallListener(async (shouldDisconnectAll: boolean) => {
+      await onEndCall(shouldDisconnectAll)
+    })
 
     // Add connect call listener
     GenesysService.addConnectCallListener(async () => {
@@ -300,10 +316,12 @@ export const App = (): JSX.Element => {
     })
 
     // Add connect call listener
-    GenesysService.addMuteListener(async (mute) => await onMuteCall(mute))
+    GenesysService.addMuteListener(async (mute) => {
+      await onMuteCall(mute)
+    })
   }
 
-  const handleCameraMuteChanged = async (mute: boolean) => {
+  const handleCameraMuteChanged = async (mute: boolean): Promise<void> => {
     const response = await infinityClient.muteVideo({ muteVideo: mute })
     if (response?.status === 200) {
       localStream?.getTracks().forEach((track) => {
@@ -326,7 +344,7 @@ export const App = (): JSX.Element => {
     }
   }
 
-  const handleCopyInvitationLink = () => {
+  const handleCopyInvitationLink = (): void => {
     const invitationLink = `https://${pexipNode}/webapp/m/${pexipAppPrefix}${conferenceAlias}/step-by-step?role=guest`
     const link = document.createElement('input')
     link.value = invitationLink
@@ -343,12 +361,12 @@ export const App = (): JSX.Element => {
 
   const handleLocalPresentationStream = (
     presentationStream: MediaStream | undefined
-  ) => {
+  ): void => {
     setPresentationStream(presentationStream)
     setSecondaryVideo('presentation')
   }
 
-  const handleSettingsChanged = async (settings: Settings) => {
+  const handleSettingsChanged = async (settings: Settings): Promise<void> => {
     let newLocalStream = localStream
     if (settings.device?.deviceId !== device?.deviceId) {
       setDevice(settings.device)
@@ -366,7 +384,7 @@ export const App = (): JSX.Element => {
     }
 
     if (
-      settings.effect != effect ||
+      settings.effect !== effect ||
       settings.device?.deviceId !== device?.deviceId
     ) {
       setEffect(settings.effect)
@@ -419,7 +437,7 @@ export const App = (): JSX.Element => {
   ): Promise<MediaStream> => {
     if (videoProcessor != null) {
       videoProcessor.close()
-      videoProcessor.destroy()
+      await videoProcessor.destroy()
     }
     videoProcessor = await getVideoProcessor(effect)
     await videoProcessor.open()
@@ -428,7 +446,7 @@ export const App = (): JSX.Element => {
   }
 
   useEffect(() => {
-    const bootstrap = async () => {
+    const bootstrap = async (): Promise<void> => {
       try {
         await checkCameraAccess()
       } catch (error) {
@@ -444,13 +462,13 @@ export const App = (): JSX.Element => {
       pexipAppPrefix = queryParams.get('pexipAppPrefix') ?? ''
 
       if (
-        pcEnvironment != '' &&
-        pcConversationId != '' &&
-        pexipNode != '' &&
-        pexipAgentPin != '' &&
-        pexipAppPrefix != ''
+        pcEnvironment !== '' &&
+        pcConversationId !== '' &&
+        pexipNode !== '' &&
+        pexipAgentPin !== '' &&
+        pexipAppPrefix !== ''
       ) {
-        GenesysService.loginPureCloud(
+        await GenesysService.loginPureCloud(
           pcEnvironment,
           pcConversationId,
           pexipNode,
@@ -464,9 +482,9 @@ export const App = (): JSX.Element => {
         const parsedUrl = new URL(window.location.href.replace(/#/g, '?'))
         const queryParams = new URLSearchParams(parsedUrl.search)
 
-        const accessToken = queryParams.get('access_token') as string
-        const state = JSON.parse(
-          decodeURIComponent(queryParams.get('state') as string)
+        const accessToken: string = queryParams.get('access_token') ?? ''
+        const state: GenesysState = JSON.parse(
+          decodeURIComponent(queryParams.get('state') ?? '{}')
         )
 
         await initializeGenesys(state, accessToken)
@@ -476,14 +494,14 @@ export const App = (): JSX.Element => {
 
     bootstrap().catch(console.error)
 
-    const handleDisconnect = () => {
-      infinityClient?.disconnect({})
+    const handleDisconnect = (): void => {
+      infinityClient?.disconnect({}).catch(console.error)
     }
 
     window.addEventListener('beforeunload', handleDisconnect)
     return () => {
       window.removeEventListener('beforeunload', handleDisconnect)
-      onEndCall(false)
+      onEndCall(false).catch(console.error)
     }
   }, [])
 
@@ -535,7 +553,7 @@ export const App = (): JSX.Element => {
             />
           )}
 
-          <Selfview
+          <SelfView
             floatRoot={appRef}
             callSignals={callSignals}
             username={displayName}
