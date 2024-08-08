@@ -1,20 +1,7 @@
 import { render, screen } from '@testing-library/react'
 
 import { Toolbar } from './Toolbar'
-import type {
-  CallSignals,
-  InfinityClient,
-  InfinitySignals
-} from '@pexip/infinity'
-
-// Create a mock for the ToolbarButton
-jest.mock('./toolbar-button/ToolbarButton', () => {
-  return {
-    ToolbarButton: () => {
-      return <button />
-    }
-  }
-})
+import type { CallSignals, InfinitySignals } from '@pexip/infinity'
 
 jest.mock('../settings-panel/SettingsPanel', () => {
   return {
@@ -24,10 +11,21 @@ jest.mock('../settings-panel/SettingsPanel', () => {
   }
 })
 
-const infinityClientMock: InfinityClient = {
+jest.mock('@pexip/hooks', () => {
+  return require('../__mocks__/hooks')
+})
+
+jest.mock('@pexip/utils', () => {
+  return require('../__mocks__/utils')
+})
+
+jest.mock('@pexip/signal', () => {
+  return require('../__mocks__/signal')
+})
+
+const infinityClientMock: any = {
   sendMessage: jest.fn(),
   sendApplicationMessage: jest.fn(),
-  participants: [],
   secureCheckCode: '',
   admit: jest.fn(),
   call: jest.fn(),
@@ -53,9 +51,8 @@ const infinityClientMock: InfinityClient = {
   setRole: jest.fn(),
   setConferenceExtension: jest.fn(),
   setPin: jest.fn(),
-  dtmf: jest.fn(),
   sendConferenceRequest: jest.fn(),
-  setParticipantRoom: jest.fn()
+  conferenceStatus: new Map()
 }
 
 const signalMock = {
@@ -66,13 +63,6 @@ const signalMock = {
   emit: jest.fn()
 }
 
-const infinityContextMock: InfinityContext = {
-  conferenceAlias: 'Mock_Alias',
-  conferencePin: '1234',
-  infinityHost: 'Host',
-  pexipAppPrefix: 'app'
-}
-
 const callSignalsMock: CallSignals = {
   onRemoteStream: signalMock,
   onRemotePresentationStream: signalMock,
@@ -81,7 +71,9 @@ const callSignalsMock: CallSignals = {
   onRtcStats: signalMock,
   onCallQualityStats: signalMock,
   onCallQuality: signalMock,
-  onSecureCheckCode: signalMock
+  onSecureCheckCode: signalMock,
+  onReconnecting: signalMock,
+  onReconnected: signalMock
 }
 
 const infinitySignalsMock: InfinitySignals = {
@@ -114,26 +106,33 @@ const infinitySignalsMock: InfinitySignals = {
   onSplashScreen: signalMock,
   onStage: signalMock,
   onTransfer: signalMock,
-  onUpdateSdp: signalMock
+  onUpdateSdp: signalMock,
+  onAuthenticatedWithConference: signalMock,
+  onLayoutOverlayTextEnabled: signalMock,
+  onServiceType: signalMock,
+  onBreakoutEnd: signalMock,
+  onBreakoutBegin: signalMock,
+  onBreakoutRefer: signalMock,
+  onFecc: signalMock,
+  onCallDisconnected: signalMock
 }
 
+const handleCameraMuteChanged = jest.fn()
+const handleCopyInvitationLink = jest.fn()
 const handleLocalPresentationStream = jest.fn()
-const handleLocalStream = jest.fn()
-const handleCameraMute = jest.fn()
-const handleChangeStreamQuality = jest.fn()
+const handleSettingsChanged = jest.fn()
 
 test('renders the toolbar', () => {
   render(
     <Toolbar
       infinityClient={infinityClientMock}
-      infinityContext={infinityContextMock}
       callSignals={callSignalsMock}
       infinitySignals={infinitySignalsMock}
+      cameraMuted={true}
+      onCameraMuteChanged={handleCameraMuteChanged}
+      onCopyInvitationLink={handleCopyInvitationLink}
       onLocalPresentationStream={handleLocalPresentationStream}
-      onLocalStream={handleLocalStream}
-      isCameraMuted={true}
-      onCameraMute={handleCameraMute}
-      onChangeStreamQuality={handleChangeStreamQuality}
+      onSettingsChanged={handleSettingsChanged}
     />
   )
   const toolbar = screen.getByTestId('Toolbar')
@@ -144,14 +143,13 @@ test('it renders 6 buttons', () => {
   render(
     <Toolbar
       infinityClient={infinityClientMock}
-      infinityContext={infinityContextMock}
       callSignals={callSignalsMock}
       infinitySignals={infinitySignalsMock}
+      cameraMuted={true}
+      onCameraMuteChanged={handleCameraMuteChanged}
+      onCopyInvitationLink={handleCopyInvitationLink}
       onLocalPresentationStream={handleLocalPresentationStream}
-      onLocalStream={handleLocalStream}
-      isCameraMuted={true}
-      onCameraMute={handleCameraMute}
-      onChangeStreamQuality={handleChangeStreamQuality}
+      onSettingsChanged={handleSettingsChanged}
     />
   )
   const buttons = screen.getAllByRole('button')

@@ -7,7 +7,15 @@ const mediaComponentsMock = {
       iconType,
       ...newProps
     } = props
-    return <select {...newProps} />
+    return (
+      <select {...newProps} value={mediaDeviceInfoLike}>
+        {props.devices.map((device: any) => (
+          <option key={device.deviceId} value={device.deviceId}>
+            {device.label}
+          </option>
+        ))}
+      </select>
+    )
   },
   SelfViewSettings: (props: any) => {
     const { mediaStream, ...newProps } = props

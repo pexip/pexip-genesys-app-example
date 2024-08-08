@@ -24,9 +24,7 @@ interface ToolbarProps {
   cameraMuted: boolean
   onCameraMuteChanged: (muted: boolean) => Promise<void>
   onCopyInvitationLink: () => void
-  // onChangeStreamQuality: (streamQuality: StreamQuality) => void
   onLocalPresentationStream: (stream: MediaStream | undefined) => void
-  // onLocalStream: (stream: MediaStream) => void
   onSettingsChanged: (settings: Settings) => Promise<void>
 }
 
