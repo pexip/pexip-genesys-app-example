@@ -40,7 +40,7 @@ const componentsMock = {
       </select>
     )
   },
-  Spinner: (props: any) => <div></div>,
+  Spinner: (props: any) => <div {...props}></div>,
   Text: (props: any) => {
     // Remove htmlTag from the props
     const { htmlTag, ...newProps } = props

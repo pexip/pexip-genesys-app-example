@@ -1,24 +1,13 @@
 const mediaComponentsMock = {
-  DevicesList: (props: any) => {
+  DeviceSelect: (props: any) => {
     const {
-      audioInputError,
-      videoInputError,
-      onAudioInputChange,
-      onAudioOutputChange,
-      onVideoInputChange,
-      videoInput,
-      setShowHelpVideo,
+      isDisabled,
+      mediaDeviceInfoLike,
+      onDeviceChange,
+      iconType,
       ...newProps
     } = props
-    return (
-      <select {...newProps} value={videoInput?.deviceId}>
-        {props.devices.map((device: any) => (
-          <option key={device.deviceId} value={device.deviceId}>
-            {device.label}
-          </option>
-        ))}
-      </select>
-    )
+    return <select {...newProps} />
   },
   SelfViewSettings: (props: any) => {
     const { mediaStream, ...newProps } = props

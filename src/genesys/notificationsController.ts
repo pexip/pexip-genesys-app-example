@@ -38,7 +38,7 @@ export const createChannel = async (): Promise<void> => {
  */
 export const addSubscription = async (
   topic: string,
-  callback: () => void
+  callback: (event: any) => void
 ): Promise<void> => {
   const body = [{ id: topic }]
 

@@ -7,6 +7,7 @@ const mediaProcessorMock = {
     close: jest.fn(),
     destroy: jest.fn()
   }),
+  createSegmenter: jest.fn(),
   createVideoTrackProcessor: jest.fn(),
   createVideoTrackProcessorWithFallback: jest.fn(),
   createVideoProcessor: () => ({

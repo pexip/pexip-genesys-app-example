@@ -1,6 +1,5 @@
-import { GenesysConnectionsState } from '../constants/GenesysConnectionState'
 import '../__mocks__/test-params'
-
+import { GenesysConnectionsState } from '../constants/GenesysConnectionState'
 import { type CallEvent } from './genesysService'
 
 jest.mock('purecloud-platform-client-v2', () => {
@@ -11,7 +10,7 @@ let triggerEvent: (event: any) => void
 jest.mock('./notificationsController', () => ({
   __esModule: true,
   default: {
-    addSubscription: jest.fn((topic: string, callback: () => void): void => {
+    addSubscription: jest.fn((_topic: string, callback: () => void): void => {
       triggerEvent = callback
     }),
     createChannel: async (): Promise<void> => {

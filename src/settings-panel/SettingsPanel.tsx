@@ -52,7 +52,6 @@ export const SettingsPanel = (props: SettingsPanelProps): JSX.Element => {
   ): Promise<void> => {
     setEffect(effect)
     if (stream == null) {
-      console.error('Stream is null')
       return
     }
     if (videoProcessor != null) {
@@ -131,6 +130,7 @@ export const SettingsPanel = (props: SettingsPanelProps): JSX.Element => {
       <TextHeading htmlTag={'h5'}>Devices</TextHeading>
 
       <DeviceSelect
+        data-testid="device-select"
         devices={devices}
         isDisabled={false}
         label={''}
