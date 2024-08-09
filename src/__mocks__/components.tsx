@@ -16,6 +16,7 @@ const componentsMock = {
     const { isOpen, withCloseButton, ...newProps } = props
     return <div {...newProps}>{props.children}</div>
   },
+  NotificationToast: (props: any) => <div {...props}>{props.children}</div>,
   Select: (props: any) => {
     const {
       labelModifier,
@@ -40,13 +41,17 @@ const componentsMock = {
       </select>
     )
   },
-  Spinner: (props: any) => <div {...props}></div>,
+  Spinner: (props: any) => {
+    const { colorScheme, ...newProps } = props
+    return <div {...newProps}></div>
+  },
   Text: (props: any) => {
     // Remove htmlTag from the props
     const { htmlTag, ...newProps } = props
     return <div {...newProps}>{props.children}</div>
   },
-  TextHeading: (props: any) => <h3>{props.text}</h3>
+  TextHeading: (props: any) => <h3>{props.text}</h3>,
+  Video: () => <div />
 }
 
 module.exports = componentsMock

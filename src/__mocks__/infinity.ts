@@ -1,6 +1,6 @@
 import './test-params'
 
-enum CallType {
+enum ClientCallType {
   audio = 'audio',
   video = 'video',
   api = 'api'
@@ -70,7 +70,7 @@ const infinityMock = {
     disconnectAll: infinityMock.mockDisconnectAll,
     participants: mockParticipants
   }),
-  CallType,
+  ClientCallType,
   setMockParticipants: (participants: any[]) => {
     mockParticipants = participants
   },
