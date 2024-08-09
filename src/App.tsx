@@ -21,7 +21,7 @@ import { StreamQuality } from '@pexip/media-components'
 import { convertToBandwidth } from './media/quality'
 import * as GenesysService from './genesys/genesysService'
 import { ErrorPanel } from './error-panel/ErrorPanel'
-import ERROR_ID from './constants/error-ids'
+import { ErrorId } from './constants/ErrorId'
 import { ConnectionState } from './types/ConnectionState'
 import { Toolbar } from './toolbar/Toolbar'
 import { SelfView } from './selfview/SelfView'
@@ -84,7 +84,7 @@ export const App = (): JSX.Element => {
   const checkCameraAccess = async (): Promise<void> => {
     const devices = await navigator.mediaDevices.enumerateDevices()
     if (devices.filter((device) => device.kind === 'videoinput').length === 0) {
-      setErrorId(ERROR_ID.CAMERA_NOT_CONNECTED)
+      setErrorId(ErrorId.CAMERA_NOT_CONNECTED)
       setConnectionState(ConnectionState.Error)
       throw new Error('Camera not connected')
     }
@@ -165,12 +165,12 @@ export const App = (): JSX.Element => {
     if (response != null) {
       switch (response.status) {
         case 403: {
-          setErrorId(ERROR_ID.CONFERENCE_AUTHENTICATION_FAILED)
+          setErrorId(ErrorId.CONFERENCE_AUTHENTICATION_FAILED)
           setConnectionState(ConnectionState.Error)
           break
         }
         case 404: {
-          setErrorId(ERROR_ID.CONFERENCE_NOT_FOUND)
+          setErrorId(ErrorId.CONFERENCE_NOT_FOUND)
           setConnectionState(ConnectionState.Error)
           break
         }
@@ -180,7 +180,7 @@ export const App = (): JSX.Element => {
         }
       }
     } else {
-      setErrorId(ERROR_ID.INFINITY_SERVER_UNAVAILABLE)
+      setErrorId(ErrorId.INFINITY_SERVER_UNAVAILABLE)
       setConnectionState(ConnectionState.Error)
     }
   }
@@ -212,7 +212,7 @@ export const App = (): JSX.Element => {
       setLocalStream(localStream)
       setProcessedStream(processedStream)
     } catch (err) {
-      setErrorId(ERROR_ID.CAMERA_ACCESS_DENIED)
+      setErrorId(ErrorId.CAMERA_ACCESS_DENIED)
       setConnectionState(ConnectionState.Error)
       return
     }
@@ -509,7 +509,7 @@ export const App = (): JSX.Element => {
     <div className="App" data-testid="App" ref={appRef}>
       {errorId !== '' && connectionState === ConnectionState.Error && (
         <ErrorPanel
-          errorId={errorId}
+          error={errorId}
           onClick={() => {
             setErrorId('')
             setConnectionState(ConnectionState.Connecting)
