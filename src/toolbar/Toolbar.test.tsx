@@ -23,6 +23,21 @@ jest.mock('@pexip/signal', () => {
   return require('../__mocks__/signal')
 })
 
+jest.mock(
+  '@pexip/media-processor',
+  () => require('../__mocks__/media-processor'),
+  { virtual: true }
+)
+
+jest.mock(
+  '@pexip/peer-connection-stats',
+  () => require('../__mocks__/peer-connection-stats'),
+  { virtual: true }
+)
+
+jest.mock('@pexip/media', () => {}, { virtual: true })
+jest.mock('@pexip/media-control', () => {}, { virtual: true })
+
 const infinityClientMock: any = {
   sendMessage: jest.fn(),
   sendApplicationMessage: jest.fn(),
@@ -139,7 +154,7 @@ test('renders the toolbar', () => {
   expect(toolbar).toBeInTheDocument()
 })
 
-test('it renders 6 buttons', () => {
+test('it renders 7 buttons', () => {
   render(
     <Toolbar
       infinityClient={infinityClientMock}
@@ -153,5 +168,5 @@ test('it renders 6 buttons', () => {
     />
   )
   const buttons = screen.getAllByRole('button')
-  expect(buttons.length).toBe(6)
+  expect(buttons.length).toBe(7)
 })

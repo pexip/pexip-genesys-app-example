@@ -49,7 +49,6 @@ const mockGenesysServiceInitialize = jest.fn()
 jest.mock('./genesys/genesysService', () => ({
   ...require('./__mocks__/genesys-service'),
   initialize: () => {
-    console.log('initialize')
     mockGenesysServiceInitialize()
   }
 }))

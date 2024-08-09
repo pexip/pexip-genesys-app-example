@@ -1,11 +1,8 @@
 import React, { type RefObject, useState } from 'react'
-
 import {
   DraggableFoldableInMeetingSelfview,
-  Stats,
   type StreamQuality,
   useCallQuality
-  // useNetworkState
 } from '@pexip/media-components'
 import { type CallSignals } from '@pexip/infinity'
 import { LocalStorageKey } from '../types/LocalStorageKey'
@@ -21,14 +18,8 @@ interface SelfViewProps {
 }
 
 export const SelfView = React.memo((props: SelfViewProps): JSX.Element => {
-  const [showStats, setShowStats] = useState(false)
   const [showTooltip, setShowTooltip] = useState(true)
   const [folded, setFolded] = useState(false)
-
-  // const networkState = useNetworkState(
-  //   callLivenessSignals.onReconnecting,
-  //   callLivenessSignals.onReconnected
-  // )
 
   const callQuality = useCallQuality({
     getStreamQuality: () =>
@@ -43,7 +34,6 @@ export const SelfView = React.memo((props: SelfViewProps): JSX.Element => {
         shouldShowUserAvatar={false}
         username={props.username}
         localMediaStream={props.localStream}
-        quality={callQuality}
         onCollapseSelfview={() => {
           setFolded(true)
         }}
@@ -55,8 +45,8 @@ export const SelfView = React.memo((props: SelfViewProps): JSX.Element => {
         setShowSelfviewTooltip={(showTooltip: boolean) => {
           setShowTooltip(showTooltip)
         }}
-        // onCallQualityClick={() => setShowStats(true)}
         // Unused parameters
+        quality={callQuality}
         callQualityPosition={'bottomRight'}
         isAudioInputMuted={true}
         isVideoInputMuted={props.localStream == null}
@@ -64,7 +54,7 @@ export const SelfView = React.memo((props: SelfViewProps): JSX.Element => {
         onToggleVideoClick={() => {
           props.onCameraMuteChanged(false).catch(console.error)
         }}
-        isSidePanelVisible={false}
+        isSidePanelVisible={true}
         autoHideProps={{
           onMouseEnter: () => {},
           onFocus: () => {},
@@ -73,23 +63,10 @@ export const SelfView = React.memo((props: SelfViewProps): JSX.Element => {
         }}
         areEffectsEnabled={false}
         areEffectsApplied={false}
-        openEffectsModal={function (): void {
-          throw new Error('Function not implemented.')
-        }}
+        openEffectsModal={() => {}}
         draggableAriaLabel={''}
         isMirrored={true}
       />
-      {showStats && (
-        <Stats
-          data-testid="Stats"
-          onClose={() => {
-            setShowStats(false)
-          }}
-          statsSignal={props.callSignals.onRtcStats}
-          callQualityStatsSignal={props.callSignals.onCallQualityStats}
-          cachedStats={undefined}
-        />
-      )}
     </div>
   )
 })

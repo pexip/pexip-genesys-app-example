@@ -16,6 +16,7 @@ import {
 import { type Settings } from '../types/Settings'
 
 import './Toolbar.scss'
+import { Stats } from '@pexip/media-components'
 
 interface ToolbarProps {
   infinityClient: InfinityClient
@@ -30,10 +31,11 @@ interface ToolbarProps {
 
 export const Toolbar = (props: ToolbarProps): JSX.Element => {
   const [shareScreenEnabled, setShareScreenEnabled] = useState(false)
+  const [presentationStream, setPresentationStream] = useState<MediaStream>()
   const [lockRoomEnabled, setLockRoomEnabled] = useState(false)
   const [popOutVideoEnabled, setPopOutVideoEnabled] = useState(false)
+  const [statisticsEnabled, setStatisticsEnabled] = useState(false)
   const [settingsEnabled, setSettingsEnabled] = useState(false)
-  const [presentationStream, setPresentationStream] = useState<MediaStream>()
 
   const toggleShareScreen = async (): Promise<void> => {
     if (shareScreenEnabled) {
@@ -84,6 +86,10 @@ export const Toolbar = (props: ToolbarProps): JSX.Element => {
 
   const toggleSettings = (): void => {
     setSettingsEnabled(!settingsEnabled)
+  }
+
+  const toggleStatistics = (): void => {
+    setStatisticsEnabled(!statisticsEnabled)
   }
 
   useEffect(() => {
@@ -205,6 +211,17 @@ export const Toolbar = (props: ToolbarProps): JSX.Element => {
           </Button>
         </Tooltip>
 
+        <Tooltip text="Statistics">
+          <Button
+            onClick={toggleStatistics}
+            modifier="square"
+            variant="translucent"
+            isActive={statisticsEnabled}
+          >
+            <Icon source={IconTypes.IconInfoRound} />
+          </Button>
+        </Tooltip>
+
         <Tooltip text="Open settings">
           <Button
             onClick={toggleSettings}
@@ -216,6 +233,18 @@ export const Toolbar = (props: ToolbarProps): JSX.Element => {
           </Button>
         </Tooltip>
       </div>
+
+      {statisticsEnabled && (
+        <Stats
+          data-testid="Stats"
+          onClose={() => {
+            setStatisticsEnabled(false)
+          }}
+          statsSignal={props.callSignals.onRtcStats}
+          callQualityStatsSignal={props.callSignals.onCallQualityStats}
+          cachedStats={undefined}
+        />
+      )}
 
       {settingsEnabled && (
         <SettingsPanel
