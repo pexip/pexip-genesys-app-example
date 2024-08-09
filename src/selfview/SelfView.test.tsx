@@ -39,7 +39,7 @@ const callSignalsMock: CallSignals = {
 
 jest.mock('@pexip/media-components', () => {
   return {
-    DraggableFoldableInMeetingSelfview: (props: any) => {
+    DraggableFoldableInMeetingSelfview: (_props: any) => {
       return <div />
     },
     useCallQuality: jest.fn(),
