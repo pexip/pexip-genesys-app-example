@@ -1,6 +1,6 @@
 import './__mocks__/test-params'
 
-import { render, screen } from '@testing-library/react'
+import { act, render, screen } from '@testing-library/react'
 // import * as GenesysService from './genesys/genesysService'
 
 import { App } from './App'
@@ -45,9 +45,14 @@ jest.mock(
   { virtual: true }
 )
 
-jest.mock('./genesys/genesysService', () => {
-  return require('./__mocks__/genesys-service')
-})
+const mockGenesysServiceInitialize = jest.fn()
+jest.mock('./genesys/genesysService', () => ({
+  ...require('./__mocks__/genesys-service'),
+  initialize: () => {
+    console.log('initialize')
+    mockGenesysServiceInitialize()
+  }
+}))
 
 jest.mock('./error-panel/ErrorPanel', () => {
   return {
@@ -107,6 +112,10 @@ Object.defineProperty(window, 'location', {
 // }
 
 describe('App component', () => {
+  beforeEach(() => {
+    jest.clearAllMocks()
+  })
+
   it('should render', async () => {
     render(<App />)
     const app = await screen.findByTestId('App')
@@ -175,19 +184,20 @@ describe('App component', () => {
     })
   })
 
-  // describe('Genesys service', () => {
-  //   it('should call to initialize once', async () => {
-  //     await act(async () => {
-  //       render(<App />)
-  //     })
-  //     expect(GenesysService.initialize).toHaveBeenCalledTimes(1)
-  //   })
-  // })
+  describe('Genesys service', () => {
+    it('should call to initialize once', async () => {
+      await act(async () => {
+        render(<App />)
+      })
+      expect(mockGenesysServiceInitialize).toHaveBeenCalledTimes(1)
+    })
+  })
 
   // describe('Agent disconnect behavior', () => {
   //   beforeEach(() => {
   //     setMockParticipants([])
   //   })
+  //
   //   it("should stay when participants >= 1 with callType == api or video (agent.callType == 'api')", async () => {
   //     setMockParticipants([
   //       participantSipTrunk,
@@ -201,6 +211,7 @@ describe('App component', () => {
   //     expect(mockDisconnect).not.toHaveBeenCalled()
   //     expect(mockDisconnectAll).not.toHaveBeenCalled()
   //   })
+  //
   //   it("should stay when participants >= 1 with callType == api or video (agent.callType == 'video')", async () => {
   //     setMockParticipants([
   //       participantSipTrunk,
@@ -214,6 +225,7 @@ describe('App component', () => {
   //     expect(mockDisconnect).not.toHaveBeenCalled()
   //     expect(mockDisconnectAll).not.toHaveBeenCalled()
   //   })
+  //
   //   it("should leave when callType == api and it's only one with callType == api or video", async () => {
   //     setMockParticipants([participantSipTrunk, participantAgentApi])
   //     await act(async () => {
@@ -225,6 +237,7 @@ describe('App component', () => {
   //     expect(mockDisconnect).toHaveBeenCalledTimes(1)
   //     expect(mockDisconnectAll).toHaveBeenCalledTimes(1)
   //   })
+  //
   //   it("should leave when callType == video and it's only one with callType == api or video", async () => {
   //     setMockParticipants([participantSipTrunk, participantAgentVideo])
   //     await act(async () => {
