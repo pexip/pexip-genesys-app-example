@@ -1,5 +1,5 @@
 import '../__mocks__/test-params'
-import { screen, render, waitFor } from '@testing-library/react'
+import { screen, render, act, waitFor } from '@testing-library/react'
 import { LocalStorageKey } from '../types/LocalStorageKey'
 import { Effect } from '../types/Effect'
 import { SettingsPanel } from './SettingsPanel'
@@ -81,26 +81,32 @@ describe('SettingsPanel component', () => {
     })
 
     it('should select the first camera if localStorage empty', async () => {
-      render(
-        <SettingsPanel onClose={handleCloseMock} onSave={handleSaveMock} />
-      )
+      const devices = await navigator.mediaDevices.enumerateDevices()
+      const device = devices.filter((device) => device.kind === 'videoinput')[0]
+      await act(async () => {
+        render(
+          <SettingsPanel onClose={handleCloseMock} onSave={handleSaveMock} />
+        )
+      })
       const deviceSelect = await screen.findByTestId('device-select')
-      expect((deviceSelect as HTMLSelectElement).selectedIndex).toBe(0)
+      expect((deviceSelect as HTMLSelectElement).value).toBe(device.deviceId)
     })
 
-    // it('should select the camera of the localStorage if any', async () => {
-    //   const devices = await navigator.mediaDevices.enumerateDevices()
-    //   const device = devices.filter((device) => device.kind === 'videoinput')[1]
-    //   localStorage.setItem(
-    //     LocalStorageKey.VideoDeviceInfo,
-    //     JSON.stringify(device)
-    //   )
-    //   render(
-    //     <SettingsPanel onClose={handleCloseMock} onSave={handleSaveMock} />
-    //   )
-    //   const deviceSelect = await screen.findByTestId('device-select')
-    //   expect((deviceSelect as HTMLSelectElement).selectedIndex).toBe(1)
-    // })
+    it('should select the camera of the localStorage if any', async () => {
+      const devices = await navigator.mediaDevices.enumerateDevices()
+      const device = devices.filter((device) => device.kind === 'videoinput')[1]
+      localStorage.setItem(
+        LocalStorageKey.VideoDeviceInfo,
+        JSON.stringify(device)
+      )
+      await act(async () => {
+        render(
+          <SettingsPanel onClose={handleCloseMock} onSave={handleSaveMock} />
+        )
+      })
+      const deviceSelect = await screen.findByTestId('device-select')
+      expect((deviceSelect as HTMLSelectElement).value).toBe(device.deviceId)
+    })
   })
 
   describe('Effect selector component', () => {

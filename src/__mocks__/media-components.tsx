@@ -8,7 +8,7 @@ const mediaComponentsMock = {
       ...newProps
     } = props
     return (
-      <select {...newProps} value={mediaDeviceInfoLike}>
+      <select {...newProps} value={mediaDeviceInfoLike?.deviceId}>
         {props.devices.map((device: any) => (
           <option key={device.deviceId} value={device.deviceId}>
             {device.label}
