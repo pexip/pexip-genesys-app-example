@@ -378,7 +378,7 @@ export const App = (): JSX.Element => {
         track.stop()
       })
       newLocalStream = await navigator.mediaDevices.getUserMedia({
-        video: { deviceId: device?.deviceId }
+        video: { deviceId: settings.device?.deviceId }
       })
       setLocalStream(newLocalStream)
     }

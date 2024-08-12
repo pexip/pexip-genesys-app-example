@@ -41,9 +41,15 @@ export const SettingsPanel = (props: SettingsPanelProps): JSX.Element => {
     StreamQuality.Auto
   )
 
-  const handleChangeDevice = (device: MediaDeviceInfoLike): void => {
+  const handleChangeDevice = async (
+    device: MediaDeviceInfoLike
+  ): Promise<void> => {
     setDevice(device)
-    // TODO: Change local stream device
+    const localStream = await navigator.mediaDevices.getUserMedia({
+      video: { deviceId: device.deviceId }
+    })
+    setLocalStream(localStream)
+    handleChangeEffect(effect, localStream).catch(console.error)
   }
 
   const handleChangeEffect = async (
@@ -134,7 +140,9 @@ export const SettingsPanel = (props: SettingsPanelProps): JSX.Element => {
         devices={devices}
         isDisabled={false}
         label={''}
-        onDeviceChange={handleChangeDevice}
+        onDeviceChange={(device) => {
+          handleChangeDevice(device).catch(console.error)
+        }}
         mediaDeviceInfoLike={device}
         iconType={IconTypes.IconVideoOn}
       />

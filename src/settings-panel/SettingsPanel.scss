@@ -22,3 +22,9 @@
     gap: 0.5em
   }
 }
+
+@media (max-height: 600px) {
+  .SettingsPanel {
+    width: 256px !important;
+  }
+}
