@@ -7,7 +7,6 @@ import {
   type InfinityClient,
   type InfinitySignals,
   type CallSignals,
-  type PresoConnectionChangeEvent,
   ClientCallType,
   CallType
 } from '@pexip/infinity'
@@ -67,6 +66,7 @@ export const App = (): JSX.Element => {
   const [localStream, setLocalStream] = useState<MediaStream>()
   const [processedStream, setProcessedStream] = useState<MediaStream>()
   const [remoteStream, setRemoteStream] = useState<MediaStream>()
+  const [presenting, setPresenting] = useState<boolean>(false)
   const [presentationStream, setPresentationStream] = useState<MediaStream>()
 
   const [connectionState, setConnectionState] = useState<ConnectionState>(
@@ -94,24 +94,16 @@ export const App = (): JSX.Element => {
   const configureSignals = (): void => {
     infinitySignals = createInfinityClientSignals([])
     callSignals = createCallSignals([])
+
     callSignals.onRemoteStream.add((remoteStream) => {
       setRemoteStream(remoteStream)
     })
+
     callSignals.onRemotePresentationStream.add((presentationStream) => {
       setPresentationStream(presentationStream)
       setSecondaryVideo('remote')
     })
-    callSignals.onPresentationConnectionChange.add(
-      (changeEvent: PresoConnectionChangeEvent) => {
-        if (
-          changeEvent.recv !== 'connected' &&
-          changeEvent.send !== 'connected'
-        ) {
-          setPresentationStream(new MediaStream())
-          setSecondaryVideo('presentation')
-        }
-      }
-    )
+
     // Disconnect the playback service when connected
     const checkPlaybackDisconnection = async (event: any): Promise<void> => {
       if (
@@ -250,9 +242,12 @@ export const App = (): JSX.Element => {
         .muteVideo({ muteVideo: onHold, participantUuid: participant.uuid })
         .catch(console.error)
     })
-    // if (onHold) {
-    //   await this.toolbarRef?.current?.stopScreenShare()
-    // }
+
+    if (onHold) {
+      if (presenting) {
+        handlePresentationChanged().catch(console.error)
+      }
+    }
   }
 
   const onEndCall = async (shouldDisconnectAll: boolean): Promise<void> => {
@@ -343,6 +338,33 @@ export const App = (): JSX.Element => {
     }
   }
 
+  const handlePresentationChanged = async (): Promise<void> => {
+    setPresenting(!presenting)
+
+    if (presenting) {
+      infinityClient.stopPresenting()
+      presentationStream?.getTracks().forEach((track) => {
+        track.stop()
+      })
+      setPresentationStream(undefined)
+    } else {
+      const presentationStream = await navigator.mediaDevices.getDisplayMedia()
+      setPresentationStream(presentationStream)
+
+      presentationStream.getVideoTracks()[0].onended = () => {
+        infinityClient.stopPresenting()
+        presentationStream?.getTracks().forEach((track) => {
+          track.stop()
+        })
+        setPresentationStream(undefined)
+        setPresenting(false)
+      }
+
+      infinityClient.present(presentationStream)
+      setSecondaryVideo('presentation')
+    }
+  }
+
   const handleCopyInvitationLink = (): void => {
     const invitationLink = `https://${pexipNode}/webapp/m/${pexipAppPrefix}${conferenceAlias}/step-by-step?role=guest`
     const link = document.createElement('input')
@@ -356,13 +378,6 @@ export const App = (): JSX.Element => {
         message: 'Invitation link copied to clipboard!'
       }
     ])
-  }
-
-  const handleLocalPresentationStream = (
-    presentationStream: MediaStream | undefined
-  ): void => {
-    setPresentationStream(presentationStream)
-    setSecondaryVideo('presentation')
   }
 
   const handleSettingsChanged = async (settings: Settings): Promise<void> => {
@@ -504,6 +519,12 @@ export const App = (): JSX.Element => {
     }
   }, [])
 
+  useEffect(() => {
+    GenesysService.addHoldListener(async (mute) => {
+      await onHoldVideo(mute)
+    })
+  }, [presenting, presentationStream])
+
   return (
     <div className="App" data-testid="App" ref={appRef}>
       {errorId !== '' && connectionState === ConnectionState.Error && (
@@ -565,9 +586,11 @@ export const App = (): JSX.Element => {
             callSignals={callSignals}
             infinitySignals={infinitySignals}
             cameraMuted={processedStream == null}
+            presenting={presenting}
             onCameraMuteChanged={handleCameraMuteChanged}
+            onPresentationChanged={handlePresentationChanged}
             onCopyInvitationLink={handleCopyInvitationLink}
-            onLocalPresentationStream={handleLocalPresentationStream}
+            // onLocalPresentationStream={handleLocalPresentationStream}
             onSettingsChanged={handleSettingsChanged}
           />
         </>

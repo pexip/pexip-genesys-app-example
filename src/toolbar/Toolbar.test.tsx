@@ -133,8 +133,8 @@ const infinitySignalsMock: InfinitySignals = {
 }
 
 const handleCameraMuteChanged = jest.fn()
+const handlePresentationChanged = jest.fn()
 const handleCopyInvitationLink = jest.fn()
-const handleLocalPresentationStream = jest.fn()
 const handleSettingsChanged = jest.fn()
 
 test('renders the toolbar', () => {
@@ -144,9 +144,10 @@ test('renders the toolbar', () => {
       callSignals={callSignalsMock}
       infinitySignals={infinitySignalsMock}
       cameraMuted={true}
+      presenting={false}
       onCameraMuteChanged={handleCameraMuteChanged}
+      onPresentationChanged={handlePresentationChanged}
       onCopyInvitationLink={handleCopyInvitationLink}
-      onLocalPresentationStream={handleLocalPresentationStream}
       onSettingsChanged={handleSettingsChanged}
     />
   )
@@ -161,9 +162,10 @@ test('it renders 7 buttons', () => {
       callSignals={callSignalsMock}
       infinitySignals={infinitySignalsMock}
       cameraMuted={true}
+      presenting={false}
       onCameraMuteChanged={handleCameraMuteChanged}
+      onPresentationChanged={handlePresentationChanged}
       onCopyInvitationLink={handleCopyInvitationLink}
-      onLocalPresentationStream={handleLocalPresentationStream}
       onSettingsChanged={handleSettingsChanged}
     />
   )

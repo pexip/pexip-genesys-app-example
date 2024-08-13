@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react'
 import type {
   CallSignals,
   InfinitySignals,
-  InfinityClient,
-  PresoConnectionChangeEvent
+  InfinityClient
+  // PresoConnectionChangeEvent
 } from '@pexip/infinity'
 import { SettingsPanel } from '../settings-panel/SettingsPanel'
 import {
@@ -23,40 +23,42 @@ interface ToolbarProps {
   callSignals: CallSignals
   infinitySignals: InfinitySignals
   cameraMuted: boolean
+  presenting: boolean
   onCameraMuteChanged: (muted: boolean) => Promise<void>
+  onPresentationChanged: () => Promise<void>
   onCopyInvitationLink: () => void
-  onLocalPresentationStream: (stream: MediaStream | undefined) => void
+  // onLocalPresentationStream: (stream: MediaStream | undefined) => void
   onSettingsChanged: (settings: Settings) => Promise<void>
 }
 
 export const Toolbar = (props: ToolbarProps): JSX.Element => {
-  const [shareScreenEnabled, setShareScreenEnabled] = useState(false)
-  const [presentationStream, setPresentationStream] = useState<MediaStream>()
+  // const [shareScreenEnabled, setShareScreenEnabled] = useState(false)
+  // const [presentationStream, setPresentationStream] = useState<MediaStream>()
   const [lockRoomEnabled, setLockRoomEnabled] = useState(false)
   const [popOutVideoEnabled, setPopOutVideoEnabled] = useState(false)
   const [statisticsEnabled, setStatisticsEnabled] = useState(false)
   const [settingsEnabled, setSettingsEnabled] = useState(false)
 
-  const toggleShareScreen = async (): Promise<void> => {
-    if (shareScreenEnabled) {
-      props.infinityClient.stopPresenting()
-      presentationStream?.getTracks().forEach((track) => {
-        track.stop()
-      })
-      props.onLocalPresentationStream(presentationStream)
-    } else {
-      const presentationStream = await navigator.mediaDevices.getDisplayMedia()
-      setPresentationStream(presentationStream)
+  // const toggleShareScreen = async (): Promise<void> => {
+  //   if (shareScreenEnabled) {
+  //     props.infinityClient.stopPresenting()
+  //     presentationStream?.getTracks().forEach((track) => {
+  //       track.stop()
+  //     })
+  //     props.onLocalPresentationStream(presentationStream)
+  //   } else {
+  //     const presentationStream = await navigator.mediaDevices.getDisplayMedia()
+  //     setPresentationStream(presentationStream)
 
-      presentationStream.getVideoTracks()[0].onended = () => {
-        props.infinityClient.stopPresenting()
-        props.onLocalPresentationStream(presentationStream)
-      }
+  //     presentationStream.getVideoTracks()[0].onended = () => {
+  //       props.infinityClient.stopPresenting()
+  //       props.onLocalPresentationStream(presentationStream)
+  //     }
 
-      props.infinityClient.present(presentationStream)
-      props.onLocalPresentationStream(presentationStream)
-    }
-  }
+  //     props.infinityClient.present(presentationStream)
+  //     props.onLocalPresentationStream(presentationStream)
+  //   }
+  // }
 
   const toggleLockRoom = async (): Promise<void> => {
     const response = await props.infinityClient.lock({
@@ -107,15 +109,15 @@ export const Toolbar = (props: ToolbarProps): JSX.Element => {
       })
     }
 
-    props.callSignals.onPresentationConnectionChange.add(
-      (changeEvent: PresoConnectionChangeEvent): void => {
-        if (changeEvent.send === 'connected') {
-          setShareScreenEnabled(true)
-        } else {
-          setShareScreenEnabled(false)
-        }
-      }
-    )
+    // props.callSignals.onPresentationConnectionChange.add(
+    //   (changeEvent: PresoConnectionChangeEvent): void => {
+    //     if (changeEvent.send === 'connected') {
+    //       setShareScreenEnabled(true)
+    //     } else {
+    //       setShareScreenEnabled(false)
+    //     }
+    //   }
+    // )
 
     // Handle lock room context
     const status = props.infinityClient.conferenceStatus.get('main')
@@ -151,19 +153,19 @@ export const Toolbar = (props: ToolbarProps): JSX.Element => {
         </Tooltip>
 
         <Tooltip
-          text={shareScreenEnabled ? 'Stop sharing screen' : 'Share screen'}
+          text={props.presenting ? 'Stop sharing screen' : 'Share screen'}
         >
           <Button
             onClick={() => {
-              toggleShareScreen().catch(console.error)
+              props.onPresentationChanged().catch(console.error)
             }}
             modifier="square"
             variant="translucent"
-            isActive={shareScreenEnabled}
+            isActive={props.presenting}
           >
             <Icon
               source={
-                shareScreenEnabled
+                props.presenting
                   ? IconTypes.IconPresentationOff
                   : IconTypes.IconPresentationOn
               }

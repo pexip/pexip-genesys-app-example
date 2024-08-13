@@ -74,11 +74,7 @@ const infinityMock = {
     muteVideo: jest.fn().mockResolvedValue(null),
     disconnect: infinityMock.mockDisconnect,
     disconnectAll: infinityMock.mockDisconnectAll,
-    getParticipants: jest.fn(() => {
-      console.log('getParticipants')
-      console.log(mockParticipants)
-      return mockParticipants
-    })
+    getParticipants: jest.fn(() => mockParticipants)
   }),
   ClientCallType,
   CallType,
