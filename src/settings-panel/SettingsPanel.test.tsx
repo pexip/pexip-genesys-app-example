@@ -3,7 +3,7 @@ import { screen, render, act, waitFor } from '@testing-library/react'
 import { LocalStorageKey } from '../types/LocalStorageKey'
 import { Effect } from '../types/Effect'
 import { SettingsPanel } from './SettingsPanel'
-// import { StreamQuality } from '@pexip/media-components'
+import { StreamQuality } from '@pexip/media-components'
 import '../__mocks__/mediaDevices'
 
 jest.mock('@pexip/components', () => {
@@ -194,97 +194,97 @@ describe('SettingsPanel component', () => {
     })
   })
 
-  // describe('Connection quality component', () => {
-  //   beforeEach(() => {
-  //     localStorage.clear()
-  //   })
+  describe('Connection quality component', () => {
+    beforeEach(() => {
+      localStorage.clear()
+    })
 
-  //   it('should render', async () => {
-  //     act(() => {
-  //       render(
-  //         <SettingsPanel onClose={handleCloseMock} onSave={handleSaveMock} />
-  //       )
-  //     })
-  //     const settingsPanel = screen.getByTestId('SettingsPanel')
-  //     const qualityList = settingsPanel.getElementsByClassName('QualityList')[0]
-  //     expect(qualityList).toBeDefined()
-  //   })
+    it('should render', async () => {
+      await act(async () => {
+        render(
+          <SettingsPanel onClose={handleCloseMock} onSave={handleSaveMock} />
+        )
+      })
+      const settingsPanel = screen.getByTestId('SettingsPanel')
+      const qualityList = settingsPanel.getElementsByClassName('QualityList')[0]
+      expect(qualityList).toBeDefined()
+    })
 
-  //   it('should have 5 options (one per stream quality)', async () => {
-  //     act(() => {
-  //       render(
-  //         <SettingsPanel onClose={handleCloseMock} onSave={handleSaveMock} />
-  //       )
-  //     })
-  //     const settingsPanel = screen.getByTestId('SettingsPanel')
-  //     const qualityList = settingsPanel.getElementsByClassName('QualityList')[0]
-  //     const options = qualityList.getElementsByTagName('option')
-  //     expect(options.length).toBe(5)
-  //   })
+    it('should have 5 options (one per stream quality)', async () => {
+      await act(async () => {
+        render(
+          <SettingsPanel onClose={handleCloseMock} onSave={handleSaveMock} />
+        )
+      })
+      const settingsPanel = screen.getByTestId('SettingsPanel')
+      const qualityList = settingsPanel.getElementsByClassName('QualityList')[0]
+      const options = qualityList.getElementsByTagName('option')
+      expect(options.length).toBe(5)
+    })
 
-  //   it('should have the value with the stream quality ID', async () => {
-  //     act(() => {
-  //       render(
-  //         <SettingsPanel onClose={handleCloseMock} onSave={handleSaveMock} />
-  //       )
-  //     })
-  //     const settingsPanel = screen.getByTestId('SettingsPanel')
-  //     const qualityList = settingsPanel.getElementsByClassName('QualityList')[0]
-  //     const options = qualityList.getElementsByTagName('option')
-  //     const low = options[0]
-  //     const medium = options[1]
-  //     const high = options[2]
-  //     const veryHigh = options[3]
-  //     const auto = options[4]
-  //     expect(low.value).toBe(StreamQuality.Low)
-  //     expect(medium.value).toBe(StreamQuality.Medium)
-  //     expect(high.value).toBe(StreamQuality.High)
-  //     expect(veryHigh.value).toBe(StreamQuality.VeryHigh)
-  //     expect(auto.value).toBe(StreamQuality.Auto)
-  //   })
+    it('should have the value with the stream quality ID', async () => {
+      await act(async () => {
+        render(
+          <SettingsPanel onClose={handleCloseMock} onSave={handleSaveMock} />
+        )
+      })
+      const settingsPanel = screen.getByTestId('SettingsPanel')
+      const qualityList = settingsPanel.getElementsByClassName('QualityList')[0]
+      const options = qualityList.getElementsByTagName('option')
+      const low = options[0]
+      const medium = options[1]
+      const high = options[2]
+      const veryHigh = options[3]
+      const auto = options[4]
+      expect(low.value).toBe(StreamQuality.Low)
+      expect(medium.value).toBe(StreamQuality.Medium)
+      expect(high.value).toBe(StreamQuality.High)
+      expect(veryHigh.value).toBe(StreamQuality.VeryHigh)
+      expect(auto.value).toBe(StreamQuality.Auto)
+    })
 
-  //   it('should have the text with the stream quality label', async () => {
-  //     act(() => {
-  //       render(
-  //         <SettingsPanel onClose={handleCloseMock} onSave={handleSaveMock} />
-  //       )
-  //     })
-  //     const settingsPanel = screen.getByTestId('SettingsPanel')
-  //     const qualityList = settingsPanel.getElementsByClassName('QualityList')[0]
-  //     const options = qualityList.getElementsByTagName('option')
-  //     const low = options[0]
-  //     const medium = options[1]
-  //     const high = options[2]
-  //     const veryHigh = options[3]
-  //     const auto = options[4]
-  //     expect(low.innerHTML).toBe('Low')
-  //     expect(medium.innerHTML).toBe('Medium')
-  //     expect(high.innerHTML).toBe('High')
-  //     expect(veryHigh.innerHTML).toBe('Very High')
-  //     expect(auto.innerHTML).toBe('Auto')
-  //   })
-  // })
+    it('should have the text with the stream quality label', async () => {
+      await act(async () => {
+        render(
+          <SettingsPanel onClose={handleCloseMock} onSave={handleSaveMock} />
+        )
+      })
+      const settingsPanel = screen.getByTestId('SettingsPanel')
+      const qualityList = settingsPanel.getElementsByClassName('QualityList')[0]
+      const options = qualityList.getElementsByTagName('option')
+      const low = options[0]
+      const medium = options[1]
+      const high = options[2]
+      const veryHigh = options[3]
+      const auto = options[4]
+      expect(low.innerHTML).toBe('Low')
+      expect(medium.innerHTML).toBe('Medium')
+      expect(high.innerHTML).toBe('High')
+      expect(veryHigh.innerHTML).toBe('Very High')
+      expect(auto.innerHTML).toBe('Auto')
+    })
 
-  // it('should select the auto stream quality if empty', async () => {
-  //   act(() => {
-  //     render(
-  //       <SettingsPanel onClose={handleCloseMock} onSave={handleSaveMock} />
-  //     )
-  //   })
-  //   const settingsPanel = screen.getByTestId('SettingsPanel')
-  //   const qualityList = settingsPanel.getElementsByClassName('QualityList')[0]
-  //   expect((qualityList as HTMLSelectElement).selectedIndex).toBe(4)
-  // })
+    it('should select the auto stream quality if empty', async () => {
+      await act(async () => {
+        render(
+          <SettingsPanel onClose={handleCloseMock} onSave={handleSaveMock} />
+        )
+      })
+      const settingsPanel = screen.getByTestId('SettingsPanel')
+      const qualityList = settingsPanel.getElementsByClassName('QualityList')[0]
+      expect((qualityList as HTMLSelectElement).selectedIndex).toBe(4)
+    })
 
-  // it('should select the stream quality of the localStorage if any', async () => {
-  //   // setStreamQuality(StreamQuality.Medium)
-  //   act(() => {
-  //     render(
-  //       <SettingsPanel onClose={handleCloseMock} onSave={handleSaveMock} />
-  //     )
-  //   })
-  //   const settingsPanel = screen.getByTestId('SettingsPanel')
-  //   const qualityList = settingsPanel.getElementsByClassName('QualityList')[0]
-  //   expect((qualityList as HTMLSelectElement).selectedIndex).toBe(1)
-  // })
+    it('should select the stream quality of the localStorage if any', async () => {
+      localStorage.setItem(LocalStorageKey.StreamQuality, StreamQuality.Medium)
+      await act(async () => {
+        render(
+          <SettingsPanel onClose={handleCloseMock} onSave={handleSaveMock} />
+        )
+      })
+      const settingsPanel = screen.getByTestId('SettingsPanel')
+      const qualityList = settingsPanel.getElementsByClassName('QualityList')[0]
+      expect((qualityList as HTMLSelectElement).selectedIndex).toBe(1)
+    })
+  })
 })
