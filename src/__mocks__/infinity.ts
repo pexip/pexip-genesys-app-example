@@ -18,23 +18,28 @@ let participantLeftCallback: () => void
 const infinityMock = {
   createCallSignals: () => ({
     onRemoteStream: {
-      add: jest.fn()
+      add: jest.fn(),
+      remove: jest.fn()
     },
     onRemotePresentationStream: {
-      add: jest.fn()
+      add: jest.fn(),
+      remove: jest.fn()
     },
     onPresentationConnectionChange: {
-      add: jest.fn()
+      add: jest.fn(),
+      remove: jest.fn()
     }
   }),
   createInfinityClientSignals: () => ({
     onParticipantJoined: {
-      add: jest.fn()
+      add: jest.fn(),
+      remove: jest.fn()
     },
     onParticipantLeft: {
       add: (callback: () => void) => {
         participantLeftCallback = callback
-      }
+      },
+      remove: jest.fn()
     }
   }),
   createInfinityClient: () => ({

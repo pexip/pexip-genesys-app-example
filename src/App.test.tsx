@@ -1,7 +1,6 @@
 import './__mocks__/test-params'
 
 import { act, render, screen } from '@testing-library/react'
-// import * as GenesysService from './genesys/genesysService'
 
 import { App } from './App'
 import { ErrorId } from './constants/ErrorId'

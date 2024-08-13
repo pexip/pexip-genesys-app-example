@@ -457,57 +457,57 @@ export const App = (): JSX.Element => {
     return processedStream
   }
 
+  const initialize = async (): Promise<void> => {
+    try {
+      await checkCameraAccess()
+    } catch (error) {
+      return
+    }
+    const queryParams = new URLSearchParams(window.location.search)
+
+    const pcEnvironment = queryParams.get('pcEnvironment') ?? ''
+    const pcConversationId = queryParams.get('pcConversationId') ?? ''
+
+    pexipNode = queryParams.get('pexipNode') ?? ''
+    pexipAgentPin = queryParams.get('pexipAgentPin') ?? ''
+    pexipAppPrefix = queryParams.get('pexipAppPrefix') ?? ''
+
+    if (
+      pcEnvironment !== '' &&
+      pcConversationId !== '' &&
+      pexipNode !== '' &&
+      pexipAgentPin !== '' &&
+      pexipAppPrefix !== ''
+    ) {
+      await GenesysService.loginPureCloud(
+        pcEnvironment,
+        pcConversationId,
+        pexipNode,
+        pexipAgentPin,
+        pexipAppPrefix
+      )
+    } else {
+      // Logged into Genesys
+      setConnectionState(ConnectionState.Connecting)
+
+      const parsedUrl = new URL(window.location.href.replace(/#/g, '?'))
+      const queryParams = new URLSearchParams(parsedUrl.search)
+
+      const accessToken: string = queryParams.get('access_token') ?? ''
+      const state: GenesysState = JSON.parse(
+        decodeURIComponent(queryParams.get('state') ?? '{}')
+      )
+
+      await initializeGenesys(state, accessToken)
+      await initConference().catch(console.error)
+    }
+  }
+
   useEffect(() => {
     infinitySignals = createInfinityClientSignals([])
     callSignals = createCallSignals([])
 
-    const bootstrap = async (): Promise<void> => {
-      try {
-        await checkCameraAccess()
-      } catch (error) {
-        return
-      }
-      const queryParams = new URLSearchParams(window.location.search)
-
-      const pcEnvironment = queryParams.get('pcEnvironment') ?? ''
-      const pcConversationId = queryParams.get('pcConversationId') ?? ''
-
-      pexipNode = queryParams.get('pexipNode') ?? ''
-      pexipAgentPin = queryParams.get('pexipAgentPin') ?? ''
-      pexipAppPrefix = queryParams.get('pexipAppPrefix') ?? ''
-
-      if (
-        pcEnvironment !== '' &&
-        pcConversationId !== '' &&
-        pexipNode !== '' &&
-        pexipAgentPin !== '' &&
-        pexipAppPrefix !== ''
-      ) {
-        await GenesysService.loginPureCloud(
-          pcEnvironment,
-          pcConversationId,
-          pexipNode,
-          pexipAgentPin,
-          pexipAppPrefix
-        )
-      } else {
-        // Logged into Genesys
-        setConnectionState(ConnectionState.Connecting)
-
-        const parsedUrl = new URL(window.location.href.replace(/#/g, '?'))
-        const queryParams = new URLSearchParams(parsedUrl.search)
-
-        const accessToken: string = queryParams.get('access_token') ?? ''
-        const state: GenesysState = JSON.parse(
-          decodeURIComponent(queryParams.get('state') ?? '{}')
-        )
-
-        await initializeGenesys(state, accessToken)
-        await initConference().catch(console.error)
-      }
-    }
-
-    bootstrap().catch(console.error)
+    initialize().catch(console.error)
 
     const handleDisconnect = (): void => {
       infinityClient?.disconnect({}).catch(console.error)
@@ -547,7 +547,7 @@ export const App = (): JSX.Element => {
           onClick={() => {
             setErrorId('')
             setConnectionState(ConnectionState.Connecting)
-            // this.componentDidMount().catch((error) => console.error(error))
+            initialize().catch(console.error)
           }}
         ></ErrorPanel>
       )}
@@ -604,7 +604,6 @@ export const App = (): JSX.Element => {
             onCameraMuteChanged={handleCameraMuteChanged}
             onPresentationChanged={handlePresentationChanged}
             onCopyInvitationLink={handleCopyInvitationLink}
-            // onLocalPresentationStream={handleLocalPresentationStream}
             onSettingsChanged={handleSettingsChanged}
           />
         </>
