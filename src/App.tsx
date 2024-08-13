@@ -91,49 +91,6 @@ export const App = (): JSX.Element => {
     }
   }
 
-  const configureSignals = (): void => {
-    infinitySignals = createInfinityClientSignals([])
-    callSignals = createCallSignals([])
-
-    callSignals.onRemoteStream.add((remoteStream) => {
-      setRemoteStream(remoteStream)
-    })
-
-    callSignals.onRemotePresentationStream.add((presentationStream) => {
-      setPresentationStream(presentationStream)
-      setSecondaryVideo('remote')
-    })
-
-    // Disconnect the playback service when connected
-    const checkPlaybackDisconnection = async (event: any): Promise<void> => {
-      if (
-        event.id === 'main' &&
-        event.participant.uri.match(/^sip:.*\.playback@/) != null
-      ) {
-        await infinityClient.kick({ participantUuid: event.participant.uuid })
-        infinitySignals.onParticipantJoined.remove(checkPlaybackDisconnection)
-      }
-    }
-    infinitySignals.onParticipantJoined.add(checkPlaybackDisconnection)
-
-    /**
-     * Check if the agent should be disconnected. This should happen after the last
-     * customer participant leaves. We check if the callType is api, because the
-     * agent is connected first as api and later it changes to video.
-     */
-    const checkIfDisconnect = async (): Promise<void> => {
-      const participants = infinityClient.getParticipants('main')
-      const videoParticipants = participants.filter((participant) => {
-        return (
-          participant.callType === CallType.video ||
-          participant.callType === CallType.api
-        )
-      })
-      if (videoParticipants.length === 1) await onEndCall(true)
-    }
-    infinitySignals.onParticipantLeft.add(checkIfDisconnect)
-  }
-
   const joinConference = async (
     node: string,
     conferenceAlias: string,
@@ -141,7 +98,6 @@ export const App = (): JSX.Element => {
     displayName: string,
     pin: string
   ): Promise<void> => {
-    configureSignals()
     infinityClient = createInfinityClient(infinitySignals, callSignals)
     const bandwidth = convertToBandwidth(streamQuality)
     const response = await infinityClient.call({
@@ -315,6 +271,48 @@ export const App = (): JSX.Element => {
     })
   }
 
+  const handleRemoteStream = (remoteStream: MediaStream): void => {
+    setRemoteStream(remoteStream)
+  }
+
+  const handleRemotePresentationStream = (
+    presentationStream: MediaStream
+  ): void => {
+    setPresentationStream(presentationStream)
+    setSecondaryVideo('remote')
+  }
+
+  /**
+   * Disconnect the playback service when connected.
+   */
+  const checkPlaybackDisconnection = async (event: any): Promise<void> => {
+    if (
+      event.id === 'main' &&
+      event.participant.uri.match(/^sip:.*\.playback@/) != null
+    ) {
+      await infinityClient.kick({ participantUuid: event.participant.uuid })
+      infinitySignals.onParticipantJoined.remove(checkPlaybackDisconnection)
+    }
+  }
+
+  /**
+   * Check if the agent should be disconnected. This should happen after the last
+   * customer participant leaves. We check if the callType is api, because the
+   * agent is connected first as api and later it changes to video.
+   */
+  const checkIfDisconnect = async (): Promise<void> => {
+    const participants = infinityClient.getParticipants('main')
+    const videoParticipants = participants.filter((participant) => {
+      return (
+        participant.callType === CallType.video ||
+        participant.callType === CallType.api
+      )
+    })
+    if (videoParticipants.length === 1) {
+      await onEndCall(true)
+    }
+  }
+
   const handleCameraMuteChanged = async (mute: boolean): Promise<void> => {
     const response = await infinityClient.muteVideo({ muteVideo: mute })
     if (response?.status === 200) {
@@ -460,6 +458,9 @@ export const App = (): JSX.Element => {
   }
 
   useEffect(() => {
+    infinitySignals = createInfinityClientSignals([])
+    callSignals = createCallSignals([])
+
     const bootstrap = async (): Promise<void> => {
       try {
         await checkCameraAccess()
@@ -523,7 +524,20 @@ export const App = (): JSX.Element => {
     GenesysService.addHoldListener(async (mute) => {
       await onHoldVideo(mute)
     })
-  }, [presenting, presentationStream])
+
+    callSignals.onRemoteStream.add(handleRemoteStream)
+    callSignals.onRemotePresentationStream.add(handleRemotePresentationStream)
+    infinitySignals.onParticipantJoined.add(checkPlaybackDisconnection)
+    infinitySignals.onParticipantLeft.add(checkIfDisconnect)
+    return () => {
+      callSignals.onRemoteStream.remove(handleRemoteStream)
+      callSignals.onRemotePresentationStream.remove(
+        handleRemotePresentationStream
+      )
+      infinitySignals.onParticipantJoined.remove(checkPlaybackDisconnection)
+      infinitySignals.onParticipantLeft.remove(checkIfDisconnect)
+    }
+  }, [presenting, presentationStream, localStream])
 
   return (
     <div className="App" data-testid="App" ref={appRef}>
