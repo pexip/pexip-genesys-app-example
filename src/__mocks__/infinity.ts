@@ -1,6 +1,12 @@
 import './test-params'
 
 enum ClientCallType {
+  Audio = 'audio',
+  Video = 'video',
+  None = 'none'
+}
+
+enum CallType {
   audio = 'audio',
   video = 'video',
   api = 'api'
@@ -68,9 +74,14 @@ const infinityMock = {
     muteVideo: jest.fn().mockResolvedValue(null),
     disconnect: infinityMock.mockDisconnect,
     disconnectAll: infinityMock.mockDisconnectAll,
-    participants: mockParticipants
+    getParticipants: jest.fn(() => {
+      console.log('getParticipants')
+      console.log(mockParticipants)
+      return mockParticipants
+    })
   }),
   ClientCallType,
+  CallType,
   setMockParticipants: (participants: any[]) => {
     mockParticipants = participants
   },

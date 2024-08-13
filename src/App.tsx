@@ -8,7 +8,8 @@ import {
   type InfinitySignals,
   type CallSignals,
   type PresoConnectionChangeEvent,
-  ClientCallType
+  ClientCallType,
+  CallType
 } from '@pexip/infinity'
 import {
   CenterLayout,
@@ -112,35 +113,33 @@ export const App = (): JSX.Element => {
       }
     )
     // Disconnect the playback service when connected
-    // const checkPlaybackDisconnection = async (
-    //   participant: Participant
-    // ): Promise<void> => {
-    //   if (participant.uri.match(/^sip:.*\.playback@/) != null) {
-    //     await this.infinityClient.kick({ participantUuid: participant.uuid })
-    //     // this.infinitySignals.onParticipantJoined.remove(
-    //     //   checkPlaybackDisconnection
-    //     // )
-    //   }
-    // }
-    // this.infinitySignals.onParticipantJoined.add(checkPlaybackDisconnection)
+    const checkPlaybackDisconnection = async (event: any): Promise<void> => {
+      if (
+        event.id === 'main' &&
+        event.participant.uri.match(/^sip:.*\.playback@/) != null
+      ) {
+        await infinityClient.kick({ participantUuid: event.participant.uuid })
+        infinitySignals.onParticipantJoined.remove(checkPlaybackDisconnection)
+      }
+    }
+    infinitySignals.onParticipantJoined.add(checkPlaybackDisconnection)
 
     /**
      * Check if the agent should be disconnected. This should happen after the last
      * customer participant leaves. We check if the callType is api, because the
      * agent is connected first as api and later it changes to video.
      */
-    // const checkIfDisconnect = async (): Promise<void> => {
-    //   // const videoParticipants = this.infinityClient.participants.filter(
-    //   //   (participant) => {
-    //   //     return (
-    //   //       participant.callType === CallType.video ||
-    //   //       participant.callType === CallType.api
-    //   //     )
-    //   //   }
-    //   // )
-    //   // if (videoParticipants.length === 1) await this.onEndCall(true)
-    // }
-    // this.infinitySignals.onParticipantLeft.add(checkIfDisconnect)
+    const checkIfDisconnect = async (): Promise<void> => {
+      const participants = infinityClient.getParticipants('main')
+      const videoParticipants = participants.filter((participant) => {
+        return (
+          participant.callType === CallType.video ||
+          participant.callType === CallType.api
+        )
+      })
+      if (videoParticipants.length === 1) await onEndCall(true)
+    }
+    infinitySignals.onParticipantLeft.add(checkIfDisconnect)
   }
 
   const joinConference = async (
@@ -242,15 +241,15 @@ export const App = (): JSX.Element => {
 
   // Set the video to mute for all participants
   const onHoldVideo = async (onHold: boolean): Promise<void> => {
-    // const participantList = this.infinityClient.participants
-    // Mute current user video and set mute audio indicator even if no audio layer is used by web rtc
+    const participants = infinityClient.getParticipants('main')
+    // Mute current user video and set mute audio indicator even if no audio layer is used by WebRTC
     await handleCameraMuteChanged(onHold)
     // Mute other participants video
-    // participantList.forEach((participant) => {
-    //   infinityClient
-    //     .muteVideo({ muteVideo: onHold, participantUuid: participant.uuid })
-    //     .catch(console.error)
-    // })
+    participants.forEach((participant) => {
+      infinityClient
+        .muteVideo({ muteVideo: onHold, participantUuid: participant.uuid })
+        .catch(console.error)
+    })
     // if (onHold) {
     //   await this.toolbarRef?.current?.stopScreenShare()
     // }

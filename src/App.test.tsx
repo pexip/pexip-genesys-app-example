@@ -6,14 +6,14 @@ import { act, render, screen } from '@testing-library/react'
 import { App } from './App'
 import { ErrorId } from './constants/ErrorId'
 
-// // eslint-disable-next-line no-var
-// var setMockParticipants: (participants: any[]) => void
-// // eslint-disable-next-line no-var
-// var mockDisconnect: jest.Mock
-// // eslint-disable-next-line no-var
-// var mockDisconnectAll: jest.Mock
-// // eslint-disable-next-line no-var
-// var triggerParticipantLeft: () => void
+// eslint-disable-next-line no-var
+var setMockParticipants: (participants: any[]) => void
+// eslint-disable-next-line no-var
+var mockDisconnect: jest.Mock
+// eslint-disable-next-line no-var
+var mockDisconnectAll: jest.Mock
+// eslint-disable-next-line no-var
+var triggerParticipantLeft: () => void
 
 // Create a mocks
 require('./__mocks__/mediaDevices')
@@ -36,10 +36,10 @@ jest.mock(
   '@pexip/infinity',
   () => {
     const mockInfinity = { ...require('./__mocks__/infinity') }
-    // setMockParticipants = mockInfinity.setMockParticipants
-    // mockDisconnect = mockInfinity.mockDisconnect
-    // mockDisconnectAll = mockInfinity.mockDisconnectAll
-    // triggerParticipantLeft = mockInfinity.triggerParticipantLeft
+    setMockParticipants = mockInfinity.setMockParticipants
+    mockDisconnect = mockInfinity.mockDisconnect
+    mockDisconnectAll = mockInfinity.mockDisconnectAll
+    triggerParticipantLeft = mockInfinity.triggerParticipantLeft
     return mockInfinity
   },
   { virtual: true }
@@ -82,33 +82,33 @@ Object.defineProperty(window, 'location', {
   }
 })
 
-// const participantSipTrunk = {
-//   uuid: '1',
-//   callType: 'audio',
-//   role: 'chair',
-//   displayName: 'sipTrunk'
-// }
+const participantSipTrunk = {
+  uuid: '1',
+  callType: 'audio',
+  role: 'chair',
+  displayName: 'sipTrunk'
+}
 
-// const participantCustomer = {
-//   uuid: '2',
-//   callType: 'video',
-//   role: 'guest',
-//   displayName: 'customer'
-// }
+const participantCustomer = {
+  uuid: '2',
+  callType: 'video',
+  role: 'guest',
+  displayName: 'customer'
+}
 
-// const participantAgentApi = {
-//   uuid: '3',
-//   callType: 'api',
-//   role: 'chair',
-//   displayName: 'agent'
-// }
+const participantAgentApi = {
+  uuid: '3',
+  callType: 'api',
+  role: 'chair',
+  displayName: 'agent'
+}
 
-// const participantAgentVideo = {
-//   uuid: '4',
-//   callType: 'video',
-//   role: 'chair',
-//   displayName: 'agent'
-// }
+const participantAgentVideo = {
+  uuid: '4',
+  callType: 'video',
+  role: 'chair',
+  displayName: 'agent'
+}
 
 describe('App component', () => {
   beforeEach(() => {
@@ -192,61 +192,61 @@ describe('App component', () => {
     })
   })
 
-  // describe('Agent disconnect behavior', () => {
-  //   beforeEach(() => {
-  //     setMockParticipants([])
-  //   })
-  //
-  //   it("should stay when participants >= 1 with callType == api or video (agent.callType == 'api')", async () => {
-  //     setMockParticipants([
-  //       participantSipTrunk,
-  //       participantCustomer,
-  //       participantAgentApi
-  //     ])
-  //     await act(async () => {
-  //       render(<App />)
-  //     })
-  //     triggerParticipantLeft()
-  //     expect(mockDisconnect).not.toHaveBeenCalled()
-  //     expect(mockDisconnectAll).not.toHaveBeenCalled()
-  //   })
-  //
-  //   it("should stay when participants >= 1 with callType == api or video (agent.callType == 'video')", async () => {
-  //     setMockParticipants([
-  //       participantSipTrunk,
-  //       participantCustomer,
-  //       participantAgentVideo
-  //     ])
-  //     await act(async () => {
-  //       render(<App />)
-  //     })
-  //     triggerParticipantLeft()
-  //     expect(mockDisconnect).not.toHaveBeenCalled()
-  //     expect(mockDisconnectAll).not.toHaveBeenCalled()
-  //   })
-  //
-  //   it("should leave when callType == api and it's only one with callType == api or video", async () => {
-  //     setMockParticipants([participantSipTrunk, participantAgentApi])
-  //     await act(async () => {
-  //       render(<App />)
-  //     })
-  //     triggerParticipantLeft()
-  //     const noActiveCallPanel = await screen.findAllByTestId('no-active-call')
-  //     expect(noActiveCallPanel.length).toBe(1)
-  //     expect(mockDisconnect).toHaveBeenCalledTimes(1)
-  //     expect(mockDisconnectAll).toHaveBeenCalledTimes(1)
-  //   })
-  //
-  //   it("should leave when callType == video and it's only one with callType == api or video", async () => {
-  //     setMockParticipants([participantSipTrunk, participantAgentVideo])
-  //     await act(async () => {
-  //       render(<App />)
-  //     })
-  //     triggerParticipantLeft()
-  //     const noActiveCallPanel = await screen.findAllByTestId('no-active-call')
-  //     expect(noActiveCallPanel.length).toBe(1)
-  //     expect(mockDisconnect).toHaveBeenCalledTimes(1)
-  //     expect(mockDisconnectAll).toHaveBeenCalledTimes(1)
-  //   })
-  // })
+  describe('Agent disconnect behavior', () => {
+    beforeEach(() => {
+      setMockParticipants([])
+    })
+
+    it("should stay when participants >= 1 with callType == api or video (agent.callType == 'api')", async () => {
+      setMockParticipants([
+        participantSipTrunk,
+        participantCustomer,
+        participantAgentApi
+      ])
+      await act(async () => {
+        render(<App />)
+      })
+      triggerParticipantLeft()
+      expect(mockDisconnect).not.toHaveBeenCalled()
+      expect(mockDisconnectAll).not.toHaveBeenCalled()
+    })
+
+    it("should stay when participants >= 1 with callType == api or video (agent.callType == 'video')", async () => {
+      setMockParticipants([
+        participantSipTrunk,
+        participantCustomer,
+        participantAgentVideo
+      ])
+      await act(async () => {
+        render(<App />)
+      })
+      triggerParticipantLeft()
+      expect(mockDisconnect).not.toHaveBeenCalled()
+      expect(mockDisconnectAll).not.toHaveBeenCalled()
+    })
+
+    it("should leave when callType == api and it's only one with callType == api or video", async () => {
+      setMockParticipants([participantSipTrunk, participantAgentApi])
+      await act(async () => {
+        render(<App />)
+      })
+      triggerParticipantLeft()
+      const noActiveCallPanel = await screen.findAllByTestId('no-active-call')
+      expect(noActiveCallPanel.length).toBe(1)
+      expect(mockDisconnect).toHaveBeenCalledTimes(1)
+      expect(mockDisconnectAll).toHaveBeenCalledTimes(1)
+    })
+
+    it("should leave when callType == video and it's only one with callType == api or video", async () => {
+      setMockParticipants([participantSipTrunk, participantAgentVideo])
+      await act(async () => {
+        render(<App />)
+      })
+      triggerParticipantLeft()
+      const noActiveCallPanel = await screen.findAllByTestId('no-active-call')
+      expect(noActiveCallPanel.length).toBe(1)
+      expect(mockDisconnect).toHaveBeenCalledTimes(1)
+      expect(mockDisconnectAll).toHaveBeenCalledTimes(1)
+    })
+  })
 })
