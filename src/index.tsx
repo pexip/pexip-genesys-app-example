@@ -1,24 +1,15 @@
-import React from 'react'
 import ReactDOM from 'react-dom/client'
+import { App } from './App'
+
 import './index.scss'
-import App from './App'
-import reportWebVitals from './reportWebVitals'
 
 // Import styles for the pexip components
 import '@pexip/components/src/fonts.css'
 import '@pexip/components/dist/style.css'
 import '@pexip/media-components/dist/style.css'
 
-import './i18n'
+// Import styles for the toast notifications
+// import 'react-toastify/dist/ReactToastify.css'
 
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
-)
-root.render(
-    <App />
-)
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-void reportWebVitals()
+const root = ReactDOM.createRoot(document.getElementById('root') as Element)
+root.render(<App />)

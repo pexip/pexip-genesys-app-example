@@ -1,5 +1,11 @@
 import './test-params'
 
+enum ClientCallType {
+  Audio = 'audio',
+  Video = 'video',
+  None = 'none'
+}
+
 enum CallType {
   audio = 'audio',
   video = 'video',
@@ -12,21 +18,28 @@ let participantLeftCallback: () => void
 const infinityMock = {
   createCallSignals: () => ({
     onRemoteStream: {
-      add: jest.fn()
+      add: jest.fn(),
+      remove: jest.fn()
     },
     onRemotePresentationStream: {
-      add: jest.fn()
+      add: jest.fn(),
+      remove: jest.fn()
     },
     onPresentationConnectionChange: {
-      add: jest.fn()
+      add: jest.fn(),
+      remove: jest.fn()
     }
   }),
   createInfinityClientSignals: () => ({
     onParticipantJoined: {
-      add: jest.fn()
+      add: jest.fn(),
+      remove: jest.fn()
     },
     onParticipantLeft: {
-      add: (callback: () => void) => { participantLeftCallback = callback }
+      add: (callback: () => void) => {
+        participantLeftCallback = callback
+      },
+      remove: jest.fn()
     }
   }),
   createInfinityClient: () => ({
@@ -66,13 +79,18 @@ const infinityMock = {
     muteVideo: jest.fn().mockResolvedValue(null),
     disconnect: infinityMock.mockDisconnect,
     disconnectAll: infinityMock.mockDisconnectAll,
-    participants: mockParticipants
+    getParticipants: jest.fn(() => mockParticipants)
   }),
+  ClientCallType,
   CallType,
-  setMockParticipants: (participants: any[]) => { mockParticipants = participants },
+  setMockParticipants: (participants: any[]) => {
+    mockParticipants = participants
+  },
   mockDisconnect: jest.fn(),
   mockDisconnectAll: jest.fn(),
-  triggerParticipantLeft: () => participantLeftCallback()
+  triggerParticipantLeft: () => {
+    participantLeftCallback()
+  }
 }
 
 module.exports = infinityMock

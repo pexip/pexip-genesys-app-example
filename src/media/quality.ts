@@ -46,21 +46,21 @@ const convertToBandwidth = (streamQuality: StreamQuality): number => {
  * Save the stream quality in the local storage.
  * @param {StreamQuality} streamQuality The stream quality in one of the 5 values.
  */
-const setStreamQuality = (streamQuality: StreamQuality): void => {
-  localStorage.setItem('pexipStreamQuality', streamQuality)
-}
+// const setStreamQuality = (streamQuality: StreamQuality): void => {
+//   localStorage.setItem('pexipStreamQuality', streamQuality)
+// }
 
-/**
- * Retrieve the current stream quality from the local storage.
- * @returns {StreamQuality} The stream quality in one of the 5 values.
- */
-const getStreamQuality = (): StreamQuality => {
-  return localStorage.getItem('pexipStreamQuality') as StreamQuality ?? 'auto'
-}
+// /**
+//  * Retrieve the current stream quality from the local storage.
+//  * @returns {StreamQuality} The stream quality in one of the 5 values.
+//  */
+// const getStreamQuality = (): StreamQuality => {
+//   return localStorage.getItem('pexipStreamQuality') as StreamQuality ?? 'auto'
+// }
 
 export {
   convertToStreamQuality,
-  convertToBandwidth,
-  setStreamQuality,
-  getStreamQuality
+  convertToBandwidth
+  // setStreamQuality,
+  // getStreamQuality
 }

@@ -10,39 +10,50 @@ const mockGenesys = {
   },
   ConversationsApi: function () {
     return {
-      getConversation: jest.fn(async (conversationId: string): Promise<object | undefined> => {
-        if (conversationId === 'fake-conversation-id') {
-          const conversation = {
-            participants: [
-              {
-                purpose: 'customer',
-                aniName: '1234',
-                calls: [{
-                  self: {
-                    addressRaw: '123123132@fake-node'
-                  }
-                }]
-              },
-              {
-                purpose: 'agent',
-                calls: [{
-                  state: (window as any).testParams.genesysInactive === true ? 'disconnected' : 'connected',
-                  held: (window as any).testParams.genesysHeld ?? false,
-                  muted: (window as any).testParams.genesysMuted ?? false
-                }]
-              }
-            ]
+      getConversation: jest.fn(
+        async (conversationId: string): Promise<object | undefined> => {
+          if (conversationId === 'fake-conversation-id') {
+            const conversation = {
+              participants: [
+                {
+                  purpose: 'customer',
+                  aniName: '1234',
+                  calls: [
+                    {
+                      self: {
+                        addressRaw: '123123132@fake-node'
+                      }
+                    }
+                  ]
+                },
+                {
+                  purpose: 'agent',
+                  calls: [
+                    {
+                      state:
+                        (window as any).testParams.genesysInactive === true
+                          ? 'disconnected'
+                          : 'connected',
+                      held: (window as any).testParams.genesysHeld ?? false,
+                      muted: (window as any).testParams.genesysMuted ?? false
+                    }
+                  ]
+                }
+              ]
+            }
+            return conversation
+          } else {
+            throw Error('Conversation id not found')
           }
-          return conversation
-        } else {
-          throw Error('Conversation id not found')
         }
-      })
+      )
     }
   },
   NotificationsApi: function () {
     return {
-      postNotificationsChannels: async (): Promise<void> => await Promise.resolve()
+      postNotificationsChannels: async (): Promise<void> => {
+        await Promise.resolve()
+      }
     }
   },
   UsersApi: function () {

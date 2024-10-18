@@ -10,9 +10,21 @@
   div[class*="_deviceListWrapper_"]>div:nth-child(2) {
     display: none;
   }
+
+  h5 {
+    font-size: 1em;
+    margin-top: 1em;
+    margin-bottom: 1em;
+  }
   
   .effect-list {
     display: flex;
     gap: 0.5em
+  }
+}
+
+@media (max-height: 600px) {
+  .SettingsPanel {
+    width: 256px !important;
   }
 }
