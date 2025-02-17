@@ -25,38 +25,14 @@ interface ToolbarProps {
   onCameraMuteChanged: (muted: boolean) => Promise<void>
   onPresentationChanged: () => Promise<void>
   onCopyInvitationLink: () => void
-  // onLocalPresentationStream: (stream: MediaStream | undefined) => void
   onSettingsChanged: (settings: Settings) => Promise<void>
 }
 
 export const Toolbar = (props: ToolbarProps): JSX.Element => {
-  // const [shareScreenEnabled, setShareScreenEnabled] = useState(false)
-  // const [presentationStream, setPresentationStream] = useState<MediaStream>()
   const [lockRoomEnabled, setLockRoomEnabled] = useState(false)
   const [popOutVideoEnabled, setPopOutVideoEnabled] = useState(false)
   const [statisticsEnabled, setStatisticsEnabled] = useState(false)
   const [settingsEnabled, setSettingsEnabled] = useState(false)
-
-  // const toggleShareScreen = async (): Promise<void> => {
-  //   if (shareScreenEnabled) {
-  //     props.infinityClient.stopPresenting()
-  //     presentationStream?.getTracks().forEach((track) => {
-  //       track.stop()
-  //     })
-  //     props.onLocalPresentationStream(presentationStream)
-  //   } else {
-  //     const presentationStream = await navigator.mediaDevices.getDisplayMedia()
-  //     setPresentationStream(presentationStream)
-
-  //     presentationStream.getVideoTracks()[0].onended = () => {
-  //       props.infinityClient.stopPresenting()
-  //       props.onLocalPresentationStream(presentationStream)
-  //     }
-
-  //     props.infinityClient.present(presentationStream)
-  //     props.onLocalPresentationStream(presentationStream)
-  //   }
-  // }
 
   const toggleLockRoom = async (): Promise<void> => {
     const response = await props.infinityClient.lock({
@@ -107,16 +83,6 @@ export const Toolbar = (props: ToolbarProps): JSX.Element => {
       })
     }
 
-    // props.callSignals.onPresentationConnectionChange.add(
-    //   (changeEvent: PresoConnectionChangeEvent): void => {
-    //     if (changeEvent.send === 'connected') {
-    //       setShareScreenEnabled(true)
-    //     } else {
-    //       setShareScreenEnabled(false)
-    //     }
-    //   }
-    // )
-
     // Handle lock room context
     const status = props.infinityClient.conferenceStatus.get('main')
     setLockRoomEnabled(status?.locked ?? false)
@@ -127,8 +93,6 @@ export const Toolbar = (props: ToolbarProps): JSX.Element => {
       }
     })
   }, [])
-
-  // hsla(0,0%,7%,.651)
 
   return (
     <>

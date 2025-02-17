@@ -8,7 +8,8 @@ import {
   type InfinitySignals,
   type CallSignals,
   ClientCallType,
-  CallType
+  CallType,
+  type PresoConnectionChangeEvent
 } from '@pexip/infinity'
 import {
   CenterLayout,
@@ -345,20 +346,46 @@ export const App = (): JSX.Element => {
         track.stop()
       })
       setPresentationStream(undefined)
+      setSecondaryVideo('presentation')
     } else {
-      const presentationStream = await navigator.mediaDevices.getDisplayMedia()
-      setPresentationStream(presentationStream)
+      try {
+        const presentationStream =
+          await navigator.mediaDevices.getDisplayMedia()
+        setPresentationStream(presentationStream)
 
-      presentationStream.getVideoTracks()[0].onended = () => {
-        infinityClient.stopPresenting()
-        presentationStream?.getTracks().forEach((track) => {
-          track.stop()
-        })
-        setPresentationStream(undefined)
+        presentationStream.getVideoTracks()[0].onended = () => {
+          infinityClient.stopPresenting()
+          presentationStream?.getTracks().forEach((track) => {
+            track.stop()
+          })
+          setPresentationStream(undefined)
+          setPresenting(false)
+          setSecondaryVideo('presentation')
+        }
+
+        infinityClient.present(presentationStream)
+        setSecondaryVideo('presentation')
+      } catch (error) {
+        console.error(error)
         setPresenting(false)
       }
+    }
+  }
 
-      infinityClient.present(presentationStream)
+  /**
+   * Callback function that is used to detect when the presentation connection changes.
+   * @param event The event that is emitted when the presentation connection changes.
+   */
+  const handlePresentationConnectionChange = (
+    event: PresoConnectionChangeEvent
+  ): void => {
+    // We only care about the remote presentation stream being disconnected
+    if (
+      !(event.send === 'connecting' || event.send === 'connected') &&
+      event.recv === 'disconnected'
+    ) {
+      setPresenting(false)
+      setPresentationStream(undefined)
       setSecondaryVideo('presentation')
     }
   }
@@ -527,6 +554,9 @@ export const App = (): JSX.Element => {
 
     callSignals.onRemoteStream.add(handleRemoteStream)
     callSignals.onRemotePresentationStream.add(handleRemotePresentationStream)
+    callSignals.onPresentationConnectionChange.add(
+      handlePresentationConnectionChange
+    )
     infinitySignals.onParticipantJoined.add(checkPlaybackDisconnection)
     infinitySignals.onParticipantLeft.add(checkIfDisconnect)
     return () => {
