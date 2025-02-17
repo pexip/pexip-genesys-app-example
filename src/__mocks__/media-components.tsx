@@ -1,14 +1,9 @@
 const mediaComponentsMock = {
   DeviceSelect: (props: any) => {
-    const {
-      isDisabled,
-      mediaDeviceInfoLike,
-      onDeviceChange,
-      iconType,
-      ...newProps
-    } = props
+    const { isDisabled, selected, onDeviceChange, iconType, ...newProps } =
+      props
     return (
-      <select {...newProps} value={mediaDeviceInfoLike?.deviceId}>
+      <select {...newProps} value={selected?.deviceId}>
         {props.devices.map((device: any) => (
           <option key={device.deviceId} value={device.deviceId}>
             {device.label}
@@ -18,7 +13,7 @@ const mediaComponentsMock = {
     )
   },
   SelfViewSettings: (props: any) => {
-    const { mediaStream, ...newProps } = props
+    const { srcObject, ...newProps } = props
     return <div {...newProps} className="selfview" />
   },
   StreamQuality: {

@@ -14,7 +14,8 @@ jest.mock('../settings-panel/SettingsPanel', () => {
 jest.mock('@pexip/components', () => {
   return {
     Button: (props: any) => {
-      return <button {...props} />
+      const { isActive, ...newProps } = props
+      return <button {...newProps} />
     },
     Icon: (props: any) => {
       return <div {...props} />
