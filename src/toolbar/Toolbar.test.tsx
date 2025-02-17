@@ -11,6 +11,43 @@ jest.mock('../settings-panel/SettingsPanel', () => {
   }
 })
 
+jest.mock('@pexip/components', () => {
+  return {
+    Button: (props: any) => {
+      return <button {...props} />
+    },
+    Icon: (props: any) => {
+      return <div {...props} />
+    },
+    notificationToastSignal: {
+      add: jest.fn()
+    },
+    Tooltip: (props: any) => {
+      return <div {...props} />
+    },
+    IconTypes: {
+      IconVideoOff: 'IconVideoOff',
+      IconVideoOn: 'IconVideoOn',
+      IconPresentationOff: 'IconPresentationOff',
+      IconPresentationOn: 'IconPresentationOn',
+      IconLock: 'IconLock',
+      IconUnlock: 'IconUnlock',
+      IconOpenInNew: 'IconOpenInNew',
+      IconLink: 'IconLink',
+      IconInfoRound: 'IconInfoRound',
+      IconSettings: 'IconSettings'
+    }
+  }
+})
+
+jest.mock('@pexip/media-components', () => {
+  return {
+    Stats: () => {
+      return <div />
+    }
+  }
+})
+
 jest.mock('@pexip/hooks', () => {
   return require('../__mocks__/hooks')
 })
@@ -129,7 +166,8 @@ const infinitySignalsMock: InfinitySignals = {
   onBreakoutBegin: signalMock,
   onBreakoutRefer: signalMock,
   onFecc: signalMock,
-  onCallDisconnected: signalMock
+  onCallDisconnected: signalMock,
+  onCancelTransfer: signalMock
 }
 
 const handleCameraMuteChanged = jest.fn()

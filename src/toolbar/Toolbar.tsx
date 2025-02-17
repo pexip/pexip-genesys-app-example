@@ -3,7 +3,6 @@ import type {
   CallSignals,
   InfinitySignals,
   InfinityClient
-  // PresoConnectionChangeEvent
 } from '@pexip/infinity'
 import { SettingsPanel } from '../settings-panel/SettingsPanel'
 import {
@@ -14,9 +13,8 @@ import {
   Tooltip
 } from '@pexip/components'
 import { type Settings } from '../types/Settings'
-
-import './Toolbar.scss'
 import { Stats } from '@pexip/media-components'
+import './Toolbar.scss'
 
 interface ToolbarProps {
   infinityClient: InfinityClient
@@ -130,6 +128,8 @@ export const Toolbar = (props: ToolbarProps): JSX.Element => {
     })
   }, [])
 
+  // hsla(0,0%,7%,.651)
+
   return (
     <>
       <div className="Toolbar" data-testid="Toolbar">
@@ -139,7 +139,7 @@ export const Toolbar = (props: ToolbarProps): JSX.Element => {
               props.onCameraMuteChanged(!props.cameraMuted).catch(console.error)
             }}
             modifier="square"
-            variant="translucent"
+            variant="neutral"
             isActive={props.cameraMuted}
           >
             <Icon
@@ -160,7 +160,7 @@ export const Toolbar = (props: ToolbarProps): JSX.Element => {
               props.onPresentationChanged().catch(console.error)
             }}
             modifier="square"
-            variant="translucent"
+            variant="neutral"
             isActive={props.presenting}
           >
             <Icon
@@ -179,7 +179,7 @@ export const Toolbar = (props: ToolbarProps): JSX.Element => {
               toggleLockRoom().catch(console.error)
             }}
             modifier="square"
-            variant="translucent"
+            variant="neutral"
             isActive={lockRoomEnabled}
           >
             <Icon
@@ -196,7 +196,7 @@ export const Toolbar = (props: ToolbarProps): JSX.Element => {
               togglePopOutVideo().catch(console.error)
             }}
             modifier="square"
-            variant="translucent"
+            variant="neutral"
             isActive={popOutVideoEnabled}
           >
             <Icon source={IconTypes.IconOpenInNew} />
@@ -207,7 +207,7 @@ export const Toolbar = (props: ToolbarProps): JSX.Element => {
           <Button
             onClick={props.onCopyInvitationLink}
             modifier="square"
-            variant="translucent"
+            variant="neutral"
           >
             <Icon source={IconTypes.IconLink} />
           </Button>
@@ -217,7 +217,7 @@ export const Toolbar = (props: ToolbarProps): JSX.Element => {
           <Button
             onClick={toggleStatistics}
             modifier="square"
-            variant="translucent"
+            variant="neutral"
             isActive={statisticsEnabled}
           >
             <Icon source={IconTypes.IconInfoRound} />
@@ -228,7 +228,7 @@ export const Toolbar = (props: ToolbarProps): JSX.Element => {
           <Button
             onClick={toggleSettings}
             modifier="square"
-            variant="translucent"
+            variant="neutral"
             isActive={settingsEnabled}
           >
             <Icon source={IconTypes.IconSettings} />

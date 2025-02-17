@@ -47,7 +47,6 @@ export const SelfView = React.memo((props: SelfViewProps): JSX.Element => {
         }}
         // Unused parameters
         quality={callQuality}
-        callQualityPosition={'bottomRight'}
         isAudioInputMuted={true}
         isVideoInputMuted={props.localStream == null}
         onToggleAudioClick={() => {}}
@@ -66,6 +65,7 @@ export const SelfView = React.memo((props: SelfViewProps): JSX.Element => {
         openEffectsModal={() => {}}
         draggableAriaLabel={''}
         isMirrored={true}
+        isAudioInputMissing={false}
       />
     </div>
   )
