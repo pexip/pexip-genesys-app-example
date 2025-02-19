@@ -58,6 +58,14 @@ See the section about
 [deployment](https://facebook.github.io/create-react-app/docs/deployment) for
 more information.
 
+### `npm run deploy`
+
+After running `npm run build`, you can deploy the app to the GitHub Pages. This
+command will push the build folder to the `gh-pages` branch.
+
+After that, a GitHub action will deploy the app to the GitHub Pages. You can
+access the app in the following URL: https://pexip.github.io/pexip-genesys-app-example/
+
 ## Validate the setup process
 
 We have a setup process (aka wizard) that is located in the folder
