@@ -4,7 +4,10 @@ import {
   SelfViewSettings,
   StreamQuality
 } from '@pexip/media-components'
-import { type MediaDeviceInfoLike } from '@pexip/media-control'
+import {
+  createIndexedDevices,
+  type MediaDeviceInfoLike
+} from '@pexip/media-control'
 import {
   Bar,
   Button,
@@ -41,12 +44,11 @@ export const SettingsPanel = (props: SettingsPanelProps): JSX.Element => {
     StreamQuality.Auto
   )
 
-  const handleChangeDevice = async (
-    device: MediaDeviceInfoLike
-  ): Promise<void> => {
+  const handleChangeDevice = async (deviceId: string): Promise<void> => {
+    const device = devices.find((device) => device.deviceId === deviceId)
     setDevice(device)
     const localStream = await navigator.mediaDevices.getUserMedia({
-      video: { deviceId: device.deviceId }
+      video: { deviceId }
     })
     setLocalStream(localStream)
     handleChangeEffect(effect, localStream).catch(console.error)
@@ -131,20 +133,21 @@ export const SettingsPanel = (props: SettingsPanelProps): JSX.Element => {
       className="SettingsPanel"
       data-testid="SettingsPanel"
     >
-      <SelfViewSettings mediaStream={processedStream} data-testid="selfview" />
+      <SelfViewSettings srcObject={processedStream} data-testid="selfview" />
 
       <TextHeading htmlTag={'h5'}>Devices</TextHeading>
 
       <DeviceSelect
         data-testid="device-select"
-        devices={devices}
+        devices={createIndexedDevices(devices)}
         isDisabled={false}
         label={''}
-        onDeviceChange={(device) => {
-          handleChangeDevice(device).catch(console.error)
+        onDeviceChange={(deviceId) => {
+          handleChangeDevice(deviceId).catch(console.error)
         }}
-        mediaDeviceInfoLike={device}
         iconType={IconTypes.IconVideoOn}
+        kind={'videoinput'}
+        selected={device}
       />
 
       <TextHeading htmlTag={'h5'}>Effects</TextHeading>

@@ -22,6 +22,15 @@ jest.mock(
   { virtual: true }
 )
 
+jest.mock(
+  '@pexip/media-control',
+  () => ({
+    Stats: () => <div />,
+    createIndexedDevices: (devices: any) => devices
+  }),
+  { virtual: true }
+)
+
 const handleCloseMock = jest.fn()
 const handleSaveMock = jest.fn()
 

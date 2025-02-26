@@ -3,7 +3,6 @@ import type {
   CallSignals,
   InfinitySignals,
   InfinityClient
-  // PresoConnectionChangeEvent
 } from '@pexip/infinity'
 import { SettingsPanel } from '../settings-panel/SettingsPanel'
 import {
@@ -14,9 +13,8 @@ import {
   Tooltip
 } from '@pexip/components'
 import { type Settings } from '../types/Settings'
-
-import './Toolbar.scss'
 import { Stats } from '@pexip/media-components'
+import './Toolbar.scss'
 
 interface ToolbarProps {
   infinityClient: InfinityClient
@@ -27,38 +25,14 @@ interface ToolbarProps {
   onCameraMuteChanged: (muted: boolean) => Promise<void>
   onPresentationChanged: () => Promise<void>
   onCopyInvitationLink: () => void
-  // onLocalPresentationStream: (stream: MediaStream | undefined) => void
   onSettingsChanged: (settings: Settings) => Promise<void>
 }
 
 export const Toolbar = (props: ToolbarProps): JSX.Element => {
-  // const [shareScreenEnabled, setShareScreenEnabled] = useState(false)
-  // const [presentationStream, setPresentationStream] = useState<MediaStream>()
   const [lockRoomEnabled, setLockRoomEnabled] = useState(false)
   const [popOutVideoEnabled, setPopOutVideoEnabled] = useState(false)
   const [statisticsEnabled, setStatisticsEnabled] = useState(false)
   const [settingsEnabled, setSettingsEnabled] = useState(false)
-
-  // const toggleShareScreen = async (): Promise<void> => {
-  //   if (shareScreenEnabled) {
-  //     props.infinityClient.stopPresenting()
-  //     presentationStream?.getTracks().forEach((track) => {
-  //       track.stop()
-  //     })
-  //     props.onLocalPresentationStream(presentationStream)
-  //   } else {
-  //     const presentationStream = await navigator.mediaDevices.getDisplayMedia()
-  //     setPresentationStream(presentationStream)
-
-  //     presentationStream.getVideoTracks()[0].onended = () => {
-  //       props.infinityClient.stopPresenting()
-  //       props.onLocalPresentationStream(presentationStream)
-  //     }
-
-  //     props.infinityClient.present(presentationStream)
-  //     props.onLocalPresentationStream(presentationStream)
-  //   }
-  // }
 
   const toggleLockRoom = async (): Promise<void> => {
     const response = await props.infinityClient.lock({
@@ -109,16 +83,6 @@ export const Toolbar = (props: ToolbarProps): JSX.Element => {
       })
     }
 
-    // props.callSignals.onPresentationConnectionChange.add(
-    //   (changeEvent: PresoConnectionChangeEvent): void => {
-    //     if (changeEvent.send === 'connected') {
-    //       setShareScreenEnabled(true)
-    //     } else {
-    //       setShareScreenEnabled(false)
-    //     }
-    //   }
-    // )
-
     // Handle lock room context
     const status = props.infinityClient.conferenceStatus.get('main')
     setLockRoomEnabled(status?.locked ?? false)
@@ -139,7 +103,7 @@ export const Toolbar = (props: ToolbarProps): JSX.Element => {
               props.onCameraMuteChanged(!props.cameraMuted).catch(console.error)
             }}
             modifier="square"
-            variant="translucent"
+            variant="neutral"
             isActive={props.cameraMuted}
           >
             <Icon
@@ -160,7 +124,7 @@ export const Toolbar = (props: ToolbarProps): JSX.Element => {
               props.onPresentationChanged().catch(console.error)
             }}
             modifier="square"
-            variant="translucent"
+            variant="neutral"
             isActive={props.presenting}
           >
             <Icon
@@ -179,7 +143,7 @@ export const Toolbar = (props: ToolbarProps): JSX.Element => {
               toggleLockRoom().catch(console.error)
             }}
             modifier="square"
-            variant="translucent"
+            variant="neutral"
             isActive={lockRoomEnabled}
           >
             <Icon
@@ -196,7 +160,7 @@ export const Toolbar = (props: ToolbarProps): JSX.Element => {
               togglePopOutVideo().catch(console.error)
             }}
             modifier="square"
-            variant="translucent"
+            variant="neutral"
             isActive={popOutVideoEnabled}
           >
             <Icon source={IconTypes.IconOpenInNew} />
@@ -207,7 +171,7 @@ export const Toolbar = (props: ToolbarProps): JSX.Element => {
           <Button
             onClick={props.onCopyInvitationLink}
             modifier="square"
-            variant="translucent"
+            variant="neutral"
           >
             <Icon source={IconTypes.IconLink} />
           </Button>
@@ -217,7 +181,7 @@ export const Toolbar = (props: ToolbarProps): JSX.Element => {
           <Button
             onClick={toggleStatistics}
             modifier="square"
-            variant="translucent"
+            variant="neutral"
             isActive={statisticsEnabled}
           >
             <Icon source={IconTypes.IconInfoRound} />
@@ -228,7 +192,7 @@ export const Toolbar = (props: ToolbarProps): JSX.Element => {
           <Button
             onClick={toggleSettings}
             modifier="square"
-            variant="translucent"
+            variant="neutral"
             isActive={settingsEnabled}
           >
             <Icon source={IconTypes.IconSettings} />
