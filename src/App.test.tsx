@@ -75,7 +75,14 @@ jest.mock('./selfview/SelfView', () => {
   }
 })
 
-Object.defineProperty(window, 'location', {
+const propertyDescriptors = Object.getOwnPropertyDescriptors(window)
+
+for (const key in propertyDescriptors) {
+  propertyDescriptors[key].configurable = true
+}
+
+const clonedWindow = Object.defineProperties({}, propertyDescriptors)
+Object.defineProperty(clonedWindow, 'location', {
   value: {
     href: 'https://myurl/#access_token=secret&state=%7B%22pcEnvironment%22%3A%22usw2.pure.cloud%22%2C%22pcConversationId%22%3A%2262698915-ae56-4efc-b5d7-71d6ad487fae%22%2C%22pexipNode%22%3A%22pexipdemo.com%22%2C%22pexipAgentPin%22%3A%222021%22%7D'
   }

@@ -73,7 +73,7 @@ describe('SettingsPanel component', () => {
     const effect = screen.getByTestId('Effect')
     const button = effect.getElementsByClassName('button')[0] as HTMLElement
     button.click()
-    expect(handleClick).toBeCalledTimes(1)
+    expect(handleClick).toHaveBeenCalledTimes(1)
   })
 
   it('should remove the class "active" in the "Box" element when "active" is false', () => {

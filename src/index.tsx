@@ -5,8 +5,8 @@ import './index.scss'
 
 // Import styles for the pexip components
 import '@pexip/components/src/fonts.css'
-import '@pexip/components/dist/style.css'
-import '@pexip/media-components/dist/style.css'
+import '@pexip/components/dist/components.css'
+import '@pexip/media-components/dist/media-components.css'
 
 // Import styles for the toast notifications
 // import 'react-toastify/dist/ReactToastify.css'

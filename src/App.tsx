@@ -108,7 +108,7 @@ export const App = (): JSX.Element => {
       displayName,
       bandwidth,
       pin,
-      callType: ClientCallType.Video
+      callType: ClientCallType.VideoPresentation
     })
     if (response != null) {
       switch (response.status) {
@@ -531,7 +531,10 @@ export const App = (): JSX.Element => {
   }
 
   useEffect(() => {
-    infinitySignals = createInfinityClientSignals([])
+    infinitySignals = createInfinityClientSignals([], {
+      batchScheduleTimeoutMS: 500,
+      batchBufferSize: 10
+    })
     callSignals = createCallSignals([])
 
     initialize().catch(console.error)

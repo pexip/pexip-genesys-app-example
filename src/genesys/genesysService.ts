@@ -134,7 +134,7 @@ export const hasBillingPermission = (): boolean => {
   const foundPermission = userMe.authorization?.permissions?.find(
     (permission: string) => permission === billablePermission
   )
-  return foundPermission !== undefined ?? false
+  return foundPermission !== undefined
 }
 
 /**

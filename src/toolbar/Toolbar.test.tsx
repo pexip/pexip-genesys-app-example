@@ -53,10 +53,6 @@ jest.mock('@pexip/hooks', () => {
   return require('../__mocks__/hooks')
 })
 
-jest.mock('@pexip/utils', () => {
-  return require('../__mocks__/utils')
-})
-
 jest.mock('@pexip/signal', () => {
   return require('../__mocks__/signal')
 })
@@ -168,7 +164,10 @@ const infinitySignalsMock: InfinitySignals = {
   onBreakoutRefer: signalMock,
   onFecc: signalMock,
   onCallDisconnected: signalMock,
-  onCancelTransfer: signalMock
+  onCancelTransfer: signalMock,
+  onTokenRefreshed: signalMock,
+  onCallConnected: signalMock,
+  onParticipantUpdated: signalMock
 }
 
 const handleCameraMuteChanged = jest.fn()
