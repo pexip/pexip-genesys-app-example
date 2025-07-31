@@ -49,7 +49,6 @@ const integrationsApi = new platformClient.IntegrationsApi();
 
 // Global data
 let userMe = null; // Genesys Cloud user object
-let integrationId = ''; // Integration instance ID
 let installedData = {}; // Everything that's installed after
 
 /**
@@ -60,12 +59,17 @@ let installedData = {}; // Everything that's installed after
  */
 async function getIntegrationId() {
     try {
-        const clientApps = await integrationsApi.getIntegrationsClientapps({ pageSize: 1000 });
+        console.log('Getting integration ID...');
+        const clientApps = await integrationsApi.getIntegrations({ pageSize: 1000 });
+        console.log('Client Apps:');
+        console.log(clientApps);
         let instances = clientApps.entities;
+        console.log(instances);
         let pa_instance = instances.find(instance => instance.integrationType.id == config.premiumAppIntegrationTypeId);
-
+        console.log(pa_instance);
         return pa_instance ? pa_instance.id : null;
     } catch (e) {
+        console.error('Error getting integration ID');
         throw e;
     }
 }
@@ -136,6 +140,7 @@ export default {
      * @returns {Promise<boolean>}
      */
     async isExisting() {
+        getIntegrationId();
         let exists = false;
 
         try {
