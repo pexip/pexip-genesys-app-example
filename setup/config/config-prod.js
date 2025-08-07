@@ -1,11 +1,11 @@
 export default {
   // Production
   clientID: '2cb43533-5471-4e1d-a2eb-bc8d82aacf34',
-  wizardUriBase: 'https://genesys.pexip.io/setup/index.html',
+  wizardUriBase: 'https://pexip.github.io/pexip-genesys-app-example/setup/index.html',
 
   // The actual URL of the landing page of your web app or your web site (when wizard has been run).
   // previously - defined as premiumAppURL
-  redirectURLOnWizardCompleted: '/landing-page/index.html',
+  redirectURLOnWizardCompleted: '/pexip-genesys-app-example/landing-page/index.html',
   // redirectURLOnWizardCompleted: 'https://mypurecloud.github.io/purecloud-premium-app/premium-app-sample/index.html',
   redirectURLWithParams: false,
 
@@ -80,7 +80,7 @@ export default {
   provisioningInfo: {
     'interaction-widget': [{
       name: 'Pexip Video Connect',
-      url: 'https://genesys.pexip.io/?pcEnvironment={{pcEnvironment}}&pcConversationId={{pcConversationId}}&pcLangTag={{pcLangTag}}',
+      url: 'https://pexip.github.io/pexip-genesys-app-example/?pcEnvironment={{pcEnvironment}}&pcConversationId={{pcConversationId}}&pcLangTag={{pcLangTag}}',
       sandbox: 'allow-scripts,allow-same-origin,allow-forms,allow-modals',
       permissions: 'camera,display-capture',
       groups: [],
@@ -96,7 +96,7 @@ export default {
           }
         },
         monochromicIcon: {
-          vector: 'https://genesys.pexip.io/integration-icons/camera.svg'
+          vector: 'https://pexip.github.io/pexip-genesys-app-example/integration-icons/camera.svg'
         }
       }
     }]
