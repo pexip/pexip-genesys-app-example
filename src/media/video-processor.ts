@@ -9,24 +9,26 @@ import {
 } from '@pexip/media-processor'
 import { type Effect } from '../types/Effect'
 
+const basePath = '/pexip-genesys-app-example'
+
 export const getVideoProcessor = async (
   effect: Effect
 ): Promise<VideoProcessor> => {
   // Setting the path to that `@mediapipe/tasks-vision` assets
   // It will be passed direct to
   // [FilesetResolver.forVisionTasks()](https://ai.google.dev/edge/api/mediapipe/js/tasks-vision.filesetresolver#filesetresolverforvisiontasks)
-  const tasksVisionBasePath = '/wasm'
+  const tasksVisionBasePath = `${basePath}/wasm`
 
   const segmenter = createSegmenter(tasksVisionBasePath, {
     modelAsset: {
-      path: '/models/selfie_segmenter.tflite',
+      path: `${basePath}/models/selfie_segmenter.tflite`,
       modelName: 'selfie'
     }
   })
 
   const transformer = createCanvasTransform(segmenter, {
     effects: effect,
-    backgroundImageUrl: '/media-processor/background.jpg'
+    backgroundImageUrl: `${basePath}/media-processor/background.jpg`
   })
 
   const getTrackProcessor = (): ProcessVideoTrack => {
