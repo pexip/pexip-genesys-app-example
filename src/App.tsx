@@ -147,6 +147,12 @@ export const App = (): JSX.Element => {
    * The method relies on GenesysService to get the conference alias and the agents display name
    */
   const initConference = async (): Promise<void> => {
+    // Avoid to join a conference if no pexipNode is set or the conference alias is not defined
+    // This can happen if the user is not logged in to Genesys or the GenesysService is not initialized correctly
+    if (pexipNode === '' || conferenceAlias == null) {
+      return
+    }
+
     const prefixedConfAlias = pexipAppPrefix + conferenceAlias
     let localStream: MediaStream
     let processedStream: MediaStream
@@ -266,7 +272,7 @@ export const App = (): JSX.Element => {
       }
     })
 
-    // Add connect call listener
+    // Add mute call listener
     GenesysService.addMuteListener(async (mute) => {
       await onMuteCall(mute)
     })
