@@ -52,7 +52,7 @@ async function authenticateGenesysCloud(appParams) {
   client.setPersistSettings(true, premiumAppIntegrationTypeId);
   const authData = await client.loginImplicitGrant(
     config.clientID,
-    `${config.wizardUriBase}index.html`,
+    config.wizardUriBase,
     { state: JSON.stringify(appParams) }
   );
   state = JSON.parse(authData.state);
@@ -153,7 +153,7 @@ async function switchPage(targetPage) {
       await new Promise((resolve, reject) => {
         setTimeout(() => {
           let currentLanguage = getSelectedLanguage();
-          window.location.href = `${config.wizardUriBase}index.html?${config.genesysCloudEnvironmentQueryParam}=${pcEnvironment}&${config.languageQueryParam}=${currentLanguage}`;
+          window.location.href = `${config.wizardUriBase}?${config.genesysCloudEnvironmentQueryParam}=${pcEnvironment}&${config.languageQueryParam}=${currentLanguage}`;
           resolve();
         }, 2000);
       });
