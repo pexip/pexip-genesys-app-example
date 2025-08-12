@@ -250,6 +250,11 @@ const callsCallback = (callEvent: CallEvent): void => {
       participant.state !== GenesysConnectionsState.Terminated
   )
 
+  if (agentParticipant == null || customerParticipant == null) {
+    console.warn('No agent or customer participant found in call event')
+    return
+  }
+
   // Disconnect event
   if (agentParticipant?.state === GenesysConnectionsState.Disconnected) {
     if (agentParticipant?.disconnectType === GenesysDisconnectType.CLIENT) {
