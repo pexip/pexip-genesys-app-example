@@ -16,7 +16,7 @@ const customerMock = {
   purpose: 'customer',
   held: false,
   muted: false,
-  state: 'terminated',
+  state: 'connected',
   disconnectType: undefined,
   user: {
     id: 'f02618ce-1ae8-4429-bdb0-2d55f701a546'
@@ -283,6 +283,7 @@ describe('Genesys service', () => {
         accessToken
       )
       const mockHold = jest.fn()
+      GenesysService.addConnectCallListener(jest.fn())
       GenesysService.addMuteListener(jest.fn())
       GenesysService.addHoldListener(mockHold)
       callEvent.eventBody.participants[0].held = true
@@ -346,6 +347,7 @@ describe('Genesys service', () => {
         accessToken
       )
       const mockMute = jest.fn()
+      GenesysService.addConnectCallListener(jest.fn())
       GenesysService.addMuteListener(mockMute)
       callEvent.eventBody.participants[0].muted = true
       triggerEvent(callEvent)

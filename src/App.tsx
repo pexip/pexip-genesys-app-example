@@ -220,7 +220,7 @@ export const App = (): JSX.Element => {
     if (shouldDisconnectAll) {
       await infinityClient.disconnectAll({})
     }
-    await infinityClient?.disconnect({})
+    await infinityClient.disconnect({})
     setConnectionState(ConnectionState.Disconnected)
   }
 
@@ -254,15 +254,14 @@ export const App = (): JSX.Element => {
       ? aniName
       : uuidv4()
 
+    // Add mute call listener
+    GenesysService.addMuteListener(onMuteCall)
+
     // Add on hold listener
-    GenesysService.addHoldListener(async (mute) => {
-      await onHoldVideo(mute)
-    })
+    GenesysService.addHoldListener(onHoldVideo)
 
     // Add end call listener
-    GenesysService.addEndCallListener(async (shouldDisconnectAll: boolean) => {
-      await onEndCall(shouldDisconnectAll)
-    })
+    GenesysService.addEndCallListener(onEndCall)
 
     // Add connect call listener
     GenesysService.addConnectCallListener(async () => {
@@ -270,11 +269,6 @@ export const App = (): JSX.Element => {
         setConnectionState(ConnectionState.Connecting)
         await initConference()
       }
-    })
-
-    // Add mute call listener
-    GenesysService.addMuteListener(async (mute) => {
-      await onMuteCall(mute)
     })
   }
 
@@ -557,9 +551,8 @@ export const App = (): JSX.Element => {
   }, [])
 
   useEffect(() => {
-    GenesysService.addHoldListener(async (mute) => {
-      await onHoldVideo(mute)
-    })
+    GenesysService.addHoldListener(onHoldVideo)
+    GenesysService.addEndCallListener(onEndCall)
 
     callSignals.onRemoteStream.add(handleRemoteStream)
     callSignals.onRemotePresentationStream.add(handleRemotePresentationStream)
