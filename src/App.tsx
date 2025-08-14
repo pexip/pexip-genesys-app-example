@@ -159,7 +159,7 @@ export const App = (): JSX.Element => {
     try {
       const device = await getInitialDevice()
       localStream = await navigator.mediaDevices.getUserMedia({
-        video: { deviceId: device?.deviceId }
+        video: { deviceId: { exact: device?.deviceId } }
       })
       processedStream = await getProcessedStream(localStream, effect)
       setDevice(device)
@@ -325,9 +325,7 @@ export const App = (): JSX.Element => {
         setProcessedStream(undefined)
       } else {
         const localStream = await navigator.mediaDevices.getUserMedia({
-          video: {
-            deviceId: device?.deviceId
-          }
+          video: { deviceId: { exact: device?.deviceId } }
         })
         const processedStream = await getProcessedStream(localStream, effect)
         setLocalStream(localStream)
@@ -417,7 +415,7 @@ export const App = (): JSX.Element => {
         track.stop()
       })
       newLocalStream = await navigator.mediaDevices.getUserMedia({
-        video: { deviceId: settings.device?.deviceId }
+        video: { deviceId: { exact: settings.device?.deviceId } }
       })
       setLocalStream(newLocalStream)
     }
@@ -451,7 +449,14 @@ export const App = (): JSX.Element => {
   }
 
   const getInitialDevice = async (): Promise<MediaDeviceInfoLike> => {
+    const localStream = await navigator.mediaDevices.getUserMedia({
+      video: true
+    })
     const devices = await navigator.mediaDevices.enumerateDevices()
+    localStream.getTracks().forEach((track) => {
+      track.stop()
+    })
+
     const videoDevices = devices.filter(
       (device) => device.kind === 'videoinput'
     )

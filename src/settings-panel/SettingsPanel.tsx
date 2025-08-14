@@ -48,7 +48,7 @@ export const SettingsPanel = (props: SettingsPanelProps): JSX.Element => {
     const device = devices.find((device) => device.deviceId === deviceId)
     setDevice(device)
     const localStream = await navigator.mediaDevices.getUserMedia({
-      video: { deviceId }
+      video: { deviceId: { exact: deviceId } }
     })
     setLocalStream(localStream)
     handleChangeEffect(effect, localStream).catch(console.error)
@@ -98,7 +98,7 @@ export const SettingsPanel = (props: SettingsPanelProps): JSX.Element => {
       if (device != null) {
         setDevice(device)
         const localStream = await navigator.mediaDevices.getUserMedia({
-          video: { deviceId: device.deviceId }
+          video: { deviceId: { exact: device.deviceId } }
         })
         handleChangeEffect(effect, localStream).catch(console.error)
         setLocalStream(localStream)
@@ -142,7 +142,8 @@ export const SettingsPanel = (props: SettingsPanelProps): JSX.Element => {
         devices={createIndexedDevices(devices)}
         isDisabled={false}
         label={''}
-        onDeviceChange={(deviceId) => {
+        onDeviceChange={(id) => {
+          const [deviceId] = id.split(':')
           handleChangeDevice(deviceId).catch(console.error)
         }}
         iconType={IconTypes.IconVideoOn}
