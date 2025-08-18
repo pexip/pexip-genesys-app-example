@@ -390,12 +390,15 @@ export const App = (): JSX.Element => {
 
   const handleCopyInvitationLink = (): void => {
     const invitationLink = `https://${pexipNode}/webapp/m/${pexipAppPrefix}${conferenceAlias}/step-by-step?role=guest`
-    const link = document.createElement('input')
-    link.value = invitationLink
-    document.body.appendChild(link)
-    link.select()
+    const textarea = document.createElement('textarea')
+    textarea.value = invitationLink
+    textarea.setAttribute('readonly', '')
+    textarea.style.position = 'absolute'
+    textarea.style.left = '-9999px'
+    document.body.appendChild(textarea)
+    textarea.select()
     document.execCommand('copy')
-    link.remove()
+    textarea.remove()
     notificationToastSignal.emit([
       {
         message: 'Invitation link copied to clipboard!'
