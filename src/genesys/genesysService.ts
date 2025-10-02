@@ -8,7 +8,6 @@ import { GenesysRole } from '../constants/GenesysRole'
 import { GenesysConnectionsState } from '../constants/GenesysConnectionState'
 import { createChannel, addSubscription } from './notificationsController.ts'
 import { GenesysDisconnectType } from '../constants/GenesysDisconnectType'
-import config from '../config.ts'
 
 export interface CallEvent {
   version: string
@@ -25,11 +24,9 @@ export interface CallEvent {
 
 const redirectUri = window.location.href.split('?')[0]
 
-let clientId: string
-if (process.env.NODE_ENV === 'development') {
-  clientId = config.genesys.devOauthClientID
-} else {
-  clientId = config.genesys.prodOauthClientID
+const clientId: string = import.meta.env.VITE_GENESYS_OAUTH_CLIENT_ID
+if (clientId === undefined) {
+  throw new Error('VITE_GENESYS_OAUTH_CLIENT_ID is not defined')
 }
 
 const client = platformClient.ApiClient.instance

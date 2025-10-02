@@ -21,6 +21,18 @@ keeping the audio "in-band" to enable the following:
   already native to Genesys as a huge benefit to video-first experiences such as
   Telehealth, Virtual Financial Services, Retail Support and many more.
 
+## Configuration
+
+The application requires some configuration to work properly. You have to create
+a `.env` file in the root of the project with the following content:
+
+    VITE_GENESYS_OAUTH_CLIENT_ID='your_client_id'
+
+Where:
+
+- `VITE_GENESYS_OAUTH_CLIENT_ID`: is the OAuth Client ID created in Genesys
+  Cloud.
+
 ## Available Scripts
 
 In the project directory, you can run the following commands:
@@ -64,7 +76,8 @@ After running `npm run build`, you can deploy the app to the GitHub Pages. This
 command will push the build folder to the `gh-pages` branch.
 
 After that, a GitHub action will deploy the app to the GitHub Pages. You can
-access the app in the following URL: https://pexip.github.io/pexip-genesys-app-example/
+access the app in the following URL:
+https://pexip.github.io/pexip-genesys-app-example/
 
 ## Validate the setup process
 
