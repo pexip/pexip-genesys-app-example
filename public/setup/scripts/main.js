@@ -501,7 +501,7 @@ async function onInstallationSummaryEnter() {
 
   // Create an array that contains HTML string per object category 
   const summaryElems = dataKeys.map((category, i) => {
-    let childElemsString = '';
+    const childElems = document.createElement('div');
 
     const installedObjects = installedData[category];
     const installedObjectsKeys = Object.keys(installedObjects);
@@ -511,54 +511,86 @@ async function onInstallationSummaryEnter() {
       const resourcePath = getResourcePath(pcEnvironment, category, obj.id)
 
       if (resourcePath) {
-        childElemsString += `
-          <p><a class="provisioned-link" href="${resourcePath}" target="_blank">${objKey}</a></p>
-        `;
+        const provisionedLinkParagraph = document.createElement('p');
+        const provisionedLink = document.createElement('a');
+        provisionedLink.className = 'provisioned-link';
+        provisionedLink.href = resourcePath;
+        provisionedLink.target = '_blank';
+        provisionedLink.innerText = objKey;
+        childElems.appendChild(provisionedLinkParagraph);
+        provisionedLinkParagraph.appendChild(provisionedLink);
       } else {
-        childElemsString += `
-          <p>${config.prefix}${objKey}</p>
-        `;
+        const objKeyElem = document.createElement('p');
+        objKeyElem.innerHTML = config.prefix + objKey;
+        childElems.appendChild(objKeyElem);
       }
       // Special treatment for OAuth Client and Widget Deployment
-      if (category === 'oauth-client') {
-        childElemsString += `
-          <span><b>Grant Type: </b>${obj.authorizedGrantType}</span>
-          <br/>
-          <span><b>Client ID: </b>${obj.id}</span>
-          <br/>
-          <span><b>Client Secret: </b>${obj.secret}</span>
-          <br/><br/>
-        `;
-      }
-      if (category === 'widget-deployment') {
-        childElemsString += `
-        <span><b>Deployment Key: </b>${obj.id}</span>
-        <br/>
-        <span><b>Org ID: </b>${userMe.organization.id}</span>
-        <br/><br/>
-      `;
-      }
-      if (category === 'open-messaging') {
-        childElemsString += `
-        <span><b>Integration ID: </b>${obj.id}</span>
-        <br/><br/>
-      `;
+      let params;
+      let keyEl;
+      switch (category) {
+        case 'oauth-client':
+          param = document.createElement('p');
+          keyEl = document.createElement('b');
+          keyEl.innerText = 'Grant Type: ';
+          param.appendChild(keyEl);
+          param.innerHTML += obj.authorizedGrantType;
+          childElems.appendChild(param);
+
+          param = document.createElement('p');
+          keyEl = document.createElement('b');
+          keyEl.innerText = 'Client ID: ';
+          param.appendChild(keyEl);
+          param.innerHTML += obj.id;
+          childElems.appendChild(param);
+
+          param = document.createElement('p');
+          keyEl = document.createElement('b');
+          keyEl.innerText = 'Client Secret: ';
+          param.appendChild(keyEl);
+          param.innerHTML += obj.secret;
+          childElems.appendChild(param);
+          break;
+        case 'widget-deployment':
+          let param = document.createElement('p');
+          let keyEl = document.createElement('b');
+          keyEl.innerText = 'Deployment Key: ';
+          param.appendChild(keyEl);
+          param.innerHTML += obj.id;
+          childElems.appendChild(param);
+
+          param = document.createElement('p');
+          keyEl = document.createElement('b');
+          keyEl.innerText = 'Org ID: ';
+          param.appendChild(keyEl);
+          param.innerHTML += userMe.organization.id;
+          childElems.appendChild(param);
+          break;
+        case 'open-messaging':
+          param = document.createElement('p');
+          keyEl = document.createElement('b');
+          keyEl.innerText = 'Integration ID: ';
+          param.appendChild(keyEl);
+          param.innerHTML += obj.id;
+          childElems.appendChild(param);
+          break;
       }
     });
 
-    const template = `
-      <div id="installation-summary-${dataKeys[i]}" class="install-summary-category">
-        <h3>${beautifyModuleKey(category)}</h3>
-        ${childElemsString}
-      </div>
-    `
+    const header = document.createElement('h3');
+    header.innerText = beautifyModuleKey(category);
+
+    const template = document.createElement('div');
+    template.id = `installation-summary-${dataKeys[i]}`;
+    template.className = 'install-summary-category';
+    template.appendChild(header);
+    template.appendChild(childElems)
 
     return template;
   });
 
   // Add the elements
   summaryElems.forEach(summary => {
-    summaryContainer.innerHTML += summary;
+    summaryContainer.appendChild(summary);
   })
 
   // Add the raw installation data to the textarea
