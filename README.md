@@ -26,7 +26,7 @@ keeping the audio "in-band" to enable the following:
 The application requires some configuration to work properly. You have to create
 a `.env` file in the root of the project with the following content:
 
-    VITE_GENESYS_OAUTH_CLIENT_ID='your_client_id'
+    VITE_GENESYS_OAUTH_CLIENT_ID=your_client_id
 
 Where:
 
