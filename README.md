@@ -27,11 +27,17 @@ The application requires some configuration to work properly. You have to create
 a `.env` file in the root of the project with the following content:
 
     VITE_GENESYS_OAUTH_CLIENT_ID=your_client_id
+    VITE_BASE_PATH=/your_base_path
 
 Where:
 
 - `VITE_GENESYS_OAUTH_CLIENT_ID`: is the OAuth Client ID created in Genesys
   Cloud.
+- `VITE_BASE_PATH`: is the base path where the app will be hosted. For example,
+  if the app will be hosted in GitHub Pages at
+  `https://pexip.github.io/pexip-genesys-app-example/`, the base path will be
+  `/pexip-genesys-app-example`. The default value is
+  `/pexip-genesys-app-example`.
 
 ## Available Scripts
 
