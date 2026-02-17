@@ -255,8 +255,18 @@ const callsCallback = (callEvent: CallEvent): void => {
   // Disconnect event
   if (agentParticipant?.state === GenesysConnectionsState.Disconnected) {
     if (agentParticipant?.disconnectType === GenesysDisconnectType.CLIENT) {
-      // Disconnect all the user when agent disconnect
-      handleEndCall(true)
+      // Disconnect all the user when agent disconnects. We need to check if
+      // another agent is connected to the same call.
+      const connectedAgentParticipants =
+        callEvent?.eventBody?.participants?.filter(
+          (participant) =>
+            participant.purpose === GenesysRole.AGENT &&
+            participant.state !== GenesysConnectionsState.Connected
+        )
+      const shouldDisconnectAll =
+        connectedAgentParticipants == null ||
+        connectedAgentParticipants.length === 0
+      handleEndCall(shouldDisconnectAll)
     }
     if (agentParticipant?.disconnectType === GenesysDisconnectType.TRANSFER) {
       // Only disconnect the agent that initiated the transfer
