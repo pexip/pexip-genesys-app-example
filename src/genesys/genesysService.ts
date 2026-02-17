@@ -255,13 +255,13 @@ const callsCallback = (callEvent: CallEvent): void => {
   // Disconnect event
   if (agentParticipant?.state === GenesysConnectionsState.Disconnected) {
     if (agentParticipant?.disconnectType === GenesysDisconnectType.CLIENT) {
-      // Disconnect all the user when agent disconnects. We need to check if
-      // another agent is connected to the same call.
+      // Disconnect all the users when agent disconnects. We need to check if
+      // another agent is connected to the same call (Audio conference).
       const connectedAgentParticipants =
         callEvent?.eventBody?.participants?.filter(
           (participant) =>
             participant.purpose === GenesysRole.AGENT &&
-            participant.state !== GenesysConnectionsState.Connected
+            participant.state === GenesysConnectionsState.Connected
         )
       const shouldDisconnectAll =
         connectedAgentParticipants == null ||
