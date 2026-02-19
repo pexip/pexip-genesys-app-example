@@ -241,6 +241,12 @@ const callsCallback = (callEvent: CallEvent): void => {
       userMe.id === participant.user?.id
   )
 
+  const connectedAgentParticipants = callEvent?.eventBody?.participants?.filter(
+    (participant) =>
+      participant.purpose === GenesysRole.AGENT &&
+      participant.state === GenesysConnectionsState.Connected
+  )
+
   const customerParticipant = callEvent?.eventBody?.participants?.find(
     (participant) =>
       participant.purpose === GenesysRole.CUSTOMER &&
@@ -257,12 +263,6 @@ const callsCallback = (callEvent: CallEvent): void => {
     if (agentParticipant?.disconnectType === GenesysDisconnectType.CLIENT) {
       // Disconnect all the users when agent disconnects. We need to check if
       // another agent is connected to the same call (Audio conference).
-      const connectedAgentParticipants =
-        callEvent?.eventBody?.participants?.filter(
-          (participant) =>
-            participant.purpose === GenesysRole.AGENT &&
-            participant.state === GenesysConnectionsState.Connected
-        )
       const shouldDisconnectAll =
         connectedAgentParticipants == null ||
         connectedAgentParticipants.length === 0
@@ -300,5 +300,17 @@ const callsCallback = (callEvent: CallEvent): void => {
   if (onHoldState !== agentParticipant?.held) {
     onHoldState = agentParticipant?.held ?? false
     handleHold(onHoldState)
+  }
+
+  // Consult
+  if (agentParticipant?.held === false) {
+    if (
+      agentParticipant?.consultParticipantId !== undefined &&
+      connectedAgentParticipants.length > 1
+    ) {
+      handleHold(true)
+    } else {
+      handleHold(false)
+    }
   }
 }
