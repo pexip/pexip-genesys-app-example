@@ -634,7 +634,7 @@ export const App = (): JSX.Element => {
       )}
 
       {connectionState === ConnectionState.OnHold && (
-        <div className="no-active-call" data-testid="no-active-call">
+        <div className="call-on-hold" data-testid="call-on-hold">
           <h1>Call on hold</h1>
         </div>
       )}
