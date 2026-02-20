@@ -301,6 +301,7 @@ describe('Genesys service', () => {
       )
       const mockEndCall = jest.fn()
       GenesysService.addEndCallListener(mockEndCall)
+      GenesysService.addHoldListener(jest.fn())
       callEvent.eventBody.participants[0].state = 'disconnected'
       callEvent.eventBody.participants[0].disconnectType = 'client'
       triggerEvent(callEvent)
@@ -316,6 +317,7 @@ describe('Genesys service', () => {
       )
       const mockEndCall = jest.fn()
       GenesysService.addEndCallListener(mockEndCall)
+      GenesysService.addHoldListener(jest.fn())
       callEvent.eventBody.participants[0].state = 'disconnected'
       callEvent.eventBody.participants[0].disconnectType = 'transfer'
       triggerEvent(callEvent)
@@ -331,6 +333,7 @@ describe('Genesys service', () => {
       )
       const mockEndCall = jest.fn()
       GenesysService.addEndCallListener(mockEndCall)
+      GenesysService.addHoldListener(jest.fn())
       callEvent.eventBody.participants[0].state = 'disconnected'
       callEvent.eventBody.participants[0].disconnectType = 'peer'
       triggerEvent(callEvent)
@@ -349,6 +352,7 @@ describe('Genesys service', () => {
       const mockMute = jest.fn()
       GenesysService.addConnectCallListener(jest.fn())
       GenesysService.addMuteListener(mockMute)
+      GenesysService.addHoldListener(jest.fn())
       callEvent.eventBody.participants[0].muted = true
       triggerEvent(callEvent)
       expect(mockMute).toHaveBeenCalledTimes(1)
@@ -364,6 +368,7 @@ describe('Genesys service', () => {
       )
       const mockCallConnect = jest.fn()
       GenesysService.addConnectCallListener(mockCallConnect)
+      GenesysService.addHoldListener(jest.fn())
       callEvent.eventBody.participants[0].state =
         GenesysConnectionsState.Connected
       callEvent.eventBody.participants[1].state =
@@ -380,6 +385,7 @@ describe('Genesys service', () => {
       )
       const mockCallConnect = jest.fn()
       GenesysService.addConnectCallListener(mockCallConnect)
+      GenesysService.addHoldListener(jest.fn())
       callEvent.eventBody.participants[0].state =
         GenesysConnectionsState.Connected
       callEvent.eventBody.participants[1].state =

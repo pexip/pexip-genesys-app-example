@@ -8,6 +8,7 @@ import { GenesysRole } from '../constants/GenesysRole'
 import { GenesysConnectionsState } from '../constants/GenesysConnectionState'
 import { createChannel, addSubscription } from './notificationsController.ts'
 import { GenesysDisconnectType } from '../constants/GenesysDisconnectType'
+import { VITE_GENESYS_OAUTH_CLIENT_ID } from '../env'
 
 export interface CallEvent {
   version: string
@@ -24,7 +25,7 @@ export interface CallEvent {
 
 const redirectUri = window.location.href.split('?')[0]
 
-const clientId: string = import.meta.env.VITE_GENESYS_OAUTH_CLIENT_ID
+const clientId: string = VITE_GENESYS_OAUTH_CLIENT_ID
 if (clientId === undefined) {
   throw new Error('VITE_GENESYS_OAUTH_CLIENT_ID is not defined')
 }

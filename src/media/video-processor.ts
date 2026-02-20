@@ -8,8 +8,9 @@ import {
   createVideoTrackProcessorWithFallback
 } from '@pexip/media-processor'
 import { type Effect } from '../types/Effect'
+import { BASE_URL } from '../env'
 
-const basePath = import.meta.env.BASE_URL
+const basePath = BASE_URL
 
 export const getVideoProcessor = async (
   effect: Effect
