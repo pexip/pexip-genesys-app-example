@@ -186,16 +186,19 @@ export const isDialOut = async (sipSource: string): Promise<boolean> => {
  */
 export const isCallActive = async (): Promise<boolean> => {
   const conversation = await conversationsApi.getConversation(conversationId)
-  const agentParticipants = conversation.participants?.filter(
-    (participant) => participant.purpose === GenesysRole.AGENT
-  )
-  const calls = agentParticipants
-    .map((participant) => participant.calls)
-    .flatMap((calls) => calls)
-  const active = calls.some(
+  const agentParticipant = conversation.participants?.find((participant) => {
+    return (
+      participant.purpose === GenesysRole.AGENT &&
+      participant.userId === userMe.id
+    )
+  })
+  const connected = (agentParticipant?.calls ?? []).some(
     (call) => call?.state === GenesysConnectionsState.Connected
   )
-  return active
+  const isConsulting =
+    agentParticipant?.consultParticipantId !== undefined &&
+    agentParticipant?.attributes?.consultInitiator !== 'true'
+  return connected && !isConsulting
 }
 
 export const addHoldListener = (holdListener: (flag: boolean) => any): void => {
@@ -229,7 +232,8 @@ const getActiveAgent = async (): Promise<Models.Participant | undefined> => {
   const agentParticipant = conversation?.participants.find(
     (participant) =>
       participant.purpose === GenesysRole.AGENT &&
-      participant.endTime === undefined
+      participant.endTime === undefined &&
+      participant.userId === userMe.id
   )
   return agentParticipant
 }
@@ -251,15 +255,16 @@ const callsCallback = (callEvent: CallEvent): void => {
   const customerParticipant = callEvent?.eventBody?.participants?.find(
     (participant) =>
       participant.purpose === GenesysRole.CUSTOMER &&
-      participant.state !== GenesysConnectionsState.Terminated
+      participant.state === GenesysConnectionsState.Connected
   )
 
-  if (agentParticipant == null || customerParticipant == null) {
-    console.warn('No agent or customer participant found in call event')
+  // Disconnect event
+  if (customerParticipant == null) {
+    const shouldDisconnectAll = true
+    handleEndCall(shouldDisconnectAll)
     return
   }
 
-  // Disconnect event
   if (agentParticipant?.state === GenesysConnectionsState.Disconnected) {
     if (agentParticipant?.disconnectType === GenesysDisconnectType.CLIENT) {
       // Disconnect all the users when agent disconnects. We need to check if
@@ -284,7 +289,8 @@ const callsCallback = (callEvent: CallEvent): void => {
   // transfer the call back to us
   if (
     agentParticipant?.state === GenesysConnectionsState.Connected &&
-    customerParticipant?.state === GenesysConnectionsState.Connected
+    customerParticipant?.state === GenesysConnectionsState.Connected &&
+    agentParticipant.consultParticipantId === undefined
   ) {
     handleConnectCall()
   }
