@@ -4,6 +4,8 @@ const mockClient = {
   loginImplicitGrant: jest.fn()
 }
 
+const mockAgentId = 'e02618ce-1ae8-4429-bdb0-2d55f701a545'
+
 const mockGenesys = {
   ApiClient: {
     instance: mockClient
@@ -28,6 +30,7 @@ const mockGenesys = {
                 },
                 {
                   purpose: 'agent',
+                  userId: mockAgentId,
                   calls: [
                     {
                       state:
@@ -59,7 +62,7 @@ const mockGenesys = {
   UsersApi: function () {
     return {
       getUsersMe: jest.fn(() => ({
-        id: 'e02618ce-1ae8-4429-bdb0-2d55f701a545',
+        id: mockAgentId,
         name: 'John'
       }))
     }

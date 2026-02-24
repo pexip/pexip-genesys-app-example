@@ -283,6 +283,68 @@ describe('Genesys service', () => {
       triggerEvent(callEvent)
       expect(mockHold).toHaveBeenCalledTimes(1)
     })
+
+    it('should trigger "handleHold" with "false" when the agent resume the call', async () => {
+      const mockHold = jest.fn()
+      GenesysService.addConnectCallListener(jest.fn())
+      GenesysService.addMuteListener(jest.fn())
+      GenesysService.addHoldListener(mockHold)
+      callEvent.eventBody.participants[0].held = false
+      triggerEvent(callEvent)
+      expect(mockHold).toHaveBeenCalledTimes(1)
+      expect(mockHold).toHaveBeenCalledWith(false)
+    })
+
+    it("should trigger 'handleHold' with 'true' when the agent is consulting", async () => {
+      const mockHold = jest.fn()
+      GenesysService.addConnectCallListener(jest.fn())
+      GenesysService.addMuteListener(jest.fn())
+      GenesysService.addHoldListener(mockHold)
+      callEvent.eventBody.participants[0].held = false
+      callEvent.eventBody.participants[0].state = 'connected'
+      callEvent.eventBody.participants[0].consultParticipantId = 'any-id'
+      callEvent.eventBody.participants.push({
+        purpose: 'agent',
+        held: false,
+        state: 'connected',
+        consultParticipantId: 'any-id'
+      })
+      triggerEvent(callEvent)
+      expect(mockHold).toHaveBeenCalledTimes(1)
+      expect(mockHold).toHaveBeenCalledWith(true)
+    })
+
+    it("should trigger 'handleHold' with 'false' when the agent is not consulting or on hold", async () => {
+      const mockHold = jest.fn()
+      GenesysService.addConnectCallListener(jest.fn())
+      GenesysService.addMuteListener(jest.fn())
+      GenesysService.addHoldListener(mockHold)
+      callEvent.eventBody.participants[0].held = false
+      callEvent.eventBody.participants[0].state = 'connected'
+      callEvent.eventBody.participants[0].consultParticipantId = undefined
+      triggerEvent(callEvent)
+      expect(mockHold).toHaveBeenCalledTimes(1)
+      expect(mockHold).toHaveBeenCalledWith(false)
+    })
+
+    it("should trigger 'handleHold' with 'false' when the agent is consulting but only one agent connected", async () => {
+      const mockHold = jest.fn()
+      GenesysService.addConnectCallListener(jest.fn())
+      GenesysService.addMuteListener(jest.fn())
+      GenesysService.addHoldListener(mockHold)
+      callEvent.eventBody.participants[0].held = false
+      callEvent.eventBody.participants[0].state = 'connected'
+      callEvent.eventBody.participants[0].consultParticipantId = 'any-id'
+      callEvent.eventBody.participants.push({
+        purpose: 'agent',
+        held: false,
+        state: 'disconnected',
+        consultParticipantId: 'any-id'
+      })
+      triggerEvent(callEvent)
+      expect(mockHold).toHaveBeenCalledTimes(1)
+      expect(mockHold).toHaveBeenCalledWith(false)
+    })
   })
 
   describe('addEndCallListener', () => {
@@ -370,6 +432,7 @@ describe('Genesys service', () => {
       const mockCallConnect = jest.fn()
       GenesysService.addConnectCallListener(mockCallConnect)
       GenesysService.addHoldListener(jest.fn())
+      GenesysService.addEndCallListener(jest.fn())
       callEvent.eventBody.participants[0].state =
         GenesysConnectionsState.Connected
       callEvent.eventBody.participants[1].state =
