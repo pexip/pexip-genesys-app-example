@@ -103,7 +103,6 @@ export const initialize = async (
     throw Error('Cannot get the user ID')
   }
 }
-
 /**
  * Fetches the ani name provided by inbound SIP call. It uses the conversationid provided during initialization
  * @returns The ani name which will be used as alias for the meeting
@@ -246,6 +245,9 @@ const callsCallback = (callEvent: CallEvent): void => {
       userMe.id === participant.user?.id
   )
 
+  console.log('Call event received: ', JSON.stringify(callEvent))
+  console.log('Agent participant: ', JSON.stringify(agentParticipant))
+
   const connectedAgentParticipants = callEvent?.eventBody?.participants?.filter(
     (participant) =>
       participant.purpose === GenesysRole.AGENT &&
@@ -303,21 +305,31 @@ const callsCallback = (callEvent: CallEvent): void => {
     }
   }
 
-  // On hold event
-  if (onHoldState !== agentParticipant?.held) {
-    onHoldState = agentParticipant?.held ?? false
-    handleHold(onHoldState)
-  }
+  // Determine effective hold state.
+  // During a consult transfer, Genesys sends held=false even though the agent
+  // should be on hold. We detect this scenario and override the hold state.
+  const isConsulting =
+    agentParticipant?.held === false &&
+    (agentParticipant?.attributes?.consultInitiator === 'true' ||
+      (agentParticipant?.consultParticipantId !== undefined &&
+        connectedAgentParticipants != null &&
+        connectedAgentParticipants.length > 1))
 
-  // Consult
-  if (agentParticipant?.held === false) {
-    if (
-      agentParticipant?.consultParticipantId !== undefined &&
-      connectedAgentParticipants.length > 1
-    ) {
-      handleHold(true)
-    } else {
-      handleHold(false)
-    }
+  const effectiveHoldState = isConsulting
+    ? true
+    : (agentParticipant?.held ?? false)
+
+  if (onHoldState !== effectiveHoldState) {
+    console.log(
+      'Hold state changed, new hold state:',
+      effectiveHoldState,
+      '(raw held:',
+      agentParticipant?.held,
+      ', isConsulting:',
+      isConsulting,
+      ')'
+    )
+    onHoldState = effectiveHoldState
+    handleHold(onHoldState)
   }
 }
