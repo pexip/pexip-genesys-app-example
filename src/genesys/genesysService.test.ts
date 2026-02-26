@@ -289,9 +289,11 @@ describe('Genesys service', () => {
       GenesysService.addConnectCallListener(jest.fn())
       GenesysService.addMuteListener(jest.fn())
       GenesysService.addHoldListener(mockHold)
+      callEvent.eventBody.participants[0].held = true
+      triggerEvent(callEvent)
       callEvent.eventBody.participants[0].held = false
       triggerEvent(callEvent)
-      expect(mockHold).toHaveBeenCalledTimes(1)
+      expect(mockHold).toHaveBeenCalledTimes(2)
       expect(mockHold).toHaveBeenCalledWith(false)
     })
 
@@ -314,20 +316,22 @@ describe('Genesys service', () => {
       expect(mockHold).toHaveBeenCalledWith(true)
     })
 
-    it("should trigger 'handleHold' with 'false' when the agent is not consulting or on hold", async () => {
+    it("should trigger 'handleHold' with 'true' when the agent is consulting", async () => {
       const mockHold = jest.fn()
       GenesysService.addConnectCallListener(jest.fn())
       GenesysService.addMuteListener(jest.fn())
       GenesysService.addHoldListener(mockHold)
       callEvent.eventBody.participants[0].held = false
       callEvent.eventBody.participants[0].state = 'connected'
-      callEvent.eventBody.participants[0].consultParticipantId = undefined
+      callEvent.eventBody.participants[0].attributes = {
+        consultInitiator: 'true'
+      }
       triggerEvent(callEvent)
       expect(mockHold).toHaveBeenCalledTimes(1)
-      expect(mockHold).toHaveBeenCalledWith(false)
+      expect(mockHold).toHaveBeenCalledWith(true)
     })
 
-    it("should trigger 'handleHold' with 'false' when the agent is consulting but only one agent connected", async () => {
+    it("should trigger 'handleHold' with 'true' when the agent is being consulted", async () => {
       const mockHold = jest.fn()
       GenesysService.addConnectCallListener(jest.fn())
       GenesysService.addMuteListener(jest.fn())
@@ -338,12 +342,12 @@ describe('Genesys service', () => {
       callEvent.eventBody.participants.push({
         purpose: 'agent',
         held: false,
-        state: 'disconnected',
+        state: 'connected',
         consultParticipantId: 'any-id'
       })
       triggerEvent(callEvent)
       expect(mockHold).toHaveBeenCalledTimes(1)
-      expect(mockHold).toHaveBeenCalledWith(false)
+      expect(mockHold).toHaveBeenCalledWith(true)
     })
   })
 

@@ -245,9 +245,6 @@ const callsCallback = (callEvent: CallEvent): void => {
       userMe.id === participant.user?.id
   )
 
-  console.log('Call event received: ', JSON.stringify(callEvent))
-  console.log('Agent participant: ', JSON.stringify(agentParticipant))
-
   const connectedAgentParticipants = callEvent?.eventBody?.participants?.filter(
     (participant) =>
       participant.purpose === GenesysRole.AGENT &&
@@ -318,17 +315,7 @@ const callsCallback = (callEvent: CallEvent): void => {
   const effectiveHoldState = isConsulting
     ? true
     : (agentParticipant?.held ?? false)
-
   if (onHoldState !== effectiveHoldState) {
-    console.log(
-      'Hold state changed, new hold state:',
-      effectiveHoldState,
-      '(raw held:',
-      agentParticipant?.held,
-      ', isConsulting:',
-      isConsulting,
-      ')'
-    )
     onHoldState = effectiveHoldState
     handleHold(onHoldState)
   }
