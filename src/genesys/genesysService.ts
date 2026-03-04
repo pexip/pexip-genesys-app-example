@@ -317,6 +317,8 @@ const callsCallback = (callEvent: CallEvent): void => {
     : (agentParticipant?.held ?? false)
   if (onHoldState !== effectiveHoldState) {
     onHoldState = effectiveHoldState
-    handleHold(onHoldState)
+    setTimeout(() => {
+      handleHold(onHoldState)
+    }, 1000) // Delay because we receive held=false when we try a consult transfer
   }
 }
