@@ -42,7 +42,6 @@ let infinityClient: InfinityClient
 let pexipNode: string
 let pexipAgentPin: string
 let pexipAppPrefix: string = 'agent'
-let aniName: string
 let conferenceAlias: string
 let connectingCallInProgress: boolean = false
 
@@ -167,10 +166,14 @@ export const App = (): JSX.Element => {
     setConnectionState(ConnectionState.Connecting)
     connectingCallInProgress = true
 
-    aniName = (await GenesysService.fetchAniName()) ?? ''
-    conferenceAlias = (await GenesysService.isDialOut(pexipNode))
-      ? aniName
-      : uuidv4()
+    conferenceAlias = (await GenesysService.fetchAniName()) ?? uuidv4()
+
+    // Test to determine if the call is dial-out or dial-in and generate a random
+    // conferenceAlias in case we are dialing out. Not used currently.
+    //
+    // conferenceAlias = (await GenesysService.isDialOut(pexipNode))
+    //   ? conferenceAlias
+    //   : uuidv4()
 
     const prefixedConfAlias = pexipAppPrefix + conferenceAlias
     let localStream: MediaStream
