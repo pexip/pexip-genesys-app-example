@@ -42,8 +42,8 @@ let infinityClient: InfinityClient
 let pexipNode: string
 let pexipAgentPin: string
 let pexipAppPrefix: string = 'agent'
-let aniName: string
 let conferenceAlias: string
+let connectingCallInProgress: boolean = false
 
 let videoProcessor: VideoProcessor
 
@@ -110,6 +110,9 @@ export const App = (): JSX.Element => {
       pin,
       callType: ClientCallType.VideoPresentation
     })
+
+    connectingCallInProgress = false
+
     if (response != null) {
       switch (response.status) {
         case 403: {
@@ -147,11 +150,30 @@ export const App = (): JSX.Element => {
    * The method relies on GenesysService to get the conference alias and the agents display name
    */
   const initConference = async (): Promise<void> => {
-    // Avoid to join a conference if no pexipNode is set or the conference alias is not defined
+    // Avoid to join a conference if no pexipNode is set or if it's already connected or connecting
     // This can happen if the user is not logged in to Genesys or the GenesysService is not initialized correctly
-    if (pexipNode === '' || conferenceAlias == null) {
+    if (
+      connectingCallInProgress ||
+      connectionState === ConnectionState.Connected ||
+      pexipNode === ''
+    ) {
+      console.error(
+        'Conference connection already in progress, already connected, or invalid parameters'
+      )
       return
     }
+
+    setConnectionState(ConnectionState.Connecting)
+    connectingCallInProgress = true
+
+    conferenceAlias = (await GenesysService.fetchAniName()) ?? uuidv4()
+
+    // Test to determine if the call is dial-out or dial-in and generate a random
+    // conferenceAlias in case we are dialing out. Not used currently.
+    //
+    // conferenceAlias = (await GenesysService.isDialOut(pexipNode))
+    //   ? conferenceAlias
+    //   : uuidv4()
 
     const prefixedConfAlias = pexipAppPrefix + conferenceAlias
     let localStream: MediaStream
@@ -222,6 +244,7 @@ export const App = (): JSX.Element => {
     }
     await infinityClient.disconnect({})
     setConnectionState(ConnectionState.Disconnected)
+    connectingCallInProgress = false
   }
 
   const onMuteCall = async (muted: boolean): Promise<void> => {
@@ -239,37 +262,17 @@ export const App = (): JSX.Element => {
       accessToken
     )
 
+    pexipNode = state.pexipNode
+    pexipAgentPin = state.pexipAgentPin
+    pexipAppPrefix = state.pexipAppPrefix
+
+    setGenesysCallbacks()
+
     // Stop the initialization if no call is active
     const callActive = (await GenesysService.isCallActive()) || false
     if (!callActive) {
       setConnectionState(ConnectionState.Disconnected)
-      return
     }
-
-    pexipNode = state.pexipNode
-    pexipAgentPin = state.pexipAgentPin
-    aniName = (await GenesysService.fetchAniName()) ?? ''
-    pexipAppPrefix = state.pexipAppPrefix
-    conferenceAlias = (await GenesysService.isDialOut(pexipNode))
-      ? aniName
-      : uuidv4()
-
-    // Add mute call listener
-    GenesysService.addMuteListener(onMuteCall)
-
-    // Add on hold listener
-    GenesysService.addHoldListener(onHoldVideo)
-
-    // Add end call listener
-    GenesysService.addEndCallListener(onEndCall)
-
-    // Add connect call listener
-    GenesysService.addConnectCallListener(async () => {
-      if (connectionState === ConnectionState.Disconnected) {
-        setConnectionState(ConnectionState.Connecting)
-        await initConference()
-      }
-    })
   }
 
   const handleRemoteStream = (remoteStream: MediaStream): void => {
@@ -534,7 +537,12 @@ export const App = (): JSX.Element => {
       )
 
       await initializeGenesys(state, accessToken)
-      await initConference().catch(console.error)
+      const isCallActive = await GenesysService.isCallActive()
+      if (isCallActive) {
+        await initConference().catch(console.error)
+      } else {
+        setConnectionState(ConnectionState.Disconnected)
+      }
     }
   }
 
@@ -578,6 +586,15 @@ export const App = (): JSX.Element => {
       infinitySignals.onParticipantLeft.remove(checkIfDisconnect)
     }
   }, [presenting, presentationStream, localStream])
+
+  const setGenesysCallbacks = (): void => {
+    GenesysService.addHoldListener(onHoldVideo)
+    GenesysService.addEndCallListener(onEndCall)
+    GenesysService.addMuteListener(onMuteCall)
+    GenesysService.addConnectCallListener(initConference)
+  }
+
+  useEffect(setGenesysCallbacks)
 
   return (
     <div className="App" data-testid="App" ref={appRef}>

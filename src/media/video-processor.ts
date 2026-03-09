@@ -9,7 +9,7 @@ import {
 } from '@pexip/media-processor'
 import { type Effect } from '../types/Effect'
 
-const basePath = '/pexip-genesys-app-example'
+const basePath = import.meta.env.BASE_URL
 
 export const getVideoProcessor = async (
   effect: Effect
