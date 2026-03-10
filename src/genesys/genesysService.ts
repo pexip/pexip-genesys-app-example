@@ -238,6 +238,7 @@ const getActiveAgent = async (): Promise<Models.Participant | undefined> => {
 }
 
 const callsCallback = (callEvent: CallEvent): void => {
+  console.log('Received call event: ', JSON.stringify(callEvent))
   const agentParticipant = callEvent?.eventBody?.participants?.find(
     (participant) =>
       participant.purpose === GenesysRole.AGENT &&
@@ -306,15 +307,20 @@ const callsCallback = (callEvent: CallEvent): void => {
   // During a consult transfer, Genesys sends held=false even though the agent
   // should be on hold. We detect this scenario and override the hold state.
   const isConsulting =
-    agentParticipant?.held === false &&
-    (agentParticipant?.attributes?.consultInitiator === 'true' ||
-      (agentParticipant?.consultParticipantId !== undefined &&
-        connectedAgentParticipants != null &&
-        connectedAgentParticipants.length > 1))
+    agentParticipant?.attributes?.consultInitiator === 'true' ||
+    (agentParticipant?.consultParticipantId !== undefined &&
+      connectedAgentParticipants != null &&
+      connectedAgentParticipants.length > 1)
 
-  const effectiveHoldState = isConsulting
-    ? true
-    : (agentParticipant?.held ?? false)
+  // The agent is confined when he is put on hold by the other agent in consult.
+  const connectedAgentParticipantConfined = connectedAgentParticipants?.find(
+    (participant) => participant.confined === true
+  )
+
+  const effectiveHoldState =
+    isConsulting && connectedAgentParticipantConfined == null
+      ? true
+      : (agentParticipant?.held ?? false)
   if (onHoldState !== effectiveHoldState) {
     onHoldState = effectiveHoldState
     setTimeout(() => {
