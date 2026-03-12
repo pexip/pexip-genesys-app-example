@@ -6,7 +6,7 @@
  * It will check if default values/images have already been replaced with a different one.
  * It will also do checks on configuration values to make sure they are valid.
  */
-const chalk = require("chalk");
+const chalk = require("chalk").default;
 const fs = require('fs').promises;
 const fsConstants = require('fs').constants;
 const path = require('path');
@@ -251,10 +251,6 @@ async function validateConfig(){
       let url = new URL(config.wizardUriBase);
       return url.hostname == 'localhost' ? false : true;
     }, 'wizardUriBase is not localhost', 'wizardUriBase is localhost', 'wizardUriBase should be a publically available URL'),
-    Validator.customEvaluation(() => {
-      let url = new URL(config.redirectURLOnWizardCompleted);
-      return url.hostname == 'localhost' ? false : true;
-    }, 'redirectURLOnWizardCompleted is not localhost', 'redirectURLOnWizardCompleted is localhost', 'redirectURLOnWizardCompleted should be a publically available URL'),
 
     // Integration Type ID
     Validator.notEqual(config.premiumAppIntegrationTypeId, defaultIntegrationTypeId, 'premiumAppIntegrationTypeId', 'Once integration is approved in AppFoundry, premiumAppIntegrationTypeId should match the provided unique ID.'),
