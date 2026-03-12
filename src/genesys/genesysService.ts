@@ -238,7 +238,6 @@ const getActiveAgent = async (): Promise<Models.Participant | undefined> => {
 }
 
 const callsCallback = (callEvent: CallEvent): void => {
-  console.log('Received call event: ', JSON.stringify(callEvent))
   const agentParticipant = callEvent?.eventBody?.participants?.find(
     (participant) =>
       participant.purpose === GenesysRole.AGENT &&
