@@ -1,6 +1,6 @@
 import config from '../../config/config.js';
+import platformClient from 'platformClient';
 
-const platformClient = require('platformClient');
 const telephonyProvidersEdgeApi = new platformClient.TelephonyProvidersEdgeApi();
 const organizationApi = new platformClient.OrganizationApi();
 
