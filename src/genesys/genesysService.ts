@@ -8,6 +8,7 @@ import { GenesysRole } from '../constants/GenesysRole'
 import { GenesysConnectionsState } from '../constants/GenesysConnectionState'
 import { createChannel, addSubscription } from './notificationsController.ts'
 import { GenesysDisconnectType } from '../constants/GenesysDisconnectType'
+import { VITE_GENESYS_OAUTH_CLIENT_ID } from '../env'
 
 export interface CallEvent {
   version: string
@@ -24,7 +25,7 @@ export interface CallEvent {
 
 const redirectUri = window.location.href.split('?')[0]
 
-const clientId: string = import.meta.env.VITE_GENESYS_OAUTH_CLIENT_ID
+const clientId: string = VITE_GENESYS_OAUTH_CLIENT_ID
 if (clientId === undefined) {
   throw new Error('VITE_GENESYS_OAUTH_CLIENT_ID is not defined')
 }
@@ -102,7 +103,6 @@ export const initialize = async (
     throw Error('Cannot get the user ID')
   }
 }
-
 /**
  * Fetches the ani name provided by inbound SIP call. It uses the conversationid provided during initialization
  * @returns The ani name which will be used as alias for the meeting
@@ -185,16 +185,19 @@ export const isDialOut = async (sipSource: string): Promise<boolean> => {
  */
 export const isCallActive = async (): Promise<boolean> => {
   const conversation = await conversationsApi.getConversation(conversationId)
-  const agentParticipants = conversation.participants?.filter(
-    (participant) => participant.purpose === GenesysRole.AGENT
-  )
-  const calls = agentParticipants
-    .map((participant) => participant.calls)
-    .flatMap((calls) => calls)
-  const active = calls.some(
+  const agentParticipant = conversation.participants?.find((participant) => {
+    return (
+      participant.purpose === GenesysRole.AGENT &&
+      participant.userId === userMe.id
+    )
+  })
+  const connected = (agentParticipant?.calls ?? []).some(
     (call) => call?.state === GenesysConnectionsState.Connected
   )
-  return active
+  const isConsulting =
+    agentParticipant?.consultParticipantId !== undefined &&
+    agentParticipant?.attributes?.consultInitiator !== 'true'
+  return connected && !isConsulting
 }
 
 export const addHoldListener = (holdListener: (flag: boolean) => any): void => {
@@ -228,7 +231,8 @@ const getActiveAgent = async (): Promise<Models.Participant | undefined> => {
   const agentParticipant = conversation?.participants.find(
     (participant) =>
       participant.purpose === GenesysRole.AGENT &&
-      participant.endTime === undefined
+      participant.endTime === undefined &&
+      participant.userId === userMe.id
   )
   return agentParticipant
 }
@@ -241,22 +245,33 @@ const callsCallback = (callEvent: CallEvent): void => {
       userMe.id === participant.user?.id
   )
 
+  const connectedAgentParticipants = callEvent?.eventBody?.participants?.filter(
+    (participant) =>
+      participant.purpose === GenesysRole.AGENT &&
+      participant.state === GenesysConnectionsState.Connected
+  )
+
   const customerParticipant = callEvent?.eventBody?.participants?.find(
     (participant) =>
       participant.purpose === GenesysRole.CUSTOMER &&
-      participant.state !== GenesysConnectionsState.Terminated
+      participant.state === GenesysConnectionsState.Connected
   )
 
-  if (agentParticipant == null || customerParticipant == null) {
-    console.warn('No agent or customer participant found in call event')
+  // Disconnect event
+  if (customerParticipant == null) {
+    const shouldDisconnectAll = true
+    handleEndCall(shouldDisconnectAll)
     return
   }
 
-  // Disconnect event
   if (agentParticipant?.state === GenesysConnectionsState.Disconnected) {
     if (agentParticipant?.disconnectType === GenesysDisconnectType.CLIENT) {
-      // Disconnect all the user when agent disconnect
-      handleEndCall(true)
+      // Disconnect all the users when agent disconnects. We need to check if
+      // another agent is connected to the same call (Audio conference).
+      const shouldDisconnectAll =
+        connectedAgentParticipants == null ||
+        connectedAgentParticipants.length === 0
+      handleEndCall(shouldDisconnectAll)
     }
     if (agentParticipant?.disconnectType === GenesysDisconnectType.TRANSFER) {
       // Only disconnect the agent that initiated the transfer
@@ -273,7 +288,8 @@ const callsCallback = (callEvent: CallEvent): void => {
   // transfer the call back to us
   if (
     agentParticipant?.state === GenesysConnectionsState.Connected &&
-    customerParticipant?.state === GenesysConnectionsState.Connected
+    customerParticipant?.state === GenesysConnectionsState.Connected &&
+    agentParticipant.consultParticipantId === undefined
   ) {
     handleConnectCall()
   }
@@ -286,9 +302,28 @@ const callsCallback = (callEvent: CallEvent): void => {
     }
   }
 
-  // On hold event
-  if (onHoldState !== agentParticipant?.held) {
-    onHoldState = agentParticipant?.held ?? false
-    handleHold(onHoldState)
+  // Determine effective hold state.
+  // During a consult transfer, Genesys sends held=false even though the agent
+  // should be on hold. We detect this scenario and override the hold state.
+  const isConsulting =
+    agentParticipant?.attributes?.consultInitiator === 'true' ||
+    (agentParticipant?.consultParticipantId !== undefined &&
+      connectedAgentParticipants != null &&
+      connectedAgentParticipants.length > 1)
+
+  // The agent is confined when he is put on hold by the other agent in consult.
+  const connectedAgentParticipantConfined = connectedAgentParticipants?.find(
+    (participant) => participant.confined === true
+  )
+
+  const effectiveHoldState =
+    isConsulting && connectedAgentParticipantConfined == null
+      ? true
+      : (agentParticipant?.held ?? false)
+  if (onHoldState !== effectiveHoldState) {
+    onHoldState = effectiveHoldState
+    setTimeout(() => {
+      handleHold(onHoldState)
+    }, 1000) // Delay because we receive held=false when we try a consult transfer
   }
 }

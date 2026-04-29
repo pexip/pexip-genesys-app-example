@@ -2,6 +2,9 @@ import '../__mocks__/test-params'
 import { GenesysConnectionsState } from '../constants/GenesysConnectionState'
 import { type CallEvent } from './genesysService'
 
+jest.useFakeTimers()
+jest.spyOn(global, 'setTimeout')
+
 let triggerEvent: (event: any) => void
 jest.mock('./notificationsController', () => ({
   addSubscription: jest.fn((_topic: string, callback: () => void): void => {
@@ -43,6 +46,10 @@ describe('Genesys service', () => {
   let accessToken: string
   let callEvent: CallEvent
 
+  const pexipNode = 'fake-node'
+  const pexipAgentPin = 'fake-pin'
+  const pexipAppPrefix = 'fake-prefix'
+
   beforeEach(async () => {
     // Reset modules for every test
     GenesysService = await import('./genesysService')
@@ -76,12 +83,6 @@ describe('Genesys service', () => {
   })
 
   describe('loginPureCloud', () => {
-    const pcEnvironment = 'fake-environment'
-    const pcConversationId = 'fake-conversation-id'
-    const pexipNode = 'fake-node'
-    const pexipAgentPin = 'fake-pin'
-    const pexipAppPrefix = 'fake-prefix'
-
     it('should set the client environment', async () => {
       await GenesysService.loginPureCloud(
         pcEnvironment,
@@ -185,22 +186,20 @@ describe('Genesys service', () => {
   })
 
   describe('isHeld', () => {
-    it("should return 'false' when the call is not on hold", async () => {
+    beforeEach(async () => {
       await GenesysService.initialize(
         pcEnvironment,
         pcConversationId,
         accessToken
       )
+    })
+
+    it("should return 'false' when the call is not on hold", async () => {
       const hold = await GenesysService.isHeld()
       expect(hold).toBeFalsy()
     })
 
     it("should return 'true' when the call is on hold", async () => {
-      await GenesysService.initialize(
-        pcEnvironment,
-        pcConversationId,
-        accessToken
-      )
       ;(window as any).testParams.genesysHeld = true
       const hold = await GenesysService.isHeld()
       expect(hold).toBeTruthy()
@@ -208,22 +207,20 @@ describe('Genesys service', () => {
   })
 
   describe('isMuted', () => {
-    it("should return 'false' when the call is not muted", async () => {
+    beforeEach(async () => {
       await GenesysService.initialize(
         pcEnvironment,
         pcConversationId,
         accessToken
       )
+    })
+
+    it("should return 'false' when the call is not muted", async () => {
       const muted = await GenesysService.isMuted()
       expect(muted).toBeFalsy()
     })
 
     it("should return 'true' when the call is muted", async () => {
-      await GenesysService.initialize(
-        pcEnvironment,
-        pcConversationId,
-        accessToken
-      )
       ;(window as any).testParams.genesysMuted = true
       const muted = await GenesysService.isMuted()
       expect(muted).toBeTruthy()
@@ -231,76 +228,152 @@ describe('Genesys service', () => {
   })
 
   describe('isDialout', () => {
-    it("should return 'true' when the call addressRaw does end with pexip node", async () => {
+    beforeEach(async () => {
       await GenesysService.initialize(
         pcEnvironment,
         pcConversationId,
         accessToken
       )
+    })
+
+    it("should return 'true' when the call addressRaw does end with pexip node", async () => {
       const isDialOut = await GenesysService.isDialOut('fake-node')
       expect(isDialOut).toBeTruthy()
     })
 
     it("should return 'false' when the call addressRaw does not end with pexip node", async () => {
-      await GenesysService.initialize(
-        pcEnvironment,
-        pcConversationId,
-        accessToken
-      )
       const isDialOut = await GenesysService.isDialOut('anything-else')
       expect(isDialOut).toBeFalsy()
     })
   })
 
   describe('isCallActive', () => {
-    it("should return 'false' when the call is not inactive", async () => {
+    beforeEach(async () => {
       await GenesysService.initialize(
         pcEnvironment,
         pcConversationId,
         accessToken
       )
+    })
+
+    it("should return 'false' when the call is not inactive", async () => {
       ;(window as any).testParams.genesysInactive = true
       const active = await GenesysService.isCallActive()
       expect(active).toBeFalsy()
     })
 
     it("should return 'true' when the call is active", async () => {
-      await GenesysService.initialize(
-        pcEnvironment,
-        pcConversationId,
-        accessToken
-      )
       const active = await GenesysService.isCallActive()
       expect(active).toBeTruthy()
     })
   })
 
   describe('addHoldListener', () => {
-    it("should trigger 'handleHold' when the agent push on hold", async () => {
+    beforeEach(async () => {
       await GenesysService.initialize(
         pcEnvironment,
         pcConversationId,
         accessToken
       )
+    })
+
+    it("should trigger 'handleHold' when the agent push on hold", async () => {
       const mockHold = jest.fn()
       GenesysService.addConnectCallListener(jest.fn())
       GenesysService.addMuteListener(jest.fn())
       GenesysService.addHoldListener(mockHold)
       callEvent.eventBody.participants[0].held = true
       triggerEvent(callEvent)
+      jest.runAllTimers()
+      expect(setTimeout).toHaveBeenCalledTimes(1)
+      expect(setTimeout).toHaveBeenCalledWith(expect.any(Function), 1000)
+    })
+
+    it('should trigger "handleHold" with "false" when the agent resume the call', async () => {
+      const mockHold = jest.fn()
+      GenesysService.addConnectCallListener(jest.fn())
+      GenesysService.addMuteListener(jest.fn())
+      GenesysService.addHoldListener(mockHold)
+      callEvent.eventBody.participants[0].held = true
+      triggerEvent(callEvent)
+      jest.runAllTimers()
+      callEvent.eventBody.participants[0].held = false
+      triggerEvent(callEvent)
+      jest.runAllTimers()
+      expect(mockHold).toHaveBeenCalledTimes(2)
+      expect(mockHold).toHaveBeenCalledWith(false)
+    })
+
+    it("should trigger 'handleHold' with 'true' when the agent is consulting", async () => {
+      const mockHold = jest.fn()
+      GenesysService.addConnectCallListener(jest.fn())
+      GenesysService.addMuteListener(jest.fn())
+      GenesysService.addHoldListener(mockHold)
+      callEvent.eventBody.participants[0].held = false
+      callEvent.eventBody.participants[0].state = 'connected'
+      callEvent.eventBody.participants[0].consultParticipantId = 'any-id'
+      callEvent.eventBody.participants.push({
+        purpose: 'agent',
+        held: false,
+        state: 'connected',
+        consultParticipantId: 'any-id'
+      })
+      triggerEvent(callEvent)
+      jest.runAllTimers()
       expect(mockHold).toHaveBeenCalledTimes(1)
+      expect(mockHold).toHaveBeenCalledWith(true)
+    })
+
+    it("should trigger 'handleHold' with 'true' when the agent is consulting", async () => {
+      const mockHold = jest.fn()
+      GenesysService.addConnectCallListener(jest.fn())
+      GenesysService.addMuteListener(jest.fn())
+      GenesysService.addHoldListener(mockHold)
+      callEvent.eventBody.participants[0].held = false
+      callEvent.eventBody.participants[0].state = 'connected'
+      callEvent.eventBody.participants[0].attributes = {
+        consultInitiator: 'true'
+      }
+      triggerEvent(callEvent)
+      jest.runAllTimers()
+      expect(mockHold).toHaveBeenCalledTimes(1)
+      expect(mockHold).toHaveBeenCalledWith(true)
+    })
+
+    it("should trigger 'handleHold' with 'true' when the agent is being consulted", async () => {
+      const mockHold = jest.fn()
+      GenesysService.addConnectCallListener(jest.fn())
+      GenesysService.addMuteListener(jest.fn())
+      GenesysService.addHoldListener(mockHold)
+      callEvent.eventBody.participants[0].held = false
+      callEvent.eventBody.participants[0].state = 'connected'
+      callEvent.eventBody.participants[0].consultParticipantId = 'any-id'
+      callEvent.eventBody.participants.push({
+        purpose: 'agent',
+        held: false,
+        state: 'connected',
+        consultParticipantId: 'any-id'
+      })
+      triggerEvent(callEvent)
+      jest.runAllTimers()
+      expect(mockHold).toHaveBeenCalledTimes(1)
+      expect(mockHold).toHaveBeenCalledWith(true)
     })
   })
 
   describe('addEndCallListener', () => {
-    it("should trigger 'handleEndCall' with 'shouldDisconnectAll=true' when the agent disconnects", async () => {
+    beforeEach(async () => {
       await GenesysService.initialize(
         pcEnvironment,
         pcConversationId,
         accessToken
       )
+    })
+
+    it("should trigger 'handleEndCall' with 'shouldDisconnectAll=true' when the agent disconnects", async () => {
       const mockEndCall = jest.fn()
       GenesysService.addEndCallListener(mockEndCall)
+      GenesysService.addHoldListener(jest.fn())
       callEvent.eventBody.participants[0].state = 'disconnected'
       callEvent.eventBody.participants[0].disconnectType = 'client'
       triggerEvent(callEvent)
@@ -309,13 +382,9 @@ describe('Genesys service', () => {
     })
 
     it("should trigger 'handleEndCall' with 'shouldDisconnectAll=false' when transfer (blind and consult)", async () => {
-      await GenesysService.initialize(
-        pcEnvironment,
-        pcConversationId,
-        accessToken
-      )
       const mockEndCall = jest.fn()
       GenesysService.addEndCallListener(mockEndCall)
+      GenesysService.addHoldListener(jest.fn())
       callEvent.eventBody.participants[0].state = 'disconnected'
       callEvent.eventBody.participants[0].disconnectType = 'transfer'
       triggerEvent(callEvent)
@@ -324,13 +393,9 @@ describe('Genesys service', () => {
     })
 
     it("shouldn't trigger 'handleEndCall' with any other disconnect type", async () => {
-      await GenesysService.initialize(
-        pcEnvironment,
-        pcConversationId,
-        accessToken
-      )
       const mockEndCall = jest.fn()
       GenesysService.addEndCallListener(mockEndCall)
+      GenesysService.addHoldListener(jest.fn())
       callEvent.eventBody.participants[0].state = 'disconnected'
       callEvent.eventBody.participants[0].disconnectType = 'peer'
       triggerEvent(callEvent)
@@ -349,6 +414,7 @@ describe('Genesys service', () => {
       const mockMute = jest.fn()
       GenesysService.addConnectCallListener(jest.fn())
       GenesysService.addMuteListener(mockMute)
+      GenesysService.addHoldListener(jest.fn())
       callEvent.eventBody.participants[0].muted = true
       triggerEvent(callEvent)
       expect(mockMute).toHaveBeenCalledTimes(1)
@@ -356,14 +422,18 @@ describe('Genesys service', () => {
   })
 
   describe('addConnectCallListener', () => {
-    it("should trigger 'handleConnectCallListener' when a call is connected", async () => {
+    beforeEach(async () => {
       await GenesysService.initialize(
         pcEnvironment,
         pcConversationId,
         accessToken
       )
+    })
+
+    it("should trigger 'handleConnectCallListener' when a call is connected", async () => {
       const mockCallConnect = jest.fn()
       GenesysService.addConnectCallListener(mockCallConnect)
+      GenesysService.addHoldListener(jest.fn())
       callEvent.eventBody.participants[0].state =
         GenesysConnectionsState.Connected
       callEvent.eventBody.participants[1].state =
@@ -373,13 +443,10 @@ describe('Genesys service', () => {
     })
 
     it("shouldn't trigger 'handleConnectCallListener' when the customer is disconnected", async () => {
-      await GenesysService.initialize(
-        pcEnvironment,
-        pcConversationId,
-        accessToken
-      )
       const mockCallConnect = jest.fn()
       GenesysService.addConnectCallListener(mockCallConnect)
+      GenesysService.addHoldListener(jest.fn())
+      GenesysService.addEndCallListener(jest.fn())
       callEvent.eventBody.participants[0].state =
         GenesysConnectionsState.Connected
       callEvent.eventBody.participants[1].state =

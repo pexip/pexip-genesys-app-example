@@ -1,6 +1,6 @@
 import config from '../../config/config.js';
+import platformClient from 'platformClient';
 
-const platformClient = require('platformClient');
 const oAuthApi = new platformClient.OAuthApi();
 const authorizationApi = new platformClient.AuthorizationApi();
 const usersApi = new platformClient.UsersApi();
