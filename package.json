@@ -4,9 +4,9 @@
   "private": true,
   "type": "module",
   "dependencies": {
-    "@pexip/components": "18.1.0",
-    "@pexip/infinity": "19.1.2",
-    "@pexip/media-components": "26.1.0",
+    "@pexip/components": "20.1.0",
+    "@pexip/infinity": "23.0.0",
+    "@pexip/media-components": "30.0.0",
     "@pexip/media-processor": "20.1.0",
     "purecloud-platform-client-v2": "^227.0.0",
     "react": "^18.2.0",
