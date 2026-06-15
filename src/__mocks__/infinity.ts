@@ -93,5 +93,5 @@ const infinityMock = {
   }
 }
 
-module.exports = infinityMock
+export default infinityMock
 export {}

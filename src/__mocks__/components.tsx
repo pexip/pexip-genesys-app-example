@@ -54,4 +54,4 @@ const componentsMock = {
   Video: () => <div />
 }
 
-module.exports = componentsMock
+export default componentsMock

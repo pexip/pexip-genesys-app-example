@@ -14,5 +14,5 @@ const genesysMock = {
   hasBillingPermission: () => true
 }
 
-module.exports = genesysMock
+export default genesysMock
 export {}

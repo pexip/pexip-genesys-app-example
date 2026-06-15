@@ -109,7 +109,8 @@ const signalMock = {
   add: jest.fn(),
   addOnce: jest.fn(),
   remove: jest.fn(),
-  emit: jest.fn()
+  emit: jest.fn(),
+  clearBuffers: jest.fn()
 }
 
 const callSignalsMock: CallSignals = {
@@ -126,6 +127,7 @@ const callSignalsMock: CallSignals = {
 }
 
 const infinitySignalsMock: InfinitySignals = {
+  cancel: jest.fn(),
   onError: signalMock,
   onPinRequired: signalMock,
   onAnswer: signalMock,
@@ -133,6 +135,7 @@ const infinitySignalsMock: InfinitySignals = {
   onConferenceStatus: signalMock,
   onConnected: signalMock,
   onDisconnected: signalMock,
+  onDisplayNameRequired: signalMock,
   onExtension: signalMock,
   onFailedRequest: signalMock,
   onIceCandidate: signalMock,
@@ -165,6 +168,7 @@ const infinitySignalsMock: InfinitySignals = {
   onFecc: signalMock,
   onCallDisconnected: signalMock,
   onCancelTransfer: signalMock,
+  onTokenExpired: signalMock,
   onTokenRefreshed: signalMock,
   onCallConnected: signalMock,
   onParticipantUpdated: signalMock

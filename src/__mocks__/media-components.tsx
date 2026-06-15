@@ -13,7 +13,7 @@ const mediaComponentsMock = {
     )
   },
   SelfViewSettings: (props: any) => {
-    const { srcObject, ...newProps } = props
+    const { srcObject, deviceStatusInfo, ...newProps } = props
     return <div {...newProps} className="selfview" />
   },
   StreamQuality: {
@@ -25,4 +25,4 @@ const mediaComponentsMock = {
   }
 }
 
-module.exports = mediaComponentsMock
+export default mediaComponentsMock

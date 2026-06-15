@@ -1,1 +1,1 @@
-export const Stats = (): JSX.Element => <div />
+export const Stats = (): React.JSX.Element => <div />

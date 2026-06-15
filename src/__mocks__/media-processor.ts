@@ -20,5 +20,5 @@ const mediaProcessorMock = {
   RenderEffect: jest.fn()
 }
 
-module.exports = mediaProcessorMock
+export default mediaProcessorMock
 export {}

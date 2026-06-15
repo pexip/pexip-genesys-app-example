@@ -1,3 +1,4 @@
+import type React from 'react'
 import {
   Box,
   Icon,
@@ -17,7 +18,7 @@ interface EffectButtonProps {
   bgImageUrl?: string
 }
 
-export function EffectButton(props: EffectButtonProps): JSX.Element {
+export function EffectButton(props: EffectButtonProps): React.JSX.Element {
   return (
     <div className="Effect" data-testid="Effect">
       <InteractiveElement
