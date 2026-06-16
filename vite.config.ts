@@ -31,7 +31,7 @@ export default defineConfig(({ mode }) => {
     },
     build: {
       target: 'ES2022',
-      cssTarget: ['chrome105', 'safari16', 'firefox104']
+      cssTarget: ['chrome105', 'safari16', 'firefox121']
     },
     optimizeDeps: {
       exclude: ['platformClient']
