@@ -1,3 +1,5 @@
+import type React from 'react'
+
 export const Bar = (props: any): React.JSX.Element => (
   <div {...props}>{props.children}</div>
 )

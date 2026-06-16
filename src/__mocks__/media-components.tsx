@@ -1,3 +1,5 @@
+import type React from 'react'
+
 export const DeviceSelect = (props: any): React.JSX.Element => {
   const { isDisabled, selected, onDeviceChange, iconType, ...newProps } = props
   return (
