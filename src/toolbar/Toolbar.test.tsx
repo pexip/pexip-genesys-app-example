@@ -49,9 +49,13 @@ jest.mock('@pexip/media-components', () => {
   }
 })
 
-jest.mock('@pexip/hooks', () => {
-  return require('../__mocks__/hooks')
-})
+jest.mock(
+  '@pexip/hooks',
+  () => {
+    return require('../__mocks__/hooks')
+  },
+  { virtual: true }
+)
 
 jest.mock('@pexip/signal', () => {
   return require('../__mocks__/signal')
