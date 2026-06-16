@@ -137,9 +137,9 @@ export const SettingsPanel = (props: SettingsPanelProps): React.JSX.Element => {
       <SelfViewSettings
         localMediaStream={processedStream}
         data-testid="selfview"
-        isVideoInputMuted={false}
+        isVideoInputMuted={processedStream == null}
         deviceStatusInfo={{
-          message: 'Ready',
+          message: processedStream != null ? 'Ready' : 'No stream',
           title: 'Camera'
         }}
       />
