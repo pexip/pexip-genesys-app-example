@@ -1,3 +1,4 @@
+import type React from 'react'
 import { useEffect, useRef, useState } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 import {
@@ -55,7 +56,7 @@ interface GenesysState {
   pexipAppPrefix: string
 }
 
-export const App = (): JSX.Element => {
+export const App = (): React.JSX.Element => {
   const [device, setDevice] = useState<MediaDeviceInfoLike>()
   const [effect, setEffect] = useState<Effect>(
     (localStorage.getItem(LocalStorageKey.Effect) as Effect) ?? Effect.None
@@ -82,7 +83,7 @@ export const App = (): JSX.Element => {
 
   const [errorId, setErrorId] = useState<string>('')
 
-  const appRef = useRef<HTMLDivElement>(null)
+  const appRef = useRef<HTMLDivElement | null>(null)
 
   const checkCameraAccess = async (): Promise<void> => {
     const devices = await navigator.mediaDevices.enumerateDevices()
@@ -109,7 +110,7 @@ export const App = (): JSX.Element => {
       displayName,
       bandwidth,
       pin,
-      callType: ClientCallType.VideoPresentation
+      callType: ClientCallType.VideoSendRecvPresentationSendRecv
     })
 
     connectingCallInProgress = false

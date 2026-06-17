@@ -9,17 +9,8 @@
   }
 
   // Workaround hide audio mute
-  &>div>div>div>div:nth-child(2)>button {
+  svg[data-token-name="IconMicrophoneOff_16"],
+  div > div > div > div:has(svg[data-token-name="IconMicrophoneOff_24"]) {
     display: none;
   }
-
-  &>div>div>div>div>div>div>button:nth-child(1){
-    visibility: hidden;
-  }
-
-}
-
-// Workaround to Hide the Audio Stats
-div[role=dialog]>div[class^="_statsBox_"]>div:nth-child(2) {
-  display: none;
 }

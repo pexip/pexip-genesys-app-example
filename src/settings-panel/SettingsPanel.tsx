@@ -1,3 +1,4 @@
+import type React from 'react'
 import { useEffect, useState } from 'react'
 import {
   DeviceSelect,
@@ -34,7 +35,7 @@ interface SettingsPanelProps {
   onSave: (settings: Settings) => void
 }
 
-export const SettingsPanel = (props: SettingsPanelProps): JSX.Element => {
+export const SettingsPanel = (props: SettingsPanelProps): React.JSX.Element => {
   const [devices, setDevices] = useState<MediaDeviceInfoLike[]>([])
   const [device, setDevice] = useState<MediaDeviceInfoLike>()
   const [localStream, setLocalStream] = useState<MediaStream>()
@@ -133,7 +134,15 @@ export const SettingsPanel = (props: SettingsPanelProps): JSX.Element => {
       className="SettingsPanel"
       data-testid="SettingsPanel"
     >
-      <SelfViewSettings srcObject={processedStream} data-testid="selfview" />
+      <SelfViewSettings
+        localMediaStream={processedStream}
+        data-testid="selfview"
+        isVideoInputMuted={processedStream == null}
+        deviceStatusInfo={{
+          message: processedStream != null ? 'Ready' : 'No stream',
+          title: 'Camera'
+        }}
+      />
 
       <TextHeading htmlTag={'h5'}>Devices</TextHeading>
 

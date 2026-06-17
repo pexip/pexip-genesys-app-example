@@ -69,6 +69,5 @@ const mockGenesys = {
   }
 }
 
-module.exports = mockGenesys
 export default mockGenesys
 export {}

@@ -9,7 +9,8 @@ const signalMock = {
   add: jest.fn(),
   addOnce: jest.fn(),
   remove: jest.fn(),
-  emit: jest.fn()
+  emit: jest.fn(),
+  clearBuffers: jest.fn()
 }
 
 const callSignalsMock: CallSignals = {
@@ -21,20 +22,8 @@ const callSignalsMock: CallSignals = {
   onCallQualityStats: signalMock,
   onCallQuality: signalMock,
   onSecureCheckCode: signalMock,
-  onReconnecting: {
-    add: jest.fn(),
-    size: 0,
-    addOnce: jest.fn(),
-    remove: jest.fn(),
-    emit: jest.fn()
-  },
-  onReconnected: {
-    add: jest.fn(),
-    size: 0,
-    addOnce: jest.fn(),
-    remove: jest.fn(),
-    emit: jest.fn()
-  }
+  onReconnecting: signalMock,
+  onReconnected: signalMock
 }
 
 jest.mock('@pexip/media-components', () => {

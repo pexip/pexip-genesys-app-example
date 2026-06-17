@@ -1,3 +1,4 @@
+import type React from 'react'
 import { Button, Modal } from '@pexip/components'
 
 import './ErrorPanel.scss'
@@ -7,7 +8,7 @@ interface ErrorPanelProps {
   onClick?: () => void
 }
 
-export function ErrorPanel(props: ErrorPanelProps): JSX.Element {
+export function ErrorPanel(props: ErrorPanelProps): React.JSX.Element {
   return (
     <Modal isOpen={true} className="ErrorPanel" data-testid="ErrorPanel">
       <h3>Cannot connect</h3>

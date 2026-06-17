@@ -1,1 +1,3 @@
-export const Stats = (): JSX.Element => <div />
+import type React from 'react'
+
+export const Stats = (): React.JSX.Element => <div />

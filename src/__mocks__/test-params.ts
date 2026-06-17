@@ -23,5 +23,3 @@ Object.defineProperty(window, 'testParams', {
     genesysInactive: false
   }
 })
-
-export {}

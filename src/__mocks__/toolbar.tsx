@@ -1,7 +1,5 @@
-import React from 'react'
+import type React from 'react'
 
-export class Toolbar extends React.Component {
-  render (): JSX.Element {
-    return <div data-testid='Toolbar' />
-  }
+export const Toolbar = (): React.JSX.Element => {
+  return <div data-testid="Toolbar" />
 }

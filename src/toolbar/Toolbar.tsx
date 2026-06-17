@@ -1,3 +1,4 @@
+import type React from 'react'
 import { useEffect, useState } from 'react'
 import type {
   CallSignals,
@@ -28,7 +29,7 @@ interface ToolbarProps {
   onSettingsChanged: (settings: Settings) => Promise<void>
 }
 
-export const Toolbar = (props: ToolbarProps): JSX.Element => {
+export const Toolbar = (props: ToolbarProps): React.JSX.Element => {
   const [lockRoomEnabled, setLockRoomEnabled] = useState(false)
   const [popOutVideoEnabled, setPopOutVideoEnabled] = useState(false)
   const [statisticsEnabled, setStatisticsEnabled] = useState(false)
