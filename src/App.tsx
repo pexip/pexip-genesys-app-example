@@ -13,6 +13,7 @@ import {
   type PresoConnectionChangeEvent
 } from '@pexip/infinity'
 import {
+  Button,
   CenterLayout,
   NotificationToast,
   notificationToastSignal,
@@ -40,6 +41,8 @@ let infinitySignals: InfinitySignals
 let callSignals: CallSignals
 let infinityClient: InfinityClient
 
+let pcEnvironment: string
+let pcConversationId: string
 let pexipNode: string
 let pexipAgentPin: string
 let pexipAppPrefix: string = 'agent'
@@ -508,6 +511,12 @@ export const App = (): React.JSX.Element => {
   }
 
   const initialize = async (): Promise<void> => {
+    // When this document is loaded inside the OAuth login popup, relay the
+    // authorization result back to the app and stop; the popup is then closed.
+    if (GenesysService.relayAuthPopupResult()) {
+      return
+    }
+
     try {
       await checkCameraAccess()
     } catch (error) {
@@ -515,9 +524,8 @@ export const App = (): React.JSX.Element => {
     }
     const queryParams = new URLSearchParams(window.location.search)
 
-    const pcEnvironment = queryParams.get('pcEnvironment') ?? ''
-    const pcConversationId = queryParams.get('pcConversationId') ?? ''
-
+    pcEnvironment = queryParams.get('pcEnvironment') ?? ''
+    pcConversationId = queryParams.get('pcConversationId') ?? ''
     pexipNode = queryParams.get('pexipNode') ?? ''
     pexipAgentPin = queryParams.get('pexipAgentPin') ?? ''
     pexipAppPrefix = queryParams.get('pexipAppPrefix') ?? ''
@@ -529,23 +537,21 @@ export const App = (): React.JSX.Element => {
       pexipAgentPin !== '' &&
       pexipAppPrefix !== ''
     ) {
-      await GenesysService.loginPureCloud(
+      // The Genesys login opens a popup, which browsers only allow during a
+      // user gesture, so it is triggered from the login button click.
+      setConnectionState(ConnectionState.LoggedOut)
+    }
+  }
+
+  const handleLogin = async (): Promise<void> => {
+    setConnectionState(ConnectionState.Connecting)
+    try {
+      const { state, accessToken } = await GenesysService.loginPureCloud(
         pcEnvironment,
         pcConversationId,
         pexipNode,
         pexipAgentPin,
         pexipAppPrefix
-      )
-    } else {
-      // Logged into Genesys
-      setConnectionState(ConnectionState.Connecting)
-
-      const parsedUrl = new URL(window.location.href.replace(/#/g, '?'))
-      const queryParams = new URLSearchParams(parsedUrl.search)
-
-      const accessToken: string = queryParams.get('access_token') ?? ''
-      const state: GenesysState = JSON.parse(
-        decodeURIComponent(queryParams.get('state') ?? '{}')
       )
 
       await initializeGenesys(state, accessToken)
@@ -555,6 +561,9 @@ export const App = (): React.JSX.Element => {
       } else {
         setConnectionState(ConnectionState.Disconnected)
       }
+    } catch (error) {
+      console.error('Genesys login failed:', error)
+      setConnectionState(ConnectionState.LoggedOut)
     }
   }
 
@@ -625,6 +634,18 @@ export const App = (): React.JSX.Element => {
         connectionState === ConnectionState.Connected) && (
         <CenterLayout className="loading-spinner">
           <Spinner colorScheme="light" />
+        </CenterLayout>
+      )}
+
+      {connectionState === ConnectionState.LoggedOut && (
+        <CenterLayout className="genesys-login" data-testid="genesys-login">
+          <Button
+            onClick={() => {
+              handleLogin().catch(console.error)
+            }}
+          >
+            Log in to Genesys
+          </Button>
         </CenterLayout>
       )}
 

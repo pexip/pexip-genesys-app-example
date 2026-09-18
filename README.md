@@ -39,6 +39,28 @@ Where:
   `/pexip-genesys-app-example`. The default value is
   `/pexip-genesys-app-example`.
 
+### Genesys Cloud OAuth Client
+
+The application authenticates against Genesys Cloud using the **Authorization
+Code Grant with PKCE**. The previous _Token Implicit Grant (Browser)_ flow has
+been
+[deprecated by Genesys](https://help.genesys.cloud/announcements/genesys-cloud/deprecation-token-implicit-grant-browser-option-for-oauth-authorization/).
+
+When you create (or update) the OAuth Client in Genesys Cloud (_Admin >
+Integrations > OAuth_), make sure that:
+
+- The **Grant Type** is set to `Code Authorization`. No client secret is used by
+  the browser app (PKCE handles the exchange securely).
+- The **Authorized redirect URIs** include the exact URL where the app is
+  hosted, without any query string. For example
+  `https://pexip.github.io/pexip-genesys-app-example/` for the app and
+  `https://pexip.github.io/pexip-genesys-app-example/setup/index.html` for the
+  setup wizard.
+
+If you are migrating an existing OAuth Client, change its grant type from
+`Token Implicit Grant (Browser)` to `Code Authorization / PKCE` and add the
+redirect URIs above. The `VITE_GENESYS_OAUTH_CLIENT_ID` value does not change.
+
 ## Available Scripts
 
 In the project directory, you can run the following commands:
@@ -54,7 +76,8 @@ You will also see any lint errors in the console.
 ### `npm test`
 
 Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests)
+See the section about
+[running tests](https://facebook.github.io/create-react-app/docs/running-tests)
 for more information.
 
 ### `npm lint`
@@ -66,8 +89,8 @@ files. Check [eslint](https://eslint.org/) and
 ### `npm run build`
 
 Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best
-performance.
+It correctly bundles React in production mode and optimizes the build for the
+best performance.
 
 The build is minified and the filenames include the hashes.\
 Your app is ready to be deployed!

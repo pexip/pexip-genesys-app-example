@@ -100,7 +100,7 @@ describe('Genesys service', () => {
       ).toHaveBeenCalledWith(pcEnvironment)
     })
 
-    it('should call to "loginImplicitGrant"', async () => {
+    it('should call to "loginPKCEGrant"', async () => {
       await GenesysService.loginPureCloud(
         pcEnvironment,
         pcConversationId,
@@ -109,8 +109,39 @@ describe('Genesys service', () => {
         pexipAppPrefix
       )
       expect(
-        PlatformClient.ApiClient.instance.loginImplicitGrant
+        PlatformClient.ApiClient.instance.loginPKCEGrant
       ).toHaveBeenCalledTimes(1)
+    })
+
+    it('should open the login in a popup to avoid framing the login page', async () => {
+      await GenesysService.loginPureCloud(
+        pcEnvironment,
+        pcConversationId,
+        pexipNode,
+        pexipAgentPin,
+        pexipAppPrefix
+      )
+      expect(
+        PlatformClient.ApiClient.instance.loginPKCEGrant
+      ).toHaveBeenCalledWith(
+        expect.anything(),
+        expect.anything(),
+        expect.objectContaining({
+          authPopupConfiguration: expect.objectContaining({ usePopup: true })
+        })
+      )
+    })
+
+    it('should return the state and the access token', async () => {
+      const result = await GenesysService.loginPureCloud(
+        pcEnvironment,
+        pcConversationId,
+        pexipNode,
+        pexipAgentPin,
+        pexipAppPrefix
+      )
+      expect(result.accessToken).toBe(accessToken)
+      expect(result.state.pcConversationId).toBe(pcConversationId)
     })
   })
 
