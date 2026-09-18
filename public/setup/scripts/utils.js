@@ -43,25 +43,24 @@ export function beautifyModuleKey(key) {
  */
 export function getQueryParameters() {
     let ret = {};
-    if (window.location.hash && window.location.hash.length > 1 && window.location.hash.indexOf('error') >= 0) {
-        // Manage Error
-        let urlError = new URLSearchParams(window.location.hash.substring(1));
-        let errorCode = urlError.get('error');
-        let errorDescription = urlError.get('error_description');
-        let stateHash = urlError.get('state');
-        if (stateHash) {
-            ret = JSON.parse(decodeURIComponent(stateHash));
+    let urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('error')) {
+        // Manage Error (Authorization Code Grant with PKCE returns it in the query string)
+        let errorCode = urlParams.get('error');
+        let errorDescription = urlParams.get('error_description');
+        let stateParam = urlParams.get('state');
+        if (stateParam) {
+            ret = JSON.parse(decodeURIComponent(stateParam));
         }
 
         ret.error = true;
         if (errorCode) ret.errorCode = errorCode;
         if (errorDescription) ret.errorDescription = errorDescription;
-    } else if (window.location.hash && window.location.hash.length > 1 && window.location.hash.indexOf('access_token') >= 0) {
-        // Get Hash Parameters
-        let urlHash = new URLSearchParams(window.location.hash.substring(1));
-        let stateHash = urlHash.get('state');
-        if (stateHash) {
-            ret = JSON.parse(decodeURIComponent(stateHash));
+    } else if (urlParams.get('code')) {
+        // Return from the Genesys login page with an authorization code
+        let stateParam = urlParams.get('state');
+        if (stateParam) {
+            ret = JSON.parse(decodeURIComponent(stateParam));
         } else {
             ret.errorCode = "400";
             ret.errorDescription = "Missing state";
@@ -69,7 +68,6 @@ export function getQueryParameters() {
         }
     } else if (window.location.search) {
         // Get Query Parameters
-        let urlParams = new URLSearchParams(window.location.search);
         let language = urlParams.get(config.languageQueryParam);
         let environment = urlParams.get(config.genesysCloudEnvironmentQueryParam);
         let uninstall = urlParams.get('uninstall');

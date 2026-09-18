@@ -1,6 +1,6 @@
 import './__mocks__/test-params'
 
-import { act, render, screen } from '@testing-library/react'
+import { act, fireEvent, render, screen } from '@testing-library/react'
 
 import { App } from './App'
 import { ErrorId } from './constants/ErrorId'
@@ -75,18 +75,13 @@ jest.mock('./selfview/SelfView', () => {
   }
 })
 
-const propertyDescriptors = Object.getOwnPropertyDescriptors(window)
-
-for (const key in propertyDescriptors) {
-  propertyDescriptors[key].configurable = true
-}
-
-const clonedWindow = Object.defineProperties({}, propertyDescriptors)
-Object.defineProperty(clonedWindow, 'location', {
-  value: {
-    href: 'https://myurl/#access_token=secret&state=%7B%22pcEnvironment%22%3A%22usw2.pure.cloud%22%2C%22pcConversationId%22%3A%2262698915-ae56-4efc-b5d7-71d6ad487fae%22%2C%22pexipNode%22%3A%22pexipdemo.com%22%2C%22pexipAgentPin%22%3A%222021%22%7D'
-  }
-})
+// Simulate the interaction widget loading the app with the query parameters
+// required to start the Genesys login (Authorization Code Grant with PKCE).
+window.history.replaceState(
+  {},
+  '',
+  '/?pcEnvironment=usw2.pure.cloud&pcConversationId=62698915-ae56-4efc-b5d7-71d6ad487fae&pexipNode=pexipdemo.com&pexipAgentPin=2021&pexipAppPrefix=agent'
+)
 
 const participantSipTrunk = {
   uuid: '1',
@@ -121,6 +116,20 @@ describe('App component', () => {
     jest.clearAllMocks()
   })
 
+  // Renders the app and, when the Genesys login button is shown, clicks it to
+  // start the login flow (the popup login requires a user gesture).
+  const renderAndLogin = async (): Promise<void> => {
+    await act(async () => {
+      render(<App />)
+    })
+    const loginButton = screen.queryByText('Log in to Genesys')
+    if (loginButton != null) {
+      await act(async () => {
+        fireEvent.click(loginButton)
+      })
+    }
+  }
+
   it('should render', async () => {
     render(<App />)
     const app = await screen.findByTestId('App')
@@ -137,7 +146,7 @@ describe('App component', () => {
     })
 
     it("shouldn't display the panel if there isn't an error", async () => {
-      render(<App />)
+      await renderAndLogin()
       const app = await screen.findByTestId('App')
       expect(app.getElementsByClassName('ErrorPanel').length).toBe(0)
     })
@@ -145,7 +154,7 @@ describe('App component', () => {
     it("should display an error if the camera isn't connected", async () => {
       ;(window as any).testParams.enumerateDevicesEmpty = true
       ;(window as any).testParams.rejectGetUserMedia = true
-      render(<App />)
+      await renderAndLogin()
       const errorPanel = await screen.findByTestId('ErrorPanel')
       expect(errorPanel.getElementsByTagName('p')[0].innerHTML).toBe(
         ErrorId.CAMERA_NOT_CONNECTED
@@ -154,7 +163,7 @@ describe('App component', () => {
 
     it("should display an error if the user didn't grant camera permission", async () => {
       ;(window as any).testParams.rejectGetUserMedia = true
-      render(<App />)
+      await renderAndLogin()
       const errorPanel = await screen.findByTestId('ErrorPanel')
       expect(errorPanel.getElementsByTagName('p')[0].innerHTML).toBe(
         ErrorId.CAMERA_ACCESS_DENIED
@@ -163,7 +172,7 @@ describe('App component', () => {
 
     it('should display an error if there is not a connection with the Infinity server', async () => {
       ;(window as any).testParams.infinityUnavailable = true
-      render(<App />)
+      await renderAndLogin()
       const errorPanel = await screen.findByTestId('ErrorPanel')
       expect(errorPanel.getElementsByTagName('p')[0].innerHTML).toBe(
         ErrorId.INFINITY_SERVER_UNAVAILABLE
@@ -172,7 +181,7 @@ describe('App component', () => {
 
     it('should display an error if the conference cannot be found', async () => {
       ;(window as any).testParams.conferenceNotFound = true
-      render(<App />)
+      await renderAndLogin()
       const errorPanel = await screen.findByTestId('ErrorPanel')
       expect(errorPanel.getElementsByTagName('p')[0].innerHTML).toBe(
         ErrorId.CONFERENCE_NOT_FOUND
@@ -181,7 +190,7 @@ describe('App component', () => {
 
     it('should display an error if the conference PIN is wrong', async () => {
       ;(window as any).testParams.conferenceWrongPIN = true
-      render(<App />)
+      await renderAndLogin()
       const errorPanel = await screen.findByTestId('ErrorPanel')
       expect(errorPanel.getElementsByTagName('p')[0].innerHTML).toBe(
         ErrorId.CONFERENCE_AUTHENTICATION_FAILED
@@ -191,9 +200,7 @@ describe('App component', () => {
 
   describe('Genesys service', () => {
     it('should call to initialize once', async () => {
-      await act(async () => {
-        render(<App />)
-      })
+      await renderAndLogin()
       expect(mockGenesysServiceInitialize).toHaveBeenCalledTimes(1)
     })
   })
@@ -209,9 +216,7 @@ describe('App component', () => {
         participantCustomer,
         participantAgentApi
       ])
-      await act(async () => {
-        render(<App />)
-      })
+      await renderAndLogin()
       triggerParticipantLeft()
       expect(mockDisconnect).not.toHaveBeenCalled()
       expect(mockDisconnectAll).not.toHaveBeenCalled()
@@ -223,9 +228,7 @@ describe('App component', () => {
         participantCustomer,
         participantAgentVideo
       ])
-      await act(async () => {
-        render(<App />)
-      })
+      await renderAndLogin()
       triggerParticipantLeft()
       expect(mockDisconnect).not.toHaveBeenCalled()
       expect(mockDisconnectAll).not.toHaveBeenCalled()
@@ -233,9 +236,7 @@ describe('App component', () => {
 
     it("should leave when callType == api and it's only one with callType == api or video", async () => {
       setMockParticipants([participantSipTrunk, participantAgentApi])
-      await act(async () => {
-        render(<App />)
-      })
+      await renderAndLogin()
       triggerParticipantLeft()
       const noActiveCallPanel = await screen.findAllByTestId('no-active-call')
       expect(noActiveCallPanel.length).toBe(1)
@@ -245,9 +246,7 @@ describe('App component', () => {
 
     it("should leave when callType == video and it's only one with callType == api or video", async () => {
       setMockParticipants([participantSipTrunk, participantAgentVideo])
-      await act(async () => {
-        render(<App />)
-      })
+      await renderAndLogin()
       triggerParticipantLeft()
       const noActiveCallPanel = await screen.findAllByTestId('no-active-call')
       expect(noActiveCallPanel.length).toBe(1)

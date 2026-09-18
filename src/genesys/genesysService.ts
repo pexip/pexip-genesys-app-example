@@ -49,13 +49,26 @@ let handleConnectCall: () => any
 let onHoldState: boolean = false
 let muteState: boolean = false
 
+export interface GenesysLoginState {
+  pcEnvironment: string
+  pcConversationId: string
+  pexipNode: string
+  pexipAgentPin: string
+  pexipAppPrefix: string
+}
+
 /**
- * Triggers the login process for Genesys
- * @param pcEnvironment ToDo
- * @param pcConversationId ToDo
- * @param pexipNode ToDo
- * @param pexipAgentPin ToDo
- * @param pexipAppPrefix ToDo
+ * Triggers the login process for Genesys using the Authorization Code Grant
+ * with PKCE. The app runs inside the Genesys interaction widget iframe and the
+ * login page cannot be framed (frame-ancestors 'none'), so the login is opened
+ * in a popup window. The SDK resolves with the auth data once the popup relays
+ * the authorization code back, without navigating the iframe.
+ * @param pcEnvironment The Genesys Cloud environment (region)
+ * @param pcConversationId The active conversation id
+ * @param pexipNode The Pexip conferencing node
+ * @param pexipAgentPin The Pexip agent PIN
+ * @param pexipAppPrefix The Pexip app prefix
+ * @returns The login state and the access token provided by Genesys
  */
 export const loginPureCloud = async (
   pcEnvironment: string,
@@ -63,17 +76,61 @@ export const loginPureCloud = async (
   pexipNode: string,
   pexipAgentPin: string,
   pexipAppPrefix: string
-): Promise<void> => {
-  client.setEnvironment(pcEnvironment)
-  await client.loginImplicitGrant(clientId, redirectUri, {
-    state: JSON.stringify({
-      pcEnvironment,
-      pcConversationId,
-      pexipNode,
-      pexipAgentPin,
-      pexipAppPrefix
+): Promise<{ state: GenesysLoginState; accessToken: string }> => {
+  const state: GenesysLoginState = {
+    pcEnvironment,
+    pcConversationId,
+    pexipNode,
+    pexipAgentPin,
+    pexipAppPrefix
+  }
+  try {
+    console.log('Starting Genesys login with state:', state)
+    client.setEnvironment(pcEnvironment)
+    const authData = await client.loginPKCEGrant(clientId, redirectUri, {
+      state: JSON.stringify(state),
+      authPopupConfiguration: {
+        usePopup: true,
+        autoClosePopup: true
+      }
     })
-  })
+    console.log('Received auth data from Genesys login:', authData)
+    const returnedState: GenesysLoginState =
+      authData.state != null ? JSON.parse(authData.state) : state
+    return { state: returnedState, accessToken: authData.accessToken }
+  } catch (error) {
+    console.error('Error during Genesys login with state:', error)
+    throw error
+  }
+}
+
+/**
+ * When this document is loaded as the OAuth redirect target inside the login
+ * popup window, relay the authorization result back to the opener (the app
+ * running inside the interaction widget iframe) and close the popup. Returns
+ * true when the current document is the popup, so the caller can stop any
+ * further initialization.
+ */
+export const relayAuthPopupResult = (): boolean => {
+  const opener = window.opener as Window | null
+  if (opener == null || opener === window) {
+    return false
+  }
+  const query = new URLSearchParams(window.location.search)
+  if (query.get('code') == null && query.get('error') == null) {
+    return false
+  }
+  opener.postMessage(
+    {
+      name: 'gc_auth_popup',
+      type: 'message',
+      search: window.location.search,
+      hash: window.location.hash
+    },
+    window.location.origin
+  )
+  window.close()
+  return true
 }
 
 /**
