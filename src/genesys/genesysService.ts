@@ -102,35 +102,6 @@ export const loginPureCloud = async (
 }
 
 /**
- * When this document is loaded as the OAuth redirect target inside the login
- * popup window, relay the authorization result back to the opener (the app
- * running inside the interaction widget iframe) and close the popup. Returns
- * true when the current document is the popup, so the caller can stop any
- * further initialization.
- */
-export const relayAuthPopupResult = (): boolean => {
-  const opener = window.opener as Window | null
-  if (opener == null || opener === window) {
-    return false
-  }
-  const query = new URLSearchParams(window.location.search)
-  if (query.get('code') == null && query.get('error') == null) {
-    return false
-  }
-  opener.postMessage(
-    {
-      name: 'gc_auth_popup',
-      type: 'message',
-      search: window.location.search,
-      hash: window.location.hash
-    },
-    window.location.origin
-  )
-  window.close()
-  return true
-}
-
-/**
  * Initiates the Genesys util object
  * @param genesysState The necessary context information for the Genesys util
  * @param accessToken The access token provided by Genesys after successful login

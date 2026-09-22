@@ -4,31 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Pexip Genesys App Example</title>
-    <script>
-      // OAuth popup callback handler. When this document is loaded as the
-      // Genesys login redirect target inside the popup window, relay the
-      // authorization result back to the opener and close, before the main app
-      // bundle is loaded.
-      (function () {
-        try {
-          if (window.opener == null || window.opener === window) return
-          var query = new URLSearchParams(window.location.search)
-          if (query.get('code') == null && query.get('error') == null) return
-          window.opener.postMessage(
-            {
-              name: 'gc_auth_popup',
-              type: 'message',
-              search: window.location.search,
-              hash: window.location.hash
-            },
-            window.location.origin
-          )
-          window.close()
-        } catch (error) {
-          console.error('Error relaying Genesys auth popup result:', error)
-        }
-      })()
-    </script>
   </head>
   <body>
     <div id="root"></div>

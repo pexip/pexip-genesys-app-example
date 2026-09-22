@@ -9,7 +9,6 @@ export const loginPureCloud = jest.fn().mockResolvedValue({
   },
   accessToken: 'fake-access-token'
 })
-export const relayAuthPopupResult = jest.fn().mockReturnValue(false)
 export const isCallActive = (): boolean => true
 export const isDialOut = (): boolean => true
 export const addMuteListener = jest.fn()

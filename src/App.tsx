@@ -524,12 +524,6 @@ export const App = (): React.JSX.Element => {
   }
 
   const initialize = async (): Promise<void> => {
-    // When this document is loaded inside the OAuth login popup, relay the
-    // authorization result back to the app and stop; the popup is then closed.
-    if (GenesysService.relayAuthPopupResult()) {
-      return
-    }
-
     try {
       await checkCameraAccess()
     } catch (error) {
