@@ -517,40 +517,31 @@ export const App = (): React.JSX.Element => {
     }
     const queryParams = new URLSearchParams(window.location.search)
 
-    // The app can be (re)loaded inside the interaction widget without the query
-    // params on the URL. Persist them so any later load can recover the config,
-    // since localStorage is shared across all same-origin instances.
-    const resolveParam = (name: string, key: string): string | null => {
-      const value = queryParams.get(name)
-      if (value != null && value !== '') {
-        localStorage.setItem(key, value)
-        return value
+    // On the OAuth redirect return the URL carries ?code=&state=<JSON> instead
+    // of the individual params; recover them from the round-tripped state.
+    const stateParam = queryParams.get('state')
+    let parsedState: GenesysService.GenesysLoginState | null = null
+    if (stateParam != null) {
+      try {
+        parsedState = JSON.parse(stateParam) as GenesysService.GenesysLoginState
+      } catch {
+        parsedState = null
       }
-      return localStorage.getItem(key)
     }
 
-    const nextEnvironment = resolveParam(
-      'pcEnvironment',
-      LocalStorageKey.PcEnvironment
-    )
-    const nextConversationId = resolveParam(
-      'pcConversationId',
-      LocalStorageKey.PcConversationId
-    )
-    const nextNode = resolveParam('pexipNode', LocalStorageKey.PexipNode)
-    const nextAgentPin = resolveParam(
-      'pexipAgentPin',
-      LocalStorageKey.PexipAgentPin
-    )
-    const nextAppPrefix = resolveParam(
-      'pexipAppPrefix',
-      LocalStorageKey.PexipAppPrefix
-    )
-    if (nextEnvironment != null) pcEnvironment = nextEnvironment
-    if (nextConversationId != null) pcConversationId = nextConversationId
-    if (nextNode != null) pexipNode = nextNode
-    if (nextAgentPin != null) pexipAgentPin = nextAgentPin
-    if (nextAppPrefix != null) pexipAppPrefix = nextAppPrefix
+    if (parsedState != null) {
+      pcEnvironment = parsedState.pcEnvironment
+      pcConversationId = parsedState.pcConversationId
+      pexipNode = parsedState.pexipNode
+      pexipAgentPin = parsedState.pexipAgentPin
+      pexipAppPrefix = parsedState.pexipAppPrefix
+    } else {
+      pcEnvironment = queryParams.get('pcEnvironment') ?? ''
+      pcConversationId = queryParams.get('pcConversationId') ?? ''
+      pexipNode = queryParams.get('pexipNode') ?? ''
+      pexipAgentPin = queryParams.get('pexipAgentPin') ?? ''
+      pexipAppPrefix = queryParams.get('pexipAppPrefix') ?? ''
+    }
 
     if (
       pcEnvironment !== '' &&
