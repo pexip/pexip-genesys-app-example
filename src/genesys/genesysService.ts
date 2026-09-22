@@ -4,6 +4,7 @@ import type {
   UsersApi
 } from 'purecloud-platform-client-v2'
 import platformClient from 'purecloud-platform-client-v2'
+import { prefix } from '../types/LocalStorageKey'
 import { GenesysRole } from '../constants/GenesysRole'
 import { GenesysConnectionsState } from '../constants/GenesysConnectionState'
 import { createChannel, addSubscription } from './notificationsController.ts'
@@ -34,8 +35,7 @@ const client = platformClient.ApiClient.instance
 
 // Persist the OAuth token in localStorage so a still-valid token from a
 // previous login is reused silently on later loads.
-const TOKEN_STORAGE_KEY = 'pexip_genesys_app'
-client.setPersistSettings(true, TOKEN_STORAGE_KEY)
+client.setPersistSettings(true, prefix)
 
 const billablePermission = 'integration:pexipVideo:agent'
 

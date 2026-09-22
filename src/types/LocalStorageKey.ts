@@ -1,4 +1,4 @@
-const prefix = 'pexip-genesys-'
+export const prefix = 'pexip-genesys-'
 
 export enum LocalStorageKey {
   StreamQuality = `${prefix}stream-quality`,
