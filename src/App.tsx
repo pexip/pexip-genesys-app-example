@@ -245,15 +245,15 @@ export const App = (): React.JSX.Element => {
       track.stop()
     })
     if (shouldDisconnectAll) {
-      await infinityClient?.disconnectAll({})
+      await infinityClient.disconnectAll({})
     }
-    await infinityClient?.disconnect({})
+    await infinityClient.disconnect({})
     setConnectionState(ConnectionState.Disconnected)
     connectingCallInProgress = false
   }
 
   const onMuteCall = async (muted: boolean): Promise<void> => {
-    await infinityClient?.mute({ mute: muted })
+    await infinityClient.mute({ mute: muted })
   }
 
   const initializeGenesys = async (
@@ -299,9 +299,7 @@ export const App = (): React.JSX.Element => {
       event.id === 'main' &&
       event.participant.uri.match(/^sip:.*\.playback@/) != null
     ) {
-      await infinityClient?.kick({
-        participantUuid: event.participant.uuid
-      })
+      await infinityClient.kick({ participantUuid: event.participant.uuid })
       infinitySignals.onParticipantJoined.remove(checkPlaybackDisconnection)
     }
   }
@@ -312,7 +310,7 @@ export const App = (): React.JSX.Element => {
    * agent is connected first as api and later it changes to video.
    */
   const checkIfDisconnect = async (): Promise<void> => {
-    const participants = infinityClient?.getParticipants('main') ?? []
+    const participants = infinityClient.getParticipants('main')
     const videoParticipants = participants.filter((participant) => {
       return (
         participant.callType === CallType.video ||
@@ -328,9 +326,7 @@ export const App = (): React.JSX.Element => {
     mute: boolean,
     changeButtonState: boolean = true
   ): Promise<void> => {
-    const response = await infinityClient?.muteVideo({
-      muteVideo: mute
-    })
+    const response = await infinityClient.muteVideo({ muteVideo: mute })
     if (response?.status === 200) {
       localStream?.getTracks().forEach((track) => {
         track.stop()
@@ -351,7 +347,7 @@ export const App = (): React.JSX.Element => {
         if (changeButtonState) {
           setCameraMuted(false)
         }
-        infinityClient?.setStream(processedStream)
+        infinityClient.setStream(processedStream)
       }
     }
   }
@@ -360,7 +356,7 @@ export const App = (): React.JSX.Element => {
     setPresenting(!presenting)
 
     if (presenting) {
-      infinityClient?.stopPresenting()
+      infinityClient.stopPresenting()
       presentationStream?.getTracks().forEach((track) => {
         track.stop()
       })
@@ -373,7 +369,7 @@ export const App = (): React.JSX.Element => {
         setPresentationStream(presentationStream)
 
         presentationStream.getVideoTracks()[0].onended = () => {
-          infinityClient?.stopPresenting()
+          infinityClient.stopPresenting()
           presentationStream?.getTracks().forEach((track) => {
             track.stop()
           })
@@ -382,7 +378,7 @@ export const App = (): React.JSX.Element => {
           setSecondaryVideo('presentation')
         }
 
-        infinityClient?.present(presentationStream)
+        infinityClient.present(presentationStream)
         setSecondaryVideo('presentation')
       } catch (error) {
         console.error(error)
@@ -457,7 +453,7 @@ export const App = (): React.JSX.Element => {
         )
         setProcessedStream(processedStream)
         if (processedStream != null) {
-          infinityClient?.setStream(processedStream)
+          infinityClient.setStream(processedStream)
         }
       }
     }
@@ -468,7 +464,7 @@ export const App = (): React.JSX.Element => {
         LocalStorageKey.StreamQuality,
         settings.streamQuality
       )
-      infinityClient?.setBandwidth(convertToBandwidth(settings.streamQuality))
+      infinityClient.setBandwidth(convertToBandwidth(settings.streamQuality))
     }
   }
 
