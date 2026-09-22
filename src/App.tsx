@@ -36,6 +36,20 @@ import { LocalStorageKey } from './types/LocalStorageKey'
 
 import './App.scss'
 
+let infinitySignals: InfinitySignals
+let callSignals: CallSignals
+let infinityClient: InfinityClient
+
+let pcEnvironment: string
+let pcConversationId: string
+let pexipNode: string
+let pexipAgentPin: string
+let pexipAppPrefix: string = 'agent'
+let conferenceAlias: string
+let connectingCallInProgress: boolean = false
+
+let videoProcessor: VideoProcessor
+
 interface GenesysState {
   pcEnvironment: string
   pcConversationId: string
@@ -73,25 +87,6 @@ export const App = (): React.JSX.Element => {
 
   const appRef = useRef<HTMLDivElement | null>(null)
 
-  const pcEnvironment = useRef<string>('')
-  const pcConversationId = useRef<string>('')
-  const pexipNode = useRef<string>('')
-  const pexipAgentPin = useRef<string>('')
-  const pexipAppPrefix = useRef<string>('agent')
-
-  const infinityClient = useRef<InfinityClient | null>(null)
-  const conferenceAlias = useRef<string>('')
-  const connectingCallInProgress = useRef<boolean>(false)
-  const videoProcessor = useRef<VideoProcessor | null>(null)
-
-  const [infinitySignals] = useState<InfinitySignals>(() =>
-    createInfinityClientSignals([], {
-      batchScheduleTimeoutMS: 500,
-      batchBufferSize: 10
-    })
-  )
-  const [callSignals] = useState<CallSignals>(() => createCallSignals([]))
-
   const checkCameraAccess = async (): Promise<void> => {
     const devices = await navigator.mediaDevices.enumerateDevices()
     if (devices.filter((device) => device.kind === 'videoinput').length === 0) {
@@ -108,10 +103,9 @@ export const App = (): React.JSX.Element => {
     displayName: string,
     pin: string
   ): Promise<void> => {
-    const client = createInfinityClient(infinitySignals, callSignals)
-    infinityClient.current = client
+    infinityClient = createInfinityClient(infinitySignals, callSignals)
     const bandwidth = convertToBandwidth(streamQuality)
-    const response = await client.call({
+    const response = await infinityClient.call({
       node,
       conferenceAlias,
       mediaStream,
@@ -121,7 +115,7 @@ export const App = (): React.JSX.Element => {
       callType: ClientCallType.VideoSendRecvPresentationSendRecv
     })
 
-    connectingCallInProgress.current = false
+    connectingCallInProgress = false
 
     if (response != null) {
       switch (response.status) {
@@ -163,10 +157,10 @@ export const App = (): React.JSX.Element => {
     // Avoid to join a conference if no pexipNode is set or if it's already connected or connecting
     // This can happen if the user is not logged in to Genesys or the GenesysService is not initialized correctly
     if (
-      connectingCallInProgress.current ||
+      connectingCallInProgress ||
       connectionState === ConnectionState.OnHold ||
       connectionState === ConnectionState.Connected ||
-      pexipNode.current === ''
+      pexipNode === ''
     ) {
       console.error(
         'Conference connection already in progress, already connected, or invalid parameters'
@@ -175,9 +169,9 @@ export const App = (): React.JSX.Element => {
     }
 
     setConnectionState(ConnectionState.Connecting)
-    connectingCallInProgress.current = true
+    connectingCallInProgress = true
 
-    conferenceAlias.current = (await GenesysService.fetchAniName()) ?? uuidv4()
+    conferenceAlias = (await GenesysService.fetchAniName()) ?? uuidv4()
 
     // Test to determine if the call is dial-out or dial-in and generate a random
     // conferenceAlias in case we are dialing out. Not used currently.
@@ -186,7 +180,7 @@ export const App = (): React.JSX.Element => {
     //   ? conferenceAlias
     //   : uuidv4()
 
-    const prefixedConfAlias = pexipAppPrefix.current + conferenceAlias.current
+    const prefixedConfAlias = pexipAppPrefix + conferenceAlias
     let localStream: MediaStream
     let processedStream: MediaStream
     try {
@@ -208,11 +202,11 @@ export const App = (): React.JSX.Element => {
     setDisplayName(displayName)
 
     await joinConference(
-      pexipNode.current,
+      pexipNode,
       prefixedConfAlias,
       processedStream,
       displayName,
-      pexipAgentPin.current
+      pexipAgentPin
     )
 
     // Set initial context for hold and mute
@@ -251,15 +245,15 @@ export const App = (): React.JSX.Element => {
       track.stop()
     })
     if (shouldDisconnectAll) {
-      await infinityClient.current?.disconnectAll({})
+      await infinityClient?.disconnectAll({})
     }
-    await infinityClient.current?.disconnect({})
+    await infinityClient?.disconnect({})
     setConnectionState(ConnectionState.Disconnected)
-    connectingCallInProgress.current = false
+    connectingCallInProgress = false
   }
 
   const onMuteCall = async (muted: boolean): Promise<void> => {
-    await infinityClient.current?.mute({ mute: muted })
+    await infinityClient?.mute({ mute: muted })
   }
 
   const initializeGenesys = async (
@@ -273,9 +267,9 @@ export const App = (): React.JSX.Element => {
       accessToken
     )
 
-    pexipNode.current = state.pexipNode
-    pexipAgentPin.current = state.pexipAgentPin
-    pexipAppPrefix.current = state.pexipAppPrefix
+    pexipNode = state.pexipNode
+    pexipAgentPin = state.pexipAgentPin
+    pexipAppPrefix = state.pexipAppPrefix
 
     setGenesysCallbacks()
 
@@ -305,7 +299,7 @@ export const App = (): React.JSX.Element => {
       event.id === 'main' &&
       event.participant.uri.match(/^sip:.*\.playback@/) != null
     ) {
-      await infinityClient.current?.kick({
+      await infinityClient?.kick({
         participantUuid: event.participant.uuid
       })
       infinitySignals.onParticipantJoined.remove(checkPlaybackDisconnection)
@@ -318,7 +312,7 @@ export const App = (): React.JSX.Element => {
    * agent is connected first as api and later it changes to video.
    */
   const checkIfDisconnect = async (): Promise<void> => {
-    const participants = infinityClient.current?.getParticipants('main') ?? []
+    const participants = infinityClient?.getParticipants('main') ?? []
     const videoParticipants = participants.filter((participant) => {
       return (
         participant.callType === CallType.video ||
@@ -334,7 +328,7 @@ export const App = (): React.JSX.Element => {
     mute: boolean,
     changeButtonState: boolean = true
   ): Promise<void> => {
-    const response = await infinityClient.current?.muteVideo({
+    const response = await infinityClient?.muteVideo({
       muteVideo: mute
     })
     if (response?.status === 200) {
@@ -357,7 +351,7 @@ export const App = (): React.JSX.Element => {
         if (changeButtonState) {
           setCameraMuted(false)
         }
-        infinityClient.current?.setStream(processedStream)
+        infinityClient?.setStream(processedStream)
       }
     }
   }
@@ -366,7 +360,7 @@ export const App = (): React.JSX.Element => {
     setPresenting(!presenting)
 
     if (presenting) {
-      infinityClient.current?.stopPresenting()
+      infinityClient?.stopPresenting()
       presentationStream?.getTracks().forEach((track) => {
         track.stop()
       })
@@ -379,7 +373,7 @@ export const App = (): React.JSX.Element => {
         setPresentationStream(presentationStream)
 
         presentationStream.getVideoTracks()[0].onended = () => {
-          infinityClient.current?.stopPresenting()
+          infinityClient?.stopPresenting()
           presentationStream?.getTracks().forEach((track) => {
             track.stop()
           })
@@ -388,7 +382,7 @@ export const App = (): React.JSX.Element => {
           setSecondaryVideo('presentation')
         }
 
-        infinityClient.current?.present(presentationStream)
+        infinityClient?.present(presentationStream)
         setSecondaryVideo('presentation')
       } catch (error) {
         console.error(error)
@@ -416,7 +410,7 @@ export const App = (): React.JSX.Element => {
   }
 
   const handleCopyInvitationLink = (): void => {
-    const invitationLink = `https://${pexipNode.current}/webapp/m/${pexipAppPrefix.current}${conferenceAlias.current}/step-by-step?role=guest`
+    const invitationLink = `https://${pexipNode}/webapp/m/${pexipAppPrefix}${conferenceAlias}/step-by-step?role=guest`
     const textarea = document.createElement('textarea')
     textarea.value = invitationLink
     textarea.setAttribute('readonly', '')
@@ -463,7 +457,7 @@ export const App = (): React.JSX.Element => {
         )
         setProcessedStream(processedStream)
         if (processedStream != null) {
-          infinityClient.current?.setStream(processedStream)
+          infinityClient?.setStream(processedStream)
         }
       }
     }
@@ -474,9 +468,7 @@ export const App = (): React.JSX.Element => {
         LocalStorageKey.StreamQuality,
         settings.streamQuality
       )
-      infinityClient.current?.setBandwidth(
-        convertToBandwidth(settings.streamQuality)
-      )
+      infinityClient?.setBandwidth(convertToBandwidth(settings.streamQuality))
     }
   }
 
@@ -511,15 +503,13 @@ export const App = (): React.JSX.Element => {
     stream: MediaStream,
     effect: Effect
   ): Promise<MediaStream> => {
-    const currentProcessor = videoProcessor.current
-    if (currentProcessor != null) {
-      currentProcessor.close()
-      await currentProcessor.destroy()
+    if (videoProcessor != null) {
+      videoProcessor.close()
+      await videoProcessor.destroy()
     }
-    const processor = await getVideoProcessor(effect)
-    videoProcessor.current = processor
-    await processor.open()
-    const processedStream = await processor.process(stream)
+    videoProcessor = await getVideoProcessor(effect)
+    await videoProcessor.open()
+    const processedStream = await videoProcessor.process(stream)
     return processedStream
   }
 
@@ -560,19 +550,18 @@ export const App = (): React.JSX.Element => {
       'pexipAppPrefix',
       LocalStorageKey.PexipAppPrefix
     )
-    if (nextEnvironment != null) pcEnvironment.current = nextEnvironment
-    if (nextConversationId != null)
-      pcConversationId.current = nextConversationId
-    if (nextNode != null) pexipNode.current = nextNode
-    if (nextAgentPin != null) pexipAgentPin.current = nextAgentPin
-    if (nextAppPrefix != null) pexipAppPrefix.current = nextAppPrefix
+    if (nextEnvironment != null) pcEnvironment = nextEnvironment
+    if (nextConversationId != null) pcConversationId = nextConversationId
+    if (nextNode != null) pexipNode = nextNode
+    if (nextAgentPin != null) pexipAgentPin = nextAgentPin
+    if (nextAppPrefix != null) pexipAppPrefix = nextAppPrefix
 
     if (
-      pcEnvironment.current !== '' &&
-      pcConversationId.current !== '' &&
-      pexipNode.current !== '' &&
-      pexipAgentPin.current !== '' &&
-      pexipAppPrefix.current !== ''
+      pcEnvironment !== '' &&
+      pcConversationId !== '' &&
+      pexipNode !== '' &&
+      pexipAgentPin !== '' &&
+      pexipAppPrefix !== ''
     ) {
       await handleLogin()
     }
@@ -582,11 +571,11 @@ export const App = (): React.JSX.Element => {
     setConnectionState(ConnectionState.Connecting)
     try {
       const { state, accessToken } = await GenesysService.loginPureCloud(
-        pcEnvironment.current,
-        pcConversationId.current,
-        pexipNode.current,
-        pexipAgentPin.current,
-        pexipAppPrefix.current
+        pcEnvironment,
+        pcConversationId,
+        pexipNode,
+        pexipAgentPin,
+        pexipAppPrefix
       )
       await initializeGenesys(state, accessToken)
       const isCallActive = await GenesysService.isCallActive()
@@ -602,10 +591,16 @@ export const App = (): React.JSX.Element => {
   }
 
   useEffect(() => {
+    infinitySignals = createInfinityClientSignals([], {
+      batchScheduleTimeoutMS: 500,
+      batchBufferSize: 10
+    })
+    callSignals = createCallSignals([])
+
     initialize().catch(console.error)
 
     const handleDisconnect = (): void => {
-      infinityClient.current?.disconnect({}).catch(console.error)
+      infinityClient?.disconnect({}).catch(console.error)
     }
 
     window.addEventListener('beforeunload', handleDisconnect)
@@ -707,19 +702,17 @@ export const App = (): React.JSX.Element => {
             onCameraMuteChanged={handleCameraMuteChanged}
           />
 
-          {infinityClient.current != null && (
-            <Toolbar
-              infinityClient={infinityClient.current}
-              callSignals={callSignals}
-              infinitySignals={infinitySignals}
-              cameraMuted={cameraMuted}
-              presenting={presenting}
-              onCameraMuteChanged={handleCameraMuteChanged}
-              onPresentationChanged={handlePresentationChanged}
-              onCopyInvitationLink={handleCopyInvitationLink}
-              onSettingsChanged={handleSettingsChanged}
-            />
-          )}
+          <Toolbar
+            infinityClient={infinityClient}
+            callSignals={callSignals}
+            infinitySignals={infinitySignals}
+            cameraMuted={cameraMuted}
+            presenting={presenting}
+            onCameraMuteChanged={handleCameraMuteChanged}
+            onPresentationChanged={handlePresentationChanged}
+            onCopyInvitationLink={handleCopyInvitationLink}
+            onSettingsChanged={handleSettingsChanged}
+          />
         </>
       )}
 
