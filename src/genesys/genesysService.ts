@@ -32,6 +32,11 @@ if (clientId === undefined) {
 
 const client = platformClient.ApiClient.instance
 
+// Persist the OAuth token in localStorage so a still-valid token from a
+// previous login is reused silently on later loads.
+const TOKEN_STORAGE_KEY = 'pexip_genesys_app'
+client.setPersistSettings(true, TOKEN_STORAGE_KEY)
+
 const billablePermission = 'integration:pexipVideo:agent'
 
 let conversationId: string
@@ -59,10 +64,8 @@ export interface GenesysLoginState {
 
 /**
  * Triggers the login process for Genesys using the Authorization Code Grant
- * with PKCE. The app runs inside the Genesys interaction widget iframe and the
- * login page cannot be framed (frame-ancestors 'none'), so the login is opened
- * in a popup window. The SDK resolves with the auth data once the popup relays
- * the authorization code back, without navigating the iframe.
+ * with PKCE. A still-valid token persisted from a previous login is reused
+ * silently; otherwise the SDK performs the authorization code exchange.
  * @param pcEnvironment The Genesys Cloud environment (region)
  * @param pcConversationId The active conversation id
  * @param pexipNode The Pexip conferencing node
@@ -85,16 +88,10 @@ export const loginPureCloud = async (
     pexipAppPrefix
   }
   try {
-    console.log('Starting Genesys login with state:', state)
     client.setEnvironment(pcEnvironment)
     const authData = await client.loginPKCEGrant(clientId, redirectUri, {
-      state: JSON.stringify(state),
-      authPopupConfiguration: {
-        usePopup: true,
-        autoClosePopup: true
-      }
+      state: JSON.stringify(state)
     })
-    console.log('Received auth data from Genesys login:', authData)
     const returnedState: GenesysLoginState =
       authData.state != null ? JSON.parse(authData.state) : state
     return { state: returnedState, accessToken: authData.accessToken }

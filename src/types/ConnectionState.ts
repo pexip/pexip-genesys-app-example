@@ -3,6 +3,5 @@ export enum ConnectionState {
   Connected,
   Disconnected,
   Error,
-  OnHold,
-  LoggedOut
+  OnHold
 }

@@ -1,6 +1,7 @@
 const mockClient = {
   setEnvironment: jest.fn(),
   setAccessToken: jest.fn(),
+  setPersistSettings: jest.fn(),
   loginPKCEGrant: jest.fn(async () => ({
     accessToken: 'fake-access-token',
     state: JSON.stringify({

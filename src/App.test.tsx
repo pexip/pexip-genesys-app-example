@@ -1,6 +1,6 @@
 import './__mocks__/test-params'
 
-import { act, fireEvent, render, screen } from '@testing-library/react'
+import { act, render, screen } from '@testing-library/react'
 
 import { App } from './App'
 import { ErrorId } from './constants/ErrorId'
@@ -116,18 +116,10 @@ describe('App component', () => {
     jest.clearAllMocks()
   })
 
-  // Renders the app and, when the Genesys login button is shown, clicks it to
-  // start the login flow (the popup login requires a user gesture).
   const renderAndLogin = async (): Promise<void> => {
     await act(async () => {
       render(<App />)
     })
-    const loginButton = screen.queryByText('Log in to Genesys')
-    if (loginButton != null) {
-      await act(async () => {
-        fireEvent.click(loginButton)
-      })
-    }
   }
 
   it('should render', async () => {
