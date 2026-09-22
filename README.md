@@ -61,14 +61,6 @@ If you are migrating an existing OAuth Client, change its grant type from
 `Token Implicit Grant (Browser)` to `Code Authorization / PKCE` and add the
 redirect URIs above. The `VITE_GENESYS_OAUTH_CLIENT_ID` value does not change.
 
-> **Note:** The app runs inside the Genesys interaction widget iframe and the
-> login page cannot be framed, so the OAuth login (including two-factor
-> authentication) opens in a popup window. For the browser to allow it, the
-> interaction widget must include `allow-popups` in its iframe sandbox
-> (Permissions Policy). This is already set in the setup wizard configuration
-> (`public/setup/config/config-prod.js`); if you configure the interaction
-> widget manually, add `allow-popups` to the sandbox value.
-
 ## Available Scripts
 
 In the project directory, you can run the following commands:

@@ -81,7 +81,7 @@ export default {
     'interaction-widget': [{
       name: 'Pexip Video Connect',
       url: 'https://pexip.github.io/pexip-genesys-app-example/?pcEnvironment={{pcEnvironment}}&pcConversationId={{pcConversationId}}&pcLangTag={{pcLangTag}}',
-      sandbox: 'allow-scripts,allow-same-origin,allow-forms,allow-modals,allow-popups',
+      sandbox: 'allow-scripts,allow-same-origin,allow-forms,allow-modals',
       permissions: 'camera,display-capture',
       groups: [],
       communicationTypeFilter: 'call',
