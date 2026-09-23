@@ -522,7 +522,14 @@ export const App = (): React.JSX.Element => {
       }
     }
 
-    if (parsedState != null) {
+    if (
+      parsedState != null &&
+      typeof parsedState.pcEnvironment === 'string' &&
+      typeof parsedState.pcConversationId === 'string' &&
+      typeof parsedState.pexipNode === 'string' &&
+      typeof parsedState.pexipAgentPin === 'string' &&
+      typeof parsedState.pexipAppPrefix === 'string'
+    ) {
       pcEnvironment = parsedState.pcEnvironment
       pcConversationId = parsedState.pcConversationId
       pexipNode = parsedState.pexipNode
