@@ -33,6 +33,7 @@ import { Effect } from './types/Effect'
 import { type VideoProcessor } from '@pexip/media-processor'
 import { getVideoProcessor } from './media/video-processor'
 import { LocalStorageKey } from './types/LocalStorageKey'
+import { type GenesysLoginState } from './types/GenesysState'
 
 import './App.scss'
 
@@ -40,6 +41,8 @@ let infinitySignals: InfinitySignals
 let callSignals: CallSignals
 let infinityClient: InfinityClient
 
+let pcEnvironment: string
+let pcConversationId: string
 let pexipNode: string
 let pexipAgentPin: string
 let pexipAppPrefix: string = 'agent'
@@ -47,14 +50,6 @@ let conferenceAlias: string
 let connectingCallInProgress: boolean = false
 
 let videoProcessor: VideoProcessor
-
-interface GenesysState {
-  pcEnvironment: string
-  pcConversationId: string
-  pexipNode: string
-  pexipAgentPin: string
-  pexipAppPrefix: string
-}
 
 export const App = (): React.JSX.Element => {
   const [device, setDevice] = useState<MediaDeviceInfoLike>()
@@ -255,7 +250,7 @@ export const App = (): React.JSX.Element => {
   }
 
   const initializeGenesys = async (
-    state: GenesysState,
+    state: GenesysLoginState,
     accessToken: string
   ): Promise<void> => {
     // Initiate Genesys environment
@@ -515,12 +510,38 @@ export const App = (): React.JSX.Element => {
     }
     const queryParams = new URLSearchParams(window.location.search)
 
-    const pcEnvironment = queryParams.get('pcEnvironment') ?? ''
-    const pcConversationId = queryParams.get('pcConversationId') ?? ''
+    // On the OAuth redirect return the URL carries ?code=&state=<JSON> instead
+    // of the individual params; recover them from the round-tripped state.
+    const stateParam = queryParams.get('state')
+    let parsedState: GenesysLoginState | null = null
+    if (stateParam != null) {
+      try {
+        parsedState = JSON.parse(stateParam) as GenesysLoginState
+      } catch {
+        parsedState = null
+      }
+    }
 
-    pexipNode = queryParams.get('pexipNode') ?? ''
-    pexipAgentPin = queryParams.get('pexipAgentPin') ?? ''
-    pexipAppPrefix = queryParams.get('pexipAppPrefix') ?? ''
+    if (
+      parsedState != null &&
+      typeof parsedState.pcEnvironment === 'string' &&
+      typeof parsedState.pcConversationId === 'string' &&
+      typeof parsedState.pexipNode === 'string' &&
+      typeof parsedState.pexipAgentPin === 'string' &&
+      typeof parsedState.pexipAppPrefix === 'string'
+    ) {
+      pcEnvironment = parsedState.pcEnvironment
+      pcConversationId = parsedState.pcConversationId
+      pexipNode = parsedState.pexipNode
+      pexipAgentPin = parsedState.pexipAgentPin
+      pexipAppPrefix = parsedState.pexipAppPrefix
+    } else {
+      pcEnvironment = queryParams.get('pcEnvironment') ?? ''
+      pcConversationId = queryParams.get('pcConversationId') ?? ''
+      pexipNode = queryParams.get('pexipNode') ?? ''
+      pexipAgentPin = queryParams.get('pexipAgentPin') ?? ''
+      pexipAppPrefix = queryParams.get('pexipAppPrefix') ?? ''
+    }
 
     if (
       pcEnvironment !== '' &&
@@ -529,25 +550,21 @@ export const App = (): React.JSX.Element => {
       pexipAgentPin !== '' &&
       pexipAppPrefix !== ''
     ) {
-      await GenesysService.loginPureCloud(
+      const state: GenesysLoginState = {
         pcEnvironment,
         pcConversationId,
         pexipNode,
         pexipAgentPin,
         pexipAppPrefix
-      )
-    } else {
-      // Logged into Genesys
-      setConnectionState(ConnectionState.Connecting)
+      }
+      await handleLogin(state)
+    }
+  }
 
-      const parsedUrl = new URL(window.location.href.replace(/#/g, '?'))
-      const queryParams = new URLSearchParams(parsedUrl.search)
-
-      const accessToken: string = queryParams.get('access_token') ?? ''
-      const state: GenesysState = JSON.parse(
-        decodeURIComponent(queryParams.get('state') ?? '{}')
-      )
-
+  const handleLogin = async (state: GenesysLoginState): Promise<void> => {
+    setConnectionState(ConnectionState.Connecting)
+    try {
+      const accessToken = await GenesysService.loginPureCloud(state)
       await initializeGenesys(state, accessToken)
       const isCallActive = await GenesysService.isCallActive()
       if (isCallActive) {
@@ -555,6 +572,9 @@ export const App = (): React.JSX.Element => {
       } else {
         setConnectionState(ConnectionState.Disconnected)
       }
+    } catch (error) {
+      console.error('Genesys login failed:', error)
+      setConnectionState(ConnectionState.Disconnected)
     }
   }
 

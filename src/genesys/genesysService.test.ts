@@ -84,14 +84,20 @@ describe('Genesys service', () => {
   })
 
   describe('loginPureCloud', () => {
-    it('should set the client environment', async () => {
-      await GenesysService.loginPureCloud(
+    let loginState: any
+
+    beforeEach(() => {
+      loginState = {
         pcEnvironment,
         pcConversationId,
         pexipNode,
         pexipAgentPin,
         pexipAppPrefix
-      )
+      }
+    })
+
+    it('should set the client environment', async () => {
+      await GenesysService.loginPureCloud(loginState)
       expect(
         PlatformClient.ApiClient.instance.setEnvironment
       ).toHaveBeenCalledTimes(1)
@@ -100,17 +106,16 @@ describe('Genesys service', () => {
       ).toHaveBeenCalledWith(pcEnvironment)
     })
 
-    it('should call to "loginImplicitGrant"', async () => {
-      await GenesysService.loginPureCloud(
-        pcEnvironment,
-        pcConversationId,
-        pexipNode,
-        pexipAgentPin,
-        pexipAppPrefix
-      )
+    it('should call to "loginPKCEGrant"', async () => {
+      await GenesysService.loginPureCloud(loginState)
       expect(
-        PlatformClient.ApiClient.instance.loginImplicitGrant
+        PlatformClient.ApiClient.instance.loginPKCEGrant
       ).toHaveBeenCalledTimes(1)
+    })
+
+    it('should return the access token', async () => {
+      const result = await GenesysService.loginPureCloud(loginState)
+      expect(result).toBe(accessToken)
     })
   })
 

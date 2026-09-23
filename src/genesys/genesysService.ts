@@ -8,6 +8,7 @@ import { GenesysRole } from '../constants/GenesysRole'
 import { GenesysConnectionsState } from '../constants/GenesysConnectionState'
 import { createChannel, addSubscription } from './notificationsController.ts'
 import { GenesysDisconnectType } from '../constants/GenesysDisconnectType'
+import { type GenesysLoginState } from '../types/GenesysState.ts'
 import { VITE_GENESYS_OAUTH_CLIENT_ID } from '../env'
 
 export interface CallEvent {
@@ -50,30 +51,20 @@ let onHoldState: boolean = false
 let muteState: boolean = false
 
 /**
- * Triggers the login process for Genesys
- * @param pcEnvironment ToDo
- * @param pcConversationId ToDo
- * @param pexipNode ToDo
- * @param pexipAgentPin ToDo
- * @param pexipAppPrefix ToDo
+ * Triggers the login process for Genesys using the Authorization Code Grant
+ * with PKCE. A still-valid token persisted from a previous login is reused
+ * silently; otherwise the SDK performs the authorization code exchange.
+ * @param state The Genesys and Pexip context used for login
+ * @returns The access token provided by Genesys
  */
 export const loginPureCloud = async (
-  pcEnvironment: string,
-  pcConversationId: string,
-  pexipNode: string,
-  pexipAgentPin: string,
-  pexipAppPrefix: string
-): Promise<void> => {
-  client.setEnvironment(pcEnvironment)
-  await client.loginImplicitGrant(clientId, redirectUri, {
-    state: JSON.stringify({
-      pcEnvironment,
-      pcConversationId,
-      pexipNode,
-      pexipAgentPin,
-      pexipAppPrefix
-    })
+  state: GenesysLoginState
+): Promise<string> => {
+  client.setEnvironment(state.pcEnvironment)
+  const authData = await client.loginPKCEGrant(clientId, redirectUri, {
+    state: JSON.stringify(state)
   })
+  return authData.accessToken
 }
 
 /**

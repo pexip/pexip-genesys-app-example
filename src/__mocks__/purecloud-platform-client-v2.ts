@@ -1,7 +1,16 @@
 const mockClient = {
   setEnvironment: jest.fn(),
   setAccessToken: jest.fn(),
-  loginImplicitGrant: jest.fn()
+  loginPKCEGrant: jest.fn().mockResolvedValue({
+    accessToken: 'fake-access-token',
+    state: JSON.stringify({
+      pcEnvironment: 'fake-environment',
+      pcConversationId: 'fake-conversation-id',
+      pexipNode: 'fake-node',
+      pexipAgentPin: 'fake-pin',
+      pexipAppPrefix: 'fake-prefix'
+    })
+  })
 }
 
 const mockAgentId = 'e02618ce-1ae8-4429-bdb0-2d55f701a545'
