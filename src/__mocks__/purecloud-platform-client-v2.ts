@@ -1,8 +1,7 @@
 const mockClient = {
   setEnvironment: jest.fn(),
   setAccessToken: jest.fn(),
-  setPersistSettings: jest.fn(),
-  loginPKCEGrant: jest.fn(async () => ({
+  loginPKCEGrant: jest.fn().mockResolvedValue({
     accessToken: 'fake-access-token',
     state: JSON.stringify({
       pcEnvironment: 'fake-environment',
@@ -11,7 +10,7 @@ const mockClient = {
       pexipAgentPin: 'fake-pin',
       pexipAppPrefix: 'fake-prefix'
     })
-  }))
+  })
 }
 
 const mockAgentId = 'e02618ce-1ae8-4429-bdb0-2d55f701a545'

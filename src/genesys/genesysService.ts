@@ -8,6 +8,7 @@ import { GenesysRole } from '../constants/GenesysRole'
 import { GenesysConnectionsState } from '../constants/GenesysConnectionState'
 import { createChannel, addSubscription } from './notificationsController.ts'
 import { GenesysDisconnectType } from '../constants/GenesysDisconnectType'
+import { type GenesysLoginState } from '../types/GenesysState.ts'
 import { VITE_GENESYS_OAUTH_CLIENT_ID } from '../env'
 
 export interface CallEvent {
@@ -49,51 +50,21 @@ let handleConnectCall: () => any
 let onHoldState: boolean = false
 let muteState: boolean = false
 
-export interface GenesysLoginState {
-  pcEnvironment: string
-  pcConversationId: string
-  pexipNode: string
-  pexipAgentPin: string
-  pexipAppPrefix: string
-}
-
 /**
  * Triggers the login process for Genesys using the Authorization Code Grant
  * with PKCE. A still-valid token persisted from a previous login is reused
  * silently; otherwise the SDK performs the authorization code exchange.
- * @param pcEnvironment The Genesys Cloud environment (region)
- * @param pcConversationId The active conversation id
- * @param pexipNode The Pexip conferencing node
- * @param pexipAgentPin The Pexip agent PIN
- * @param pexipAppPrefix The Pexip app prefix
- * @returns The login state and the access token provided by Genesys
+ * @param state The Genesys and Pexip context used for login
+ * @returns The access token provided by Genesys
  */
 export const loginPureCloud = async (
-  pcEnvironment: string,
-  pcConversationId: string,
-  pexipNode: string,
-  pexipAgentPin: string,
-  pexipAppPrefix: string
-): Promise<{ state: GenesysLoginState; accessToken: string }> => {
-  const state: GenesysLoginState = {
-    pcEnvironment,
-    pcConversationId,
-    pexipNode,
-    pexipAgentPin,
-    pexipAppPrefix
-  }
-  try {
-    client.setEnvironment(pcEnvironment)
-    const authData = await client.loginPKCEGrant(clientId, redirectUri, {
-      state: JSON.stringify(state)
-    })
-    const returnedState: GenesysLoginState =
-      authData.state != null ? JSON.parse(authData.state) : state
-    return { state: returnedState, accessToken: authData.accessToken }
-  } catch (error) {
-    console.error('Error during Genesys login with state:', error)
-    throw error
-  }
+  state: GenesysLoginState
+): Promise<string> => {
+  client.setEnvironment(state.pcEnvironment)
+  const authData = await client.loginPKCEGrant(clientId, redirectUri, {
+    state: JSON.stringify(state)
+  })
+  return authData.accessToken
 }
 
 /**
