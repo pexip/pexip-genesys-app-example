@@ -1,7 +1,10 @@
 const mockClient = {
   setEnvironment: jest.fn(),
   setAccessToken: jest.fn(),
-  loginImplicitGrant: jest.fn()
+  loginPKCEGrant: jest.fn().mockResolvedValue({
+    accessToken: 'fake-access-token',
+    state: 'fake-nonce'
+  })
 }
 
 const mockAgentId = 'e02618ce-1ae8-4429-bdb0-2d55f701a545'

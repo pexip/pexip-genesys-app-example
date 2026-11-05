@@ -84,14 +84,20 @@ describe('Genesys service', () => {
   })
 
   describe('loginPureCloud', () => {
-    it('should set the client environment', async () => {
-      await GenesysService.loginPureCloud(
+    let loginState: any
+
+    beforeEach(() => {
+      loginState = {
         pcEnvironment,
         pcConversationId,
         pexipNode,
         pexipAgentPin,
         pexipAppPrefix
-      )
+      }
+    })
+
+    it('should set the client environment', async () => {
+      await GenesysService.loginPureCloud(loginState)
       expect(
         PlatformClient.ApiClient.instance.setEnvironment
       ).toHaveBeenCalledTimes(1)
@@ -100,17 +106,35 @@ describe('Genesys service', () => {
       ).toHaveBeenCalledWith(pcEnvironment)
     })
 
-    it('should call to "loginImplicitGrant"', async () => {
-      await GenesysService.loginPureCloud(
-        pcEnvironment,
-        pcConversationId,
-        pexipNode,
-        pexipAgentPin,
-        pexipAppPrefix
-      )
+    it('should call to "loginPKCEGrant"', async () => {
+      await GenesysService.loginPureCloud(loginState)
       expect(
-        PlatformClient.ApiClient.instance.loginImplicitGrant
+        PlatformClient.ApiClient.instance.loginPKCEGrant
       ).toHaveBeenCalledTimes(1)
+    })
+
+    it('should return the access token', async () => {
+      const result = await GenesysService.loginPureCloud(loginState)
+      expect(result).toBe(accessToken)
+    })
+
+    it('should not send the login context in the OAuth state', async () => {
+      await GenesysService.loginPureCloud(loginState)
+      const options = (
+        PlatformClient.ApiClient.instance.loginPKCEGrant as jest.Mock
+      ).mock.calls[0][2]
+      expect(options.state).toMatch(/^[0-9a-f]{32}$/)
+      expect(options.state).not.toContain(pexipAgentPin)
+    })
+
+    it('should restore the login context only with the matching nonce', () => {
+      sessionStorage.setItem(
+        'pexip-genesys-login-state',
+        JSON.stringify({ nonce: 'abc', state: loginState })
+      )
+      expect(GenesysService.restoreLoginState('abc')).toEqual(loginState)
+      expect(GenesysService.restoreLoginState('other')).toBeNull()
+      sessionStorage.clear()
     })
   })
 

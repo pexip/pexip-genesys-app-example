@@ -8,7 +8,7 @@
     "@pexip/infinity": "23.0.0",
     "@pexip/media-components": "30.0.0",
     "@pexip/media-processor": "20.1.0",
-    "purecloud-platform-client-v2": "^227.0.0",
+    "purecloud-platform-client-v2": "^262.0.0",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
     "uuid": "^14.0.0"
@@ -63,7 +63,14 @@
     ],
     "transform": {
       "^.+\\.tsx?$": "ts-jest",
-      "^.+\\.jsx?$": ["ts-jest", { "tsconfig": { "allowJs": true } }]
+      "^.+\\.jsx?$": [
+        "ts-jest",
+        {
+          "tsconfig": {
+            "allowJs": true
+          }
+        }
+      ]
     }
   }
 }

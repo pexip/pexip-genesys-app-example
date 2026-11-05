@@ -1,4 +1,6 @@
 export const initialize = jest.fn()
+export const loginPureCloud = jest.fn().mockResolvedValue('fake-access-token')
+export const restoreLoginState = jest.fn().mockReturnValue(null)
 export const isCallActive = (): boolean => true
 export const isDialOut = (): boolean => true
 export const addMuteListener = jest.fn()

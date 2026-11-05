@@ -8,6 +8,7 @@ import { GenesysRole } from '../constants/GenesysRole'
 import { GenesysConnectionsState } from '../constants/GenesysConnectionState'
 import { createChannel, addSubscription } from './notificationsController.ts'
 import { GenesysDisconnectType } from '../constants/GenesysDisconnectType'
+import { type GenesysLoginState } from '../types/GenesysState.ts'
 import { VITE_GENESYS_OAUTH_CLIENT_ID } from '../env'
 
 export interface CallEvent {
@@ -34,6 +35,8 @@ const client = platformClient.ApiClient.instance
 
 const billablePermission = 'integration:pexipVideo:agent'
 
+const loginStateStorageKey = 'pexip-genesys-login-state'
+
 let conversationId: string
 
 let userMe: Models.UserMe
@@ -50,30 +53,49 @@ let onHoldState: boolean = false
 let muteState: boolean = false
 
 /**
- * Triggers the login process for Genesys
- * @param pcEnvironment ToDo
- * @param pcConversationId ToDo
- * @param pexipNode ToDo
- * @param pexipAgentPin ToDo
- * @param pexipAppPrefix ToDo
+ * Triggers the login process for Genesys using the Authorization Code Grant
+ * with PKCE. A still-valid token persisted from a previous login is reused
+ * silently; otherwise the SDK performs the authorization code exchange.
+ * The login context (including the agent PIN) is kept in sessionStorage and
+ * only an opaque random nonce is sent as the OAuth `state` parameter.
+ * @param state The Genesys and Pexip context used for login
+ * @returns The access token provided by Genesys
  */
 export const loginPureCloud = async (
-  pcEnvironment: string,
-  pcConversationId: string,
-  pexipNode: string,
-  pexipAgentPin: string,
-  pexipAppPrefix: string
-): Promise<void> => {
-  client.setEnvironment(pcEnvironment)
-  await client.loginImplicitGrant(clientId, redirectUri, {
-    state: JSON.stringify({
-      pcEnvironment,
-      pcConversationId,
-      pexipNode,
-      pexipAgentPin,
-      pexipAppPrefix
+  state: GenesysLoginState
+): Promise<string> => {
+  client.setEnvironment(state.pcEnvironment)
+  const nonce = Array.from(crypto.getRandomValues(new Uint8Array(16)), (b) =>
+    b.toString(16).padStart(2, '0')
+  ).join('')
+  sessionStorage.setItem(
+    loginStateStorageKey,
+    JSON.stringify({ nonce, state })
+  )
+  try {
+    const authData = await client.loginPKCEGrant(clientId, redirectUri, {
+      state: nonce
     })
-  })
+    return authData.accessToken
+  } finally {
+    sessionStorage.removeItem(loginStateStorageKey)
+  }
+}
+
+/**
+ * Recovers the login context saved before the OAuth redirect.
+ * @param nonce The `state` query parameter returned by Genesys
+ * @returns The saved login context, or null if the nonce doesn't match
+ */
+export const restoreLoginState = (nonce: string): GenesysLoginState | null => {
+  try {
+    const saved = JSON.parse(
+      sessionStorage.getItem(loginStateStorageKey) ?? 'null'
+    )
+    return saved?.nonce === nonce ? (saved.state as GenesysLoginState) : null
+  } catch {
+    return null
+  }
 }
 
 /**
