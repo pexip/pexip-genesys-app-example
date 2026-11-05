@@ -510,17 +510,11 @@ export const App = (): React.JSX.Element => {
     }
     const queryParams = new URLSearchParams(window.location.search)
 
-    // On the OAuth redirect return the URL carries ?code=&state=<JSON> instead
-    // of the individual params; recover them from the round-tripped state.
+    // On the OAuth redirect return the URL carries ?code=&state=<nonce>; the
+    // login context is recovered from sessionStorage using that nonce.
     const stateParam = queryParams.get('state')
-    let parsedState: GenesysLoginState | null = null
-    if (stateParam != null) {
-      try {
-        parsedState = JSON.parse(stateParam) as GenesysLoginState
-      } catch {
-        parsedState = null
-      }
-    }
+    const parsedState =
+      stateParam != null ? GenesysService.restoreLoginState(stateParam) : null
 
     if (
       parsedState != null &&

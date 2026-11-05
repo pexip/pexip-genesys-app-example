@@ -3,13 +3,7 @@ const mockClient = {
   setAccessToken: jest.fn(),
   loginPKCEGrant: jest.fn().mockResolvedValue({
     accessToken: 'fake-access-token',
-    state: JSON.stringify({
-      pcEnvironment: 'fake-environment',
-      pcConversationId: 'fake-conversation-id',
-      pexipNode: 'fake-node',
-      pexipAgentPin: 'fake-pin',
-      pexipAppPrefix: 'fake-prefix'
-    })
+    state: 'fake-nonce'
   })
 }
 

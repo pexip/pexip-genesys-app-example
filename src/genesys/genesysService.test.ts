@@ -117,6 +117,25 @@ describe('Genesys service', () => {
       const result = await GenesysService.loginPureCloud(loginState)
       expect(result).toBe(accessToken)
     })
+
+    it('should not send the login context in the OAuth state', async () => {
+      await GenesysService.loginPureCloud(loginState)
+      const options = (
+        PlatformClient.ApiClient.instance.loginPKCEGrant as jest.Mock
+      ).mock.calls[0][2]
+      expect(options.state).toMatch(/^[0-9a-f]{32}$/)
+      expect(options.state).not.toContain(pexipAgentPin)
+    })
+
+    it('should restore the login context only with the matching nonce', () => {
+      sessionStorage.setItem(
+        'pexip-genesys-login-state',
+        JSON.stringify({ nonce: 'abc', state: loginState })
+      )
+      expect(GenesysService.restoreLoginState('abc')).toEqual(loginState)
+      expect(GenesysService.restoreLoginState('other')).toBeNull()
+      sessionStorage.clear()
+    })
   })
 
   describe('initialize', () => {
