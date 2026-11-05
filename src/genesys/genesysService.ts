@@ -72,11 +72,14 @@ export const loginPureCloud = async (
     loginStateStorageKey,
     JSON.stringify({ nonce, state })
   )
-  const authData = await client.loginPKCEGrant(clientId, redirectUri, {
-    state: nonce
-  })
-  sessionStorage.removeItem(loginStateStorageKey)
-  return authData.accessToken
+  try {
+    const authData = await client.loginPKCEGrant(clientId, redirectUri, {
+      state: nonce
+    })
+    return authData.accessToken
+  } finally {
+    sessionStorage.removeItem(loginStateStorageKey)
+  }
 }
 
 /**
